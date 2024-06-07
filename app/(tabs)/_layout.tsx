@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { useColorScheme } from "react-native";
+import { useColorScheme, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
@@ -14,6 +14,7 @@ const TabsLayout = () => {
         tabBarActiveBackgroundColor: colors["triC"],
         tabBarInactiveTintColor: colors["hexC"],
         tabBarInactiveBackgroundColor: colors["priC"],
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen
@@ -21,6 +22,9 @@ const TabsLayout = () => {
         options={{
           headerShown: false,
           headerTitle: "Home",
+          headerStyle: {
+            backgroundColor: "pink",
+          },
           title: "Home",
           tabBarIcon: ({ color }) => (
             <Ionicons size={28} name="home" color={color} />
@@ -73,7 +77,6 @@ const TabsLayout = () => {
           // headerRight
           // headerShadowVisible: {},
           headerTintColor: colors["secT"],
-          // headerTransparent: true,
           headerTitleStyle: { color: "#fff" },
           headerStyle: {
             backgroundColor: colors["priC"],

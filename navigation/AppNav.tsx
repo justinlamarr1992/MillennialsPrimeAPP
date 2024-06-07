@@ -4,7 +4,8 @@ import { AuthContext } from "@/context/AuthContext";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useColorScheme } from "react-native";
+import { useColorScheme, Button } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/colors";
 import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 
@@ -33,13 +34,21 @@ export default function AppNav() {
     <Stack
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
       screenOptions={{
-        headerStyle: {
-          backgroundColor: colors["priC"],
-        },
+        // headerStyle: {
+        //   backgroundColor: colors["priC"],
+        // },
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontWeight: "bold",
         },
+        headerRight: () => (
+          <Ionicons size={28} name="ellipsis-vertical" color={colors["hexC"]} />
+          // <Button
+          //   onPress={() => alert("This is a button!")}
+          //   title="Info"
+          //   color="#fff"
+          // />
+        ),
         // headerTitle: (props) => <LogoTitle {...props} />,
       }}
     >

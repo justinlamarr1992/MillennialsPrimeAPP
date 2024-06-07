@@ -19,7 +19,7 @@ export default function Layout() {
         drawerStyle: { backgroundColor: colors["secC"] },
       }}
     >
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="ShowViewScreen"
         options={{
           headerTitle: "Episodes",
@@ -28,7 +28,7 @@ export default function Layout() {
             <Ionicons size={28} name="star-half" color={color} />
           ),
         }}
-      />
+      /> */}
       <Drawer.Screen
         name="PrimeShow"
         options={{
@@ -39,6 +39,25 @@ export default function Layout() {
           ),
         }}
       />
+      <Stack.Screen
+        name="ShowViewScreen"
+        options={{
+          headerStyle: {
+            backgroundColor: colors["priC"],
+            // borderBottomLeftRadius: 32,
+            // borderBottomRightRadius: 32,
+            // shadowColor: colors["background"],
+            // height: 200, This is what i need to show more of the users in profiles
+            // overflow: "hidden",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      {/* Add custom stuff for the pages here */}
+      {/* cog on side for settings */}
     </Drawer>
   );
 }
