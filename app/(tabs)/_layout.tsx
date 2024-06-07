@@ -1,37 +1,106 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import { useColorScheme } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { globalStyles } from "@/constants/global";
+import { COLORS } from "@/constants/colors";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
+const TabsLayout = () => {
   const colorScheme = useColorScheme();
-
+  const colors = COLORS[colorScheme ?? "dark"];
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+        tabBarActiveTintColor: colors["quaC"],
+        tabBarActiveBackgroundColor: colors["triC"],
+        tabBarInactiveTintColor: colors["hexC"],
+        tabBarInactiveBackgroundColor: colors["priC"],
+      }}
+    >
       <Tabs.Screen
+        name="(home)"
+        options={{
+          headerShown: false,
+          headerTitle: "Home",
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <Ionicons size={28} name="home" color={color} />
+          ),
+        }}
+      />
+      {/* <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          headerTitle: "Home",
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <Ionicons size={28} name="home" color={color} />
+          ),
+        }}
+      /> */}
+      <Tabs.Screen
+        name="(social)"
+        options={{
+          headerShown: false,
+          title: "Users",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="people-circle" size={28} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="(upload)"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          headerShown: false,
+          title: "Upload",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="star" size={28} color={color} />
           ),
         }}
       />
+      <Tabs.Screen
+        name="(showview)"
+        options={{
+          headerShown: false,
+          title: "Episodes",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="play-circle" size={28} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="LogOutScreen"
+        options={{
+          // headerRight
+          // headerShadowVisible: {},
+          headerTintColor: colors["secT"],
+          // headerTransparent: true,
+          headerTitleStyle: { color: "#fff" },
+          headerStyle: {
+            backgroundColor: colors["priC"],
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
+            shadowColor: colors["background"],
+            // height: 200, This is what i need to show more of the users in profiles
+            // overflow: "hidden",
+          },
+          title: "Log Out",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="log-out" size={28} color={color} />
+          ),
+        }}
+      />
+      {/* screenOptions=
+      {{
+        headerStyle: {
+          backgroundColor: colors["priC"],
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }} */}
     </Tabs>
   );
-}
+};
+
+export default TabsLayout;
