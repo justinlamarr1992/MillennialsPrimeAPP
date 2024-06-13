@@ -33,6 +33,7 @@ export const globalStyles = StyleSheet.create({
   authModal: { backgroundColor: "#ffffff" },
 
   // B
+  bold: { fontWeight: "bold" },
   borderDefault: {
     borderWidth: 1,
     borderColor: "#b9a054",
@@ -72,6 +73,11 @@ export const globalStyles = StyleSheet.create({
   confirmButton: {
     paddingHorizontal: 20,
     backgroundColor: "#BD2932",
+  },
+  connectedUserButton: {
+    // backgroundColor: "#fffd9b",
+    padding: 10,
+    borderRadius: 10,
   },
   container: {
     flex: 1,
@@ -230,6 +236,17 @@ export const globalStyles = StyleSheet.create({
     // shadowOffset: { width: 0, height: 0 },
     // shadowOpacity: 0.9,
     // shadowRadius: 5,
+    marginHorizontal: 4,
+    marginVertical: 6,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  postConnectedUser: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderRadius: 20,
+    elevation: 5,
     marginHorizontal: 4,
     marginVertical: 6,
     paddingHorizontal: 20,
