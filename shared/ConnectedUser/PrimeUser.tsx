@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, useColorScheme } from "react-native";
+import { View, Text, useColorScheme, Pressable } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "@/constants/colors";
@@ -7,9 +7,16 @@ import ConnectedUserInfo from "./ConnectedUserInfo";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function PrimeUser({ name, industry, connected, matching }) {
+  const [bConnected, setBConnected] = useState(connected);
   let prime = true;
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+
+  const onPressFun = () => {
+    console.log("Pressed");
+    // TODO: Insert code to make connection in backend to change
+    setBConnected(!bConnected);
+  };
 
   return (
     <LinearGradient
@@ -30,14 +37,22 @@ export default function PrimeUser({ name, industry, connected, matching }) {
           { backgroundColor: colors["secC"] },
         ]}
       >
-        {connected ? (
-          <Ionicons
-            size={28}
-            name="checkmark-done-outline"
-            color={colors["showCarT"]}
-          />
+        {bConnected ? (
+          <Pressable onPress={onPressFun}>
+            <Ionicons
+              size={28}
+              name="checkmark-done-outline"
+              color={colors["showCarT"]}
+            />
+          </Pressable>
         ) : (
-          <Ionicons size={28} name="time-outline" color={colors["showCarT"]} />
+          <Pressable onPress={onPressFun}>
+            <Ionicons
+              size={28}
+              name="time-outline"
+              color={colors["showCarT"]}
+            />
+          </Pressable>
         )}
       </View>
     </LinearGradient>

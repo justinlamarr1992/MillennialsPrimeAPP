@@ -6,8 +6,10 @@ import {
   Image,
   Button,
   useColorScheme,
+  Pressable,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 import { useTheme } from "@react-navigation/native";
@@ -26,6 +28,13 @@ export default function ConnectedUserInfo({
   //   let prime = false;
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+
+  const namePress = () => {
+    console.log("Name Pressed");
+  };
+  const industryPress = () => {
+    console.log("Industry Pressed");
+  };
   return (
     <View style={globalStyles.postUserInfo}>
       <View style={globalStyles.postUserInfoPicContainer}>
@@ -34,38 +43,45 @@ export default function ConnectedUserInfo({
         <Image style={globalStyles.postUserInfoImage} source={pic} />
       </View>
       <View style={globalStyles.postUserInfoTextContainer}>
-        <Text
-          style={
-            prime
-              ? globalStyles.primePostUserInfoName
-              : globalStyles.postUserInfoName
-          }
-        >
-          {/* TODO: Pressing this takes to their Profile */}
-          {name ? name : "Loading"}
-        </Text>
+        {/* TODO: make this the route to their userid/Profile */}
+        <Pressable onPress={() => router.push(`/${name}`)}>
+          <Text
+            style={
+              prime
+                ? globalStyles.primePostUserInfoName
+                : globalStyles.postUserInfoName
+            }
+          >
+            {/* TODO: Pressing this takes to their Profile */}
+            {name ? name : "Loading"}
+          </Text>
+        </Pressable>
+
         {/* Add useTheme here to determin is colo rchanges are needed based off of prime or not */}
         <Text>
           Industry:
-          <Text style={globalStyles.bold}>
-            {prime ? (
-              <Text>
-                {matching ? (
-                  <Text style={{ color: colors["triC"] }}> {industry}</Text>
-                ) : (
-                  <Text> {industry}</Text>
-                )}
-              </Text>
-            ) : (
-              <Text>
-                {matching ? (
-                  <Text style={{ color: colors["quaC"] }}> {industry}</Text>
-                ) : (
-                  <Text> {industry}</Text>
-                )}
-              </Text>
-            )}
-          </Text>
+          {/* Make this the route to the page where list of everyone with industry is at may need new page*/}
+          <Pressable onPress={() => router.push(`/${industry}`)}>
+            <Text style={globalStyles.bold}>
+              {prime ? (
+                <Text>
+                  {matching ? (
+                    <Text style={{ color: colors["triC"] }}> {industry}</Text>
+                  ) : (
+                    <Text> {industry}</Text>
+                  )}
+                </Text>
+              ) : (
+                <Text>
+                  {matching ? (
+                    <Text style={{ color: colors["quaC"] }}> {industry}</Text>
+                  ) : (
+                    <Text> {industry}</Text>
+                  )}
+                </Text>
+              )}
+            </Text>
+          </Pressable>
         </Text>
 
         {/* {prime ? (<Text style={globalStyles.postUserInfoTime}>
