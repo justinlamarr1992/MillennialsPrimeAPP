@@ -20,6 +20,7 @@ export default function ConnectedUserInfo({
   prime,
   matching,
   connected,
+  admin,
 }) {
   // TODO: come back and change so that prime is past through as child to determine what colors
 
@@ -47,7 +48,9 @@ export default function ConnectedUserInfo({
         <Pressable onPress={() => router.push(`/${name}`)}>
           <Text
             style={
-              prime
+              admin
+                ? globalStyles.adminPostUserInfoName
+                : prime
                 ? globalStyles.primePostUserInfoName
                 : globalStyles.postUserInfoName
             }
@@ -61,9 +64,12 @@ export default function ConnectedUserInfo({
         <Text>
           Industry:
           {/* Make this the route to the page where list of everyone with industry is at may need new page*/}
+          {/* DIFFERENT ROUTE TO DIFF PAGE WITH ALL AS THOS W AS AN INDUSTRY */}
           <Pressable onPress={() => router.push(`/${industry}`)}>
             <Text style={globalStyles.bold}>
+              {/* If Prime */}
               {prime ? (
+                // IF Admin
                 <Text>
                   {matching ? (
                     <Text style={{ color: colors["triC"] }}> {industry}</Text>
@@ -72,6 +78,7 @@ export default function ConnectedUserInfo({
                   )}
                 </Text>
               ) : (
+                // Not Prime
                 <Text>
                   {matching ? (
                     <Text style={{ color: colors["quaC"] }}> {industry}</Text>

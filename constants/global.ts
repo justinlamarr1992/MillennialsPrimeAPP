@@ -75,7 +75,17 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#BD2932",
   },
   connectedUserButton: {
-    // backgroundColor: "#fffd9b",
+    backgroundColor: "#ddcd76",
+    padding: 10,
+    borderRadius: 10,
+  },
+  primeConnectedUserButton: {
+    backgroundColor: "#DEDEDE",
+    padding: 10,
+    borderRadius: 10,
+  },
+  adminConnectedUserButton: {
+    backgroundColor: "#8e202b",
     padding: 10,
     borderRadius: 10,
   },
@@ -155,6 +165,7 @@ export const globalStyles = StyleSheet.create({
     height: 200,
     backgroundColor: "#0553",
     borderRadius: 10,
+    marginBottom: 15,
   },
   input: {
     borderWidth: 1,
@@ -226,7 +237,8 @@ export const globalStyles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
-  // Post Styling
+
+  // Post Styling ADMIN, PRIME AND REGULAR
   post: {
     borderRadius: 20,
     elevation: 5,
@@ -261,16 +273,23 @@ export const globalStyles = StyleSheet.create({
   },
   postContent: {
     marginVertical: 2,
+    color: "#606060",
+  },
+  primePostContent: {
+    marginVertical: 2,
+    color: "#ffffff",
+  },
+  adminPostContent: {
+    marginVertical: 2,
+    color: "#020101",
   },
   postDescription: {
-    color: "#8F92A1",
     fontSize: 12,
   },
   postLikes: {
     marginBottom: 20,
   },
   postTitle: {
-    color: "#ffffff",
     fontWeight: "bold",
     fontSize: 18,
   },
@@ -287,7 +306,7 @@ export const globalStyles = StyleSheet.create({
   postUserInfoName: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "#ffffff",
+    color: "#606060",
   },
   postUserInfoPicContainer: {
     flex: 0.25,
@@ -304,8 +323,7 @@ export const globalStyles = StyleSheet.create({
     width: "auto",
     height: 205,
     borderRadius: 10,
-    // height: "50%",
-    // width: 100,
+    marginBottom: 15,
   },
   primePostTitle: {
     color: "#000000",
@@ -315,11 +333,24 @@ export const globalStyles = StyleSheet.create({
   primePostUserInfoName: {
     fontWeight: "bold",
     fontSize: 20,
-    color: "#000000",
+    color: "#ffffff",
   },
   primeTitle: { color: "#ffffff", fontWeight: "bold", fontSize: 30 },
   primeCardLeft: { width: "auto", flexGrow: 2 },
   primeCardRight: { width: "auto" },
+  adminPostTitle: {
+    color: "#000000",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  adminPostUserInfoName: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "#020101",
+  },
+  adminTitle: { color: "#ffffff", fontWeight: "bold", fontSize: 30 },
+  adminCardLeft: { width: "auto", flexGrow: 2 },
+  adminCardRight: { width: "auto" },
 
   // Q
 
@@ -409,3 +440,12 @@ export const globalStyles = StyleSheet.create({
   // --p-bshade: 0 0px 25px 1px #611821;
   // --p2-bshade: 0 0px 25px 1px #b9a054;
 });
+
+// TERNARY USING 3 LOGICS OF ADMIN, PRIME AND USER
+// "Colors of what needs to be renderd"={
+//         admin
+//           ? "Colors/ settings of Admin"
+//           : prime
+//           ? "colors/ settings of Prime"
+//           : "colors/ settings of User"
+//       }

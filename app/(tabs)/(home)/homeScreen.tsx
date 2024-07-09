@@ -145,6 +145,7 @@ export default function homeScreen() {
           onPress={() => router.push("/(aux)/disclaimer")}
           title="Open Disclaimer"
         />
+        {/* TODO: Make this dynamic of the lastest news post */}
         <View style={[globalStyles.padding]}>
           <PrimeNewsPost
             prime={prime}
@@ -155,6 +156,8 @@ export default function homeScreen() {
             guid={post.guid}
             videoLibraryId={post.videoLibraryId}
           />
+
+          {/* TODO: Then the lastest/ Popular post  */}
           <Ad />
 
           <Text

@@ -21,6 +21,7 @@ export type Colors = {
   quaC: string;
   quiC: string;
   hexC: string;
+  regC: string;
   linkC: string;
   primCar: string;
   primeCarT: string;
@@ -49,6 +50,7 @@ const LIGHT: Colors = {
   quaC: "#fffd9b",
   quiC: "#ddcd76",
   hexC: "#b9a054",
+  regC: "#DEDEDE",
   linkC: "#8e202b",
   primCar: "#fffd9b",
   primeCarT: "#020101",
@@ -77,6 +79,7 @@ const DARK: Colors = {
   quaC: "#fffd9b",
   quiC: "#ddcd76",
   hexC: "#b9a054",
+  regC: "#DEDEDE",
   linkC: "#ddcd76",
   primCar: "#BD2932",
   primeCarT: "#020101",
@@ -131,6 +134,7 @@ export const COLORS = {
 //     quaC: "#fffd9b",
 //     quiC: "#ddcd76",
 //     hexC: "#b9a054",
+//  regC: "#DEDEDE",
 
 //     // NavBar Colors
 //     navbC: "#BD2932",

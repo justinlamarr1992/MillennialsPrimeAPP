@@ -1,17 +1,21 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Text, Image, Button } from "react-native";
+import { StyleSheet, View, Text, Image, Button, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "@/constants/global";
 import { useTheme } from "@react-navigation/native";
+import { router } from "expo-router";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
-export default function UserInfo() {
+export default function UserInfo({ name, admin, prime }) {
   // TODO: come back and change so that prime is past through as child to determine what colors
   // export default function UserInfo({ prime, name, time }) {
-  let name = "Test Name";
+  // let name = "Test Name";
   let time = Date.now();
-  let prime = false;
   const colors = useTheme().colors;
   // console.log(prime, name, time);
+
+  const namePress = () => {
+    console.log("Name Pressed");
+  };
   return (
     <View style={globalStyles.postUserInfo}>
       <View style={globalStyles.postUserInfoPicContainer}>
@@ -20,16 +24,22 @@ export default function UserInfo() {
         <Image style={globalStyles.postUserInfoImage} source={pic} />
       </View>
       <View style={globalStyles.postUserInfoTextContainer}>
-        <Text
-          style={
-            prime
-              ? globalStyles.primePostUserInfoName
-              : globalStyles.postUserInfoName
-          }
-        >
-          {/* TODO: Pressing this takes to their Profile */}
-          {name ? name : "Loading"}
-        </Text>
+        {/* TODO: Change this to the user id of the user name so pressing can go to users page */}
+        <Pressable onPress={() => router.push(`/${name}`)}>
+          <Text
+            style={
+              admin
+                ? globalStyles.adminPostUserInfoName
+                : prime
+                ? globalStyles.primePostUserInfoName
+                : globalStyles.postUserInfoName
+            }
+          >
+            {/* TODO: Pressing this takes to their Profile */}
+            {name ? name : "Loading"}
+          </Text>
+        </Pressable>
+
         {/* Add useTheme here to determin is colo rchanges are needed based off of prime or not */}
         <Text style={globalStyles.postUserInfoTime}>
           {time ? time : "Loading"}

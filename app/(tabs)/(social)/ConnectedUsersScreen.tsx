@@ -5,7 +5,6 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 // import { AuthContext } from "../../context/AuthContext";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import PrimeUser from "@/shared/ConnectedUser/PrimeUser";
 import User from "@/shared/ConnectedUser/User";
 
 export default function ConnectedUsersScreen() {
@@ -14,6 +13,9 @@ export default function ConnectedUsersScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [connected, setConnected] = useState(true);
   const [matching, setMatching] = useState(true);
+  const [admin, setAdmin] = useState(false);
+  const [prime, setPrime] = useState(false);
+
   let name: String;
   let industry: String;
   // const axiosPrivate = useAxiosPrivate();
@@ -36,53 +38,101 @@ export default function ConnectedUsersScreen() {
       showsVerticalScrollIndicator={false}
       style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
     >
-      <PrimeUser
-        name={"Test Dude1"}
+      <User
+        name={"Admin Dude1"}
         industry={"Graphic Design"}
         connected={true}
         matching={true}
+        prime={true}
+        admin={true}
       />
-      <PrimeUser
-        name={"Test Dude3"}
+      <User
+        name={"Admin Dude3"}
         industry={"Rubix Cuber"}
         connected={true}
         matching={false}
+        prime={true}
+        admin={true}
       />
-      <PrimeUser
-        name={"Test Dude5"}
+      <User
+        name={"Admin Dude5"}
         industry={"Backend Developer"}
         connected={false}
         matching={true}
+        prime={true}
+        admin={true}
       />
-      <PrimeUser
-        name={"Test Dude7"}
+      <User
+        name={"Admin Dude7"}
         industry={"Under Water "}
         connected={false}
         matching={false}
+        prime={true}
+        admin={true}
       />
       <User
-        name={"Test Dude2"}
+        name={"Prime Dude1"}
+        industry={"Graphic Design"}
+        connected={true}
+        matching={true}
+        prime={true}
+        admin={false}
+      />
+      <User
+        name={"Prime Dude3"}
+        industry={"Rubix Cuber"}
+        connected={true}
+        matching={false}
+        prime={true}
+        admin={false}
+      />
+      <User
+        name={"Prime Dude5"}
+        industry={"Backend Developer"}
+        connected={false}
+        matching={true}
+        admin={false}
+        prime={true}
+      />
+      <User
+        name={"Prime Dude7"}
+        industry={"Under Water "}
+        connected={false}
+        matching={false}
+        admin={false}
+        prime={true}
+      />
+      <User
+        name={"Normal Dude2"}
         industry={"Webste Design"}
         connected={true}
+        admin={false}
+        prime={false}
         matching={true}
       />
       <User
-        name={"Test Dude4"}
+        name={"Normal Dude4"}
         industry={"Stuff Animal Maker"}
         connected={true}
         matching={false}
+        admin={false}
+        prime={false}
       />
       <User
-        name={"Test Dude6"}
+        name={"Normal Dude6"}
         industry={"App Design"}
         connected={false}
         matching={true}
+        admin={false}
+        prime={false}
       />
       <User
-        name={"Test Dude8"}
+        name={"Normal Dude8"}
         industry={"Geek Stuff"}
         connected={false}
         matching={false}
+        admin={false}
+        prime={false}
       />
     </ScrollView>
   );

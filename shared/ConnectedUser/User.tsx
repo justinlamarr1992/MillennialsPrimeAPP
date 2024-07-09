@@ -7,9 +7,16 @@ import { COLORS } from "@/constants/colors";
 import ConnectedUserInfo from "./ConnectedUserInfo";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function User({ name, industry, connected, matching }) {
+export default function User({
+  name,
+  industry,
+  connected,
+  matching,
+  admin,
+  prime,
+}) {
   const [bConnected, setBConnected] = useState(connected);
-  let prime = false;
+  // let prime = false;
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -22,22 +29,37 @@ export default function User({ name, industry, connected, matching }) {
   return (
     <LinearGradient
       style={globalStyles.postConnectedUser}
-      colors={["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]}
       // THREE LEVELS OF COLORS, ADMIN, PRIME AND REGULAR
+      // colors of regular degular
+      colors={
+        admin
+          ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]
+          : prime
+          ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
+          : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
+      }
     >
       <ConnectedUserInfo
         name={name}
         industry={industry}
+        admin={admin}
         prime={prime}
         connected={true}
         matching={matching}
       />
       {/* MAKE BUTTON TO TOGGLE */}
       <View
-        style={[
-          globalStyles.connectedUserButton,
-          { backgroundColor: colors["quiC"] },
-        ]}
+        style={
+          admin
+            ? [globalStyles.adminConnectedUserButton]
+            : prime
+            ? [globalStyles.primeConnectedUserButton]
+            : [globalStyles.connectedUserButton]
+        }
+        // style={[
+        //   globalStyles.connectedUserButton,
+        //   { backgroundColor: colors["quiC"] },
+        // ]}
       >
         {bConnected ? (
           <Pressable onPress={onPressFun}>

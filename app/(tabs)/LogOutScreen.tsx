@@ -13,10 +13,11 @@ export default function LogOutScreen() {
   // const navigation = useNavigation();
   // const colors = useTheme().colors;
 
-  // const handleLogOut = async () => {
-  //   try {
-  //   } catch (err) {}
-  // };
+  const handleLogOut = async () => {
+    try {
+      logout();
+    } catch (err) {}
+  };
 
   return (
     <View
@@ -40,7 +41,9 @@ export default function LogOutScreen() {
         onPress={logout}
         style={[globalStyles.button, { backgroundColor: colors["priC"] }]}
       >
-        <Text style={globalStyles.buttonText}>Log Out</Text>
+        <Text style={globalStyles.buttonText} onPress={handleLogOut}>
+          Log Out
+        </Text>
       </Pressable>
     </View>
   );

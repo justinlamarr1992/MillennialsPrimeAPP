@@ -6,11 +6,13 @@ import { BASE_URL } from "../config";
 export const AuthContext = createContext([[], () => null]);
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [id, setId] = useState(null);
   const [roles, setRoles] = useState(null);
+  const [prime, setPrime] = useState(null);
+  const [admin, setAdmin] = useState(null);
 
   console.log("Accessing the AuthContext");
 
@@ -124,7 +126,7 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-      // console.log(`Results from LogOut()/ API logout ${response}`);
+      console.log(response);
 
       // console.log(`Auth State Before ${auth}`);
       try {
@@ -155,7 +157,7 @@ export const AuthProvider = ({ children }) => {
       AsyncStorage.removeItem("accessToken");
       // console.log(`Accessoken State After ${accessToken}`);
     } catch (err) {
-      // console.log(`Here is the Error from AuthContext/LogOut() ===> ${err}`);
+      console.log(`Here is the Error from AuthContext/LogOut() ===> ${err}`);
     }
 
     setIsLoading(false);
@@ -198,6 +200,8 @@ export const AuthProvider = ({ children }) => {
         accessToken,
         id,
         roles,
+        prime,
+        admin,
       }}
     >
       {children}
