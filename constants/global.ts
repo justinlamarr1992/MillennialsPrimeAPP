@@ -48,7 +48,7 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 10,
-    // backgroundColor: "#611821",
+    backgroundColor: "#611821",
   },
   buttonText: {
     color: "#ffffff",
@@ -59,10 +59,10 @@ export const globalStyles = StyleSheet.create({
   // C
   cancelButton: {
     paddingHorizontal: 20,
-    backgroundColor: "#11182711",
+    backgroundColor: "#BD2932",
   },
   cancelButtonText: {
-    color: "#075985",
+    color: "#ffffff",
   },
   centerItem: {
     flex: 1,
@@ -72,7 +72,10 @@ export const globalStyles = StyleSheet.create({
   },
   confirmButton: {
     paddingHorizontal: 20,
-    backgroundColor: "#BD2932",
+    backgroundColor: "green",
+  },
+  confirmButtonText: {
+    color: "#ffffff",
   },
   connectedUserButton: {
     backgroundColor: "#ddcd76",
@@ -359,10 +362,14 @@ export const globalStyles = StyleSheet.create({
     width: "100%",
     height: "30%",
   },
+  passwordRecoveryBox: {
+    width: "100%",
+    height: "60%",
+  },
   registerForm: { width: "100%", height: "85%" },
 
   // S
-  scrollView: { marginBottom: 70 },
+  scrollView: { marginBottom: 20 },
   settingsInput: {
     borderWidth: 1,
     borderColor: "#ddd",
@@ -388,6 +395,14 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 10,
     paddingTop: 50,
     borderWidth: 1,
+    // borderRadius: 2,
+  },
+  recoveryForm: {
+    borderRadius: 10,
+    paddingTop: 50,
+    borderWidth: 1,
+    width: "100%",
+    height: "50%",
     // borderRadius: 2,
   },
   signInScreen: {
@@ -418,7 +433,6 @@ export const globalStyles = StyleSheet.create({
   textTitle: {
     fontFamily: "inter-bold",
     fontSize: 18,
-    color: "#020101",
   },
 
   // U

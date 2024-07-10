@@ -16,25 +16,25 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { AuthContext } from "@/context/AuthContext";
 
-import HomeScreen from "@/screens/HomeScreen";
+import homeScreen from "@/app/(tabs)/(home)/homeScreen";
 
-import RegisterScreen from "@/screens/auth/RegisterScreen";
-import SignInScreen from "@/screens/auth/SignInScreen";
-import LogOutScreen from "@/screens/auth/LogOutScreen";
-import PasswordRecoveryScreen from "@/screens/auth/PasswordRecoveryScreen";
+import RegisterScreen from "@/app/(auth)/RegisterScreen";
+import SignInScreen from "@/app/(auth)/SignInScreen";
+import LogOutScreen from "@/app/(tabs)/LogOutScreen";
+import PasswordRecoveryScreen from "@/app/(auth)/PasswordRecoveryScreen";
 
 import MyInfoScreen from "@/app/settings/MyInfoScreen";
 import BusinessScreen from "@/app/settings/BusinessScreen";
 import ArtScreen from "@/app/settings/ArtScreen";
-import AboutScreen from "@/screens/auth/AboutScreen";
+import AboutScreen from "@/app/(auth)/AboutScreen";
 
-import UserScreen from "@/app/social/UserScreen";
-import ConnectedUsersScreen from "@/app/social/ConnectedUsersScreen";
-import MyProfileScreen from "@/app/social/MyProfileScreen";
+import UserScreen from "@/app/(tabs)/(social)/UserScreen";
+import ConnectedUsersScreen from "@/app/(tabs)/(social)/ConnectedUsersScreen";
+import MyProfileScreen from "@/app/(tabs)/(social)/MyProfileScreen";
 
 import ShowViewScreen from "@/app/(tabs)/(showview)/ShowViewScreen";
 import PrimeShowScreen from "@/app/(tabs)/(showview)/PrimeShow";
-import UploadContentScreen from "@/app/upload/UploadContentScreen";
+import UploadContentScreen from "@/app/(tabs)/(upload)/UploadContentScreen";
 
 import { Logo } from "../../assets/images/MillennialsPrimeLogoNB.png";
 import { Colors } from "../../constants/colors";
@@ -69,11 +69,20 @@ const AppNav = () => {
       </View>
     );
   }
-  return (
-    <NavigationContainer>
-      {auth !== null ? <TabNavigator /> : <AuthStack />}
-    </NavigationContainer>
-  );
+
+  const authCheck = () => {
+    if (auth !== null) {
+      return <TabNavigator />;
+    } else {
+      return <AuthStack />;
+    }
+  };
+
+  return authCheck();
+
+  // <NavigationContainer>
+  //   {auth !== null ? <TabNavigator /> : <AuthStack />}
+  // </NavigationContainer>
 };
 
 function LogoTitle() {
@@ -215,7 +224,7 @@ function StackNavigator() {
       /> */}
       <Stack.Screen
         name="Home"
-        component={HomeScreen}
+        component={homeScreen}
         options={{
           headerRight: () => (
             <Button

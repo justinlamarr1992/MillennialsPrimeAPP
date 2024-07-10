@@ -20,6 +20,7 @@ import AppNav from "@/navigation/AppNav";
 export default function RootLayout() {
   // const auth = null;
   const { auth } = useContext(AuthContext);
+  console.log(auth);
   if (auth) {
     console.log("The Auth from AppNav is ", auth);
   } else {
@@ -46,7 +47,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        {auth !== null ? (
+        {auth == null ? (
           <AppNav />
         ) : (
           <Stack>

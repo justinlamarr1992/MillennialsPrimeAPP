@@ -1,26 +1,107 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  useColorScheme,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Pressable,
+  TextInput,
+} from "react-native";
 import { globalStyles } from "@/constants/global";
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { COLORS } from "@/constants/colors";
 
 const PasswordRecoveryScreen = () => {
+  const [email, setEmail] = useState(null);
   const navigation = useNavigation();
-  const colors = useTheme().colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
+
+  const handleSubmit = () => {};
 
   return (
-    <View
-      style={[
-        globalStyles.container,
-        {
-          backgroundColor: colors.background,
-        },
-      ]}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      enabled={true}
+      style={globalStyles.flex1}
     >
-      {/* <Text style={(color: colors.primCarT)}>Password Recovery</Text> */}
-      <Text style={[globalStyles.titleText, { color: colors.priT }]}>
-        Recover Password
-      </Text>
-    </View>
+      <View style={[globalStyles.signInScreen]}>
+        <View
+          style={[
+            globalStyles.passwordRecoveryBox,
+            globalStyles.padding,
+            globalStyles.centerItem,
+          ]}
+        ></View>
+        <View
+          style={[
+            globalStyles.recoveryForm,
+            globalStyles.padding,
+
+            {
+              backgroundColor: colors["background"],
+              borderColor: colors["quiC"],
+            },
+          ]}
+        >
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={globalStyles.scrollView}
+          >
+            <View style={globalStyles.formTitle}>
+              <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
+                Password Recovery
+              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Enter your email to recovery your Password!
+              </Text>
+            </View>
+            <View style={globalStyles.labelInput}>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Email
+              </Text>
+              <TextInput
+                style={globalStyles.input}
+                placeholder="Enter Email"
+                placeholderTextColor="#BABBBD"
+                keyboardType="email-address"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+              ></TextInput>
+            </View>
+            <Pressable
+              style={[
+                globalStyles.button,
+                globalStyles.marginVertical,
+                { backgroundColor: colors["triC"] },
+              ]}
+              onPressIn={handleSubmit}
+            >
+              <Text style={globalStyles.buttonText}>Send Email</Text>
+            </Pressable>
+          </ScrollView>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 export default PasswordRecoveryScreen;
+// <View
+//     style={[
+//       globalStyles.container,
+//       {
+//         backgroundColor: colors.background,
+//       },
+//     ]}
+//   >
+{
+  /* <Text style={(color: colors.primCarT)}>Password Recovery</Text> */
+}
+{
+  /* <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
+          Recover Password
+        </Text>
+      </View> */
+}

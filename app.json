@@ -2,7 +2,7 @@
   "expo": {
     "name": "Millennials-Prime_APP",
     "slug": "Millennials-Prime_APP",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/mill-prime-icon.png",
     "scheme": "your-app-scheme",
@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.justappin.millennials-prime-app",
-      "buildNumber": "6"
+      "buildNumber": "7"
     },
     "android": {
       "adaptiveIcon": {

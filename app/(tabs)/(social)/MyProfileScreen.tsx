@@ -12,7 +12,8 @@ import TextPost from "@/shared/PostComponents/TextPost";
 
 export default function MyProfileScreen() {
   // const { auth, id, accessToken, roles } = useContext(AuthContext);
-  const { admin, prime } = useContext(AuthContext);
+  const { auth, admin, prime } = useContext(AuthContext);
+  console.log("The auth for useContext ", auth);
   // const [admin, setAdmin] = useState(false);
   // const [prime, setPrime] = useState(true);
   const colorScheme = useColorScheme();

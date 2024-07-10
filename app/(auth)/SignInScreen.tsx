@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "expo-router";
 import {
-  StyleSheet,
+  useColorScheme,
   Text,
   View,
-  Button,
-  FlatList,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Alert,
-  Modal,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -19,15 +12,12 @@ import {
 } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+
 import { AuthContext } from "../../context/AuthContext";
 // import UserInfo from "./PostItems/UserInfo";
-
+import { COLORS } from "@/constants/colors";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
-// import colors from "../../styles/colors";
-import Colors from "@/constants/colors";
 
 export default function SignInScreen() {
   // const { auth, setAuth } = useAuth();
@@ -37,8 +27,8 @@ export default function SignInScreen() {
 
   const navigation = useNavigation();
   const [modalOpen, setModalOpen] = useState(false);
-  const colors = useTheme().colors;
-  const Colors = useTheme().Colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
 
   console.log(auth);
 
@@ -76,18 +66,14 @@ export default function SignInScreen() {
             globalStyles.centerItem,
           ]}
         >
-          <Link
-            href="/auth/RegisterScreen"
-            asChild
-            // style={[globalStyles.button, { backgroundColor: colors.hexC }]}
+          <Pressable
+            style={[globalStyles.button, { backgroundColor: colors["hexC"] }]}
+            // onPress={() => navigation.navigate("Register")}
           >
-            <Pressable
-              style={[globalStyles.button, { backgroundColor: Colors.hexC }]}
-              // onPress={() => navigation.navigate("Register")}
-            >
+            <Link replace href="/(auth)/RegisterScreen" asChild>
               <Text style={globalStyles.buttonText}>Create an Account</Text>
-            </Pressable>
-          </Link>
+            </Link>
+          </Pressable>
         </View>
         <View
           style={[
@@ -95,8 +81,8 @@ export default function SignInScreen() {
             globalStyles.padding,
             globalStyles.loginForm,
             {
-              backgroundColor: colors.background,
-              borderColor: colors.borderColor,
+              backgroundColor: colors["background"],
+              borderColor: colors["quiC"],
             },
           ]}
         >
@@ -105,25 +91,34 @@ export default function SignInScreen() {
             style={globalStyles.scrollView}
           >
             <View style={globalStyles.formTitle}>
-              <Text style={[globalStyles.titleText, { color: colors.text }]}>
+              <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
                 Welcome Back
               </Text>
-              <Text style={globalStyles.labelText}>Sign in to Continue</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Sign in to Continue
+              </Text>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Email</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Email
+              </Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
+                placeholderTextColor="#BABBBD"
+                keyboardType="email-address"
                 value={user}
                 onChangeText={(text) => setUser(text)}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Password</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Password
+              </Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Password"
+                placeholderTextColor="#BABBBD"
                 secureTextEntry={true}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -134,19 +129,22 @@ export default function SignInScreen() {
             <Pressable
               style={[
                 globalStyles.button,
-                globalStyles.vertMargin,
-                { backgroundColor: colors.triC },
+                globalStyles.marginVertical,
+                { backgroundColor: colors["triC"] },
               ]}
               onPressIn={handleSubmit}
             >
               <Text style={globalStyles.buttonText}>Login</Text>
             </Pressable>
-            <Text
-              style={[globalStyles.vertPadding, { color: Colors.linkC }]}
-              // onPress={() => navigation.navigate("Password Recovery")}
-            >
-              Forgot Password Link
-            </Text>
+            <Link href="/(auth)/PasswordRecoveryScreen" asChild>
+              <Text
+                style={[globalStyles.vertPadding, { color: colors["linkC"] }]}
+                // onPress={() => navigation.navigate("PasswordRecoveryScreen")}
+              >
+                Forgot Password Link
+              </Text>
+            </Link>
+
             {/* <Text>Connect with Socials</Text> */}
           </ScrollView>
         </View>

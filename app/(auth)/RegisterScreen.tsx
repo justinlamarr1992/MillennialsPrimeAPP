@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import { Link } from "expo-router";
 import {
-  StyleSheet,
+  useColorScheme,
   Text,
   View,
   Platform,
-  Button,
-  FlatList,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Alert,
-  Modal,
   ScrollView,
   KeyboardAvoidingView,
   Pressable,
@@ -23,6 +18,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../../context/AuthContext";
 // import UserInfo from "./PostItems/UserInfo";
+import { COLORS } from "@/constants/colors";
 
 import axios from "axios";
 
@@ -34,7 +30,8 @@ const PASSWORD_REGEX =
 export default function RegisterScreen() {
   const { register, auth } = useContext(AuthContext);
   const navigation = useNavigation();
-  const colors = useTheme().colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -113,6 +110,18 @@ export default function RegisterScreen() {
 
     try {
       register(user, password, firstName, lastName, DOB);
+      console.log(
+        "User: ",
+        user,
+        " Password: ",
+        password,
+        " First Name: ",
+        firstName,
+        " Last Name: ",
+        lastName,
+        " DOB: ",
+        DOB
+      );
     } catch (err) {
       console.log("ERROR ==>", err);
       if (!err?.originalStatus) {
@@ -130,7 +139,7 @@ export default function RegisterScreen() {
       //   errRef.current.focus();
     } finally {
       // TODO: Check if good infor then go to settings page if not need errors to kick in
-      navigation.navigate("Sign In");
+      navigation.navigate("SignInScreen");
     }
   };
 
@@ -149,10 +158,12 @@ export default function RegisterScreen() {
           ]}
         >
           <Pressable
-            style={[globalStyles.button, { backgroundColor: colors.hexC }]}
-            onPress={() => navigation.navigate("Sign In")}
+            style={[globalStyles.button, { backgroundColor: colors["hexC"] }]}
+            // onPress={() => navigation.navigate("Sign In")}
           >
-            <Text style={globalStyles.buttonText}>Login</Text>
+            <Link replace href="/(auth)/SignInScreen" asChild>
+              <Text style={globalStyles.buttonText}>Login</Text>
+            </Link>
           </Pressable>
           <Text style={[globalStyles.errorText, { color: colors.secC }]}>
             {errMsg}
@@ -165,8 +176,8 @@ export default function RegisterScreen() {
             globalStyles.registerForm,
             globalStyles.bottomPadding,
             {
-              backgroundColor: colors.background,
-              borderColor: colors.borderColor,
+              backgroundColor: colors["background"],
+              borderColor: colors["quiC"],
             },
           ]}
         >
@@ -175,72 +186,89 @@ export default function RegisterScreen() {
             style={globalStyles.scrollView}
           >
             <View style={globalStyles.formTitle}>
-              <Text style={[globalStyles.titleText, { color: colors.text }]}>
+              <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
                 Create an Account
               </Text>
-              <Text style={globalStyles.labelText}>Sign Up to Continue</Text>
+              <Text style={(globalStyles.labelText, { color: colors["text"] })}>
+                Sign Up to Continue
+              </Text>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>First Name</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                First Name
+              </Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter First Name"
-                // placeholderTextColor="#C4C4C4"
+                placeholderTextColor={colors["plcHoldText"]}
                 onChangeText={(text) => {
                   setFirstName(text);
                 }}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Last Name</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Last Name
+              </Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Last Name"
-                // placeholderTextColor="#C4C4C4"
+                placeholderTextColor={colors["plcHoldText"]}
                 onChangeText={(text) => {
                   setLastName(text);
                 }}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Email</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Email
+              </Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
-                // placeholderTextColor="#C4C4C4"
+                placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
                 onChangeText={(text) => {
                   setUser(text);
+                  console.log("User is ", user);
                 }}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Password</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Password
+              </Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Password"
-                // placeholderTextColor="#C4C4C4"
+                placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
                 //   autoCorrect={false}
                 onChangeText={(text) => {
                   setPassword(text);
+                  console.log("password is ", password);
                 }}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Confirm Password</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                Confirm Password
+              </Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Confirm Password"
-                // placeholderTextColor="#C4C4C4"
+                placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
                 onChangeText={(text) => {
                   setMatchPassword(text);
+                  console.log("Matched is", matchPassword);
                 }}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>When were you Born</Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
+                When were you Born
+              </Text>
               {showPicker && (
                 <DateTimePicker
                   style={globalStyles.datePicker}
@@ -248,7 +276,7 @@ export default function RegisterScreen() {
                   display="spinner"
                   value={date}
                   onChange={onChange}
-                  placeholderTextColor="#C4C4C4"
+                  placeholderTextColor={colors["plcHoldText"]}
                   maximumDate={new Date("1997-1-1")}
                   minimumDate={new Date("1981-1-1")}
                 />
@@ -295,7 +323,7 @@ export default function RegisterScreen() {
                   <TextInput
                     style={globalStyles.input}
                     placeholder="Birthday"
-                    // placeholderTextColor="#C4C4C4"
+                    placeholderTextColor={colors["plcHoldText"]}
                     value={DOB}
                     onChangeText={setDOB}
                     editable={false}
@@ -307,15 +335,15 @@ export default function RegisterScreen() {
             <Pressable
               style={[
                 globalStyles.button,
-                globalStyles.vertMargin,
-                { backgroundColor: colors.triC },
+                globalStyles.marginVertical,
+                { backgroundColor: colors["triC"] },
               ]}
             >
               <Text style={globalStyles.buttonText} onPress={handleSubmit}>
                 Create an Account
               </Text>
             </Pressable>
-            <Text style={[globalStyles.errorText, { color: colors.secC }]}>
+            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>
               {errMsg}
             </Text>
             {/* <Text>Connect with Socials</Text> */}

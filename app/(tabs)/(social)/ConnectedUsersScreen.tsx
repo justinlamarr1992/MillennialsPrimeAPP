@@ -20,7 +20,6 @@ export default function ConnectedUsersScreen() {
   let industry: String;
   // const axiosPrivate = useAxiosPrivate();
   // const { auth, id, accessToken, roles } = useContext(AuthContext);
-  // const colors = useTheme().colors;
 
   // const getUsers = async () => {
   //   try {

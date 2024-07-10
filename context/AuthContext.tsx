@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, Children } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -11,10 +11,11 @@ export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [id, setId] = useState(null);
   const [roles, setRoles] = useState(null);
-  const [prime, setPrime] = useState(null);
-  const [admin, setAdmin] = useState(null);
+  const [prime, setPrime] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   console.log("Accessing the AuthContext");
+  console.log(auth);
 
   const register = async (
     password: String,
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
-  const login = async (user: String, password: String) => {
+  const login = async (user: string, password: string) => {
     let values = { user, password };
     setIsLoading(true);
     try {
@@ -139,7 +140,7 @@ export const AuthProvider = ({ children }) => {
       } catch (err) {
         console.log(`ERROR in the AUTHCONTEXT/LOGOUT() ===> ${err}`);
       }
-      setAuth(null);
+      setAuth(false);
       // console.log(`Auth State After ${auth}`);
 
       // console.log(`ID State Before ${id}`);
@@ -191,8 +192,8 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        register,
         login,
+        register,
         logout,
         auth,
         setAuth,

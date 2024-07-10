@@ -19,15 +19,12 @@ import TextPost from "../../../shared/PostComponents/TextPost";
 import PrimeTextPost from "../../../shared/PostComponents/PrimeTextPost";
 
 export default function UserScreen() {
-  // const { auth, id, accessToken, roles } = useContext(AuthContext);
+  const { auth, id, accessToken, roles } = useContext(AuthContext);
   // const navigation = useNavigation();
   // navigation.jumpTo("Business");
   // navigation.navigate("Business");
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-
-  const id = "Fake Under 18";
-  const roles = "Know t Jabroni";
 
   return (
     <ScrollView

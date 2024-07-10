@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, Button, useColorScheme, Pressable } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
@@ -12,11 +12,26 @@ export default function LogOutScreen() {
   const colors = COLORS[colorScheme ?? "dark"];
   // const navigation = useNavigation();
   // const colors = useTheme().colors;
+  const [errMsg, setErrMsg] = useState("");
 
   const handleLogOut = async () => {
     try {
       logout();
-    } catch (err) {}
+    } catch (err) {
+      console.log("ERR===>", err);
+      if (!err?.originalStatus) {
+        // isLoading: true until timeout occurs
+        setErrMsg("No Server Response");
+      } else if (err.originalStatus === 400) {
+        setErrMsg("Missing Info");
+      } else if (err.originalStatus === 401) {
+        setErrMsg("Unauthorized but its here");
+      } else if (err.originalStatus === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg("Login Failed");
+      }
+    }
   };
 
   return (
