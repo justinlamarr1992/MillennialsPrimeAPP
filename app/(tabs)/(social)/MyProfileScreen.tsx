@@ -4,10 +4,10 @@ import { useTheme } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "@/context/AuthContext";
 
-import PicturePost from "@/shared/PostComponents/PicturePost";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 import VideoPost from "@/shared/PostComponents/VideoPost";
+import PicturePost from "@/shared/PostComponents/PicturePost";
 import TextPost from "@/shared/PostComponents/TextPost";
 
 export default function MyProfileScreen() {

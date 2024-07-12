@@ -16,7 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { AuthContext } from "@/context/AuthContext";
 
-import homeScreen from "@/app/(tabs)/(home)/homeScreen";
+import HomeScreen from "@/app/(tabs)/(home)/HomeScreen";
 
 import RegisterScreen from "@/app/(auth)/RegisterScreen";
 import SignInScreen from "@/app/(auth)/SignInScreen";
@@ -37,7 +37,7 @@ import PrimeShowScreen from "@/app/(tabs)/(showview)/PrimeShow";
 import UploadContentScreen from "@/app/(tabs)/(upload)/UploadContentScreen";
 
 import { Logo } from "../../assets/images/MillennialsPrimeLogoNB.png";
-import { Colors } from "../../constants/colors";
+import { COLORS } from "@/constants/colors";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -60,6 +60,7 @@ const AppNav = () => {
     roles,
   } = useContext(AuthContext);
   const theme = useColorScheme();
+  // const isLoading = true;
 
   if (isLoading) {
     return (
@@ -89,7 +90,8 @@ function LogoTitle() {
   return <Image style={{ width: 44, height: 40 }} source={Logo} />;
 }
 function TabNavigator() {
-  const colors1 = useTheme().colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -113,17 +115,18 @@ function TabNavigator() {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: colors1.actTabText,
-        tabBarActiveBackgroundColor: colors1.inActTab,
-        tabBarInactiveTintColor: colors1.inActTabText,
-        tabBarInactiveBackgroundColor: colors1.inActTab,
+        tabBarActiveTintColor: colors["actTabText"],
+        tabBarActiveBackgroundColor: colors["inActTab"],
+        tabBarInactiveTintColor: colors["inActTabText"],
+        tabBarInactiveBackgroundColor: colors["inActTab"],
       })}
     >
       <Tab.Screen
         name="HomeTab"
         component={StackNavigator}
         options={{
-          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitle: "Home",
+          title: "Home",
           headerStyle: {
             backgroundColor: "#611821",
           },
@@ -148,7 +151,8 @@ function TabNavigator() {
         name="UsersTab"
         component={UsersStack}
         options={{
-          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitle: "Social Connections",
+          title: "Users",
           headerStyle: {
             backgroundColor: "#611821",
           },
@@ -159,7 +163,8 @@ function TabNavigator() {
         name="UploadTab"
         component={UploadStack}
         options={{
-          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitle: "Uploads",
+          title: "Uploads",
           headerStyle: {
             backgroundColor: "#611821",
           },
@@ -170,7 +175,8 @@ function TabNavigator() {
         name="EpisodesTab"
         component={ShowViewStack}
         options={{
-          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitle: "Millennial's Prime Media",
+          title: "Videos",
           headerStyle: {
             backgroundColor: "#611821",
           },
@@ -181,7 +187,8 @@ function TabNavigator() {
         name="LogOutTab"
         component={LogOutScreen}
         options={{
-          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitle: "Log Out Here",
+          title: "Log Out",
           headerStyle: {
             backgroundColor: "#611821",
           },
@@ -224,7 +231,7 @@ function StackNavigator() {
       /> */}
       <Stack.Screen
         name="Home"
-        component={homeScreen}
+        component={HomeScreen}
         options={{
           headerRight: () => (
             <Button
@@ -454,16 +461,17 @@ function AuthStack() {
       screenOptions={{
         // headerTitle: (props) => <LogoTitle {...props} />,
         headerStyle: {
-          backgroundColor: "#611821",
+          backgroundColor: "orange",
+          // backgroundColor: "#611821",
         },
         headerTintColor: colors1.text,
       }}
     >
       {/* <Stack.Screen name='Onboarding' component={}/> HAVENT MADE ON BOARDING SCREEN YET*/}
-      <Stack.Screen name="Sign In" component={SignInScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Sign In AppNav" component={SignInScreen} />
+      <Stack.Screen name="Register AppNav" component={RegisterScreen} />
       <Stack.Screen
-        name="Password Recovery"
+        name="Password Recovery AppNav"
         component={PasswordRecoveryScreen}
       />
     </Stack.Navigator>

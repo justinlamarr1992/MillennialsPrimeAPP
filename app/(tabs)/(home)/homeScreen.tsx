@@ -17,13 +17,16 @@ import { router } from "expo-router";
 import { AuthContext } from "@/context/AuthContext";
 
 import Ad from "@/shared/Ad";
+import TextPost from "@/shared/PostComponents/TextPost";
+import PicturePost from "@/shared/PostComponents/PicturePost";
+import VideoPost from "@/shared/PostComponents/VideoPost";
 import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 import axios from "axios";
 
-export default function homeScreen() {
+export default function HomeScreen() {
   const { logout, test, auth, id, accessToken, roles } =
     useContext(AuthContext);
   // const auth = "This is the hard coded Auth";
@@ -158,7 +161,69 @@ export default function homeScreen() {
           />
 
           {/* TODO: Then the lastest/ Popular post  */}
-          <Ad />
+          {/* <Ad /> */}
+          {/* TODO */}
+          <TextPost
+            title={"Regular"}
+            description={
+              "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
+            }
+            prime={false}
+            admin={false}
+          />
+          <PicturePost
+            title={"Regular"}
+            description={"This is the description of the Picture Post"}
+            prime={false}
+            admin={false}
+          />
+          <VideoPost
+            title={"Regular"}
+            description={"This is the description of the Video Post"}
+            prime={false}
+            admin={false}
+          />
+          <TextPost
+            title={"Prime"}
+            description={
+              "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
+            }
+            prime={true}
+            admin={false}
+          />
+          <PicturePost
+            title={"Prime"}
+            description={"This is the description of the Picture Post"}
+            prime={true}
+            admin={false}
+          />
+          <VideoPost
+            title={"Prime"}
+            description={"This is the description of the Video Post"}
+            prime={true}
+            admin={false}
+          />
+          <TextPost
+            title={"Admin"}
+            description={
+              "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
+            }
+            prime={true}
+            admin={true}
+          />
+          <PicturePost
+            title={"Admin"}
+            description={"This is the description of the Picture Post"}
+            prime={true}
+            admin={true}
+          />
+
+          <VideoPost
+            title={"Admin"}
+            description={"This is the description of the Video Post"}
+            prime={true}
+            admin={true}
+          />
 
           <Text
             // style={{ color: colors.priT }}

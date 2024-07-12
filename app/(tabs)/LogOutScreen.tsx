@@ -10,7 +10,7 @@ export default function LogOutScreen() {
   const { logout } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   // const colors = useTheme().colors;
   const [errMsg, setErrMsg] = useState("");
 
@@ -31,6 +31,8 @@ export default function LogOutScreen() {
       } else {
         setErrMsg("Login Failed");
       }
+    } finally {
+      navigation.navigate("/../(auth)/SignInScreen");
     }
   };
 

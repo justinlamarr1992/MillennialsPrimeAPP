@@ -6,23 +6,17 @@ import {
   useColorScheme,
 } from "react-native";
 import React, { useContext } from "react";
-import { router } from "expo-router";
-// import { useTheme, useNavigation } from "@react-navigation/native";
+import { Link, router } from "expo-router";
 import { AuthContext } from "../../../context/AuthContext";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 import PicturePost from "../../../shared/PostComponents/PicturePost";
-import PrimePicturePost from "../../../shared/PostComponents/PrimePicturePost";
 import VideoPost from "../../../shared/PostComponents/VideoPost";
-import PrimeVideoPost from "../../../shared/PostComponents/PrimeVideoPost";
 import TextPost from "../../../shared/PostComponents/TextPost";
-import PrimeTextPost from "../../../shared/PostComponents/PrimeTextPost";
 
 export default function UserScreen() {
   const { auth, id, accessToken, roles } = useContext(AuthContext);
-  // const navigation = useNavigation();
-  // navigation.jumpTo("Business");
-  // navigation.navigate("Business");
+
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -50,19 +44,22 @@ export default function UserScreen() {
       >
         Test User Profile Here
       </Text>
+
       <Pressable
         // onPress={() => navigation.navigate("Connected Users")}
-        onPress={() => router.push("/ConnectedUsersScreen")}
+        // onPress={() => router.navigate("/ConnectedUsersScreen")}
         style={[
           globalStyles.button,
           globalStyles.marginVertical,
           { backgroundColor: colors["priC"] },
         ]}
       >
-        <Text style={globalStyles.buttonText}>Connected Users</Text>
+        <Link push href="/ConnectedUsersScreen" asChild>
+          <Text style={globalStyles.buttonText}>Connected Users</Text>
+        </Link>
       </Pressable>
+
       <Pressable
-        // onPress={() => navigation.navigate("My Profile")}
         onPress={() => router.push("/MyProfileScreen")}
         style={[
           globalStyles.button,
