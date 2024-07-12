@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
-import { StyleSheet, TouchableOpacity, Text, View, Button } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { Text } from "react-native";
 import { WebView } from "react-native-webview";
 import { Video, ResizeMode } from "expo-av";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
-import colors from "../../../styles/colors";
 
 export default function VideoPost({
   url,
@@ -17,8 +15,6 @@ export default function VideoPost({
   libraryId,
   videoId,
 }) {
-  const colors = useTheme().colors;
-
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
@@ -43,6 +39,7 @@ export default function VideoPost({
           }/${videoId ? videoId : "ec4cbe34-8750-4695-b252-69f53e51627a"}`,
         }}
         style={{ ...globalStyles.postVideo, ...globalStyles.postContent }}
+        mediaPlaybackRequiresUserAction={true}
       />
 
       {/* Title */}

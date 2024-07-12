@@ -1,7 +1,5 @@
 import { View, Text, ScrollView, useColorScheme } from "react-native";
 import React, { useContext, useState } from "react";
-import { useTheme } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "@/context/AuthContext";
 
 import { globalStyles } from "@/constants/global";

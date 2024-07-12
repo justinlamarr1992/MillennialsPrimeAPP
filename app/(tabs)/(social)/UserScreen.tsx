@@ -46,6 +46,17 @@ export default function UserScreen() {
       </Text>
 
       <Pressable
+        style={[
+          globalStyles.button,
+          globalStyles.marginVertical,
+          { backgroundColor: colors["priC"] },
+        ]}
+      >
+        <Link push href="/Ecomm" asChild>
+          <Text style={globalStyles.buttonText}>E-Comm Test (Move later)</Text>
+        </Link>
+      </Pressable>
+      <Pressable
         // onPress={() => navigation.navigate("Connected Users")}
         // onPress={() => router.navigate("/ConnectedUsersScreen")}
         style={[

@@ -48,6 +48,24 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
+        name="EComm"
+        options={{
+          headerStyle: {
+            backgroundColor: userColor,
+            // backgroundColor: colors["priC"],
+            // borderBottomLeftRadius: 32,
+            // borderBottomRightRadius: 32,
+            // shadowColor: colors["background"],
+            // height: 200,
+            // overflow: "hidden",
+          },
+          headerTintColor: userColorText,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Stack.Screen
         name="[id]"
         options={{
           headerStyle: {

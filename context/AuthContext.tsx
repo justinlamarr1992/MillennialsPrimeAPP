@@ -201,6 +201,7 @@ export const AuthProvider = ({ children }) => {
         auth,
         setAuth,
         isLoading,
+        setIsLoading,
         accessToken,
         id,
         roles,

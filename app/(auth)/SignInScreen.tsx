@@ -21,9 +21,11 @@ import useAuth from "../../hooks/useAuth";
 
 export default function SignInScreen() {
   // const { auth, setAuth } = useAuth();
-  const { login, logout, auth, isLoading } = useContext(AuthContext);
+  // TODO: FIGUGRE OUT WHY THERES NO LOADING NOW
+  const { login, logout, auth, setIsLoading } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [password, setPassword] = useState(null);
+  const [errMsg, setErrMsg] = useState(null);
 
   const navigation = useNavigation();
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,7 +37,7 @@ export default function SignInScreen() {
   const handleSubmit = async (e) => {
     try {
       login(user, password);
-      isLoading(true);
+      setIsLoading(true);
     } catch (err) {
       console.log("ERROR===> ", err);
       if (!err?.originalStatus) {
@@ -51,7 +53,7 @@ export default function SignInScreen() {
         setErrMsg("Login Failed");
       }
     }
-    isLoading(false);
+    setIsLoading(false);
   };
 
   return (

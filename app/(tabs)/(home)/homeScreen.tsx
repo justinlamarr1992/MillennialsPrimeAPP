@@ -137,21 +137,22 @@ export default function HomeScreen() {
       {/* <View style={globalStyles.container}> */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Button
+        {/* <Button
           onPress={() => router.push("/postView")}
           title="Post View Button"
-        />
+        /> */}
         {/* SAVE THIS MODAL!!!! This will be how i insert post and other things later
          */}
-        <Button onPress={() => router.push("/modal")} title="Open Modal" />
-        <Button
+        {/* <Button onPress={() => router.push("/modal")} title="Open Modal" /> */}
+        {/* <Button
           onPress={() => router.push("/(aux)/disclaimer")}
           title="Open Disclaimer"
-        />
+        /> */}
         {/* TODO: Make this dynamic of the lastest news post */}
         <View style={[globalStyles.padding]}>
           <PrimeNewsPost
-            prime={prime}
+            prime={true}
+            admin={true}
             title={post.title}
             description={post.description}
             name={name}
