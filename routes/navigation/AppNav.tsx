@@ -60,7 +60,6 @@ const AppNav = () => {
     roles,
   } = useContext(AuthContext);
   const theme = useColorScheme();
-  // const isLoading = true;
 
   if (isLoading) {
     return (

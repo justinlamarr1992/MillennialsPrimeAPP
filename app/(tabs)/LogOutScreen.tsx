@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { Link } from "expo-router";
 
 export default function LogOutScreen() {
-  const { logout } = useContext(AuthContext);
+  const { logout, isLoading } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const navigation = useNavigation();
@@ -17,6 +17,8 @@ export default function LogOutScreen() {
   const handleLogOut = async () => {
     try {
       logout();
+      // isLoading(true);
+      // console.log("Finushed Signing Out");
     } catch (err) {
       console.log("ERR===>", err);
       if (!err?.originalStatus) {
@@ -32,7 +34,9 @@ export default function LogOutScreen() {
         setErrMsg("Login Failed");
       }
     } finally {
-      navigation.navigate("/../(auth)/SignInScreen");
+      // isLoading(false);
+      // console.log("Finally");
+      // navigation.navigate("/../(auth)/SignInScreen");
     }
   };
 

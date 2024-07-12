@@ -21,7 +21,7 @@ import useAuth from "../../hooks/useAuth";
 
 export default function SignInScreen() {
   // const { auth, setAuth } = useAuth();
-  const { login, logout, auth } = useContext(AuthContext);
+  const { login, logout, auth, isLoading } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [password, setPassword] = useState(null);
 
@@ -35,6 +35,7 @@ export default function SignInScreen() {
   const handleSubmit = async (e) => {
     try {
       login(user, password);
+      isLoading(true);
     } catch (err) {
       console.log("ERROR===> ", err);
       if (!err?.originalStatus) {
@@ -50,6 +51,7 @@ export default function SignInScreen() {
         setErrMsg("Login Failed");
       }
     }
+    isLoading(false);
   };
 
   return (

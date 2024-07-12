@@ -118,6 +118,7 @@ export const AuthProvider = ({ children }) => {
   // }, [auth]);
 
   const logout = async () => {
+    console.log("LogOut Started");
     setIsLoading(true);
     try {
       const response = await axios.get(
@@ -127,6 +128,7 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
+      console.log("After axios.get Try");
       console.log(response);
 
       // console.log(`Auth State Before ${auth}`);
@@ -140,7 +142,7 @@ export const AuthProvider = ({ children }) => {
       } catch (err) {
         console.log(`ERROR in the AUTHCONTEXT/LOGOUT() ===> ${err}`);
       }
-      setAuth(false);
+      setAuth(null);
       // console.log(`Auth State After ${auth}`);
 
       // console.log(`ID State Before ${id}`);
@@ -162,6 +164,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     setIsLoading(false);
+    console.log("LogOut Finished");
   };
 
   const isLoggedIn = async () => {
