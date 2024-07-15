@@ -2,7 +2,7 @@ import { View, Text, Button, useColorScheme } from "react-native";
 import React from "react";
 import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 
 export default function postView() {
   const colorScheme = useColorScheme();

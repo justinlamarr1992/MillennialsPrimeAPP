@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import { useColorScheme, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 
 const TabsLayout = () => {
   const colorScheme = useColorScheme();

@@ -3,7 +3,7 @@ import { View, Text, useColorScheme, Pressable } from "react-native";
 import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 import ConnectedUserInfo from "./ConnectedUserInfo";
 import { Ionicons } from "@expo/vector-icons";
 

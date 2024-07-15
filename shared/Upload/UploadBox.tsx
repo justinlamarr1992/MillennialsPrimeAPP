@@ -12,7 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import ImagePickerComponent from "./ImagePickerComponent";
 import { useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 

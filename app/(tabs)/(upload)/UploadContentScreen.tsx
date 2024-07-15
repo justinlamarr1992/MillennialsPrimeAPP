@@ -2,7 +2,7 @@ import { View, Text, useColorScheme } from "react-native";
 import React from "react";
 import UploadBox from "@/shared/Upload/UploadBox";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 
 const UploadContentScreen = () => {
   const colorScheme = useColorScheme();

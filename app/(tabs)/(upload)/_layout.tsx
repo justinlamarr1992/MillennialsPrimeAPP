@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 import { useColorScheme } from "react-native";
 
 export default function Layout() {

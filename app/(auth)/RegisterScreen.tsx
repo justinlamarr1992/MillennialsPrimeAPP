@@ -18,7 +18,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../../context/AuthContext";
 // import UserInfo from "./PostItems/UserInfo";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 
 import axios from "axios";
 

@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 import VideoPost from "@/shared/PostComponents/VideoPost";
 import PicturePost from "@/shared/PostComponents/PicturePost";
 import TextPost from "@/shared/PostComponents/TextPost";
