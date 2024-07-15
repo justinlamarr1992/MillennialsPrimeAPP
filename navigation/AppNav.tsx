@@ -6,7 +6,7 @@
 // import { SafeAreaProvider } from "react-native-safe-area-context";
 // import { useColorScheme, Button } from "react-native";
 // import { Ionicons } from "@expo/vector-icons";
-// import { COLORS } from "@/constants/colors";
+// import { COLORS } from "@/constants/Colors";
 // import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 
 // SplashScreen.preventAutoHideAsync();

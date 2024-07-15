@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Text, View, Button, useColorScheme, Pressable } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "expo-router";
 

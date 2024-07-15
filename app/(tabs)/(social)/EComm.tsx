@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import Item from "@/shared/EComm/Item";
 
 export default function EComm() {
@@ -15,7 +15,7 @@ export default function EComm() {
       showsVerticalScrollIndicator={false}
       style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
     >
-      <Item />
+      <Item itemName="Microphone" picture="" description="Testing" price="$###.##" prime={false} admin={false}/>
     </ScrollView>
   );
 }

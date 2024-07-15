@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { Link, router } from "expo-router";
 import { AuthContext } from "../../../context/AuthContext";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import PicturePost from "../../../shared/PostComponents/PicturePost";
 import VideoPost from "../../../shared/PostComponents/VideoPost";
 import TextPost from "../../../shared/PostComponents/TextPost";
@@ -52,7 +52,7 @@ export default function UserScreen() {
           { backgroundColor: colors["priC"] },
         ]}
       >
-        <Link push href="/Ecomm" asChild>
+        <Link push href="/EComm" asChild>
           <Text style={globalStyles.buttonText}>E-Comm Test (Move later)</Text>
         </Link>
       </Pressable>

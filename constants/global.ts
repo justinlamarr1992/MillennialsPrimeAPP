@@ -178,6 +178,21 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 6,
     color: "#8F92A1",
   },
+  // Items
+  adminItemContent:{color: "#020101",},
+  primeItemContent: {color: "#ffffff",},
+  itemContent:{ color: "#606060",},
+   itemDescription: {
+    fontSize: 12,
+  },
+  itemInfoBox:{flex:2, flexDirection: "row"
+  },
+  itemPrice:{fontSize: 30,fontWeight: "bold",
+    },
+    itemTitle: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
 
   // J
 

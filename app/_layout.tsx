@@ -8,7 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "@/context/AuthContext";
 import { AuthContext } from "@/context/AuthContext";
 
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 // import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import AppNav from "@/navigation/AppNav";
 

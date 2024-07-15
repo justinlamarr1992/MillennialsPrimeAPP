@@ -37,7 +37,7 @@ import PrimeShowScreen from "@/app/(tabs)/(showview)/PrimeShow";
 import UploadContentScreen from "@/app/(tabs)/(upload)/UploadContentScreen";
 
 import { Logo } from "../../assets/images/MillennialsPrimeLogoNB.png";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
