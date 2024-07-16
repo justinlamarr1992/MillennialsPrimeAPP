@@ -15,7 +15,30 @@ export default function EComm() {
       showsVerticalScrollIndicator={false}
       style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
     >
-      <Item itemName="Microphone" picture="" description="Testing" price="$###.##" prime={false} admin={false}/>
+      <Item
+        itemName="User Item"
+        picture=""
+        description="This is what the description for an item for sale buy a Regular User will Look like the description with be limited to 2 lines"
+        price="$###.##"
+        prime={false}
+        admin={false}
+      />
+      <Item
+        itemName="Prime Item"
+        picture=""
+        description="This is what the description for an item for sale buy a Prime User will Look like the description with be limited to 2 lines"
+        price="$###.##"
+        prime={true}
+        admin={false}
+      />
+      <Item
+        itemName="Admin Item"
+        picture=""
+        description="This is what the description for an item for sale buy a Admin User will Look like the description with be limited to 2 lines"
+        price="$###.##"
+        prime={true}
+        admin={true}
+      />
     </ScrollView>
   );
 }

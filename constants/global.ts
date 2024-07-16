@@ -51,7 +51,6 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#611821",
   },
   buttonText: {
-    color: "#ffffff",
     fontWeight: "bold",
     fontSize: 16,
     textAlign: "center",
@@ -170,6 +169,7 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
   },
+
   input: {
     borderWidth: 1,
     borderColor: "#ddd",
@@ -179,19 +179,58 @@ export const globalStyles = StyleSheet.create({
     color: "#8F92A1",
   },
   // Items
-  adminItemContent:{color: "#020101",},
-  primeItemContent: {color: "#ffffff",},
-  itemContent:{ color: "#606060",},
-   itemDescription: {
+  // itemButton: {
+  //   borderRadius: 8,
+  //   paddingVertical: 14,
+  //   paddingHorizontal: 10,
+  // },
+  itemButton: {
+    backgroundColor: "#ddcd76",
+    padding: 10,
+    borderRadius: 10,
+  },
+  primeItemButton: {
+    backgroundColor: "#DEDEDE",
+    padding: 10,
+    borderRadius: 10,
+  },
+  adminItemButton: {
+    backgroundColor: "#8e202b",
+    padding: 10,
+    borderRadius: 10,
+  },
+  itemButtonText: {
+    color: "#020101",
+  },
+  itemPrimeButtonText: {
+    color: "#020101",
+  },
+  itemAdminButtonText: {
+    color: "#ffffff",
+  },
+  adminItemContent: { color: "#020101" },
+  primeItemContent: { color: "#ffffff" },
+  itemContent: { color: "#606060" },
+  itemDescription: {
     fontSize: 12,
+    width: "55%",
   },
-  itemInfoBox:{flex:2, flexDirection: "row"
+  itemImage: {
+    flex: 1,
+    width: "100%",
+    height: 200,
+    backgroundColor: "#0553",
+    borderRadius: 10,
   },
-  itemPrice:{fontSize: 30,fontWeight: "bold",
-    },
-    itemTitle: {
+  itemInfoBox: {
+    flex: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  itemPrice: { fontSize: 30, fontWeight: "bold", alignSelf: "center" },
+  itemTitle: {
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 20,
   },
 
   // J
@@ -212,8 +251,12 @@ export const globalStyles = StyleSheet.create({
   // M
   // Margin
   margin: { margin: 20 },
+  marginVert2: { marginVertical: 2 },
   marginVertical: {
     marginTop: 10,
+    marginBottom: 10,
+  },
+  marginB10: {
     marginBottom: 10,
   },
   marginB100: {
