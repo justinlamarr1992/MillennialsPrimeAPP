@@ -23,7 +23,7 @@ import VideoPost from "@/shared/PostComponents/VideoPost";
 import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
 
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/colors";
 import axios from "axios";
 
 export default function HomeScreen() {

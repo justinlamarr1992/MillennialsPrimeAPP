@@ -41,9 +41,9 @@ export default function UserInfo({ name, admin, prime }) {
         </Pressable>
 
         {/* Add useTheme here to determin is colo rchanges are needed based off of prime or not */}
-        <Text style={globalStyles.postUserInfoTime}>
+        {/* <Text style={globalStyles.postUserInfoTime}>
           {time ? time : "Loading"}
-        </Text>
+        </Text> */}
       </View>
     </View>
   );
