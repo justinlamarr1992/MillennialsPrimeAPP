@@ -14,7 +14,7 @@ import PicturePost from "../../../shared/PostComponents/PicturePost";
 import VideoPost from "../../../shared/PostComponents/VideoPost";
 import TextPost from "../../../shared/PostComponents/TextPost";
 
-export default function UserScreen() {
+export default function Page() {
   const { auth, id, accessToken, roles } = useContext(AuthContext);
 
   const colorScheme = useColorScheme();

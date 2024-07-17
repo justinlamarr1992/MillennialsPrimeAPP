@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { StyleSheet, TouchableOpacity, Text, View, Button } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { Text, Pressable, useColorScheme } from "react-native";
 import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 import UserInfo from "./UserInfo";
-import colors from "../../../styles/colors";
+import { COLORS } from "@/constants/colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function PicturePost({
   name,
@@ -15,7 +15,15 @@ export default function PicturePost({
   prime,
   admin,
 }) {
-  const colors = useTheme().colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
+  const viewer = 12345678;
+  const mine = 12345678;
+  // TODO: Add dynamic ID Check with auth to match if the post can be deleted
+
+  const removePost = () => {
+    console.log("Post to be removed in the background");
+  };
   const blurhash =
     "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
@@ -65,9 +73,22 @@ export default function PicturePost({
         {description ? description : "No description Yet"}
       </Text>
       {/* likes and comments */}
-      {/* <Text style={{ ...globalStyles.postLikes, ...globalStyles.postContent }}>
-        Likes
-      </Text> */}
+      {viewer == mine && (
+        <Pressable onPress={removePost} style={globalStyles.alignCenter}>
+          <Ionicons
+            size={28}
+            name="trash"
+            color={
+              admin
+                ? colors["adminDefaultText"]
+                : prime
+                ? colors["primeDefaultText"]
+                : colors["defaultText"]
+            }
+          />
+          {/* <Ionicons size={28} name="trash" color={colors["primeCarT"]} /> */}
+        </Pressable>
+      )}
     </LinearGradient>
   );
 }

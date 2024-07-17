@@ -1,24 +1,24 @@
 import React, { useContext, useState } from "react";
 import { Text, View, Button, useColorScheme, Pressable } from "react-native";
-import { useNavigation, useTheme } from "@react-navigation/native";
+// import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 export default function LogOutScreen() {
-  const { logout, isLoading } = useContext(AuthContext);
+  const { logout, setIsLoading } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   // const colors = useTheme().colors;
   const [errMsg, setErrMsg] = useState("");
 
   const handleLogOut = async () => {
     try {
+      setIsLoading(true);
       logout();
-      // isLoading(true);
-      // console.log("Finushed Signing Out");
+      router.push("/../(auth)/SignInScreen");
     } catch (err) {
       console.log("ERR===>", err);
       if (!err?.originalStatus) {
@@ -33,10 +33,6 @@ export default function LogOutScreen() {
       } else {
         setErrMsg("Login Failed");
       }
-    } finally {
-      // isLoading(false);
-      // console.log("Finally");
-      // navigation.navigate("/../(auth)/SignInScreen");
     }
   };
 

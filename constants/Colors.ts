@@ -14,6 +14,9 @@ export type Colors = {
   secT: string;
   triT: string;
   labelT: string;
+  defaultText: string;
+  primeDefaultText: string;
+  adminDefaultText: string;
   gray: string;
   priC: string;
   secC: string;
@@ -44,6 +47,9 @@ const LIGHT: Colors = {
   secT: "#ffffff",
   triT: "#8F92A1",
   labelT: "#020101",
+  defaultText: "#606060",
+  primeDefaultText: "#ffffff",
+  adminDefaultText: "#020101",
   gray: "gray",
   priC: "#611821",
   secC: "#8e202b",
@@ -73,6 +79,9 @@ const DARK: Colors = {
   secT: "#ffffff",
   triT: "#020101",
   labelT: "#020101",
+  defaultText: "#606060",
+  primeDefaultText: "#ffffff",
+  adminDefaultText: "#020101",
   gray: "white",
   // borderColor: "#8F92A1",
   priC: "#611821",

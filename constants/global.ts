@@ -24,12 +24,9 @@ export const globalStyles = StyleSheet.create({
     fontSize: 50,
     textAlign: "center",
   },
-  yellowGlow: {
-    shadowColor: "#fffd9b",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-  },
+  alignCenter: { alignSelf: "center" },
+  alignEnd: { alignSelf: "flex-end" },
+  alignStart: { alignSelf: "flex-start" },
   authModal: { backgroundColor: "#ffffff" },
 
   // B
@@ -504,6 +501,12 @@ export const globalStyles = StyleSheet.create({
   // X
 
   // Y
+  yellowGlow: {
+    shadowColor: "#fffd9b",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+  },
 
   // Z
 

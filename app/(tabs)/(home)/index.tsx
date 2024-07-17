@@ -26,9 +26,17 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 import axios from "axios";
 
-export default function HomeScreen() {
+export default function Page() {
   const { logout, test, auth, id, accessToken, roles } =
     useContext(AuthContext);
+  console.log("Accessing the AuthContext in Home Screen");
+  const ugh = JSON.parse(auth);
+
+  console.log("The Old Value ", auth);
+  console.log("The New Value ", ugh);
+
+  console.log(ugh);
+  console.log(auth);
   // const auth = "This is the hard coded Auth";
   // const id = "1111111111";
   // const accessToken = "This is the hard coded AccessToken";

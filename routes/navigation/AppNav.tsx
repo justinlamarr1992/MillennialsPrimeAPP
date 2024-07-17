@@ -16,7 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { AuthContext } from "@/context/AuthContext";
 
-import HomeScreen from "@/app/(tabs)/(home)/HomeScreen";
+import HomeScreen from "@/app/(tabs)/(home)/index";
 
 import RegisterScreen from "@/app/(auth)/RegisterScreen";
 import SignInScreen from "@/app/(auth)/SignInScreen";
@@ -28,7 +28,7 @@ import BusinessScreen from "@/app/settings/BusinessScreen";
 import ArtScreen from "@/app/settings/ArtScreen";
 import AboutScreen from "@/app/(auth)/AboutScreen";
 
-import UserScreen from "@/app/(tabs)/(social)/UserScreen";
+import UserScreen from "@/app/(tabs)/(social)/index";
 import ConnectedUsersScreen from "@/app/(tabs)/(social)/ConnectedUsersScreen";
 import MyProfileScreen from "@/app/(tabs)/(social)/MyProfileScreen";
 

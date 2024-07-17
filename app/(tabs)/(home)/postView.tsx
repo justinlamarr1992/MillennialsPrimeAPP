@@ -1,12 +1,13 @@
 import { View, Text, Button, useColorScheme } from "react-native";
 import React from "react";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
 
-export default function postView() {
+export default function Page() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+  const { slug } = useLocalSearchParams();
   return (
     <View
       style={[

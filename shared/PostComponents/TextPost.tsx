@@ -1,12 +1,21 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable, useColorScheme } from "react-native";
 import React from "react";
-import { useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "@/constants/colors";
 import UserInfo from "./UserInfo";
 
 export default function TextPost({ name, title, description, prime, admin }) {
-  const colors = useTheme().colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
+  const viewer = 12345678;
+  const mine = 12345678;
+  // TODO: Add dynamic ID Check with auth to match if the post can be deleted
+
+  const removePost = () => {
+    console.log("Post to be removed in the background");
+  };
   return (
     <LinearGradient
       style={globalStyles.post}
@@ -50,6 +59,23 @@ export default function TextPost({ name, title, description, prime, admin }) {
         {description ? description : "No description Yet"}
       </Text>
       {/* Likes and Comments */}
+      {/* User ability to delete */}
+      {viewer == mine && (
+        <Pressable onPress={removePost} style={globalStyles.alignCenter}>
+          <Ionicons
+            size={28}
+            name="trash"
+            color={
+              admin
+                ? colors["adminDefaultText"]
+                : prime
+                ? colors["primeDefaultText"]
+                : colors["defaultText"]
+            }
+          />
+          {/* <Ionicons size={28} name="trash" color={colors["primeCarT"]} /> */}
+        </Pressable>
+      )}
     </LinearGradient>
   );
 }
