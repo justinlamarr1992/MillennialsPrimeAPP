@@ -239,7 +239,7 @@ export default function Page() {
             onPress={() => router.push("/settings/MyInfoScreen")}
             // onPress={() => navigation.navigate("My Info")}
           >
-            My Info
+            My Information
           </Text>
 
           {id ? (

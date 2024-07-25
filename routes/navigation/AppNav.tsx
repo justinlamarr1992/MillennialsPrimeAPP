@@ -70,19 +70,17 @@ const AppNav = () => {
     );
   }
 
-  const authCheck = () => {
-    if (auth !== null) {
-      return <TabNavigator />;
-    } else {
-      return <AuthStack />;
-    }
-  };
+  // const authCheck = () => {
+  //   if (auth !== null) {
+  //     return <TabNavigator />;
+  //   } else {
+  //     return <AuthStack />;
+  //   }
+  // };
 
-  return authCheck();
+  // return authCheck();
 
-  // <NavigationContainer>
-  //   {auth !== null ? <TabNavigator /> : <AuthStack />}
-  // </NavigationContainer>
+  return <TabNavigator />;
 };
 
 function LogoTitle() {
@@ -452,29 +450,29 @@ function ShowViewStack() {
   );
 }
 
-function AuthStack() {
-  const colors1 = useTheme().colors;
+// function AuthStack() {
+//   const colors1 = useTheme().colors;
 
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        // headerTitle: (props) => <LogoTitle {...props} />,
-        headerStyle: {
-          backgroundColor: "orange",
-          // backgroundColor: "#611821",
-        },
-        headerTintColor: colors1.text,
-      }}
-    >
-      {/* <Stack.Screen name='Onboarding' component={}/> HAVENT MADE ON BOARDING SCREEN YET*/}
-      <Stack.Screen name="Sign In AppNav" component={SignInScreen} />
-      <Stack.Screen name="Register AppNav" component={RegisterScreen} />
-      <Stack.Screen
-        name="Password Recovery AppNav"
-        component={PasswordRecoveryScreen}
-      />
-    </Stack.Navigator>
-  );
-}
+//   return (
+//     <Stack.Navigator
+//       screenOptions={{
+//         // headerTitle: (props) => <LogoTitle {...props} />,
+//         headerStyle: {
+//           backgroundColor: "orange",
+//           // backgroundColor: "#611821",
+//         },
+//         headerTintColor: colors1.text,
+//       }}
+//     >
+//       {/* <Stack.Screen name='Onboarding' component={}/> HAVENT MADE ON BOARDING SCREEN YET*/}
+//       <Stack.Screen name="Sign In AppNav" component={SignInScreen} />
+//       <Stack.Screen name="Register AppNav" component={RegisterScreen} />
+//       <Stack.Screen
+//         name="Password Recovery AppNav"
+//         component={PasswordRecoveryScreen}
+//       />
+//     </Stack.Navigator>
+//   );
+// }
 
 export default AppNav;

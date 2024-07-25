@@ -34,7 +34,7 @@ export default function SignInScreen() {
     try {
       setIsLoading(true);
       login(user, password);
-      // router.push("/");
+      router.push("/");
     } catch (err) {
       console.log("ERROR===> ", err);
       if (!err?.originalStatus) {

@@ -1,6 +1,6 @@
 import "react-native-reanimated";
 import React, { useContext, useEffect } from "react";
-import { Stack } from "expo-router";
+import { Stack, Slot } from "expo-router";
 // import { Appearance, useColorScheme } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -49,39 +49,10 @@ export default function RootLayout() {
     // <SafeAreaProvider>
     <AuthProvider>
       {auth == null ? (
-        <Stack
-          screenOptions={{
-            // headerTitle: (props) => <LogoTitle {...props} />,
-            headerStyle: {
-              backgroundColor: "#611821",
-            },
-            // headerTintColor: "pink",
-            headerTintColor: colors["secT"],
-          }}
-        >
-          <Stack.Screen
-            name="SignInScreen"
-            options={{
-              headerTitle: "Sign In Layout",
-            }}
-          />
-          <Stack.Screen
-            name="RegisterScreen"
-            options={{
-              headerTitle: "Register Layout",
-            }}
-          />
-          <Stack.Screen
-            name="PasswordRecoveryScreen"
-            options={{
-              headerTitle: "Password Recovery Layout",
-            }}
-          />
+        <Stack>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack>
       ) : (
-        // <Stack>
-        //   <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        // </Stack>
         <AppNav />
       )}
     </AuthProvider>

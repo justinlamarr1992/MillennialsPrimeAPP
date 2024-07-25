@@ -21,7 +21,7 @@ const TabsLayout = () => {
         name="(home)"
         options={{
           headerShown: false,
-          headerTitle: "Home",
+          headerTitle: "Home ",
           headerStyle: {
             backgroundColor: "pink",
           },
@@ -46,6 +46,7 @@ const TabsLayout = () => {
         options={{
           headerShown: false,
           title: "Users",
+          headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
             <Ionicons name="people-circle" size={28} color={color} />
           ),
@@ -56,6 +57,7 @@ const TabsLayout = () => {
         options={{
           headerShown: false,
           title: "Upload",
+          headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
             <Ionicons name="star" size={28} color={color} />
           ),
@@ -66,6 +68,7 @@ const TabsLayout = () => {
         options={{
           headerShown: false,
           title: "Episodes",
+          headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
             <Ionicons name="play-circle" size={28} color={color} />
           ),
@@ -87,6 +90,7 @@ const TabsLayout = () => {
             // overflow: "hidden",
           },
           title: "Log Out",
+          headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
             <Ionicons name="log-out" size={28} color={color} />
           ),

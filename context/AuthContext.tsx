@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
   // console.log(auth);
 
   const register = async (
-    password: String,
     user: String,
+    password: String,
     firstName: String,
     lastName: String,
     DOB: String
