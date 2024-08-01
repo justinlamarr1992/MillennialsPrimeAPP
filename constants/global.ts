@@ -33,7 +33,7 @@ export const globalStyles = StyleSheet.create({
   bold: { fontWeight: "bold" },
   borderDefault: {
     borderWidth: 1,
-    borderColor: "#b9a054",
+    borderColor: "#020101",
     // backgroundColor: "#fffd9b",
     padding: 10,
     borderRadius: 10,
@@ -109,6 +109,7 @@ export const globalStyles = StyleSheet.create({
   },
 
   // F
+  // Flex
   flex1: {
     flex: 1,
   },
@@ -256,6 +257,7 @@ export const globalStyles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
+  likeBox: { width: "50%" },
   loginButtonBox: {
     width: "100%",
     height: "15%",
