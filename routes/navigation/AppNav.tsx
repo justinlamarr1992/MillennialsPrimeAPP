@@ -11,7 +11,7 @@ import {
   NavigationContainer,
   // Image,
 } from "@react-navigation/native";
-import React, { useContext } from "react";
+import React, { useContext, useMemo, useRef } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { AuthContext } from "@/context/AuthContext";
@@ -44,6 +44,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { useTheme } from "@react-navigation/native";
 
+import BottomSheet from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -61,6 +64,15 @@ const AppNav = () => {
   } = useContext(AuthContext);
   const theme = useColorScheme();
 
+  // SLIDING MODAL CODE ITS WORKS
+  const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
+  //userefs
+  // TODO: CHANGE THIS NAME
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // HAndle clossing the Modal
+  const handleClosePress = () => bottomSheetRef.current?.close();
+  const handleOpenPress = () => bottomSheetRef.current?.expand();
+
   if (isLoading) {
     return (
       // utilize dark and light here
@@ -70,17 +82,19 @@ const AppNav = () => {
     );
   }
 
-  // const authCheck = () => {
-  //   if (auth !== null) {
-  //     return <TabNavigator />;
-  //   } else {
-  //     return <AuthStack />;
-  //   }
-  // };
-
-  // return authCheck();
-
-  return <TabNavigator />;
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Button title="open" onPress={handleOpenPress} />
+      <Button title="close" onPress={handleClosePress} />
+      <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
+        <TabNavigator />
+      </BottomSheet>
+    </GestureHandlerRootView>
+  );
+  // KEEP THIS ONE
+  // return (
+  //       <TabNavigator />
+  // );
 };
 
 function LogoTitle() {

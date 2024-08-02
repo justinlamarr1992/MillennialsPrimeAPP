@@ -41,6 +41,8 @@ export const globalStyles = StyleSheet.create({
   bottomPadding: { paddingBottom: 40 },
   bottomPadding10: { paddingBottom: 10 },
   bottomPadding20: { paddingBottom: 20 },
+  bottomSheet: {},
+  bottomCommentSheet: {},
   button: {
     borderRadius: 8,
     paddingVertical: 14,

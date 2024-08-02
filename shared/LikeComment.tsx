@@ -1,17 +1,38 @@
 import { View, Text, Pressable, useColorScheme } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef, useMemo, useCallback } from "react";
 import { COLORS } from "@/constants/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { globalStyles } from "@/constants/global";
+import BottomSheet, {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function LikeComment() {
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
+  const size = 20;
+
+  // useStates
   const [noLike, setNoLike] = useState(true);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
-  const colorScheme = useColorScheme();
-  const colors = COLORS[colorScheme ?? "dark"];
-  const size = 20;
+  // useRef
+  const bottomCommentSheetModalRef = useRef<BottomSheetModal>(null);
+
+  //   useMemo
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomCommentSheetModalRef.current?.present();
+    console.log("pressed");
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
 
   const likePressed = () => {
     // add extra stuff here from backend to see if they liked it
@@ -145,15 +166,15 @@ export default function LikeComment() {
             </Pressable>
           </View>
         )}
-
-        <View
+        {/* Comments */}
+        <Pressable
+          onPress={handlePresentModalPress}
           style={[
             globalStyles.flexRow,
             globalStyles.flexJustifyContentSpaceBetween,
             globalStyles.flexAlignSelfFlexEnd,
           ]}
         >
-          {/* Comments */}
           <Ionicons
             name="chatbox-outline"
             size={size}
@@ -161,7 +182,7 @@ export default function LikeComment() {
           />
           {/* <Ionicons name="chatbox" size={size} color={colors["defaultText"]} /> */}
           <Text>13</Text>
-        </View>
+        </Pressable>
       </View>
       <View style={[globalStyles.flexRow]}>
         {/* Shares */}
@@ -173,6 +194,24 @@ export default function LikeComment() {
           />
         </Text>
       </View>
+      {/* Testing Modal */}
+
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheet index={1} snapPoints={snapPoints}>
+          {/* <BottomSheetModal
+          style={globalStyles.bottomCommentSheet}
+          ref={bottomCommentSheetModalRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+        > */}
+          <BottomSheetView>
+            <Text>CommentModalssss</Text>
+          </BottomSheetView>
+          {/* </BottomSheetModal> */}
+        </BottomSheet>
+      </GestureHandlerRootView>
+      {/* Testing Modal */}
     </View>
   );
 }
