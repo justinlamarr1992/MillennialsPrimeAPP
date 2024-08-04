@@ -11,7 +11,7 @@ import {
   NavigationContainer,
   // Image,
 } from "@react-navigation/native";
-import React, { useContext, useMemo, useRef } from "react";
+import React, { useCallback, useContext, useMemo, useRef } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { AuthContext } from "@/context/AuthContext";
@@ -36,6 +36,7 @@ import ShowViewScreen from "@/app/(tabs)/(showview)/ShowViewScreen";
 import PrimeShowScreen from "@/app/(tabs)/(showview)/PrimeShow";
 import UploadContentScreen from "@/app/(tabs)/(upload)/UploadContentScreen";
 
+import { globalStyles } from "@/constants/global";
 import { Logo } from "../../assets/images/MillennialsPrimeLogoNB.png";
 import { COLORS } from "@/constants/colors";
 
@@ -44,7 +45,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { useTheme } from "@react-navigation/native";
 
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetTextInput,
+} from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Tab = createBottomTabNavigator();
@@ -65,17 +69,30 @@ const AppNav = () => {
   const theme = useColorScheme();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  // SLIDING MODAL CODE ITS WORKS
-  const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
-  //userefs
-  // TODO: CHANGE THIS NAME
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  // HAndle clossing the Modal
-  const handleClosePress = () => bottomSheetRef.current?.close();
-  const handleOpenPress = () => bottomSheetRef.current?.expand();
-  const handleCollapsePress = () => bottomSheetRef.current?.collapse();
-  const snapToIndex = (index: number) =>
-    bottomSheetRef.current?.snapToIndex(index);
+
+  // // SLIDING MODAL CODE ITS WORKS
+  // const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
+  // //userefs
+  // // TODO: CHANGE THIS NAME
+  // const bottomSheetRef = useRef<BottomSheet>(null);
+  // // HAndle clossing the Modal
+  // const handleClosePress = () => bottomSheetRef.current?.close();
+  // const handleOpenPress = () => bottomSheetRef.current?.expand();
+  // const handleCollapsePress = () => bottomSheetRef.current?.collapse();
+  // const snapToIndex = (index: number) =>
+  //   bottomSheetRef.current?.snapToIndex(index);
+
+  // const renderBackdrop = useCallback(
+  //   (props: any) => (
+  //     <BottomSheetBackdrop
+  //       appearsOnIndex={3}
+  //       disappearsOnIndex={1}
+  //       {...props}
+  //     />
+  //   ),
+  //   []
+  // );
+  // // SLIDING MODAL CODE ITS WORKS
 
   if (isLoading) {
     return (
@@ -86,33 +103,41 @@ const AppNav = () => {
     );
   }
 
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Button title="open" onPress={handleOpenPress} />
-      <Button title="close" onPress={handleClosePress} />
-      <Button title="collaspe" onPress={handleCollapsePress} />
-      <Button title="Snap To 0" onPress={() => snapToIndex(0)} />
-      <Button title="Snap To 1" onPress={() => snapToIndex(1)} />
-      <Button title="Snap To 2" onPress={() => snapToIndex(2)} />
-      <Button title="Snap To 3" onPress={() => snapToIndex(3)} />
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        enablePanDownToClose={true}
-        handleIndicatorStyle={{ backgroundColor: colors["backgroundColor"] }}
-        backgroundStyle={{ backgroundColor: colors["backgroundModal"] }}
-      >
-        <View>
-          <Text>This is the tester</Text>
-        </View>
-      </BottomSheet>
-    </GestureHandlerRootView>
-  );
-  // KEEP THIS ONE
   // return (
-  //       <TabNavigator />
+  // <GestureHandlerRootView style={{ flex: 1 }}>
+  //   <Button title="open" onPress={handleOpenPress} />
+  //   <Button title="close" onPress={handleClosePress} />
+  //   <Button title="collaspe" onPress={handleCollapsePress} />
+  //   <Button title="Snap To 0" onPress={() => snapToIndex(0)} />
+  //   <Button title="Snap To 1" onPress={() => snapToIndex(1)} />
+  //   <Button title="Snap To 2" onPress={() => snapToIndex(2)} />
+  //   <Button title="Snap To 3" onPress={() => snapToIndex(3)} />
+  //   <BottomSheet
+  //     ref={bottomSheetRef}
+  //     index={1}
+  //     snapPoints={snapPoints}
+  //     enablePanDownToClose={true}
+  //     backdropComponent={renderBackdrop}
+  //     handleIndicatorStyle={{ backgroundColor: colors["backgroundColor"] }}
+  //     backgroundStyle={{ backgroundColor: colors["backgroundModal"] }}
+  //   >
+  //     <View>
+  //       <Text
+  //         style={[
+  //           globalStyles.textHuge,
+  //           globalStyles.padding,
+  //           { color: colors["priT"] },
+  //         ]}
+  //       >
+  //         This is the tester
+  //       </Text>
+  //     </View>
+  //     <BottomSheetTextInput style={[globalStyles.input]} />
+  //   </BottomSheet>
+  // </GestureHandlerRootView>
   // );
+  // KEEP THIS ONE
+  return <TabNavigator />;
 };
 
 function LogoTitle() {
