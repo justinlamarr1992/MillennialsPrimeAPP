@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
-import { Text } from "react-native";
+import { Text, Pressable, useColorScheme } from "react-native";
 import { WebView } from "react-native-webview";
 import { Video, ResizeMode } from "expo-av";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "@/constants/colors";
 
 export default function VideoPost({
   url,
@@ -17,7 +19,15 @@ export default function VideoPost({
 }) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
+  const viewer = 12345678;
+  const mine = 12345678;
+  // TODO: Add dynamic ID Check with auth to match if the post can be deleted
 
+  const removePost = () => {
+    console.log("Post to be removed in the background");
+  };
   return (
     <LinearGradient
       style={globalStyles.post}
@@ -66,9 +76,22 @@ export default function VideoPost({
       >
         {description ? description : "No Description Yet"}
       </Text>
-      {/* <Text style={{ ...globalStyles.postLikes, ...globalStyles.postContent }}>
-        Likes
-      </Text> */}
+      {viewer == mine && (
+        <Pressable onPress={removePost} style={globalStyles.alignCenter}>
+          <Ionicons
+            size={28}
+            name="trash"
+            color={
+              admin
+                ? colors["adminDefaultText"]
+                : prime
+                ? colors["primeDefaultText"]
+                : colors["defaultText"]
+            }
+          />
+          {/* <Ionicons size={28} name="trash" color={colors["primeCarT"]} /> */}
+        </Pressable>
+      )}
     </LinearGradient>
   );
 }

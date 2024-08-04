@@ -14,12 +14,12 @@ export const AuthProvider = ({ children }) => {
   const [prime, setPrime] = useState(false);
   const [admin, setAdmin] = useState(false);
 
-  console.log("Accessing the AuthContext");
-  console.log(auth);
+  // console.log("Accessing the AuthContext");
+  // console.log(auth);
 
   const register = async (
-    password: String,
     user: String,
+    password: String,
     firstName: String,
     lastName: String,
     DOB: String
@@ -43,8 +43,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (user: string, password: string) => {
-    let values = { user, password };
     setIsLoading(true);
+    let values = { user, password };
     try {
       const response = await axios.post(
         `https://us-central1-millennialsprime.cloudfunctions.net/api/auth`,
@@ -61,7 +61,9 @@ export const AuthProvider = ({ children }) => {
       setAccessToken(accessToken);
       // console.log(`The setAccessToken value is ${accessToken}`);
       // PROPER ASYNC SET AND GET
+
       AsyncStorage.setItem("accessToken", JSON.stringify(accessToken));
+
       // var answer = await AsyncStorage.getItem("accessToken");
       // console.log(
       //   `AsyncStorage for accessToken is ${await AsyncStorage.getItem(
@@ -75,7 +77,9 @@ export const AuthProvider = ({ children }) => {
       let id = response.data._id;
       setId(id);
       // console.log(`The setId value is ${id}`);
+
       AsyncStorage.setItem("_id", JSON.stringify(id));
+
       // console.log(
       //   `AsyncStorage for _id is ${await AsyncStorage.getItem("_id")}`
       // );
@@ -84,15 +88,34 @@ export const AuthProvider = ({ children }) => {
       //   `The Response from the API for response.data.roles is ${response.data.roles}`
       // );
       let roles = response.data.roles;
+      console.log("The Roles from Login AuthContext", roles);
       setRoles(roles);
+      // Admin Check on Backend Roles
+      if (roles.includes(5150)) {
+        setAdmin(true);
+        console.log("Admin is ", admin);
+      } else {
+        console.log("It doesnt include 5150");
+      }
+      if (roles.includes(1984)) {
+        setPrime(true);
+        console.log("Prime is ", prime);
+      } else {
+        console.log("It doesnt include 1984");
+      }
+
       // console.log(`The setRoles value is ${roles}`);
+
       AsyncStorage.setItem("roles", JSON.stringify(roles));
+
       // console.log(
       //   `AsyncStorage for roles is ${await AsyncStorage.getItem("roles")}`
       // );
 
       // console.log("This is the Login Data ", response.data);
+
       let authHolder = JSON.stringify(response.data);
+
       // let testAuth = Object.entries(response.data);
       // console.log(`The secondary testAuth value is ${testAuth}`);
       // console.log(`The secondary testAuth2 value is ${testAuth2}`);

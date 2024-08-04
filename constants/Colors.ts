@@ -8,12 +8,16 @@ import { LinearGradient } from "expo-linear-gradient";
 export type Colors = {
   background: string;
   backgroundColor: string;
+  backgroundModal: string;
   text: string;
   white: string;
   priT: string;
   secT: string;
   triT: string;
   labelT: string;
+  defaultText: string;
+  primeDefaultText: string;
+  adminDefaultText: string;
   gray: string;
   priC: string;
   secC: string;
@@ -38,12 +42,16 @@ export type Colors = {
 const LIGHT: Colors = {
   background: "#F7F7F7",
   backgroundColor: "#F7F7F7",
+  backgroundModal: "#1E1F20",
   text: "#000000",
   white: "#000000",
   priT: "#020101",
   secT: "#ffffff",
   triT: "#8F92A1",
   labelT: "#020101",
+  defaultText: "#606060",
+  primeDefaultText: "#ffffff",
+  adminDefaultText: "#020101",
   gray: "gray",
   priC: "#611821",
   secC: "#8e202b",
@@ -67,12 +75,16 @@ const LIGHT: Colors = {
 const DARK: Colors = {
   background: "#000000",
   backgroundColor: "#F7F7F7",
+  backgroundModal: "#1E1F20",
   text: "#ffffff",
   white: "#FFFFFF",
   priT: "#8F92A1",
   secT: "#ffffff",
   triT: "#020101",
   labelT: "#020101",
+  defaultText: "#606060",
+  primeDefaultText: "#ffffff",
+  adminDefaultText: "#020101",
   gray: "white",
   // borderColor: "#8F92A1",
   priC: "#611821",

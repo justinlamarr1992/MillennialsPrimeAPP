@@ -24,19 +24,16 @@ export const globalStyles = StyleSheet.create({
     fontSize: 50,
     textAlign: "center",
   },
-  yellowGlow: {
-    shadowColor: "#fffd9b",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 5,
-  },
+  alignCenter: { alignSelf: "center" },
+  alignEnd: { alignSelf: "flex-end" },
+  alignStart: { alignSelf: "flex-start" },
   authModal: { backgroundColor: "#ffffff" },
 
   // B
   bold: { fontWeight: "bold" },
   borderDefault: {
     borderWidth: 1,
-    borderColor: "#b9a054",
+    borderColor: "#020101",
     // backgroundColor: "#fffd9b",
     padding: 10,
     borderRadius: 10,
@@ -44,6 +41,8 @@ export const globalStyles = StyleSheet.create({
   bottomPadding: { paddingBottom: 40 },
   bottomPadding10: { paddingBottom: 10 },
   bottomPadding20: { paddingBottom: 20 },
+  bottomSheet: {},
+  bottomCommentSheet: {},
   button: {
     borderRadius: 8,
     paddingVertical: 14,
@@ -112,10 +111,28 @@ export const globalStyles = StyleSheet.create({
   },
 
   // F
+  // Flex
   flex1: {
     flex: 1,
   },
+  flex2: {
+    flex: 2,
+  },
   flexColumn: { flexDirection: "column" },
+  flexAlignItemsCenter: { alignItems: "center" },
+  flexAlignItemsFlexEnd: { alignItems: "flex-end" },
+  flexAlignItemsFlexStart: { alignItems: "flex-start" },
+  flexAlignItemsStretch: { alignItems: "stretch" },
+  flexAlignSelfCenter: { alignSelf: "center" },
+  flexAlignSelfFlexEnd: { alignSelf: "flex-end" },
+  flexAlignSelfFlexStart: { alignSelf: "flex-start" },
+  flexAlignSelfStretch: { alignSelf: "stretch" },
+  flexJustifyContentCenter: { justifyContent: "center" },
+  flexJustifyContentFlexEnd: { justifyContent: "flex-end" },
+  flexJustifyContentFlexStart: { justifyContent: "flex-start" },
+  flexJustifyContentSpaceAround: { justifyContent: "space-around" },
+  flexJustifyContentSpaceBetween: { justifyContent: "space-between" },
+  flexJustifyContentSpaceEvenly: { justifyContent: "space-evenly" },
   flexRow: { flexDirection: "row" },
   formTitle: {
     // paddingTop: 30,
@@ -242,6 +259,7 @@ export const globalStyles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
+  likeBox: { width: "50%" },
   loginButtonBox: {
     width: "100%",
     height: "15%",
@@ -504,6 +522,12 @@ export const globalStyles = StyleSheet.create({
   // X
 
   // Y
+  yellowGlow: {
+    shadowColor: "#fffd9b",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+  },
 
   // Z
 

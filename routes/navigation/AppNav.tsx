@@ -11,12 +11,12 @@ import {
   NavigationContainer,
   // Image,
 } from "@react-navigation/native";
-import React, { useContext } from "react";
+import React, { useContext, useMemo, useRef } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { AuthContext } from "@/context/AuthContext";
 
-import HomeScreen from "@/app/(tabs)/(home)/HomeScreen";
+import HomeScreen from "@/app/(tabs)/(home)/index";
 
 import RegisterScreen from "@/app/(auth)/RegisterScreen";
 import SignInScreen from "@/app/(auth)/SignInScreen";
@@ -28,7 +28,7 @@ import BusinessScreen from "@/app/settings/BusinessScreen";
 import ArtScreen from "@/app/settings/ArtScreen";
 import AboutScreen from "@/app/(auth)/AboutScreen";
 
-import UserScreen from "@/app/(tabs)/(social)/UserScreen";
+import UserScreen from "@/app/(tabs)/(social)/index";
 import ConnectedUsersScreen from "@/app/(tabs)/(social)/ConnectedUsersScreen";
 import MyProfileScreen from "@/app/(tabs)/(social)/MyProfileScreen";
 
@@ -43,6 +43,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { useTheme } from "@react-navigation/native";
+
+import BottomSheet from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,6 +63,19 @@ const AppNav = () => {
     roles,
   } = useContext(AuthContext);
   const theme = useColorScheme();
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
+  // SLIDING MODAL CODE ITS WORKS
+  const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
+  //userefs
+  // TODO: CHANGE THIS NAME
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // HAndle clossing the Modal
+  const handleClosePress = () => bottomSheetRef.current?.close();
+  const handleOpenPress = () => bottomSheetRef.current?.expand();
+  const handleCollapsePress = () => bottomSheetRef.current?.collapse();
+  const snapToIndex = (index: number) =>
+    bottomSheetRef.current?.snapToIndex(index);
 
   if (isLoading) {
     return (
@@ -70,19 +86,33 @@ const AppNav = () => {
     );
   }
 
-  const authCheck = () => {
-    if (auth !== null) {
-      return <TabNavigator />;
-    } else {
-      return <AuthStack />;
-    }
-  };
-
-  return authCheck();
-
-  // <NavigationContainer>
-  //   {auth !== null ? <TabNavigator /> : <AuthStack />}
-  // </NavigationContainer>
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Button title="open" onPress={handleOpenPress} />
+      <Button title="close" onPress={handleClosePress} />
+      <Button title="collaspe" onPress={handleCollapsePress} />
+      <Button title="Snap To 0" onPress={() => snapToIndex(0)} />
+      <Button title="Snap To 1" onPress={() => snapToIndex(1)} />
+      <Button title="Snap To 2" onPress={() => snapToIndex(2)} />
+      <Button title="Snap To 3" onPress={() => snapToIndex(3)} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        handleIndicatorStyle={{ backgroundColor: colors["backgroundColor"] }}
+        backgroundStyle={{ backgroundColor: colors["backgroundModal"] }}
+      >
+        <View>
+          <Text>This is the tester</Text>
+        </View>
+      </BottomSheet>
+    </GestureHandlerRootView>
+  );
+  // KEEP THIS ONE
+  // return (
+  //       <TabNavigator />
+  // );
 };
 
 function LogoTitle() {
@@ -452,29 +482,29 @@ function ShowViewStack() {
   );
 }
 
-function AuthStack() {
-  const colors1 = useTheme().colors;
+// function AuthStack() {
+//   const colors1 = useTheme().colors;
 
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        // headerTitle: (props) => <LogoTitle {...props} />,
-        headerStyle: {
-          backgroundColor: "orange",
-          // backgroundColor: "#611821",
-        },
-        headerTintColor: colors1.text,
-      }}
-    >
-      {/* <Stack.Screen name='Onboarding' component={}/> HAVENT MADE ON BOARDING SCREEN YET*/}
-      <Stack.Screen name="Sign In AppNav" component={SignInScreen} />
-      <Stack.Screen name="Register AppNav" component={RegisterScreen} />
-      <Stack.Screen
-        name="Password Recovery AppNav"
-        component={PasswordRecoveryScreen}
-      />
-    </Stack.Navigator>
-  );
-}
+//   return (
+//     <Stack.Navigator
+//       screenOptions={{
+//         // headerTitle: (props) => <LogoTitle {...props} />,
+//         headerStyle: {
+//           backgroundColor: "orange",
+//           // backgroundColor: "#611821",
+//         },
+//         headerTintColor: colors1.text,
+//       }}
+//     >
+//       {/* <Stack.Screen name='Onboarding' component={}/> HAVENT MADE ON BOARDING SCREEN YET*/}
+//       <Stack.Screen name="Sign In AppNav" component={SignInScreen} />
+//       <Stack.Screen name="Register AppNav" component={RegisterScreen} />
+//       <Stack.Screen
+//         name="Password Recovery AppNav"
+//         component={PasswordRecoveryScreen}
+//       />
+//     </Stack.Navigator>
+//   );
+// }
 
 export default AppNav;

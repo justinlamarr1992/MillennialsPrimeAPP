@@ -1,16 +1,18 @@
 import "react-native-reanimated";
 import React, { useContext, useEffect } from "react";
-import { Stack } from "expo-router";
+import { Stack, Slot } from "expo-router";
 // import { Appearance, useColorScheme } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "@/context/AuthContext";
 import { AuthContext } from "@/context/AuthContext";
-
+import { useColorScheme } from "react-native";
 import { COLORS } from "@/constants/colors";
+import AppNav from "@/routes/navigation/AppNav";
+
 // import { DarkTheme, DefaultTheme } from "@react-navigation/native";
-import AppNav from "@/navigation/AppNav";
+// import AppNav from "@/navigation/AppNav";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -26,6 +28,8 @@ export default function RootLayout() {
   } else {
     console.log("No Auth in AppNav");
   }
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
 
   const [loaded] = useFonts({
     "inter-regular": require("../assets/fonts/Inter-Regular.ttf"),

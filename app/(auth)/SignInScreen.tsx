@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import {
   useColorScheme,
   Text,
@@ -10,11 +10,8 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
-
 import { AuthContext } from "../../context/AuthContext";
-// import UserInfo from "./PostItems/UserInfo";
 import { COLORS } from "@/constants/colors";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
@@ -27,7 +24,6 @@ export default function SignInScreen() {
   const [password, setPassword] = useState(null);
   const [errMsg, setErrMsg] = useState(null);
 
-  const navigation = useNavigation();
   const [modalOpen, setModalOpen] = useState(false);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -36,8 +32,9 @@ export default function SignInScreen() {
 
   const handleSubmit = async (e) => {
     try {
-      login(user, password);
       setIsLoading(true);
+      login(user, password);
+      router.push("/");
     } catch (err) {
       console.log("ERROR===> ", err);
       if (!err?.originalStatus) {

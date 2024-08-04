@@ -5,6 +5,7 @@ import { Video, ResizeMode } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
 import { globalStyles } from "@/constants/global";
+import LikeComment from "../LikeComment";
 
 export default function PrimeNewsPost({
   guid,
@@ -70,10 +71,11 @@ export default function PrimeNewsPost({
       >
         {description ? description : "No Description Yet"}
       </Text>
+      <UserInfo name={"Video Post Name Here"} admin={admin} prime={prime} />
       {/* <Text style={{ ...globalStyles.postLikes, ...globalStyles.postContent }}>
         Likes
       </Text> */}
-      <UserInfo name={"Video Post Name Here"} admin={admin} prime={prime} />
+      <LikeComment />
     </LinearGradient>
   );
 }

@@ -61,6 +61,7 @@ export default function User({
         //   { backgroundColor: colors["quiC"] },
         // ]}
       >
+        {/* Connected ? check : pending ? clock : add */}
         {bConnected ? (
           <Pressable onPress={onPressFun}>
             <Ionicons

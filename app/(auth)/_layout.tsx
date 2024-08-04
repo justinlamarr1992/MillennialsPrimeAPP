@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, Slot } from "expo-router";
 import { useColorScheme } from "react-native";
 import { COLORS } from "@/constants/colors";
 
