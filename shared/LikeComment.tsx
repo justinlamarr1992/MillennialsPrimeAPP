@@ -194,24 +194,6 @@ export default function LikeComment() {
           />
         </Text>
       </View>
-      {/* Testing Modal */}
-
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <BottomSheet index={1} snapPoints={snapPoints}>
-          {/* <BottomSheetModal
-          style={globalStyles.bottomCommentSheet}
-          ref={bottomCommentSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        > */}
-          <BottomSheetView>
-            <Text>CommentModalssss</Text>
-          </BottomSheetView>
-          {/* </BottomSheetModal> */}
-        </BottomSheet>
-      </GestureHandlerRootView>
-      {/* Testing Modal */}
     </View>
   );
 }

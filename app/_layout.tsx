@@ -10,6 +10,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { useColorScheme } from "react-native";
 import { COLORS } from "@/constants/colors";
 import AppNav from "@/routes/navigation/AppNav";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 // import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 // import AppNav from "@/navigation/AppNav";
@@ -47,17 +48,19 @@ export default function RootLayout() {
   }
 
   return (
-    // <SafeAreaProvider>
-    <AuthProvider>
-      {auth == null ? (
-        <Stack>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        </Stack>
-      ) : (
-        <AppNav />
-      )}
-    </AuthProvider>
-    // </SafeAreaProvider>
+    <BottomSheetModalProvider>
+      {/* <SafeAreaProvider> */}
+      <AuthProvider>
+        {auth == null ? (
+          <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          </Stack>
+        ) : (
+          <AppNav />
+        )}
+      </AuthProvider>
+      {/* </SafeAreaProvider> */}
+    </BottomSheetModalProvider>
   );
 }
 

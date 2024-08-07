@@ -13,7 +13,7 @@ import BottomSheet, {
 interface Props {
   title: string;
 }
-type Ref = BottomSheet;
+export type Ref = BottomSheet;
 
 const CustomBottomSheet = forwardRef<Ref, Props>((props, ref) => {
   const colorScheme = useColorScheme();
@@ -31,27 +31,31 @@ const CustomBottomSheet = forwardRef<Ref, Props>((props, ref) => {
   );
 
   return (
-    <BottomSheet
-      ref={ref}
-      index={1}
-      snapPoints={snapPoints}
-      enablePanDownToClose={true}
-      //   backdropComponent={renderBackdrop}
-      handleIndicatorStyle={{ backgroundColor: colors["backgroundColor"] }}
-      backgroundStyle={{ backgroundColor: colors["backgroundModal"] }}
-    >
-      <View>
-        <Text
-          style={[
-            globalStyles.textHuge,
-            globalStyles.padding,
-            { color: colors["priT"] },
-          ]}
-        >
-          {props.title}
-        </Text>
-      </View>
-      {/* <BottomSheetTextInput style={[globalStyles.input]} /> */}
-    </BottomSheet>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheet
+        ref={ref}
+        index={1}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        //   backdropComponent={renderBackdrop}
+        handleIndicatorStyle={{ backgroundColor: colors["backgroundColor"] }}
+        backgroundStyle={{ backgroundColor: colors["backgroundModal"] }}
+      >
+        <View>
+          <Text
+            style={[
+              globalStyles.textHuge,
+              globalStyles.padding,
+              { color: colors["priT"] },
+            ]}
+          >
+            {props.title}
+          </Text>
+        </View>
+        {/* <BottomSheetTextInput style={[globalStyles.input]} /> */}
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 });
+
+export default CustomBottomSheet;

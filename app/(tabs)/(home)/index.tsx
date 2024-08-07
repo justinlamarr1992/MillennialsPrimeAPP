@@ -21,6 +21,7 @@ import TextPost from "@/shared/PostComponents/TextPost";
 import PicturePost from "@/shared/PostComponents/PicturePost";
 import VideoPost from "@/shared/PostComponents/VideoPost";
 import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
+import CustomBottomSheet from "@/shared/Modals/CustomBottomSheet";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/colors";
@@ -266,6 +267,7 @@ export default function Page() {
           )}
         </View>
       </ScrollView>
+      <CustomBottomSheet title="Testing Title" />
     </View>
   );
 }

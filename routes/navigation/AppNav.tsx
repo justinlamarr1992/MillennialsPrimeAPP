@@ -70,29 +70,29 @@ const AppNav = () => {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  // // SLIDING MODAL CODE ITS WORKS
-  // const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
-  // //userefs
-  // // TODO: CHANGE THIS NAME
-  // const bottomSheetRef = useRef<BottomSheet>(null);
-  // // HAndle clossing the Modal
-  // const handleClosePress = () => bottomSheetRef.current?.close();
-  // const handleOpenPress = () => bottomSheetRef.current?.expand();
-  // const handleCollapsePress = () => bottomSheetRef.current?.collapse();
-  // const snapToIndex = (index: number) =>
-  //   bottomSheetRef.current?.snapToIndex(index);
+  // SLIDING MODAL CODE ITS WORKS
+  const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
+  //userefs
+  // TODO: CHANGE THIS NAME
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  // HAndle clossing the Modal
+  const handleClosePress = () => bottomSheetRef.current?.close();
+  const handleOpenPress = () => bottomSheetRef.current?.expand();
+  const handleCollapsePress = () => bottomSheetRef.current?.collapse();
+  const snapToIndex = (index: number) =>
+    bottomSheetRef.current?.snapToIndex(index);
 
-  // const renderBackdrop = useCallback(
-  //   (props: any) => (
-  //     <BottomSheetBackdrop
-  //       appearsOnIndex={3}
-  //       disappearsOnIndex={1}
-  //       {...props}
-  //     />
-  //   ),
-  //   []
-  // );
-  // // SLIDING MODAL CODE ITS WORKS
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        appearsOnIndex={3}
+        disappearsOnIndex={1}
+        {...props}
+      />
+    ),
+    []
+  );
+  // SLIDING MODAL CODE ITS WORKS
 
   if (isLoading) {
     return (
