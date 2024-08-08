@@ -2,7 +2,7 @@ import { View, Text, Button, useColorScheme } from "react-native";
 import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 
 export default function Page() {
   const colorScheme = useColorScheme();

@@ -11,7 +11,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import { useTheme } from "@react-navigation/native";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
 export default function ConnectedUserInfo({

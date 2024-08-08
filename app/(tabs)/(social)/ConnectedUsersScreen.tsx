@@ -2,7 +2,7 @@ import { View, Text, useColorScheme, ScrollView } from "react-native";
 import React, { useContext, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 // import { AuthContext } from "../../context/AuthContext";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import User from "@/shared/ConnectedUser/User";

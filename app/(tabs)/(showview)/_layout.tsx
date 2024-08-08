@@ -3,7 +3,7 @@ import { useColorScheme } from "react-native";
 import { Drawer } from "expo-router/drawer";
 import { Stack } from "expo-router";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Layout() {

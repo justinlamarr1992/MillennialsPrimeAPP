@@ -39,6 +39,7 @@
     "expo-system-ui": "~3.0.4",
     "expo-web-browser": "~13.0.3",
     "react": "18.2.0",
+    "react-countdown": "^2.3.5",
     "react-dom": "18.2.0",
     "react-native": "0.74.1",
     "react-native-gesture-handler": "~2.16.1",
@@ -47,6 +48,7 @@
     "react-native-screens": "3.31.1",
     "react-native-web": "~0.19.10",
     "react-native-webview": "13.8.6",
+    "react-timeago": "^7.2.0",
     "tus-js-client": "^4.1.0"
   },
   "devDependencies": {

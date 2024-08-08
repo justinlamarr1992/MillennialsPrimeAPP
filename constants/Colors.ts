@@ -42,7 +42,7 @@ export type Colors = {
 const LIGHT: Colors = {
   background: "#F7F7F7",
   backgroundColor: "#F7F7F7",
-  backgroundModal: "#979797",
+  backgroundModal: "#1E1F20",
   text: "#000000",
   white: "#000000",
   priT: "#020101",

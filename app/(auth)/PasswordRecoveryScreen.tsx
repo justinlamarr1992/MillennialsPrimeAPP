@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { useNavigation } from "@react-navigation/native";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 
 const PasswordRecoveryScreen = () => {
   const [email, setEmail] = useState(null);

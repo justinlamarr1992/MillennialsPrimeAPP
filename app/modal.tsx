@@ -1,7 +1,7 @@
 import { View, Text, useColorScheme } from "react-native";
 import React from "react";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 
 export default function modal() {
   const colorScheme = useColorScheme();

@@ -2,8 +2,11 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "@/constants/global";
+import Countdown from "react-countdown";
+import DHMSTimer from "./Timer/DHMSTimer";
 
 export default function Ad({ title, description }) {
+  const startDate = "2024-08-15T08:46:00.493Z";
   return (
     // <View style={globalStyles.adPost}>
     //   <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>
@@ -24,12 +27,17 @@ export default function Ad({ title, description }) {
     // </View>
 
     <LinearGradient
-      style={globalStyles.adPost}
+      style={[
+        globalStyles.adPost,
+        globalStyles.flexColumn,
+        globalStyles.flexAlignItemsCenter,
+      ]}
       colors={["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]}
     >
       <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>
-        More to Come
+        Launching in
       </Text>
+      <DHMSTimer startDate={startDate} />
     </LinearGradient>
   );
 }

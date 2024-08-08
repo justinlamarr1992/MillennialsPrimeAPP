@@ -8,7 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "@/context/AuthContext";
 import { AuthContext } from "@/context/AuthContext";
 import { useColorScheme } from "react-native";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import AppNav from "@/routes/navigation/AppNav";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 

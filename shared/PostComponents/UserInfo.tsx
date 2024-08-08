@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "@/constants/global";
 import { useTheme } from "@react-navigation/native";
 import { router } from "expo-router";
+// import TimeAgo from "react-timeago";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
 export default function UserInfo({ name, admin, prime }) {
   // TODO: come back and change so that prime is past through as child to determine what colors
@@ -41,9 +42,9 @@ export default function UserInfo({ name, admin, prime }) {
         </Pressable>
 
         {/* Add useTheme here to determin is colo rchanges are needed based off of prime or not */}
-        <Text style={globalStyles.postUserInfoTime}>
+        {/* <Text style={globalStyles.postUserInfoTime}>
           {time ? time : "Loading"}
-        </Text>
+        </Text> */}
       </View>
     </View>
   );

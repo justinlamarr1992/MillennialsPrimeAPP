@@ -5,8 +5,9 @@ import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 import UserInfo from "./UserInfo";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import LikeComment from "../LikeComment";
 
 export default function PicturePost({
   name,
@@ -73,6 +74,7 @@ export default function PicturePost({
         {description ? description : "No description Yet"}
       </Text>
       {/* likes and comments */}
+      <LikeComment />
       {viewer == mine && (
         <Pressable onPress={removePost} style={globalStyles.alignCenter}>
           <Ionicons
