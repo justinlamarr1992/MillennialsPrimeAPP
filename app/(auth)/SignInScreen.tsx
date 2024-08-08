@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { AuthContext } from "../../context/AuthContext";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 

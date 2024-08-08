@@ -9,7 +9,7 @@ import React, {
 import { AuthContext } from "@/context/AuthContext";
 
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import Item from "@/shared/EComm/Item";
 import CustomBottomSheet from "@/shared/Modals/CustomBottomSheet";
 import BottomSheet, {
@@ -24,7 +24,7 @@ export default function EComm() {
   const colors = COLORS[colorScheme ?? "dark"];
   const bottomSheetRef = useRef<BottomSheet>(null);
   // SLIDING MODAL CODE ITS WORKS inside of component
-  const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
+  const snapPoints = useMemo(() => ["1%", "25%", "50%", "70%", "100%"], []);
   //userefs
   // TODO: CHANGE THIS NAME
   // const bottomSheetRef = useRef<BottomSheet>(null);

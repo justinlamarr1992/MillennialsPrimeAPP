@@ -3,8 +3,9 @@ import React from "react";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
+import LikeComment from "../LikeComment";
 
 export default function TextPost({ name, title, description, prime, admin }) {
   const colorScheme = useColorScheme();
@@ -59,6 +60,7 @@ export default function TextPost({ name, title, description, prime, admin }) {
         {description ? description : "No description Yet"}
       </Text>
       {/* Likes and Comments */}
+      <LikeComment />
       {/* User ability to delete */}
       {viewer == mine && (
         <Pressable onPress={removePost} style={globalStyles.alignCenter}>

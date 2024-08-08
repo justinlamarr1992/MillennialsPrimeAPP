@@ -24,7 +24,7 @@ import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
 import CustomBottomSheet from "@/shared/Modals/CustomBottomSheet";
 
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import axios from "axios";
 
 export default function Page() {
@@ -140,8 +140,10 @@ export default function Page() {
 
   return (
     <View
-      style={[{ backgroundColor: colors["background"] }]}
-      // style={{ color: colors.background }}
+      style={[
+        globalStyles.container,
+        { backgroundColor: colors["background"] },
+      ]}
     >
       {/* <View style={globalStyles.container}> */}
 
@@ -171,69 +173,7 @@ export default function Page() {
           />
 
           {/* TODO: Then the lastest/ Popular post  */}
-          {/* <Ad /> */}
-          {/* TODO */}
-          <TextPost
-            title={"Regular"}
-            description={
-              "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
-            }
-            prime={false}
-            admin={false}
-          />
-          <PicturePost
-            title={"Regular"}
-            description={"This is the description of the Picture Post"}
-            prime={false}
-            admin={false}
-          />
-          <VideoPost
-            title={"Regular"}
-            description={"This is the description of the Video Post"}
-            prime={false}
-            admin={false}
-          />
-          <TextPost
-            title={"Prime"}
-            description={
-              "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
-            }
-            prime={true}
-            admin={false}
-          />
-          <PicturePost
-            title={"Prime"}
-            description={"This is the description of the Picture Post"}
-            prime={true}
-            admin={false}
-          />
-          <VideoPost
-            title={"Prime"}
-            description={"This is the description of the Video Post"}
-            prime={true}
-            admin={false}
-          />
-          <TextPost
-            title={"Admin"}
-            description={
-              "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
-            }
-            prime={true}
-            admin={true}
-          />
-          <PicturePost
-            title={"Admin"}
-            description={"This is the description of the Picture Post"}
-            prime={true}
-            admin={true}
-          />
-
-          <VideoPost
-            title={"Admin"}
-            description={"This is the description of the Video Post"}
-            prime={true}
-            admin={true}
-          />
+          <Ad />
 
           <Text
             // style={{ color: colors.priT }}
@@ -267,7 +207,6 @@ export default function Page() {
           )}
         </View>
       </ScrollView>
-      <CustomBottomSheet title="Testing Title" />
     </View>
   );
 }

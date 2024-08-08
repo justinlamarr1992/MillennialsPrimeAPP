@@ -1,6 +1,6 @@
 import { Stack, Slot } from "expo-router";
 import { useColorScheme } from "react-native";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();

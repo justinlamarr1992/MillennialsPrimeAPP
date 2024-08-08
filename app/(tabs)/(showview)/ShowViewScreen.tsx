@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import axios from "../../../API/axios";
 import PrimeCard from "@/shared/ShowView/PrimeCard";
 

@@ -1,7 +1,7 @@
 import { View, Text, useColorScheme, ScrollView } from "react-native";
 import React, { useRef, useCallback, useMemo } from "react";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import {
   BottomSheetModal,
   BottomSheetView,

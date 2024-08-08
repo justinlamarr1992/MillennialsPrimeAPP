@@ -2,7 +2,7 @@ import { View, Text, useColorScheme } from "react-native";
 import React, { useMemo, useCallback, useRef, forwardRef } from "react";
 
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import BottomSheet, {

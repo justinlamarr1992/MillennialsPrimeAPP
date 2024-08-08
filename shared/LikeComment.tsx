@@ -1,6 +1,6 @@
 import { View, Text, Pressable, useColorScheme } from "react-native";
 import React, { useState, useRef, useMemo, useCallback } from "react";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { globalStyles } from "@/constants/global";
 import BottomSheet, {
@@ -80,7 +80,7 @@ export default function LikeComment() {
         style={[
           globalStyles.flexRow,
           globalStyles.flexJustifyContentSpaceBetween,
-          //   globalStyles.borderDefault,
+          globalStyles.borderDefault,
           globalStyles.likeBox,
         ]}
       >
@@ -167,6 +167,7 @@ export default function LikeComment() {
           </View>
         )}
         {/* Comments */}
+        {/* Modal Code will go here */}
         <Pressable
           onPress={handlePresentModalPress}
           style={[
@@ -180,12 +181,11 @@ export default function LikeComment() {
             size={size}
             color={colors["defaultText"]}
           />
-          {/* <Ionicons name="chatbox" size={size} color={colors["defaultText"]} /> */}
           <Text>13</Text>
         </Pressable>
       </View>
-      <View style={[globalStyles.flexRow]}>
-        {/* Shares */}
+      {/* Share Button */}
+      {/* <View style={[globalStyles.flexRow]}>
         <Text>
           <Ionicons
             name="arrow-redo-sharp"
@@ -193,7 +193,7 @@ export default function LikeComment() {
             color={colors["defaultText"]}
           />
         </Text>
-      </View>
+      </View> */}
     </View>
   );
 }

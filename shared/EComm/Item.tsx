@@ -6,7 +6,7 @@ import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
 
 export default function PicturePost({

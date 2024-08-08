@@ -9,7 +9,7 @@ import AppNav from "@/routes/navigation/AppNav";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { globalStyles } from "@/constants/global";
 import CommentModal from "@/shared/Modals/CommentModal";
-// import { useTheme } from "@react-navigation/native";
+
 // TODO Mak this the Loading page for The APP
 
 export default function Index() {

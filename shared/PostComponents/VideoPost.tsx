@@ -6,7 +6,8 @@ import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
+import LikeComment from "../LikeComment";
 
 export default function VideoPost({
   url,
@@ -76,6 +77,7 @@ export default function VideoPost({
       >
         {description ? description : "No Description Yet"}
       </Text>
+      <LikeComment />
       {viewer == mine && (
         <Pressable onPress={removePost} style={globalStyles.alignCenter}>
           <Ionicons

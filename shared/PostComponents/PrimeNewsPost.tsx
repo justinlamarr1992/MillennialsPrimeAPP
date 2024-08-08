@@ -71,11 +71,16 @@ export default function PrimeNewsPost({
       >
         {description ? description : "No Description Yet"}
       </Text>
-      <UserInfo name={"Video Post Name Here"} admin={admin} prime={prime} />
+      <UserInfo
+        name="Millennials Prime Admin"
+        // name={"Video Post Name Here"}
+        admin={admin}
+        prime={prime}
+      />
       {/* <Text style={{ ...globalStyles.postLikes, ...globalStyles.postContent }}>
         Likes
       </Text> */}
-      <LikeComment />
+      {/* <LikeComment /> */}
     </LinearGradient>
   );
 }

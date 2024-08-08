@@ -92,9 +92,9 @@ export const globalStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
-    paddingTop: 50,
-    backgroundColor: "#f7f7f7",
+    // padding: 20,
+    // paddingTop: 50,
+    // backgroundColor: "#f7f7f7",
   },
 
   // D
@@ -510,6 +510,31 @@ export const globalStyles = StyleSheet.create({
     fontFamily: "inter-bold",
     fontSize: 18,
   },
+  timerBlock: {
+    backgroundColor: "#333333",
+    margin: 4,
+    borderRadius: 8,
+    width: 50,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#1f1f1f",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 2,
+    shadowOpacity: 1,
+    elevation: 5,
+  },
+  timerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: "center"
+  },
+  timerDivider: { fontSize: 20, fontWeight: "bold" },
+  timerNumber: { color: "#fff", fontSize: 20, fontWeight: "bold" },
+  timerUnit: { color: "#fffd9b" },
 
   // U
   uploadBox: { backgroundColor: "#ffffff" },

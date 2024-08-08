@@ -38,7 +38,7 @@ import UploadContentScreen from "@/app/(tabs)/(upload)/UploadContentScreen";
 
 import { globalStyles } from "@/constants/global";
 import { Logo } from "../../assets/images/MillennialsPrimeLogoNB.png";
-import { COLORS } from "@/constants/colors";
+import { COLORS } from "@/constants/Colors";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
