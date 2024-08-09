@@ -9,7 +9,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { AuthContext } from "@/context/AuthContext";
 import { useColorScheme } from "react-native";
 import { COLORS } from "@/constants/Colors";
-import AppNav from "@/routes/navigation/AppNav";
+import AppNav, { TabNavigator } from "@/routes/navigation/AppNav";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 // import { DarkTheme, DefaultTheme } from "@react-navigation/native";
@@ -56,7 +56,9 @@ export default function RootLayout() {
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           </Stack>
         ) : (
-          <AppNav />
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
+          </Stack>
         )}
       </AuthProvider>
       {/* </SafeAreaProvider> */}

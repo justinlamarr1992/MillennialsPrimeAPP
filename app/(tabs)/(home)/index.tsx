@@ -28,7 +28,7 @@ import { COLORS } from "@/constants/Colors";
 import axios from "axios";
 
 export default function Page() {
-  const { logout, test, auth, id, accessToken, roles } =
+  const { logout, test, auth, id, accessToken, roles, admin } =
     useContext(AuthContext);
   console.log("Accessing the AuthContext in Home Screen");
   const ugh = JSON.parse(auth);
@@ -110,14 +110,15 @@ export default function Page() {
       headers: {
         accept: "application/json",
         // Test
-        AccessKey: "8ad268ac-6b0a-46fb-92d9b1a6d918-c4e1-4edf",
+        // AccessKey: "8ad268ac-6b0a-46fb-92d9b1a6d918-c4e1-4edf",
         // Live
-        // AccessKey: "a80779d4-9931-4345-80c1ca2315d2-fc09-4143",
+        AccessKey: "a80779d4-9931-4345-80c1ca2315d2-fc09-4143",
       },
     };
 
     fetch(
-      "https://video.bunnycdn.com/library/181057/videos?page=1&itemsPerPage=2&orderBy=date",
+      "https://video.bunnycdn.com/library/147838/videos?page=1&itemsPerPage=2&orderBy=date",
+      // "https://video.bunnycdn.com/library/181057/videos?page=1&itemsPerPage=2&orderBy=date",
       options
     )
       .then((response) => response.json())
@@ -173,37 +174,43 @@ export default function Page() {
           />
 
           {/* TODO: Then the lastest/ Popular post  */}
+          {/* Timer */}
           <Ad />
-
-          <Text
-            // style={{ color: colors.priT }}
-            onPress={() => router.push("/settings/MyInfoScreen")}
-            // onPress={() => navigation.navigate("My Info")}
-          >
-            My Information
-          </Text>
-
-          {id ? (
-            <Text style={{ color: colors["hexC"] }}>ID is {id}</Text>
-          ) : (
-            <Text style={{ color: colors["triC"] }}>No ID</Text>
-          )}
-          {roles ? (
-            <Text style={{ color: colors["hexC"] }}>Roles is {roles}</Text>
-          ) : (
-            <Text style={{ color: colors["triC"] }}>No Roles</Text>
-          )}
-          {accessToken ? (
-            <Text style={{ color: colors["hexC"] }}>
-              AccessToken is {accessToken}
-            </Text>
-          ) : (
-            <Text style={{ color: colors["triC"] }}>No AccessToken</Text>
-          )}
-          {auth ? (
-            <Text style={{ color: colors["hexC"] }}>Auth is {auth}</Text>
-          ) : (
-            <Text style={{ color: colors["triC"] }}>No Auth Information</Text>
+          {/* Admin Info */}
+          {admin && (
+            <View>
+              <Text
+                // style={{ color: colors.priT }}
+                onPress={() => router.push("/settings/MyInfoScreen")}
+                // onPress={() => navigation.navigate("My Info")}
+              >
+                My Information
+              </Text>
+              {id ? (
+                <Text style={{ color: colors["hexC"] }}>ID is {id}</Text>
+              ) : (
+                <Text style={{ color: colors["triC"] }}>No ID</Text>
+              )}
+              {roles ? (
+                <Text style={{ color: colors["hexC"] }}>Roles is {roles}</Text>
+              ) : (
+                <Text style={{ color: colors["triC"] }}>No Roles</Text>
+              )}
+              {accessToken ? (
+                <Text style={{ color: colors["hexC"] }}>
+                  AccessToken is {accessToken}
+                </Text>
+              ) : (
+                <Text style={{ color: colors["triC"] }}>No AccessToken</Text>
+              )}
+              {auth ? (
+                <Text style={{ color: colors["hexC"] }}>Auth is {auth}</Text>
+              ) : (
+                <Text style={{ color: colors["triC"] }}>
+                  No Auth Information
+                </Text>
+              )}
+            </View>
           )}
         </View>
       </ScrollView>

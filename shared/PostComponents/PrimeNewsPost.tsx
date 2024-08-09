@@ -45,6 +45,7 @@ export default function PrimeNewsPost({
           ...globalStyles.postVideo,
           ...globalStyles.postContent,
         }}
+        mediaPlaybackRequiresUserAction={true}
       />
 
       {/* Title */}
