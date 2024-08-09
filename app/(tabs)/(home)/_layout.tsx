@@ -19,8 +19,8 @@ export default function Layout() {
         ),
         headerStyle: {
           backgroundColor: colors["priC"],
-          // borderBottomLeftRadius: 32,
-          // borderBottomRightRadius: 32,
+          borderBottomLeftRadius: 32,
+          borderBottomRightRadius: 32,
           // shadowColor: colors["background"],
           // height: 200, This is what i need to show more of the users in profiles
           // overflow: "hidden",
@@ -29,6 +29,7 @@ export default function Layout() {
         headerTitleStyle: {
           fontWeight: "bold",
         },
+        headerShown: false,
       }}
     >
       {/* Add custom stuff for the pages here */}

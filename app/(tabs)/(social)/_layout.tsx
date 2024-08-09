@@ -31,7 +31,7 @@ export default function Layout() {
       }}
     >
       <Stack.Screen
-        name="UserScreen"
+        name="index"
         options={{
           headerStyle: {
             backgroundColor: colors["priC"],
@@ -45,6 +45,7 @@ export default function Layout() {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          headerShown: false,
         }}
       />
       <Stack.Screen
