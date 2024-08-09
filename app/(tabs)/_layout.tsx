@@ -20,10 +20,18 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="(home)"
         options={{
-          headerShown: false,
+          headerShown: true,
           headerTitle: "Home ",
           headerStyle: {
-            backgroundColor: "pink",
+            backgroundColor: colors["priC"],
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
+            shadowColor: colors["background"],
+            height: 150,
+          },
+          headerTintColor: colors["secT"],
+          headerTitleStyle: {
+            fontWeight: "bold",
           },
           title: "Home",
           tabBarIcon: ({ color }) => (
@@ -44,7 +52,18 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="(social)"
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: colors["priC"],
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
+            shadowColor: colors["background"],
+            height: 150,
+          },
+          headerTintColor: colors["secT"],
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
           title: "Users",
           headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
@@ -55,7 +74,18 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="(upload)"
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: colors["priC"],
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
+            shadowColor: colors["background"],
+            height: 150,
+          },
+          headerTintColor: colors["secT"],
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
           title: "Upload",
           headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
@@ -66,7 +96,18 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="(showview)"
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: colors["priC"],
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
+            shadowColor: colors["background"],
+            height: 150,
+          },
+          headerTintColor: colors["secT"],
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
           title: "Episodes",
           headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
@@ -80,13 +121,16 @@ const TabsLayout = () => {
           // headerRight
           // headerShadowVisible: {},
           headerTintColor: colors["secT"],
-          headerTitleStyle: { color: "#fff" },
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
           headerStyle: {
             backgroundColor: colors["priC"],
             borderBottomLeftRadius: 32,
             borderBottomRightRadius: 32,
             shadowColor: colors["background"],
-            // height: 200, This is what i need to show more of the users in profiles
+            height: 150,
+            // This is what i need to show more of the users in profiles
             // overflow: "hidden",
           },
           title: "Log Out",
