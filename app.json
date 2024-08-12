@@ -3,7 +3,7 @@
     "name": "Millennials-Prime_APP",
     "slug": "Millennials-Prime_APP",
     "scheme":"Millennials-Prime_APP",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "orientation": "portrait",
     "icon": "./assets/images/mill-prime-icon.png",
     "scheme": "your-app-scheme",
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.justappin.millennials-prime-app",
-      "buildNumber": "12"
+      "buildNumber": "13"
     },
     "android": {
       "adaptiveIcon": {
