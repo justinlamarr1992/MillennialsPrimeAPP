@@ -1,35 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   Platform,
-  Button,
-  FlatList,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
-  Alert,
-  Modal,
   ScrollView,
   Pressable,
   TextInput,
+  useColorScheme,
 } from "react-native";
+import { AuthContext } from "@/context/AuthContext";
 import { useNavigation, useTheme } from "@react-navigation/native";
 
 import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import { COLORS } from "@/constants/Colors";
 // import UserInfo from "./PostItems/UserInfo";
 
 import axios from "axios";
 
 export default function BusinessScreen() {
-  const navigation = useNavigation();
-  const colors = useTheme().colors;
+  const { auth, accessToken, roles, id, logout, userInfo } =
+    useContext(AuthContext);
+  const navigation = useNavigation(); //Change to use router expo
+
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
   const [modalOpen, setModalOpen] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());
@@ -143,13 +139,13 @@ export default function BusinessScreen() {
       enabled={true}
       style={globalStyles.flex1}
     >
-      <View>
+      <View style={[{ backgroundColor: colors.background }]}>
         <ScrollView
           style={[globalStyles.padding, globalStyles.marginB100, {}]}
           showsVerticalScrollIndicator={false}
         >
           <View style={globalStyles.formTitle}>
-            <Text style={globalStyles.titleText}>Business Information</Text>
+            <Text style={globalStyles.textTitle}>Business Information</Text>
             <Text style={globalStyles.labelText}>
               Edit your Business information
             </Text>

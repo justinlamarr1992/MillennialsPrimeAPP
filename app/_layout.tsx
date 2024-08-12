@@ -51,7 +51,7 @@ export default function RootLayout() {
     <BottomSheetModalProvider>
       {/* <SafeAreaProvider> */}
       <AuthProvider>
-        {auth == null ? (
+        {auth == null || auth == false || !auth ? (
           <Stack
             screenOptions={{
               headerShown: false,

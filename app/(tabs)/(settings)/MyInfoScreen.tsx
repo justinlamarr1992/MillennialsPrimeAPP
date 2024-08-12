@@ -1,29 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   Platform,
-  Button,
-  FlatList,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
-  Alert,
-  Modal,
   ScrollView,
   Pressable,
   TextInput,
+  useColorScheme,
 } from "react-native";
 import { AuthContext } from "@/context/AuthContext";
 import { Picker } from "@react-native-picker/picker";
-import { useNavigation, useTheme } from "@react-navigation/native";
 
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import { COLORS } from "@/constants/Colors";
 // import UserInfo from "./PostItems/UserInfo";
 
 import axios from "../../API/axios";
@@ -39,8 +29,8 @@ export default function MyInfoScreen() {
 
   console.log(`AuthContext ${accessToken}`);
 
-  const navigation = useNavigation();
-  const colors = useTheme().colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
 
   // Use States
   const [errMsg, setErrMsg] = useState(null);
@@ -277,7 +267,7 @@ export default function MyInfoScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={globalStyles.formTitle}>
-            <Text style={[globalStyles.titleText, { color: colors.text }]}>
+            <Text style={[globalStyles.textTitle, { color: colors.text }]}>
               Basic Information
             </Text>
             <Text style={globalStyles.labelText}>

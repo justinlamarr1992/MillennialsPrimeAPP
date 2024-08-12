@@ -127,7 +127,7 @@ export default function ArtScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={globalStyles.formTitle}>
-            <Text style={globalStyles.titleText}>Art Information</Text>
+            <Text style={globalStyles.textTitle}>Art Information</Text>
             <Text style={globalStyles.labelText}>
               Edit your Artist information
             </Text>

@@ -39,20 +39,34 @@ const TabsLayout = () => {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="index"
+      <Tabs.Screen
+        name="(settings)"
         options={{
-          headerTitle: "Home",
-          title: "Home",
+          headerShown: true,
+          headerTitle: "Settings",
+          headerStyle: {
+            backgroundColor: colors["priC"],
+            borderBottomLeftRadius: 32,
+            borderBottomRightRadius: 32,
+            shadowColor: colors["background"],
+            height: 150,
+          },
+          headerTintColor: colors["secT"],
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          title: "Settings",
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="home" color={color} />
+            <Ionicons size={28} name="cog" color={color} />
           ),
         }}
-      /> */}
-      <Tabs.Screen
+      />
+      {/* TODO: ADD THESE WITH LATER UPDATES THEY ARE IN THE TABSLATER FOLDER */}
+      {/* <Tabs.Screen
         name="(social)"
         options={{
           headerShown: true,
+          headerTitle: "Social",
           headerStyle: {
             backgroundColor: colors["priC"],
             borderBottomLeftRadius: 32,
@@ -65,13 +79,12 @@ const TabsLayout = () => {
             fontWeight: "bold",
           },
           title: "Users",
-          headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
             <Ionicons name="people-circle" size={28} color={color} />
           ),
         }}
-      />
-      <Tabs.Screen
+      /> */}
+      {/* <Tabs.Screen
         name="(upload)"
         options={{
           headerShown: true,
@@ -92,8 +105,8 @@ const TabsLayout = () => {
             <Ionicons name="star" size={28} color={color} />
           ),
         }}
-      />
-      <Tabs.Screen
+      /> */}
+      {/* <Tabs.Screen
         name="(showview)"
         options={{
           headerShown: true,
@@ -114,7 +127,7 @@ const TabsLayout = () => {
             <Ionicons name="play-circle" size={28} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="LogOutScreen"
         options={{

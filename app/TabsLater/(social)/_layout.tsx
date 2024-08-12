@@ -22,12 +22,13 @@ export default function Layout() {
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: colors["priC"],
+          backgroundColor: colors["backgroundColor"],
         },
-        headerTintColor: "#fff",
+        headerTintColor: colors["text"],
         headerTitleStyle: {
           fontWeight: "bold",
         },
+        headerShown: false,
       }}
     >
       <Stack.Screen
@@ -52,7 +53,7 @@ export default function Layout() {
         name="EComm"
         options={{
           headerStyle: {
-            backgroundColor: userColor,
+            backgroundColor: colors["backgroundColor"],
             // backgroundColor: colors["priC"],
             // borderBottomLeftRadius: 32,
             // borderBottomRightRadius: 32,

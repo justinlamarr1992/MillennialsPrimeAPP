@@ -495,6 +495,11 @@ export const globalStyles = StyleSheet.create({
     color: "#020101",
     textAlign: "center",
   },
+  textMedium: {
+    fontFamily: "inter-bold",
+    fontSize: 30,
+    textAlign: "center",
+  },
   labelText: {
     // fontFamily: "inter-bold",
     fontSize: 13,
