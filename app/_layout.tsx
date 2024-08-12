@@ -5,12 +5,12 @@ import { Stack, Slot } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { AuthProvider } from "@/context/AuthContext";
-import { AuthContext } from "@/context/AuthContext";
+// import { AuthProvider } from "@/context/AuthContext";
+// import { AuthContext } from "@/context/AuthContext";
 import { useColorScheme } from "react-native";
 import { COLORS } from "@/constants/Colors";
-import AppNav, { TabNavigator } from "@/routes/navigation/AppNav";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { AuthProvider } from "@/provider/AuthProvider";
 
 // import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 // import AppNav from "@/navigation/AppNav";
@@ -22,13 +22,21 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   // const auth = null;
-  const { auth } = useContext(AuthContext);
-  console.log(auth);
-  if (auth) {
-    console.log("The Auth from AppNav is ", auth);
-  } else {
-    console.log("No Auth in AppNav");
-  }
+  // const { auth } = useContext(AuthContext);
+  // console.log("App Layout fires at ", new Date(Date.now()).toString());
+  // console.log("App Layout fires at ", Date.now());
+  // console.log(auth);
+  // if (auth == false) {
+  //   console.log("Auth is false");
+  // } else if (auth == undefined) {
+  //   console.log("Auth is Undefined");
+  // } else if (auth == null) {
+  //   console.log("Auth is Null");
+  // } else if (!auth) {
+  //   console.log("Theres No Auth");
+  // } else {
+  //   ("There is a Auth");
+  // }
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -49,9 +57,8 @@ export default function RootLayout() {
 
   return (
     <BottomSheetModalProvider>
-      {/* <SafeAreaProvider> */}
       <AuthProvider>
-        {auth == null || auth == false || !auth ? (
+        {auth == null || auth == false || !auth || auth == undefined ? (
           <Stack
             screenOptions={{
               headerShown: false,
@@ -75,27 +82,6 @@ export default function RootLayout() {
           </Stack>
         )}
       </AuthProvider>
-      {/* </SafeAreaProvider> */}
     </BottomSheetModalProvider>
   );
 }
-
-// function AuthStack() {
-//   // const colors1 = useTheme().colors;
-
-//       {/* Home Stack Navigator */}
-//       {/* <Stack.Screen
-//         name="Home"
-//         component={Home}
-//         options={{
-//           headerTitle: (props) => <LogoTitle {...props} />,
-//           headerStyle: {
-//             backgroundColor: "#611821",
-//             height: 200,
-//             width: 10,
-//             borderBottomRightRadius: 20,
-//             borderBottomLeftRadius: 20,
-//           },
-//           headerTintColor: "#ffffff",
-//         }}
-//       /> */}

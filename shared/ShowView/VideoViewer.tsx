@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../provider/AuthProvider";
 
 import axios from "axios";
 
