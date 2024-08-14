@@ -15,10 +15,13 @@ import { globalStyles } from "@/constants/global";
 import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
 import { Logo } from "@/assets/images/MillennialsPrimeLogoNB.png";
+import { auth } from "@/firebase/firebaseConfig";
 
 export default function index() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+
+  console.log(auth);
   return (
     <View
       style={[
@@ -27,7 +30,7 @@ export default function index() {
         globalStyles.flexColumn,
         globalStyles.flexAlignItemsCenter,
         globalStyles.flexJustifyContentSpaceEvenly,
-        { backgroundColor: colors["loading"] },
+        { backgroundColor: colors["background"] },
       ]}
     >
       {/* <Logo /> */}

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useContext } from "react";
 import { Link, router } from "expo-router";
-import { AuthContext } from "../../../provider/AuthProvider";
+// import { AuthContext } from "../../../provider/AuthProvider";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 

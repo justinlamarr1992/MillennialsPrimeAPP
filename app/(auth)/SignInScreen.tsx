@@ -18,13 +18,15 @@ import { COLORS } from "@/constants/Colors";
 import axios from "axios";
 // import useAuth from "../../hooks/useAuth";
 import { FirebaseError } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignInScreen() {
-  // const { auth, setAuth } = useAuth();
+  const auth = getAuth();
   // TODO: FIGUGRE OUT WHY THERES NO LOADING NOW
   // const { login, logout, auth, setIsLoading } = useContext(AuthContext);
-  const [user, setUser] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("");
+  // const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState(null);
 
@@ -32,51 +34,25 @@ export default function SignInScreen() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  // console.log(auth);
-  // const signUp = async () => {
-  //   setLoading(true);
-  //   try {
-  //     await auth().createUserWithEmailAndPassword(user, password);
-  //     alert("Check Your Email");
-  //   } catch (e: any) {
-  //     const err = e as FirebaseError;
-  //   } finally {
-  //     alert("Registration failed: " + err.message);
-  //   }
-  // };
-  // const signIn = async () => {
-  //   setLoading(true);
-  //   try {
-  //     await auth().signInWithEmailAndPassword(user, password);
-  //     alert("Check Your Email");
-  //   } catch (e: any) {
-  //     const err = e as FirebaseError;
-  //   } finally {
-  //     alert("Registration failed: " + err.message);
-  //   }
-  // };
-
-  const handleSubmit = async (e) => {
-    try {
-      // setIsLoading(true);
-      // login(user, password);
-      router.push("/");
-    } catch (err) {
-      console.log("ERROR===> ", err);
-      if (!err?.originalStatus) {
-        // isLoading: true until timeout occurs
-        setErrMsg("No Server Response");
-      } else if (err.originalStatus === 400) {
-        setErrMsg("Missing Info");
-      } else if (err.originalStatus === 401) {
-        setErrMsg("Unauthorized but its here");
-      } else if (err.originalStatus === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg("Login Failed");
-      }
-    }
-    // setIsLoading(false);
+  const handleSubmit = async (e: any) => {
+    setLoading(true);
+    setErrMsg(null);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("Success: user ", user);
+        // add the Mongo information or how to get the datahere
+        // login(user, password);
+        router.replace("/(tabs)/(home)/HomePage");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // setErrMsg(errorCode);
+        setErrMsg(errorMessage);
+      });
+    setLoading(false);
   };
 
   return (
@@ -101,6 +77,9 @@ export default function SignInScreen() {
               <Text style={globalStyles.buttonText}>Create an Account</Text>
             </Link>
           </Pressable>
+          <Text style={[globalStyles.errorText, { color: colors.secC }]}>
+            {errMsg}
+          </Text>
         </View>
         <View
           style={[
@@ -134,8 +113,10 @@ export default function SignInScreen() {
                 placeholder="Enter Email"
                 placeholderTextColor="#BABBBD"
                 keyboardType="email-address"
-                value={user}
-                onChangeText={(text) => setUser(text)}
+                // value={user}
+                value={email}
+                // onChangeText={(text) => setUser(text)}
+                onChangeText={(text) => setEmail(text)}
                 autoCapitalize="none"
               ></TextInput>
             </View>
@@ -168,7 +149,9 @@ export default function SignInScreen() {
                 <Text style={globalStyles.buttonText}>Login</Text>
               </Pressable>
             )}
-
+            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>
+              {errMsg}
+            </Text>
             <Link href="/(auth)/PasswordRecoveryScreen" asChild>
               <Text
                 style={[globalStyles.vertPadding, { color: colors["linkC"] }]}

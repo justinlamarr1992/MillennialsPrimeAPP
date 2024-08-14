@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import {
   useColorScheme,
   Text,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Pressable,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
@@ -18,6 +19,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../../provider/AuthProvider";
 // import UserInfo from "./PostItems/UserInfo";
 import { COLORS } from "@/constants/Colors";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import axios from "axios";
 
@@ -37,7 +39,11 @@ export default function RegisterScreen() {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useState("");
+  const auth = getAuth();
+  const [loading, setLoading] = useState(false);
+
+  // const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [validName, setValidName] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
 
@@ -61,8 +67,8 @@ export default function RegisterScreen() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    setValidName(USER_REGEX.test(user));
-  }, [user]);
+    setValidName(USER_REGEX.test(email));
+  }, [email]);
 
   useEffect(() => {
     setValidPassword(PASSWORD_REGEX.test(password));
@@ -71,7 +77,7 @@ export default function RegisterScreen() {
 
   useEffect(() => {
     setErrMsg("");
-  }, [user, password, matchPassword]);
+  }, [email, password, matchPassword]);
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
@@ -98,47 +104,42 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async (e) => {
-    const v1 = USER_REGEX.test(user);
+    setErrMsg(null);
+    setLoading(true);
+    const v1 = USER_REGEX.test(email);
     const v2 = PASSWORD_REGEX.test(password);
-
     if (!v1 || !v2) {
       setErrMsg("Invalid Entry");
       return;
     }
-
-    try {
-      // register(user, password, firstName, lastName, DOB);
-      console.log(
-        "User: ",
-        user,
-        " Password: ",
-        password,
-        " First Name: ",
-        firstName,
-        " Last Name: ",
-        lastName,
-        " DOB: ",
-        DOB
-      );
-    } catch (err) {
-      console.log("ERROR ==>", err);
-      if (!err?.originalStatus) {
-        // isLoading: true until timeout occurs
-        setErrMsg("No Server Response");
-      } else if (err.originalStatus === 400) {
-        setErrMsg("Missing Info");
-      } else if (err.originalStatus === 401) {
-        setErrMsg("Unauthorized but its here");
-      } else if (err.originalStatus === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg("Login Failed");
-      }
-      //   errRef.current.focus();
-    } finally {
-      // TODO: Check if good infor then go to settings page if not need errors to kick in
-      // navigation.navigate("SignInScreen");
-    }
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log("Success: user ", user);
+        // add the Mongo information or how to get the datahere
+        // register(user, password, firstName, lastName, DOB);
+        router.replace("/SignInScreen");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        setErrMsg(errorMessage);
+      });
+    setLoading(false);
+    // console.log(
+    //   "User: ",
+    //   email,
+    //   " Password: ",
+    //   password,
+    //   " First Name: ",
+    //   firstName,
+    //   " Last Name: ",
+    //   lastName,
+    //   " DOB: ",
+    //   DOB
+    // );
   };
 
   return (
@@ -227,8 +228,8 @@ export default function RegisterScreen() {
                 placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
                 onChangeText={(text) => {
-                  setUser(text);
-                  console.log("User is ", user);
+                  setEmail(text);
+                  console.log("User is ", email);
                 }}
               ></TextInput>
             </View>
@@ -330,17 +331,22 @@ export default function RegisterScreen() {
                 </Pressable>
               )}
             </View>
-            <Pressable
-              style={[
-                globalStyles.button,
-                globalStyles.marginVertical,
-                { backgroundColor: colors["triC"] },
-              ]}
-            >
-              <Text style={globalStyles.buttonText} onPress={handleSubmit}>
-                Create an Account
-              </Text>
-            </Pressable>
+            {loading ? (
+              <ActivityIndicator size={"small"} style={{ margin: 28 }} />
+            ) : (
+              <Pressable
+                style={[
+                  globalStyles.button,
+                  globalStyles.marginVertical,
+                  { backgroundColor: colors["triC"] },
+                ]}
+              >
+                <Text style={globalStyles.buttonText} onPress={handleSubmit}>
+                  Create an Account
+                </Text>
+              </Pressable>
+            )}
+
             <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>
               {errMsg}
             </Text>

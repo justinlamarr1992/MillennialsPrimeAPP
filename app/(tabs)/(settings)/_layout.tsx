@@ -23,7 +23,7 @@ export default function SettingsLayout() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen name="Settings" />
       <Stack.Screen name="MyInfoScreen" />
       <Stack.Screen name="BusinessScreen" />
       <Stack.Screen name="ArtScreen" />

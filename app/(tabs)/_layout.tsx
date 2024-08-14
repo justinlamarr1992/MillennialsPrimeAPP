@@ -18,7 +18,7 @@ const TabsLayout = () => {
       }}
     >
       <Tabs.Screen
-        name="(home)/HomePage"
+        name="(home)"
         options={{
           headerShown: true,
           headerTitle: "Home ",
@@ -40,10 +40,10 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="(settings)/Settings"
+        name="(settings)"
         options={{
           headerShown: true,
-          headerTitle: "Settings",
+          headerTitle: "Settings (Next Update)",
           headerStyle: {
             backgroundColor: colors["priC"],
             borderBottomLeftRadius: 32,
@@ -55,7 +55,7 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          title: "Settings",
+          title: "Settings (Next Update)",
           tabBarIcon: ({ color }) => (
             <Ionicons size={28} name="cog" color={color} />
           ),
@@ -147,7 +147,7 @@ const TabsLayout = () => {
             // overflow: "hidden",
           },
           title: "Log Out",
-          headerTitle: "Tabs Layout",
+          headerTitle: "Log Out",
           tabBarIcon: ({ color }) => (
             <Ionicons name="log-out" size={28} color={color} />
           ),

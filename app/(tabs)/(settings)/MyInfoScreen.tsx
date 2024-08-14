@@ -9,7 +9,7 @@ import {
   TextInput,
   useColorScheme,
 } from "react-native";
-import { AuthContext } from "@/context/AuthContext";
+// import { AuthContext } from "@/context/AuthContext";
 import { Picker } from "@react-native-picker/picker";
 
 import { globalStyles } from "@/constants/global";
@@ -18,11 +18,11 @@ import { COLORS } from "@/constants/Colors";
 
 import axios from "../../API/axios";
 // This is where the error starts
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+// import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 // import axios from "axios";
 
 export default function MyInfoScreen() {
-  const axiosPrivate = useAxiosPrivate();
+  // const axiosPrivate = useAxiosPrivate();
   // const { auth, accessToken, roles, id, logout, userInfo } =
   //   useContext(AuthContext);
   // let _id = id;
