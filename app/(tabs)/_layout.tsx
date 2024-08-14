@@ -18,7 +18,7 @@ const TabsLayout = () => {
       }}
     >
       <Tabs.Screen
-        name="(home)"
+        name="(home)/HomePage"
         options={{
           headerShown: true,
           headerTitle: "Home ",
@@ -40,7 +40,7 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="(settings)"
+        name="(settings)/Settings"
         options={{
           headerShown: true,
           headerTitle: "Settings",

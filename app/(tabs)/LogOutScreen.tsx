@@ -3,7 +3,7 @@ import { Text, View, Button, useColorScheme, Pressable } from "react-native";
 // import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import auth from "@react-native-firebase/auth";
+// import auth from "@react-native-firebase/auth";
 // import { AuthContext } from "../../provider/AuthProvider";
 import { Link, router } from "expo-router";
 
@@ -19,7 +19,7 @@ export default function LogOutScreen() {
     try {
       // setIsLoading(true);
       // logout();
-      auth().signOut();
+      // auth().signOut();
       // router.push("/../(auth)/SignInScreen");
     } catch (err) {
       console.log("ERR===>", err);

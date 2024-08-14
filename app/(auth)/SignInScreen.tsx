@@ -14,7 +14,7 @@ import {
 import { globalStyles } from "@/constants/global";
 // import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
-import auth from "@react-native-firebase/auth";
+// import auth from "@react-native-firebase/auth";
 import axios from "axios";
 // import useAuth from "../../hooks/useAuth";
 import { FirebaseError } from "firebase/app";
@@ -33,28 +33,28 @@ export default function SignInScreen() {
   const colors = COLORS[colorScheme ?? "dark"];
 
   // console.log(auth);
-  const signUp = async () => {
-    setLoading(true);
-    try {
-      await auth().createUserWithEmailAndPassword(user, password);
-      alert("Check Your Email");
-    } catch (e: any) {
-      const err = e as FirebaseError;
-    } finally {
-      alert("Registration failed: " + err.message);
-    }
-  };
-  const signIn = async () => {
-    setLoading(true);
-    try {
-      await auth().signInWithEmailAndPassword(user, password);
-      alert("Check Your Email");
-    } catch (e: any) {
-      const err = e as FirebaseError;
-    } finally {
-      alert("Registration failed: " + err.message);
-    }
-  };
+  // const signUp = async () => {
+  //   setLoading(true);
+  //   try {
+  //     await auth().createUserWithEmailAndPassword(user, password);
+  //     alert("Check Your Email");
+  //   } catch (e: any) {
+  //     const err = e as FirebaseError;
+  //   } finally {
+  //     alert("Registration failed: " + err.message);
+  //   }
+  // };
+  // const signIn = async () => {
+  //   setLoading(true);
+  //   try {
+  //     await auth().signInWithEmailAndPassword(user, password);
+  //     alert("Check Your Email");
+  //   } catch (e: any) {
+  //     const err = e as FirebaseError;
+  //   } finally {
+  //     alert("Registration failed: " + err.message);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     try {

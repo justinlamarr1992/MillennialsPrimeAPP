@@ -8,7 +8,7 @@ import { useColorScheme } from "react-native";
 import { COLORS } from "@/constants/Colors";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { AuthProvider } from "@/provider/AuthProvider";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+// import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 // import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 // import AppNav from "@/navigation/AppNav";
@@ -22,38 +22,38 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
-  const router = useRouter();
-  const segments = useSegments();
+  // const [initializing, setInitializing] = useState(true);
+  // // const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+  // const router = useRouter();
+  // const segments = useSegments();
 
   const [loaded] = useFonts({
     "inter-regular": require("../assets/fonts/Inter-Regular.ttf"),
     "inter-bold": require("../assets/fonts/Inter-Bold.ttf"),
   });
 
-  const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
-    console.log("onAuthStateChanged", user);
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
+  // const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
+  //   console.log("onAuthStateChanged", user);
+  //   setUser(user);
+  //   if (initializing) setInitializing(false);
+  // };
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
+  // useEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber;
+  // }, []);
 
-  useEffect(() => {
-    if (initializing) return;
+  // useEffect(() => {
+  //   if (initializing) return;
 
-    const inAuthGroup = segments[0] === "(auth)";
+  //   const inAuthGroup = segments[0] === "(auth)";
 
-    if (user && !inAuthGroup) {
-      router.replace("/home/");
-    } else if (!user && inAuthGroup) {
-      router.replace("/");
-    }
-  });
+  //   if (user && !inAuthGroup) {
+  //     router.replace("/home/");
+  //   } else if (!user && inAuthGroup) {
+  //     router.replace("/");
+  //   }
+  // });
 
   useEffect(() => {
     if (loaded) {

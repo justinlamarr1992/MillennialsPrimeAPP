@@ -37,6 +37,10 @@ export type Colors = {
   inActTabText: string;
   actTabText: string;
   plcHoldText: string;
+  loading: string;
+  loadingButton: string;
+  loadingText: string;
+  loadingTextOppo: string;
 };
 
 const LIGHT: Colors = {
@@ -71,6 +75,10 @@ const LIGHT: Colors = {
   inActTabText: "#b9a054",
   actTabText: "#fffd9b",
   plcHoldText: "#BABBBD",
+  loading: "#fffd9b",
+  loadingButton: "#611821",
+  loadingText: "#ffffff",
+  loadingTextOppo: "#020101",
 };
 const DARK: Colors = {
   background: "#000000",
@@ -105,6 +113,10 @@ const DARK: Colors = {
   inActTabText: "#b9a054",
   actTabText: "#fffd9b",
   plcHoldText: "#BABBBD",
+  loading: "#611821",
+  loadingButton: "#fffd9b",
+  loadingText: "#020101",
+  loadingTextOppo: "#ffffff",
 };
 enum COLOR_SCHEME {
   LIGHT = "light",

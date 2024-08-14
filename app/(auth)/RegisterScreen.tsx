@@ -28,7 +28,6 @@ const PASSWORD_REGEX =
 
 export default function RegisterScreen() {
   // const { register, auth } = useContext(AuthContext);
-  const navigation = useNavigation();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -138,7 +137,7 @@ export default function RegisterScreen() {
       //   errRef.current.focus();
     } finally {
       // TODO: Check if good infor then go to settings page if not need errors to kick in
-      navigation.navigate("SignInScreen");
+      // navigation.navigate("SignInScreen");
     }
   };
 

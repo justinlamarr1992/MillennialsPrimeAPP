@@ -186,6 +186,8 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
   },
+  imageLoading: { width: 300, height: 300 },
+  imageLoadingSmall: { width: 50, height: 25 },
 
   input: {
     borderWidth: 1,
@@ -489,10 +491,16 @@ export const globalStyles = StyleSheet.create({
 
   // T
   // Text Types
+  textCenter: { textAlign: "center" },
   textHuge: {
     fontFamily: "inter-bold",
     fontSize: 40,
     color: "#020101",
+    textAlign: "center",
+  },
+  textLoading: {
+    fontFamily: "inter-bold",
+    fontSize: 35,
     textAlign: "center",
   },
   textMedium: {
