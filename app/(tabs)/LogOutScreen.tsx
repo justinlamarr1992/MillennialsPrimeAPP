@@ -3,11 +3,12 @@ import { Text, View, Button, useColorScheme, Pressable } from "react-native";
 // import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { AuthContext } from "../../provider/AuthProvider";
+import auth from "@react-native-firebase/auth";
+// import { AuthContext } from "../../provider/AuthProvider";
 import { Link, router } from "expo-router";
 
 export default function LogOutScreen() {
-  const { logout, setIsLoading } = useContext(AuthContext);
+  // const { logout, setIsLoading } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   // const navigation = useNavigation();
@@ -16,9 +17,10 @@ export default function LogOutScreen() {
 
   const handleLogOut = async () => {
     try {
-      setIsLoading(true);
-      logout();
-      router.push("/../(auth)/SignInScreen");
+      // setIsLoading(true);
+      // logout();
+      auth().signOut();
+      // router.push("/../(auth)/SignInScreen");
     } catch (err) {
       console.log("ERR===>", err);
       if (!err?.originalStatus) {
@@ -55,7 +57,7 @@ export default function LogOutScreen() {
         See Ya
       </Text>
       <Pressable
-        onPress={logout}
+        // onPress={logout}
         style={[globalStyles.button, { backgroundColor: colors["priC"] }]}
       >
         <Text style={globalStyles.buttonText} onPress={handleLogOut}>

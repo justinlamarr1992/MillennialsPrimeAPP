@@ -9,31 +9,57 @@ import {
   ScrollView,
   Pressable,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { globalStyles } from "@/constants/global";
-import { AuthContext } from "../../provider/AuthProvider";
+// import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
+import auth from "@react-native-firebase/auth";
 import axios from "axios";
-import useAuth from "../../hooks/useAuth";
+// import useAuth from "../../hooks/useAuth";
+import { FirebaseError } from "firebase/app";
 
 export default function SignInScreen() {
   // const { auth, setAuth } = useAuth();
   // TODO: FIGUGRE OUT WHY THERES NO LOADING NOW
-  const { login, logout, auth, setIsLoading } = useContext(AuthContext);
+  // const { login, logout, auth, setIsLoading } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [password, setPassword] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState(null);
 
   const [modalOpen, setModalOpen] = useState(false);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  console.log(auth);
+  // console.log(auth);
+  const signUp = async () => {
+    setLoading(true);
+    try {
+      await auth().createUserWithEmailAndPassword(user, password);
+      alert("Check Your Email");
+    } catch (e: any) {
+      const err = e as FirebaseError;
+    } finally {
+      alert("Registration failed: " + err.message);
+    }
+  };
+  const signIn = async () => {
+    setLoading(true);
+    try {
+      await auth().signInWithEmailAndPassword(user, password);
+      alert("Check Your Email");
+    } catch (e: any) {
+      const err = e as FirebaseError;
+    } finally {
+      alert("Registration failed: " + err.message);
+    }
+  };
 
   const handleSubmit = async (e) => {
     try {
-      setIsLoading(true);
-      login(user, password);
+      // setIsLoading(true);
+      // login(user, password);
       router.push("/");
     } catch (err) {
       console.log("ERROR===> ", err);
@@ -50,7 +76,7 @@ export default function SignInScreen() {
         setErrMsg("Login Failed");
       }
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   return (
@@ -110,6 +136,7 @@ export default function SignInScreen() {
                 keyboardType="email-address"
                 value={user}
                 onChangeText={(text) => setUser(text)}
+                autoCapitalize="none"
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
@@ -127,16 +154,21 @@ export default function SignInScreen() {
                 // secureTextEntry={true}
               ></TextInput>
             </View>
-            <Pressable
-              style={[
-                globalStyles.button,
-                globalStyles.marginVertical,
-                { backgroundColor: colors["triC"] },
-              ]}
-              onPressIn={handleSubmit}
-            >
-              <Text style={globalStyles.buttonText}>Login</Text>
-            </Pressable>
+            {loading ? (
+              <ActivityIndicator size={"small"} style={{ margin: 28 }} />
+            ) : (
+              <Pressable
+                style={[
+                  globalStyles.button,
+                  globalStyles.marginVertical,
+                  { backgroundColor: colors["triC"] },
+                ]}
+                onPressIn={handleSubmit}
+              >
+                <Text style={globalStyles.buttonText}>Login</Text>
+              </Pressable>
+            )}
+
             <Link href="/(auth)/PasswordRecoveryScreen" asChild>
               <Text
                 style={[globalStyles.vertPadding, { color: colors["linkC"] }]}

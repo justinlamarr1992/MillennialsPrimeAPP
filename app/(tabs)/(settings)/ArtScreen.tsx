@@ -16,7 +16,6 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-import { useNavigation, useTheme } from "@react-navigation/native";
 
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -28,8 +27,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 
 export default function ArtScreen() {
-  const navigation = useNavigation();
-  const colors = useTheme().colors;
   const [modalOpen, setModalOpen] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());

@@ -11,7 +11,6 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-import { useNavigation, useTheme } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -28,7 +27,7 @@ const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 export default function RegisterScreen() {
-  const { register, auth } = useContext(AuthContext);
+  // const { register, auth } = useContext(AuthContext);
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -109,7 +108,7 @@ export default function RegisterScreen() {
     }
 
     try {
-      register(user, password, firstName, lastName, DOB);
+      // register(user, password, firstName, lastName, DOB);
       console.log(
         "User: ",
         user,

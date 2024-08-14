@@ -16,6 +16,7 @@
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		DC5330DF77F04333AFB5F068 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E88E4E3BF4440BB4C66B5 /* noop-file.swift */; };
+		B7E1667F3E7349318D288728 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D86EB7EA27942BBA2890B92 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-MillennialsPrimeAPP/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		8D86EB7EA27942BBA2890B92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; name = "GoogleService-Info.plist"; path = "MillennialsPrimeAPP/GoogleService-Info.plist"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = text.plist.xml; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				219E88E4E3BF4440BB4C66B5 /* noop-file.swift */,
 				6B9FD3130C3B4B45BC6194DB /* MillennialsPrimeAPP-Bridging-Header.h */,
 				6D471CABCB59EF3365DA9DF4 /* PrivacyInfo.xcprivacy */,
+				8D86EB7EA27942BBA2890B92 /* GoogleService-Info.plist */,
 			);
 			name = MillennialsPrimeAPP;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				A6C7970B54B8FB9653417B33 /* PrivacyInfo.xcprivacy in Resources */,
+				B7E1667F3E7349318D288728 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +363,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.justappin.millennials-prime-app";
-				PRODUCT_NAME = MillennialsPrimeAPP;
+				PRODUCT_NAME = "MillennialsPrimeAPP";
 				SWIFT_OBJC_BRIDGING_HEADER = "MillennialsPrimeAPP/MillennialsPrimeAPP-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -387,7 +391,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.justappin.millennials-prime-app";
-				PRODUCT_NAME = MillennialsPrimeAPP;
+				PRODUCT_NAME = "MillennialsPrimeAPP";
 				SWIFT_OBJC_BRIDGING_HEADER = "MillennialsPrimeAPP/MillennialsPrimeAPP-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

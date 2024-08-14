@@ -28,8 +28,8 @@ import { COLORS } from "@/constants/Colors";
 import axios from "axios";
 
 export default function Page() {
-  const { logout, test, auth, id, accessToken, roles, admin } =
-    useContext(AuthContext);
+  // const { logout, test, auth, id, accessToken, roles, admin } =
+  //   useContext(AuthContext);
 
   // const auth = "This is the hard coded Auth";
   // const id = "1111111111";
@@ -143,16 +143,16 @@ export default function Page() {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* <Button
-          onPress={() => router.push("/postView")}
-          title="Post View Button"
-        /> */}
+            onPress={() => router.push("/postView")}
+            title="Post View Button"
+          /> */}
         {/* SAVE THIS MODAL!!!! This will be how i insert post and other things later
          */}
         {/* <Button onPress={() => router.push("/modal")} title="Open Modal" /> */}
         {/* <Button
-          onPress={() => router.push("/(aux)/disclaimer")}
-          title="Open Disclaimer"
-        /> */}
+            onPress={() => router.push("/(aux)/disclaimer")}
+            title="Open Disclaimer"
+          /> */}
         {/* TODO: Make this dynamic of the lastest news post */}
         <View style={[globalStyles.padding]}>
           <PrimeNewsPost
@@ -170,41 +170,41 @@ export default function Page() {
           {/* Timer */}
           <Ad />
           {/* Admin Info */}
-          {admin && (
-            <View>
-              <Text
-                // style={{ color: colors.priT }}
-                onPress={() => router.push("/settings/MyInfoScreen")}
-                // onPress={() => navigation.navigate("My Info")}
-              >
-                My Information
-              </Text>
-              {id ? (
-                <Text style={{ color: colors["hexC"] }}>ID is {id}</Text>
-              ) : (
-                <Text style={{ color: colors["triC"] }}>No ID</Text>
-              )}
-              {roles ? (
-                <Text style={{ color: colors["hexC"] }}>Roles is {roles}</Text>
-              ) : (
-                <Text style={{ color: colors["triC"] }}>No Roles</Text>
-              )}
-              {accessToken ? (
-                <Text style={{ color: colors["hexC"] }}>
-                  AccessToken is {accessToken}
+          {/* {admin && (
+              <View>
+                <Text
+                  // style={{ color: colors.priT }}
+                  onPress={() => router.push("/settings/MyInfoScreen")}
+                  // onPress={() => navigation.navigate("My Info")}
+                >
+                  My Information
                 </Text>
-              ) : (
-                <Text style={{ color: colors["triC"] }}>No AccessToken</Text>
-              )}
-              {auth ? (
-                <Text style={{ color: colors["hexC"] }}>Auth is {auth}</Text>
-              ) : (
-                <Text style={{ color: colors["triC"] }}>
-                  No Auth Information
-                </Text>
-              )}
-            </View>
-          )}
+                {id ? (
+                  <Text style={{ color: colors["hexC"] }}>ID is {id}</Text>
+                ) : (
+                  <Text style={{ color: colors["triC"] }}>No ID</Text>
+                )}
+                {roles ? (
+                  <Text style={{ color: colors["hexC"] }}>Roles is {roles}</Text>
+                ) : (
+                  <Text style={{ color: colors["triC"] }}>No Roles</Text>
+                )}
+                {accessToken ? (
+                  <Text style={{ color: colors["hexC"] }}>
+                    AccessToken is {accessToken}
+                  </Text>
+                ) : (
+                  <Text style={{ color: colors["triC"] }}>No AccessToken</Text>
+                )}
+                {auth ? (
+                  <Text style={{ color: colors["hexC"] }}>Auth is {auth}</Text>
+                ) : (
+                  <Text style={{ color: colors["triC"] }}>
+                    No Auth Information
+                  </Text>
+                )}
+              </View>
+            )} */}
         </View>
       </ScrollView>
     </View>

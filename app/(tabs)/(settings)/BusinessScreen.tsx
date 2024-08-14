@@ -10,8 +10,6 @@ import {
   useColorScheme,
 } from "react-native";
 import { AuthContext } from "@/context/AuthContext";
-import { useNavigation, useTheme } from "@react-navigation/native";
-
 import { Picker } from "@react-native-picker/picker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -20,9 +18,8 @@ import { COLORS } from "@/constants/Colors";
 import axios from "axios";
 
 export default function BusinessScreen() {
-  const { auth, accessToken, roles, id, logout, userInfo } =
-    useContext(AuthContext);
-  const navigation = useNavigation(); //Change to use router expo
+  // const { auth, accessToken, roles, id, logout, userInfo } =
+  //   useContext(AuthContext);
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -128,7 +125,7 @@ export default function BusinessScreen() {
     } finally {
       console.log("It worked!!!");
       // navigation.jumpTo("Business");
-      navigation.navigate("Art");
+      // navigation.navigate("Art");
     }
     console.log("Handle Submit pressed");
   };

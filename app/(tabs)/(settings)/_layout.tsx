@@ -5,7 +5,7 @@ import { COLORS } from "@/constants/Colors";
 import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function _layout() {
+export default function SettingsLayout() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   return (

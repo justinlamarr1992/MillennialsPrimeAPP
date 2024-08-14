@@ -13,7 +13,7 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
 export default function Page() {
-  const { auth, id, accessToken, roles } = useContext(AuthContext);
+  // const { auth, id, accessToken, roles } = useContext(AuthContext);
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];

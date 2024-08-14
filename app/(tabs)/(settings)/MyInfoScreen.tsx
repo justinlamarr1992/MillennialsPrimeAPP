@@ -23,11 +23,11 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
 export default function MyInfoScreen() {
   const axiosPrivate = useAxiosPrivate();
-  const { auth, accessToken, roles, id, logout, userInfo } =
-    useContext(AuthContext);
-  let _id = id;
+  // const { auth, accessToken, roles, id, logout, userInfo } =
+  //   useContext(AuthContext);
+  // let _id = id;
 
-  console.log(`AuthContext ${accessToken}`);
+  // console.log(`AuthContext ${accessToken}`);
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -273,11 +273,11 @@ export default function MyInfoScreen() {
             <Text style={globalStyles.labelText}>
               Edit your Profile information
             </Text>
-            {id ? (
+            {/* {id ? (
               <Text style={{ color: colors.quaC }}>ID is Good</Text>
             ) : (
               <Text style={{ color: colors.triC }}>No ID</Text>
-            )}
+            )} */}
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
