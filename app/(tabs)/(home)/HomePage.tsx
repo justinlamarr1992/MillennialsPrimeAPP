@@ -168,7 +168,7 @@ export default function Page() {
 
           {/* TODO: Then the lastest/ Popular post  */}
           {/* Timer */}
-          <Ad />
+          <Ad title={"First Update"} startDate={"2024-08-22T08:00:00.493Z"} />
           {/* Admin Info */}
           {/* {admin && (
               <View>

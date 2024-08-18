@@ -3,7 +3,10 @@ import React, { useState, useMemo, useEffect } from "react";
 import NumberCard from "./NumberCard";
 import { globalStyles } from "@/constants/global";
 
-export default function DHMSTimer({ startDate, onTimerFinished }) {
+export default function DHMSTimer({
+  startDate,
+  // onTimerFinished
+}) {
   const targetTime = new Date(startDate).getTime();
   const [currentTime, setCurrentTime] = useState(Date.now());
   const timeBetween = useMemo(
@@ -21,13 +24,16 @@ export default function DHMSTimer({ startDate, onTimerFinished }) {
     const interval = setInterval(() => {
       if (timeBetween <= 0) {
         clearInterval(interval);
-        onTimerFinished();
+        // onTimerFinished();
       } else {
         setCurrentTime(Date.now());
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [timeBetween, onTimerFinished]);
+  }, [
+    timeBetween,
+    // onTimerFinished
+  ]);
   return (
     <View style={[globalStyles.timerContainer]}>
       <NumberCard number={days} unit="days" />

@@ -1,17 +1,18 @@
-import React from "react";
-import { useEffect, useMemo, useState } from "react";
-import { Text, View } from "react-native";
+import { View, Text } from "react-native";
+import React, { useState, useMemo, useEffect } from "react";
 import NumberCard from "./NumberCard";
 import { globalStyles } from "@/constants/global";
 
-export default function HMSTimer({ startDate, onTimerFinished }) {
+export default function DHMSTimer({
+  startDate,
+  // onTimerFinished
+}) {
   const targetTime = new Date(startDate).getTime();
   const [currentTime, setCurrentTime] = useState(Date.now());
   const timeBetween = useMemo(
     () => targetTime - currentTime,
     [currentTime, targetTime]
   );
-
   const days = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
   const hours = Math.floor(
     (timeBetween % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -19,22 +20,24 @@ export default function HMSTimer({ startDate, onTimerFinished }) {
   const minutes = Math.floor((timeBetween % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeBetween % (1000 * 60)) / 1000);
 
-  const totalHours = days * 24 + hours;
-
   useEffect(() => {
     const interval = setInterval(() => {
       if (timeBetween <= 0) {
         clearInterval(interval);
-        onTimerFinished();
+        // onTimerFinished();
       } else {
         setCurrentTime(Date.now());
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [timeBetween, onTimerFinished]);
-
+  }, [
+    timeBetween,
+    // onTimerFinished
+  ]);
   return (
-    <View style={globalStyles.timerContainer}>
+    <View style={[globalStyles.timerContainer]}>
+      <NumberCard number={days} unit="days" />
+      <Text style={globalStyles.timerDivider}>:</Text>
       <NumberCard number={hours} unit="hrs" />
       <Text style={globalStyles.timerDivider}>:</Text>
       <NumberCard number={minutes} unit="min" />

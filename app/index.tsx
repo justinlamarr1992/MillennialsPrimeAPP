@@ -15,13 +15,14 @@ import { globalStyles } from "@/constants/global";
 import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
 import { Logo } from "@/assets/images/MillennialsPrimeLogoNB.png";
-import { auth } from "@/firebase/firebaseConfig";
+import auth from "@/firebase/firebaseConfig";
 
 export default function index() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
   console.log(auth);
+
   return (
     <View
       style={[
@@ -100,6 +101,14 @@ export default function index() {
             globalStyles.flexAlignSelfCenter,
           ]}
         />
+        <Text
+          style={[
+            globalStyles.textCenter,
+            { color: colors["loadingTextOppo"] },
+          ]}
+        >
+          Version: 1.1.4
+        </Text>
       </View>
     </View>
   );

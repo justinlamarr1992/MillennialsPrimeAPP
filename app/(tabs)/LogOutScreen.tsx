@@ -58,7 +58,7 @@ export default function LogOutScreen() {
           { color: colors["priT"] },
         ]}
       >
-        See Ya
+        Come Back Soon, There's More to Come
       </Text>
       {loading ? (
         <ActivityIndicator size={"small"} style={{ margin: 28 }} />

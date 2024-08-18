@@ -29,6 +29,7 @@ const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 export default function RegisterScreen() {
+  console.log(auth);
   // const { register, auth } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -198,8 +199,8 @@ export default function RegisterScreen() {
               </Text>
               <TextInput
                 style={globalStyles.input}
-                placeholder="Enter First Name"
                 placeholderTextColor={colors["plcHoldText"]}
+                placeholder="Enter First Name"
                 onChangeText={(text) => {
                   setFirstName(text);
                 }}

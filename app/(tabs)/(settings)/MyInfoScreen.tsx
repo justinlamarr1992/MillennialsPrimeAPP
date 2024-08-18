@@ -270,7 +270,7 @@ export default function MyInfoScreen() {
             <Text style={[globalStyles.textTitle, { color: colors.text }]}>
               Basic Information
             </Text>
-            <Text style={globalStyles.labelText}>
+            <Text style={[globalStyles.labelText, { color: colors.text }]}>
               Edit your Profile information
             </Text>
             {/* {id ? (
@@ -281,9 +281,12 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Name</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Name
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 name="name"
                 id="name"
                 placeholder="Enter Name"
@@ -293,27 +296,36 @@ export default function MyInfoScreen() {
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Username</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Username
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter Username"
                 editable={false}
                 value={username}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Email</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Email
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter Email"
                 editable={false}
                 value={username}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Birthday</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Birthday
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter Birthday"
                 editable={false}
                 value={DOB}
@@ -322,9 +334,12 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Country</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Country
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter Country"
                 value={country}
                 name="country"
@@ -334,9 +349,12 @@ export default function MyInfoScreen() {
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>State</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                State
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter State"
                 value={state}
                 name="state"
@@ -346,9 +364,12 @@ export default function MyInfoScreen() {
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>City</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                City
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter City"
                 value={city}
                 name="city"
@@ -358,9 +379,12 @@ export default function MyInfoScreen() {
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Zip</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Zip
+              </Text>
               <TextInput
-                style={globalStyles.settingsInput}
+                style={globalStyles.input}
+                placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter Zip"
                 keyboardType="number-pad"
                 value={zip}
@@ -373,7 +397,9 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Viewers Can Like</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Viewers Can Like
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -400,7 +426,9 @@ export default function MyInfoScreen() {
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Viewers Can Dislike</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Viewers Can Dislike
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -425,7 +453,9 @@ export default function MyInfoScreen() {
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Viewers Can Comment</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Viewers Can Comment
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -450,7 +480,9 @@ export default function MyInfoScreen() {
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Viewers Can Share</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Viewers Can Share
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -477,7 +509,9 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Your Industry</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Your Industry
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -536,7 +570,7 @@ export default function MyInfoScreen() {
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
                 Looking for B2B Relationships
               </Text>
               <Pressable>
@@ -561,7 +595,9 @@ export default function MyInfoScreen() {
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>E-Commerence</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                E-Commerence
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -584,7 +620,9 @@ export default function MyInfoScreen() {
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Upload Content</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Upload Content
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}

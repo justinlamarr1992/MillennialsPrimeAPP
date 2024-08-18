@@ -3,10 +3,15 @@ import { useColorScheme, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
+import {
+  SafeAreaInsetsContext,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 const TabsLayout = () => {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
@@ -15,13 +20,29 @@ const TabsLayout = () => {
         tabBarInactiveTintColor: colors["hexC"],
         tabBarInactiveBackgroundColor: colors["priC"],
         tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          // paddingBottom: insets.bottom,
+          paddingBottom: 0,
+          // marginTop: -40,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          position: "absolute",
+          overflow: "hidden",
+          height: 80,
+          borderTopWidth: 0,
+        },
+        tabBarLabelStyle: {
+          // fontSize: 12,
+          fontWeight: "bold",
+          marginBottom: 20,
+        },
       }}
     >
       <Tabs.Screen
         name="(home)"
         options={{
           headerShown: true,
-          headerTitle: "Home ",
+          headerTitle: "Home",
           headerStyle: {
             backgroundColor: colors["priC"],
             borderBottomLeftRadius: 32,
@@ -34,6 +55,8 @@ const TabsLayout = () => {
             fontWeight: "bold",
           },
           title: "Home",
+          // tabBarStyle: { marginBottom: 10 },
+
           tabBarIcon: ({ color }) => (
             <Ionicons size={28} name="home" color={color} />
           ),
@@ -141,7 +164,7 @@ const TabsLayout = () => {
             backgroundColor: colors["priC"],
             borderBottomLeftRadius: 32,
             borderBottomRightRadius: 32,
-            shadowColor: colors["background"],
+            // shadowColor: colors["background"],
             height: 150,
             // This is what i need to show more of the users in profiles
             // overflow: "hidden",

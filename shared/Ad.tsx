@@ -5,8 +5,7 @@ import { globalStyles } from "@/constants/global";
 import Countdown from "react-countdown";
 import DHMSTimer from "./Timer/DHMSTimer";
 
-export default function Ad({ title, description }) {
-  const startDate = "2024-08-15T08:46:00.493Z";
+export default function Ad({ title, description, startDate }) {
   return (
     // <View style={globalStyles.adPost}>
     //   <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>
@@ -35,9 +34,12 @@ export default function Ad({ title, description }) {
       colors={["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]}
     >
       <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>
-        Launching in
+        {title}
       </Text>
-      <DHMSTimer startDate={startDate} />
+      <DHMSTimer
+        startDate={startDate}
+        // onTimerFinished={onTimerFinished}
+      />
     </LinearGradient>
   );
 }

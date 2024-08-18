@@ -98,7 +98,7 @@ export const globalStyles = StyleSheet.create({
   },
 
   // D
-  datePicker: {},
+  datePicker: { color: "orange" },
 
   // E
   errorText: {
@@ -196,6 +196,13 @@ export const globalStyles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 6,
     color: "#8F92A1",
+  },
+  settingsInput: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 10,
+    fontSize: 18,
+    borderRadius: 6,
   },
   // Items
   // itemButton: {
