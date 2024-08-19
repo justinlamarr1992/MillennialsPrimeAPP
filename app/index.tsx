@@ -107,7 +107,7 @@ export default function index() {
             { color: colors["loadingTextOppo"] },
           ]}
         >
-          Version: 1.1.4
+          Version: 1.1.5
         </Text>
       </View>
     </View>

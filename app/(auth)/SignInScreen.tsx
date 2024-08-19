@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -41,7 +41,7 @@ export default function SignInScreen() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("Success: user ", user);
+        // console.log("Success: user ", user);
         // add the Mongo information or how to get the datahere
         // login(user, password);
         router.replace("/(tabs)/(home)/HomePage");
@@ -51,6 +51,7 @@ export default function SignInScreen() {
         const errorMessage = error.message;
         // setErrMsg(errorCode);
         setErrMsg(errorMessage);
+        // TODO: Create an alert here when something wrong happens then the okay but with reset the button
       });
     setLoading(false);
   };

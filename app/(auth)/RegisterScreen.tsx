@@ -117,16 +117,17 @@ export default function RegisterScreen() {
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
-        console.log("Success: user ", user);
+        alert("Your Registered");
         // add the Mongo information or how to get the datahere
         // register(user, password, firstName, lastName, DOB);
-        router.replace("/SignInScreen");
+        router.navigate("/SignInScreen");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
         setErrMsg(errorMessage);
+        // TODO: Create an alert here when something wrong happens then the okay but with reset the button
       });
     setLoading(false);
     // console.log(

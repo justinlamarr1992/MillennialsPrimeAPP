@@ -4,12 +4,21 @@ import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 import firebase from "firebase/app";
 import { getAuth } from "firebase/auth";
-// import { initializeAuth, getReactNativePersistence } from "firebase/auth";
-// import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+// Testing
+// import {
+//   getAuth,
+//   initializeAuth,
+//   getReactNativePersistence,
+// } from "firebase/auth";
+// import {
+//   getAuth,
+//   initializeAuth,
+//   getReactNativePersistence,
+// } from "firebase/auth/react-native";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// Testing
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBKQKpVGfoDr0UQwRubiOMCU0_rmInP8u8",
   authDomain: "millennialsprime.firebaseapp.com",
@@ -24,5 +33,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
-
 export default auth;
+
+// Testing
+// BIGGEST CHANGE IF IT FAILS
+// export const app = initializeApp(firebaseConfig);
+// export const auth = initializeAuth(app, {
+//   persistence: getReactNativePersistence(AsyncStorage),
+// });
+// Testing

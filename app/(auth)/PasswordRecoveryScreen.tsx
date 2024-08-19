@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { Link, router } from "expo-router";
 import {
   useColorScheme,
   Text,
@@ -8,18 +9,40 @@ import {
   ScrollView,
   Pressable,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { globalStyles } from "@/constants/global";
-import { useNavigation } from "@react-navigation/native";
 import { COLORS } from "@/constants/Colors";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const PasswordRecoveryScreen = () => {
+  const errRef = useRef();
   const [email, setEmail] = useState(null);
-  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const handleSubmit = () => {};
+  const [errMsg, setErrMsg] = useState(null);
+
+  const handleSubmit = () => {
+    setLoading(true);
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Check Your Email");
+        setLoading(false);
+        router.navigate("/SignInScreen");
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrMsg(errorMessage);
+        setLoading(false);
+        // ..
+      });
+  };
 
   return (
     <KeyboardAvoidingView
@@ -34,7 +57,11 @@ const PasswordRecoveryScreen = () => {
             globalStyles.padding,
             globalStyles.centerItem,
           ]}
-        ></View>
+        >
+          <Text style={[globalStyles.errorText, { color: colors.secC }]}>
+            {errMsg}
+          </Text>
+        </View>
         <View
           style={[
             globalStyles.recoveryForm,
@@ -71,16 +98,24 @@ const PasswordRecoveryScreen = () => {
                 onChangeText={(text) => setEmail(text)}
               ></TextInput>
             </View>
-            <Pressable
-              style={[
-                globalStyles.button,
-                globalStyles.marginVertical,
-                { backgroundColor: colors["triC"] },
-              ]}
-              onPressIn={handleSubmit}
-            >
-              <Text style={globalStyles.buttonText}>Send Email</Text>
-            </Pressable>
+            {loading ? (
+              <ActivityIndicator size={"small"} style={{ margin: 28 }} />
+            ) : (
+              <Pressable
+                style={[
+                  globalStyles.button,
+                  globalStyles.marginVertical,
+                  { backgroundColor: colors["triC"] },
+                ]}
+                onPressIn={handleSubmit}
+              >
+                <Text style={globalStyles.buttonText}>Send Email</Text>
+              </Pressable>
+            )}
+
+            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>
+              {errMsg}
+            </Text>
           </ScrollView>
         </View>
       </View>
