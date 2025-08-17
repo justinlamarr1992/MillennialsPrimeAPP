@@ -142,18 +142,23 @@ export default function BusinessScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={globalStyles.formTitle}>
-            <Text style={globalStyles.textTitle}>Business Information</Text>
-            <Text style={globalStyles.labelText}>
+            <Text style={[globalStyles.textTitle, { color: colors.text }]}>
+              Business Information
+            </Text>
+            <Text style={[globalStyles.labelText, { color: colors.text }]}>
               Edit your Business information
             </Text>
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Do you have a Business</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Do you have a Business
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
                   placeholder="Do your have a Business"
+                  placeholderTextColor={colors["plcHoldText"]}
                   value={entrepreneur}
                   onChangeText={setEntrepreneur}
                   editable={false}
@@ -166,7 +171,14 @@ export default function BusinessScreen() {
                   onValueChange={(itemValue, itemIndex) =>
                     setEntrepreneur(itemValue)
                   }
+                  itemStyle={{
+                    color: colors.text,
+                  }}
                 >
+                  <Picker.Item
+                    label="Select an Answer"
+                    value="Select an Answer"
+                  />
                   <Picker.Item label="Yes" value="Yes" />
                   <Picker.Item label="No" value="No" />
                 </Picker>
@@ -178,16 +190,21 @@ export default function BusinessScreen() {
                   </View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text
+                        style={[globalStyles.labelText, { color: colors.text }]}
+                      >
                         What is the Name of the Company
                       </Text>
                       <TextInput
                         style={globalStyles.settingsInput}
                         placeholder="Enter Name"
+                        placeholderTextColor={colors["plcHoldText"]}
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text
+                        style={[globalStyles.labelText, { color: colors.text }]}
+                      >
                         Are you Open to Business with Users here.
                       </Text>
                       <Pressable>
@@ -206,6 +223,10 @@ export default function BusinessScreen() {
                           onValueChange={(itemValue, itemIndex) =>
                             setOpenOnMillPrime(itemValue)
                           }
+                          itemStyle={{
+                            color: "pink",
+                            backgroundColor: "orange",
+                          }}
                         >
                           <Picker.Item label="Yes" value="Yes" />
                           <Picker.Item label="No" value="No" />

@@ -15,9 +15,9 @@ import { globalStyles } from "@/constants/global";
 import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
 import { Logo } from "@/assets/images/MillennialsPrimeLogoNB.png";
-import auth from "@/firebase/firebaseConfig";
+import { auth } from "@/firebase/firebaseConfig";
 
-export default function index() {
+export default function Index() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 

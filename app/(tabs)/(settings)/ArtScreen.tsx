@@ -1,32 +1,26 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   Platform,
-  Button,
-  FlatList,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
   KeyboardAvoidingView,
-  Alert,
-  Modal,
   ScrollView,
   Pressable,
   TextInput,
+  useColorScheme,
 } from "react-native";
-
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
-import { MaterialIcons } from "@expo/vector-icons";
+import { COLORS } from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 // import UserInfo from "./PostItems/UserInfo";
 
 import axios from "axios";
 
 export default function ArtScreen() {
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
   const [modalOpen, setModalOpen] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());
@@ -118,14 +112,16 @@ export default function ArtScreen() {
       enabled={true}
       style={globalStyles.flex1}
     >
-      <View>
+      <View style={[{ backgroundColor: colors.background }]}>
         <ScrollView
           style={[globalStyles.padding, globalStyles.marginB100, {}]}
           showsVerticalScrollIndicator={false}
         >
           <View style={globalStyles.formTitle}>
-            <Text style={globalStyles.textTitle}>Art Information</Text>
-            <Text style={globalStyles.labelText}>
+            <Text style={[globalStyles.textTitle, { color: colors.text }]}>
+              Art Information
+            </Text>
+            <Text style={[globalStyles.labelText, { color: colors.text }]}>
               Edit your Artist information
             </Text>
           </View>
