@@ -44,7 +44,7 @@ export default function SignInScreen() {
         // console.log("Success: user ", user);
         // add the Mongo information or how to get the datahere
         // login(user, password);
-        // Note: setLoading(false) not needed here as component will unmount on navigation
+        setLoading(false);
         router.replace("/(tabs)/(home)/HomePage");
       })
       .catch((error) => {
