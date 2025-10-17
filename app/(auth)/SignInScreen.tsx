@@ -45,15 +45,16 @@ export default function SignInScreen() {
         // add the Mongo information or how to get the datahere
         // login(user, password);
         router.replace("/(tabs)/(home)/HomePage");
+        setLoading(false);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // setErrMsg(errorCode);
         setErrMsg(errorMessage);
+        setLoading(false);
         // TODO: Create an alert here when something wrong happens then the okay but with reset the button
       });
-    setLoading(false);
   };
 
   return (
