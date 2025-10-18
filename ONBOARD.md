@@ -192,7 +192,7 @@ As a senior engineer joining, I'd prioritize:
 ## **Directory Structure**
 
 ```
-/Users/mjstelly/projects/MillennialsPrimeAPP/
+/Users/username/projects/MillennialsPrimeAPP/
 ├── app/                          # Expo Router file-based routing (main app)
 │   ├── (auth)/                   # Auth group - public screens
 │   │   ├── SignInScreen.tsx
