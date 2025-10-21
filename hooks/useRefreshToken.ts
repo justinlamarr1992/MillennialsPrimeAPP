@@ -18,7 +18,11 @@ const useRefreshToken = () => {
       const token = await currentUser.getIdToken(true);
       return token;
     } catch (error) {
-      console.error("Error refreshing token:", error);
+      // TODO: Replace with proper error tracking service (e.g., Sentry)
+      // Avoid logging sensitive auth information in production
+      if (__DEV__) {
+        console.error("Error refreshing token:", error);
+      }
       throw error;
     }
   };
