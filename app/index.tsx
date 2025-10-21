@@ -12,7 +12,6 @@ import {
   Image,
 } from "react-native";
 import { globalStyles } from "@/constants/global";
-import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
 import { Logo } from "@/assets/images/MillennialsPrimeLogoNB.png";
 import { auth } from "@/firebase/firebaseConfig";
