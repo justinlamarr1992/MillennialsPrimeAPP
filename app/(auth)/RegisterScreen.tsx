@@ -30,6 +30,13 @@ interface DatePickerEvent {
   type: string;
 }
 
+// Birth year range constants - targeting Millennials generation
+// Born between 1981 and 1997 (age 28-44 in 2025)
+const MIN_BIRTH_YEAR = 1981;
+const MAX_BIRTH_YEAR = 1997;
+const MIN_BIRTH_DATE = new Date(`${MIN_BIRTH_YEAR}-1-1`);
+const MAX_BIRTH_DATE = new Date(`${MAX_BIRTH_YEAR}-1-1`);
+
 export default function RegisterScreen() {
   const auth = getAuth();
   // const { register, auth } = useContext(AuthContext);
@@ -265,8 +272,8 @@ export default function RegisterScreen() {
                   display="spinner"
                   value={date}
                   onChange={onChange}
-                  maximumDate={new Date("1997-1-1")}
-                  minimumDate={new Date("1981-1-1")}
+                  maximumDate={MAX_BIRTH_DATE}
+                  minimumDate={MIN_BIRTH_DATE}
                 />
               )}
               {/* IMPORTANT THE DATEPICKER TEXT COLOR IS OFF OF THE PHONE DAYTIME/NIGT PREF */}

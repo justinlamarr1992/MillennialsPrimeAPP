@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
+import { logger } from "@/utils/logger";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
 
 interface ConnectedUserInfoProps {
@@ -47,7 +48,7 @@ export default function ConnectedUserInfo({
         {/* TODO: make this the route to their userid/Profile */}
         <Pressable onPress={() => {
           // TODO: Implement navigation to user profile
-          console.log(`Navigate to user: ${name}`);
+          logger.debug(`Navigate to user: ${name}`);
         }}>
           <Text
             style={
@@ -70,7 +71,7 @@ export default function ConnectedUserInfo({
           {/* DIFFERENT ROUTE TO DIFF PAGE WITH ALL AS THOS W AS AN INDUSTRY */}
           <Pressable onPress={() => {
             // TODO: Implement navigation to industry page
-            console.log(`Navigate to industry: ${industry}`);
+            logger.debug(`Navigate to industry: ${industry}`);
           }}>
             <Text style={globalStyles.bold}>
               {/* If Prime */}

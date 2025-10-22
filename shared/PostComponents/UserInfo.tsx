@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import { globalStyles } from "@/constants/global";
+import { logger } from "@/utils/logger";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
 
 interface UserInfoProps {
@@ -22,7 +23,7 @@ export default function UserInfo({ name, admin, prime }: UserInfoProps) {
         {/* TODO: Change this to the user id of the user name so pressing can go to users page */}
         <Pressable onPress={() => {
           // TODO: Implement navigation to user profile
-          console.log(`Navigate to user: ${name}`);
+          logger.debug(`Navigate to user: ${name}`);
         }}>
           <Text
             style={
