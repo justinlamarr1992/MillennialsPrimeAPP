@@ -1,22 +1,16 @@
-import React, { useContext } from "react";
-import { StyleSheet, View, Text, Image, Button, Pressable } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { View, Text, Image, Pressable } from "react-native";
 import { globalStyles } from "@/constants/global";
-import { useTheme } from "@react-navigation/native";
-import { router } from "expo-router";
-// import TimeAgo from "react-timeago";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
-export default function UserInfo({ name, admin, prime }) {
-  // TODO: come back and change so that prime is past through as child to determine what colors
-  // export default function UserInfo({ prime, name, time }) {
-  // let name = "Test Name";
-  let time = Date.now();
-  const colors = useTheme().colors;
-  // console.log(prime, name, time);
 
-  const namePress = () => {
-    console.log("Name Pressed");
-  };
+interface UserInfoProps {
+  name: string;
+  admin: boolean;
+  prime: boolean;
+}
+
+export default function UserInfo({ name, admin, prime }: UserInfoProps) {
+  // TODO: come back and change so that prime is past through as child to determine what colors
   return (
     <View style={globalStyles.postUserInfo}>
       <View style={globalStyles.postUserInfoPicContainer}>
@@ -26,7 +20,10 @@ export default function UserInfo({ name, admin, prime }) {
       </View>
       <View style={globalStyles.postUserInfoTextContainer}>
         {/* TODO: Change this to the user id of the user name so pressing can go to users page */}
-        <Pressable onPress={() => router.push(`/${name}`)}>
+        <Pressable onPress={() => {
+          // TODO: Implement navigation to user profile
+          console.log(`Navigate to user: ${name}`);
+        }}>
           <Text
             style={
               admin
