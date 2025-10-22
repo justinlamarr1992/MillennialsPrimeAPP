@@ -7,6 +7,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { AuthProvider } from "@/provider/AuthProvider";
 import useAuth from "@/hooks/useAuth";
 import { View, ActivityIndicator } from "react-native";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -74,10 +75,12 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <BottomSheetModalProvider>
-        <RootLayoutNav />
-      </BottomSheetModalProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <BottomSheetModalProvider>
+          <RootLayoutNav />
+        </BottomSheetModalProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

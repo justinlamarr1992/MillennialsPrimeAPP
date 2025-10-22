@@ -7,6 +7,23 @@
 
 const isDev = __DEV__;
 
+/**
+ * Error tracking service integration point
+ * Replace this with your actual error tracking service (Sentry, Bugsnag, Firebase Crashlytics, etc.)
+ */
+const sendToErrorTracking = (error: Error, context?: Record<string, unknown>) => {
+  // TODO: Implement error tracking service integration
+  // Examples:
+  // Sentry: Sentry.captureException(error, { extra: context });
+  // Bugsnag: Bugsnag.notify(error, (event) => { event.addMetadata('context', context); });
+  // Firebase Crashlytics: crashlytics().recordError(error);
+
+  // For now, just log to console in production
+  if (!isDev) {
+    console.error('[Error Tracking]', error, context);
+  }
+};
+
 export const logger = {
   /**
    * Log general information (only in development)
@@ -33,9 +50,25 @@ export const logger = {
     if (isDev) {
       console.error(...args);
     } else {
-      // In production, send to error tracking service (Sentry, Bugsnag, etc.)
-      // TODO: Integrate with error tracking service
       console.error(...args);
+      // Try to send first error as Error object to tracking service
+      const firstArg = args[0];
+      if (firstArg instanceof Error) {
+        sendToErrorTracking(firstArg, { additionalArgs: args.slice(1) });
+      }
+    }
+  },
+
+  /**
+   * Log exceptions with context (always sent to error tracking in production)
+   */
+  exception: (error: Error, context?: Record<string, unknown>) => {
+    if (isDev) {
+      console.error('[Exception]', error, context);
+    }
+    // Always send exceptions to error tracking service in production
+    if (!isDev) {
+      sendToErrorTracking(error, context);
     }
   },
 
