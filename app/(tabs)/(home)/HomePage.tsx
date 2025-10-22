@@ -98,20 +98,25 @@ export default function Page() {
   // };
 
   const getInfo = () => {
+    const accessKey = process.env.EXPO_PUBLIC_BUNNYCDN_ACCESS_KEY;
+    const libraryId = process.env.EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID;
+    const apiUrl = process.env.EXPO_PUBLIC_BUNNYCDN_API_URL;
+
+    if (!accessKey || !libraryId || !apiUrl) {
+      console.error("Missing BunnyCDN environment variables");
+      return;
+    }
+
     const options = {
       method: "GET",
       headers: {
         accept: "application/json",
-        // Test
-        // AccessKey: "8ad268ac-6b0a-46fb-92d9b1a6d918-c4e1-4edf",
-        // Live
-        AccessKey: "a80779d4-9931-4345-80c1ca2315d2-fc09-4143",
+        AccessKey: accessKey,
       },
     };
 
     fetch(
-      "https://video.bunnycdn.com/library/147838/videos?page=1&itemsPerPage=2&orderBy=date",
-      // "https://video.bunnycdn.com/library/181057/videos?page=1&itemsPerPage=2&orderBy=date",
+      `${apiUrl}/library/${libraryId}/videos?page=1&itemsPerPage=2&orderBy=date`,
       options
     )
       .then((response) => response.json())

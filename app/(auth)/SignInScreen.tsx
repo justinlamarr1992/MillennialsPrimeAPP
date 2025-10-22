@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -12,49 +12,36 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { globalStyles } from "@/constants/global";
-// import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
-// import auth from "@react-native-firebase/auth";
-import axios from "axios";
-// import useAuth from "../../hooks/useAuth";
-import { FirebaseError } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 
 export default function SignInScreen() {
   const auth = getAuth();
-  // TODO: FIGUGRE OUT WHY THERES NO LOADING NOW
-  // const { login, logout, auth, setIsLoading } = useContext(AuthContext);
   const [email, setEmail] = useState("");
-  // const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState(null);
+  const [errMsg, setErrMsg] = useState("");
 
-  const [modalOpen, setModalOpen] = useState(false);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async () => {
     setLoading(true);
-    setErrMsg(null);
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // console.log("Success: user ", user);
-        // add the Mongo information or how to get the datahere
-        // login(user, password);
-        setLoading(false);
-        router.replace("/(tabs)/(home)/HomePage");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // setErrMsg(errorCode);
-        setErrMsg(errorMessage);
-        setLoading(false);
-        // TODO: Create an alert here when something wrong happens then the okay but with reset the button
-      });
+    setErrMsg("");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // Signed in successfully
+      // add the Mongo information or how to get the data here
+      router.replace("/(tabs)/(home)/HomePage");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = firebaseError.message || "An error occurred during sign in";
+      setErrMsg(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

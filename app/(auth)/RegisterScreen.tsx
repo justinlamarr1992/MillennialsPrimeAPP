@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -14,12 +14,9 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
-import axios from "axios";
+import { FirebaseError } from "firebase/app";
 
 const USER_REGEX = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i;
 // const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -27,18 +24,11 @@ const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 export default function RegisterScreen() {
-  console.log(auth);
+  const auth = getAuth();
   // const { register, auth } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const ref = useRef(null);
-  const userRef = useRef();
-  const errRef = useRef();
-
-  const auth = getAuth();
   const [loading, setLoading] = useState(false);
 
   // const [user, setUser] = useState("");
@@ -81,14 +71,13 @@ export default function RegisterScreen() {
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
   };
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
+  const onChange = ({ type }: { type: string }, selectedDate?: Date) => {
+    if (type === "set" && selectedDate) {
       const currentDate = selectedDate;
       setDate(currentDate);
 
       if (Platform.OS === "android") {
         toggleDatePicker();
-        // setDateOfBirth(currentDate.toDateString());
         setDOB(currentDate.toDateString());
       }
     } else {
@@ -102,44 +91,33 @@ export default function RegisterScreen() {
     toggleDatePicker();
   };
 
-  const handleSubmit = async (e) => {
-    setErrMsg(null);
+  const handleSubmit = async () => {
+    setErrMsg("");
     setLoading(true);
+
     const v1 = USER_REGEX.test(email);
     const v2 = PASSWORD_REGEX.test(password);
+
     if (!v1 || !v2) {
       setErrMsg("Invalid Entry");
+      setLoading(false);
       return;
     }
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        alert("Your Registered");
-        // add the Mongo information or how to get the datahere
-        // register(user, password, firstName, lastName, DOB);
-        router.navigate("/SignInScreen");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        setErrMsg(errorMessage);
-        // TODO: Create an alert here when something wrong happens then the okay but with reset the button
-      });
-    setLoading(false);
-    // console.log(
-    //   "User: ",
-    //   email,
-    //   " Password: ",
-    //   password,
-    //   " First Name: ",
-    //   firstName,
-    //   " Last Name: ",
-    //   lastName,
-    //   " DOB: ",
-    //   DOB
-    // );
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      // Signed up successfully
+      alert("You're Registered");
+      // add the Mongo information or how to get the data here
+      // register(user, password, firstName, lastName, DOB);
+      router.replace("/(auth)/SignInScreen");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = firebaseError.message || "An error occurred during registration";
+      setErrMsg(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -270,12 +248,10 @@ export default function RegisterScreen() {
               </Text>
               {showPicker && (
                 <DateTimePicker
-                  style={globalStyles.datePicker}
                   mode="date"
                   display="spinner"
                   value={date}
                   onChange={onChange}
-                  placeholderTextColor={colors["plcHoldText"]}
                   maximumDate={new Date("1997-1-1")}
                   minimumDate={new Date("1981-1-1")}
                 />
