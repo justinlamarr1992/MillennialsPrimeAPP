@@ -23,7 +23,7 @@ export default function TextPost({ name, title, description, prime, admin }: Tex
   // TODO: Add dynamic ID Check with auth to match if the post can be deleted
 
   const removePost = () => {
-    console.log("Post to be removed in the background");
+    // TODO: Implement post deletion
   };
   return (
     <LinearGradient
