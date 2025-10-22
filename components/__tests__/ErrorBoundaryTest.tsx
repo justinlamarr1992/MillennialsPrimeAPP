@@ -115,13 +115,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'column',
-    gap: 10,
     marginBottom: 20,
   },
   button: {
     padding: 12,
     borderRadius: 6,
     alignItems: 'center',
+    marginBottom: 10,
   },
   dangerButton: {
     backgroundColor: '#d32f2f',
