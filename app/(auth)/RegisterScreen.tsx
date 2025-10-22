@@ -18,8 +18,10 @@ import { COLORS } from "@/constants/Colors";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
-const USER_REGEX = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i;
-// const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+// Improved email validation regex with proper structure validation
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+// Strong password: 8-24 chars, uppercase, lowercase, number, special char
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
@@ -56,7 +58,7 @@ export default function RegisterScreen() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    setValidName(USER_REGEX.test(email));
+    setValidName(EMAIL_REGEX.test(email));
   }, [email]);
 
   useEffect(() => {
@@ -95,11 +97,17 @@ export default function RegisterScreen() {
     setErrMsg("");
     setLoading(true);
 
-    const v1 = USER_REGEX.test(email);
-    const v2 = PASSWORD_REGEX.test(password);
+    const validEmail = EMAIL_REGEX.test(email);
+    const validPassword = PASSWORD_REGEX.test(password);
 
-    if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
+    if (!validEmail) {
+      setErrMsg("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
+
+    if (!validPassword) {
+      setErrMsg("Password must be 8-24 characters with uppercase, lowercase, number, and special character (!@#$%)");
       setLoading(false);
       return;
     }

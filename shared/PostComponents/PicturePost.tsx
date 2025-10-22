@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Text, Pressable, useColorScheme } from "react-native";
 import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
@@ -9,13 +9,21 @@ import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import LikeComment from "../LikeComment";
 
+interface PicturePostProps {
+  name: string;
+  title: string;
+  description: string;
+  prime: boolean;
+  admin: boolean;
+}
+
 export default function PicturePost({
   name,
   title,
   description,
   prime,
   admin,
-}) {
+}: PicturePostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const viewer = 12345678;

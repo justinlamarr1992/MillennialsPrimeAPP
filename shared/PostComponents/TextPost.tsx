@@ -7,7 +7,15 @@ import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
 import LikeComment from "../LikeComment";
 
-export default function TextPost({ name, title, description, prime, admin }) {
+interface TextPostProps {
+  name: string;
+  title: string;
+  description: string;
+  prime: boolean;
+  admin: boolean;
+}
+
+export default function TextPost({ name, title, description, prime, admin }: TextPostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const viewer = 12345678;
