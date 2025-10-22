@@ -19,6 +19,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
 // Improved email validation regex with proper structure validation
+// TODO: Extract to shared constants file (e.g., constants/validation.ts) to ensure consistency and DRY
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // Strong password: 8-24 chars, uppercase, lowercase, number, special char
@@ -127,6 +128,7 @@ export default function RegisterScreen() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       // Signed up successfully
+      // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
       alert("You are registered");
       // add the Mongo information or how to get the data here
       // register(user, password, firstName, lastName, DOB);

@@ -11,7 +11,7 @@ interface UserInfoProps {
 }
 
 export default function UserInfo({ name, admin, prime }: UserInfoProps) {
-  // TODO: come back and change so that prime is past through as child to determine what colors
+  // TODO: come back and change so that prime is passed through as child to determine what colors
   return (
     <View style={globalStyles.postUserInfo}>
       <View style={globalStyles.postUserInfoPicContainer}>

@@ -36,6 +36,7 @@ const PasswordRecoveryScreen = () => {
 
     try {
       await sendPasswordResetEmail(auth, email);
+      // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
       alert("Check Your Email");
       router.replace("/(auth)/SignInScreen");
     } catch (error) {
