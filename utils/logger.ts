@@ -63,9 +63,8 @@ export const logger = {
    * Log exceptions with context (always sent to error tracking)
    */
   exception: (error: Error, context?: Record<string, unknown>) => {
-    if (isDev) {
-      console.error('[Exception]', error, context);
-    }
+    // Always log exceptions to console (critical errors should be visible)
+    console.error('[Exception]', error, context);
     // Always send exceptions to error tracking service
     sendToErrorTracking(error, context);
   },

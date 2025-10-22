@@ -57,9 +57,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    // Log error details
-    logger.error('ErrorBoundary caught an error:', error);
-    logger.error('Error details:', errorInfo);
+    // Log exception with context for structured error tracking
+    logger.exception(error, { componentStack: errorInfo.componentStack });
 
     // Update state with error info
     this.setState({ errorInfo });
@@ -69,9 +68,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       this.props.onError(error, errorInfo);
     }
 
-    // TODO: Send error to tracking service (Sentry, Bugsnag, Firebase Crashlytics)
-    // Example:
-    // Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
+    // Note: Error tracking is handled by logger.exception()
+    // which calls sendToErrorTracking() with the error and context
   }
 
   handleReset = (): void => {
