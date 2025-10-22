@@ -16,8 +16,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { AuthContext } from "../../provider/AuthProvider";
-// import UserInfo from "./PostItems/UserInfo";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
