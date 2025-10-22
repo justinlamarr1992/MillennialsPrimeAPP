@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Link, router } from "expo-router";
+import React, { useState } from "react";
+import { router } from "expo-router";
 import {
   useColorScheme,
   Text,
@@ -14,34 +14,38 @@ import {
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 
 const PasswordRecoveryScreen = () => {
-  const errRef = useRef();
-  const [email, setEmail] = useState(null);
+  const auth = getAuth();
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const [errMsg, setErrMsg] = useState(null);
+  const [errMsg, setErrMsg] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (!email) {
+      setErrMsg("Please enter your email address");
+      return;
+    }
+
     setLoading(true);
-    const auth = getAuth();
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        alert("Check Your Email");
-        setLoading(false);
-        router.navigate("/SignInScreen");
-        // Password reset email sent!
-        // ..
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrMsg(errorMessage);
-        setLoading(false);
-        // ..
-      });
+    setErrMsg("");
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
+      alert("Check Your Email");
+      router.replace("/(auth)/SignInScreen");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = firebaseError.message || "An error occurred sending password reset email";
+      setErrMsg(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

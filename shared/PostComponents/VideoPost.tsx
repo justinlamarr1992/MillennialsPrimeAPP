@@ -1,13 +1,22 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Text, Pressable, useColorScheme } from "react-native";
 import { WebView } from "react-native-webview";
-import { Video, ResizeMode } from "expo-av";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/Colors";
 import LikeComment from "../LikeComment";
+
+interface VideoPostProps {
+  url?: string;
+  title: string;
+  description: string;
+  prime: boolean;
+  admin: boolean;
+  libraryId?: string | number;
+  videoId?: string;
+}
 
 export default function VideoPost({
   url,
@@ -17,7 +26,7 @@ export default function VideoPost({
   admin,
   libraryId,
   videoId,
-}) {
+}: VideoPostProps) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const colorScheme = useColorScheme();
@@ -27,7 +36,7 @@ export default function VideoPost({
   // TODO: Add dynamic ID Check with auth to match if the post can be deleted
 
   const removePost = () => {
-    console.log("Post to be removed in the background");
+    // TODO: Implement post deletion
   };
   return (
     <LinearGradient

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -14,31 +14,36 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 
-import axios from "axios";
+// Improved email validation regex with proper structure validation
+// TODO: Extract to shared constants file (e.g., constants/validation.ts) to ensure consistency and DRY
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-const USER_REGEX = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i;
-// const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+// Strong password: 8-24 chars, uppercase, lowercase, number, special char
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
+// DateTimePicker event interface for type safety
+interface DatePickerEvent {
+  type: string;
+}
+
+// Birth year range constants - targeting Millennials generation
+// Born between 1981 and 1997 (age 28-44 in 2025)
+const MIN_BIRTH_YEAR = 1981;
+const MAX_BIRTH_YEAR = 1997;
+const MIN_BIRTH_DATE = new Date(`${MIN_BIRTH_YEAR}-1-1`);
+const MAX_BIRTH_DATE = new Date(`${MAX_BIRTH_YEAR}-1-1`);
+
 export default function RegisterScreen() {
-  console.log(auth);
+  const auth = getAuth();
   // const { register, auth } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const ref = useRef(null);
-  const userRef = useRef();
-  const errRef = useRef();
-
-  const auth = getAuth();
   const [loading, setLoading] = useState(false);
 
   // const [user, setUser] = useState("");
@@ -66,7 +71,7 @@ export default function RegisterScreen() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    setValidName(USER_REGEX.test(email));
+    setValidName(EMAIL_REGEX.test(email));
   }, [email]);
 
   useEffect(() => {
@@ -81,14 +86,13 @@ export default function RegisterScreen() {
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
   };
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
+  const onChange = (event: DatePickerEvent, selectedDate?: Date) => {
+    if (event.type === "set" && selectedDate) {
       const currentDate = selectedDate;
       setDate(currentDate);
 
       if (Platform.OS === "android") {
         toggleDatePicker();
-        // setDateOfBirth(currentDate.toDateString());
         setDOB(currentDate.toDateString());
       }
     } else {
@@ -102,44 +106,40 @@ export default function RegisterScreen() {
     toggleDatePicker();
   };
 
-  const handleSubmit = async (e) => {
-    setErrMsg(null);
+  const handleSubmit = async () => {
+    setErrMsg("");
     setLoading(true);
-    const v1 = USER_REGEX.test(email);
-    const v2 = PASSWORD_REGEX.test(password);
-    if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
+
+    const validEmail = EMAIL_REGEX.test(email);
+    const validPassword = PASSWORD_REGEX.test(password);
+
+    if (!validEmail) {
+      setErrMsg("Please enter a valid email address");
+      setLoading(false);
       return;
     }
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        alert("Your Registered");
-        // add the Mongo information or how to get the datahere
-        // register(user, password, firstName, lastName, DOB);
-        router.navigate("/SignInScreen");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        setErrMsg(errorMessage);
-        // TODO: Create an alert here when something wrong happens then the okay but with reset the button
-      });
-    setLoading(false);
-    // console.log(
-    //   "User: ",
-    //   email,
-    //   " Password: ",
-    //   password,
-    //   " First Name: ",
-    //   firstName,
-    //   " Last Name: ",
-    //   lastName,
-    //   " DOB: ",
-    //   DOB
-    // );
+
+    if (!validPassword) {
+      setErrMsg("Password must be 8-24 characters with uppercase, lowercase, number, and special character (!@#$%)");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      // Signed up successfully
+      // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
+      alert("You are registered");
+      // add the Mongo information or how to get the data here
+      // register(user, password, firstName, lastName, DOB);
+      router.replace("/(auth)/SignInScreen");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = firebaseError.message || "An error occurred during registration";
+      setErrMsg(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -270,14 +270,12 @@ export default function RegisterScreen() {
               </Text>
               {showPicker && (
                 <DateTimePicker
-                  style={globalStyles.datePicker}
                   mode="date"
                   display="spinner"
                   value={date}
                   onChange={onChange}
-                  placeholderTextColor={colors["plcHoldText"]}
-                  maximumDate={new Date("1997-1-1")}
-                  minimumDate={new Date("1981-1-1")}
+                  maximumDate={MAX_BIRTH_DATE}
+                  minimumDate={MIN_BIRTH_DATE}
                 />
               )}
               {/* IMPORTANT THE DATEPICKER TEXT COLOR IS OFF OF THE PHONE DAYTIME/NIGT PREF */}

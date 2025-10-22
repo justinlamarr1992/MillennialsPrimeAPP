@@ -7,7 +7,15 @@ import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
 import LikeComment from "../LikeComment";
 
-export default function TextPost({ name, title, description, prime, admin }) {
+interface TextPostProps {
+  name: string;
+  title: string;
+  description: string;
+  prime: boolean;
+  admin: boolean;
+}
+
+export default function TextPost({ name, title, description, prime, admin }: TextPostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const viewer = 12345678;
@@ -15,7 +23,7 @@ export default function TextPost({ name, title, description, prime, admin }) {
   // TODO: Add dynamic ID Check with auth to match if the post can be deleted
 
   const removePost = () => {
-    console.log("Post to be removed in the background");
+    // TODO: Implement post deletion
   };
   return (
     <LinearGradient
