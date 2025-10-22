@@ -25,6 +25,11 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
+// DateTimePicker event interface for type safety
+interface DatePickerEvent {
+  type: string;
+}
+
 export default function RegisterScreen() {
   const auth = getAuth();
   // const { register, auth } = useContext(AuthContext);
@@ -73,8 +78,8 @@ export default function RegisterScreen() {
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
   };
-  const onChange = ({ type }: { type: string }, selectedDate?: Date) => {
-    if (type === "set" && selectedDate) {
+  const onChange = (event: DatePickerEvent, selectedDate?: Date) => {
+    if (event.type === "set" && selectedDate) {
       const currentDate = selectedDate;
       setDate(currentDate);
 
@@ -115,7 +120,7 @@ export default function RegisterScreen() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       // Signed up successfully
-      alert("You're Registered");
+      alert("You are registered");
       // add the Mongo information or how to get the data here
       // register(user, password, firstName, lastName, DOB);
       router.replace("/(auth)/SignInScreen");

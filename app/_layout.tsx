@@ -24,7 +24,7 @@ function RootLayoutNav() {
     if (user && inAuthGroup) {
       // User is signed in but on auth screens, redirect to home
       router.replace("/(tabs)/(home)/HomePage");
-    } else if (!user && !inAuthGroup) {
+    } else if (!user && !inAuthGroup && segments[0] !== undefined) {
       // User is not signed in but trying to access protected routes, redirect to sign in
       router.replace("/(auth)/SignInScreen");
     }

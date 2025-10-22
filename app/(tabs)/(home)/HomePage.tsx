@@ -25,6 +25,7 @@ import CustomBottomSheet from "@/shared/Modals/CustomBottomSheet";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
+import { logger } from "@/utils/logger";
 import axios from "axios";
 
 export default function Page() {
@@ -103,7 +104,7 @@ export default function Page() {
     const apiUrl = process.env.EXPO_PUBLIC_BUNNYCDN_API_URL;
 
     if (!accessKey || !libraryId || !apiUrl) {
-      console.error("Missing BunnyCDN environment variables");
+      logger.error("Missing BunnyCDN environment variables");
       return;
     }
 

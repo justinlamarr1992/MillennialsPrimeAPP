@@ -11,7 +11,7 @@ export const logger = {
   /**
    * Log general information (only in development)
    */
-  log: (...args: any[]) => {
+  log: (...args: unknown[]) => {
     if (isDev) {
       console.log(...args);
     }
@@ -20,7 +20,7 @@ export const logger = {
   /**
    * Log warnings (only in development)
    */
-  warn: (...args: any[]) => {
+  warn: (...args: unknown[]) => {
     if (isDev) {
       console.warn(...args);
     }
@@ -29,7 +29,7 @@ export const logger = {
   /**
    * Log errors (always logged, should be sent to error tracking in production)
    */
-  error: (...args: any[]) => {
+  error: (...args: unknown[]) => {
     if (isDev) {
       console.error(...args);
     } else {
@@ -42,7 +42,7 @@ export const logger = {
   /**
    * Log debug information (only in development)
    */
-  debug: (...args: any[]) => {
+  debug: (...args: unknown[]) => {
     if (isDev) {
       console.debug(...args);
     }
@@ -51,7 +51,7 @@ export const logger = {
   /**
    * Log information about API calls (only in development)
    */
-  api: (method: string, url: string, data?: any) => {
+  api: (method: string, url: string, data?: unknown) => {
     if (isDev) {
       console.log(`[API ${method}]`, url, data ? data : '');
     }
