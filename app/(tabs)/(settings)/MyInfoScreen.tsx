@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -9,17 +9,10 @@ import {
   TextInput,
   useColorScheme,
 } from "react-native";
-// import { AuthContext } from "@/context/AuthContext";
 import { Picker } from "@react-native-picker/picker";
-
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-// import UserInfo from "./PostItems/UserInfo";
-
-import axios from "../../API/axios";
-// This is where the error starts
-// import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-// import axios from "axios";
 
 export default function MyInfoScreen() {
   // const axiosPrivate = useAxiosPrivate();
@@ -33,26 +26,24 @@ export default function MyInfoScreen() {
   const colors = COLORS[colorScheme ?? "dark"];
 
   // Use States
-  const [errMsg, setErrMsg] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());
   const [name, setName] = useState("");
-  const [username, setUsername] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [DOB, setDOB] = useState(null);
-  const [country, setCountry] = useState(null);
-  const [state, setState] = useState(null);
-  const [city, setCity] = useState(null);
-  const [zip, setZip] = useState(null);
-  const [canLike, setCanLike] = useState(null);
-  const [canDislike, setCanDislike] = useState(null);
-  const [canComment, setCanComment] = useState(null);
-  const [canShare, setCanShare] = useState(null);
-  const [industry, setIndustry] = useState(null);
-  const [B2B, setB2B] = useState(null);
-  const [eComm, setEComm] = useState(null);
-  const [upload, setUpload] = useState(null);
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [DOB, setDOB] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [zip, setZip] = useState<string>("");
+  const [canLike, setCanLike] = useState<string>("");
+  const [canDislike, setCanDislike] = useState<string>("");
+  const [canComment, setCanComment] = useState<string>("");
+  const [canShare, setCanShare] = useState<string>("");
+  const [industry, setIndustry] = useState<string>("");
+  const [B2B, setB2B] = useState<string>("");
+  const [eComm, setEComm] = useState<string>("");
+  const [upload, setUpload] = useState<string>("");
 
   // Pickers
   const [showPicker, setShowPicker] = useState(false);
@@ -142,14 +133,13 @@ export default function MyInfoScreen() {
   const toggleUploadPicker = () => {
     setUploadPicker(!uploadPicker);
   };
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
-      const currentDate = selectedDate;
-      setDate(currentDate);
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    if (event.type === "set" && selectedDate) {
+      setDate(selectedDate);
 
       if (Platform.OS === "android") {
         toggleDatePicker();
-        setDateOfBirth(currentDate.toDateString());
+        setDateOfBirth(selectedDate.toDateString());
       }
     } else {
       toggleDatePicker();
@@ -161,46 +151,46 @@ export default function MyInfoScreen() {
     toggleDatePicker();
   };
 
-  const handleChange = (e) => {
+  const handleChange = () => {
     // setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     // console.log(values.name);
     console.log(name);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
       console.log("Started the APP test");
-      let dataToSubmit = {
-        name,
-        username,
-        email,
-        DOB,
-        country,
-        state,
-        city,
-        zip,
-        canLike,
-        canDislike,
-        canComment,
-        canShare,
-        industry,
-        B2B,
-        eComm,
-        upload,
-      };
+      // let dataToSubmit = {
+      //   name,
+      //   username,
+      //   email,
+      //   DOB,
+      //   country,
+      //   state,
+      //   city,
+      //   zip,
+      //   canLike,
+      //   canDislike,
+      //   canComment,
+      //   canShare,
+      //   industry,
+      //   B2B,
+      //   eComm,
+      //   upload,
+      // };
       // console.log(`From useContext id: ${id}`);
       // console.log(`Saved to useState _id: ${_id}`);
       console.log("Starting the try to get in to back end ");
-      const response = await axiosPrivate.patch(
-        `https://us-central1-millennialsprime.cloudfunctions.net/api/users/${_id}`,
-        { values }
-      );
+      // const response = await axiosPrivate.patch(
+      //   `https://us-central1-millennialsprime.cloudfunctions.net/api/users/${_id}`,
+      //   { values }
+      // );
       // const response = await axios.patch(
       //   `users/profilesettings/662a6321a0e8a4dd4be50586`,
       //   { dataToSubmit }
       // );
 
-      console.log(response);
+      // console.log(response);
     } catch (err) {
       console.log("ERR", err);
     }
@@ -287,13 +277,10 @@ export default function MyInfoScreen() {
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
-                name="name"
-                id="name"
                 placeholder="Enter Name"
                 value={name}
                 onChangeText={(text) => setName(text)}
-                onChange={handleChange}
-              ></TextInput>
+              />
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors.text }]}>
@@ -342,11 +329,8 @@ export default function MyInfoScreen() {
                 placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter Country"
                 value={country}
-                name="country"
-                id="country"
                 onChangeText={(text) => setCountry(text)}
-                onChange={handleChange}
-              ></TextInput>
+              />
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors.text }]}>
@@ -357,11 +341,8 @@ export default function MyInfoScreen() {
                 placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter State"
                 value={state}
-                name="state"
-                id="state"
                 onChangeText={(text) => setState(text)}
-                onChange={handleChange}
-              ></TextInput>
+              />
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors.text }]}>
@@ -372,11 +353,8 @@ export default function MyInfoScreen() {
                 placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter City"
                 value={city}
-                name="city"
-                id="city"
                 onChangeText={(text) => setCity(text)}
-                onChange={handleChange}
-              ></TextInput>
+              />
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors.text }]}>
@@ -388,11 +366,8 @@ export default function MyInfoScreen() {
                 placeholder="Enter Zip"
                 keyboardType="number-pad"
                 value={zip}
-                name="zip"
-                id="zip"
                 onChangeText={(text) => setZip(text)}
-                onChange={handleChange}
-              ></TextInput>
+              />
             </View>
           </View>
           <View style={globalStyles.groupPadding}>
@@ -649,7 +624,6 @@ export default function MyInfoScreen() {
             <Pressable
               style={[
                 globalStyles.button,
-                globalStyles.vertMargin,
                 { backgroundColor: colors.triC, marginBottom: 25 },
               ]}
             >
