@@ -1,11 +1,25 @@
 import React, { useState } from "react";
 import { Text } from "react-native";
 import { WebView } from "react-native-webview";
-import { Video, ResizeMode } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
 import { globalStyles } from "@/constants/global";
 import LikeComment from "../LikeComment";
+
+interface PrimeNewsPostProps {
+  guid: string;
+  dateUploaded: string;
+  videoLibraryId: string;
+  name: string;
+  time: string;
+  url: string;
+  title: string;
+  description: string;
+  prime: boolean;
+  admin: boolean;
+  libraryId: string;
+  videoId: string;
+}
 
 export default function PrimeNewsPost({
   guid,
@@ -20,7 +34,7 @@ export default function PrimeNewsPost({
   admin,
   libraryId,
   videoId,
-}) {
+}: PrimeNewsPostProps) {
   // Determins if the post will be red or gold
 
   return (
