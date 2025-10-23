@@ -15,6 +15,7 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { logger } from "@/utils/logger";
 
 export default function UploadBox() {
   const colorScheme = useColorScheme();
@@ -56,7 +57,7 @@ export default function UploadBox() {
   const [valueStuff, setValueStuff] = useState(false);
 
   //   Use Refs
-  const uploadRef = useRef<Picker<string | null>>(null);
+  const uploadRef = useRef(null);
 
   const toggleUploadPicker = () => {
     setUploadPicker(!uploadPicker);
@@ -111,16 +112,6 @@ export default function UploadBox() {
     } else if (e == "E-Commerence") {
       setUpload("E-Commerence");
     }
-  };
-  const handleChangeTitle = (e: { currentTarget: { value: string } }) => {
-    // console.log(e.currentTarget.value);
-    setTitle(e.currentTarget.value);
-    setObject({ ...object, title: title });
-  };
-  const handleChangeDescription = (e: { currentTarget: { value: string } }) => {
-    // console.log(e.currentTarget.value);
-    setDescription(e.currentTarget.value);
-    setObject({ ...object, description: description });
   };
   const handleWhoChange = (e: number) => {
     setPrime(e);
@@ -233,7 +224,8 @@ export default function UploadBox() {
           }
         }
       } catch (err) {
-        alert(`Change this later because you have an err: ${err}`);
+        alert("Failed to upload video. Please try again.");
+        logger.error("Upload error:", err);
       } finally {
         console.log("Step 8");
         // EDIT VIDEO may need to move this to the backend

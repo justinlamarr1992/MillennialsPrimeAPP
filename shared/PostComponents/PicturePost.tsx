@@ -15,6 +15,7 @@ interface PicturePostProps {
   description: string;
   prime: boolean;
   admin: boolean;
+  picture?: string;
 }
 
 export default function PicturePost({
@@ -23,6 +24,7 @@ export default function PicturePost({
   description,
   prime,
   admin,
+  picture,
 }: PicturePostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -52,8 +54,8 @@ export default function PicturePost({
       {/* Picture here */}
       <Image
         style={globalStyles.image}
-        source={LoadingPic}
-        placeholder={{ blurhash }}
+        source={picture ? { uri: picture } : LoadingPic}
+        placeholder={blurhash}
         contentFit="cover"
         transition={1000}
       />

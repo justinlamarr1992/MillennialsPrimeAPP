@@ -70,7 +70,7 @@ export default function PicturePost({
       <Image
         style={globalStyles.itemImage}
         source={{ uri: picture }}
-        placeholder={{ blurhash }}
+        placeholder={blurhash}
         contentFit="cover"
         transition={1000}
       />
