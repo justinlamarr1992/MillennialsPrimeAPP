@@ -36,10 +36,10 @@ export default function MyInfoScreen() {
   const [state, setState] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [zip, setZip] = useState<string>("");
-  const [canLike, setCanLike] = useState<string>("");
-  const [canDislike, setCanDislike] = useState<string>("");
-  const [canComment, setCanComment] = useState<string>("");
-  const [canShare, setCanShare] = useState<string>("");
+  const [canLike, setCanLike] = useState<"yes" | "no" | "">("");
+  const [canDislike, setCanDislike] = useState<"yes" | "no" | "">("");
+  const [canComment, setCanComment] = useState<"yes" | "no" | "">("");
+  const [canShare, setCanShare] = useState<"yes" | "no" | "">("");
   const [industry, setIndustry] = useState<string>("");
   const [B2B, setB2B] = useState<string>("");
   const [eComm, setEComm] = useState<string>("");
