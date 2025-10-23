@@ -151,12 +151,13 @@ export default function MyInfoScreen() {
     toggleDatePicker();
   };
 
-  const handleChange = () => {
-    // setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    // console.log(values.name);
-    console.log(name);
-  };
-
+  // TODO: Implement Firebase integration for form submission
+  // The commented code below shows the original backend integration pattern.
+  // To implement:
+  // 1. Uncomment imports: useAxiosPrivate, useContext, AuthContext (lines 18-21)
+  // 2. Update AuthContext to include: auth, accessToken, roles, id, logout, userInfo
+  // 3. OR migrate to Firebase Firestore for data storage
+  // 4. Update the user document in Firestore with the form values
   const handleSubmit = async () => {
     try {
       console.log("Started the APP test");
@@ -201,49 +202,7 @@ export default function MyInfoScreen() {
     // }
     console.log("Handle Submit pressed");
   };
-  // const handleSubmit = async (e) => {
-  //   try {
-  //     console.log("Started the try to submit MyInfo Stuff");
-  //     let dataToSubmit = {
-  //       name,
-  //       username,
-  //       email,
-  //       DOB,
-  //       country,
-  //       state,
-  //       city,
-  //       zip,
-  //       canLike,
-  //       canDislike,
-  //       canComment,
-  //       canShare,
-  //       industry,
-  //       B2B,
-  //       eComm,
-  //       upload,
-  //     };
-  //     const response = await axios.patch(
-  //       `https://us-central1-millennialsprime.cloudfunctions.net/api/users/${_id}`,
-  //       { dataToSubmit }
-  //     );
-  //     // This is what I want with axios private
-  //     // const response = await axiosPrivate.patch(
-  //     //   `https://us-central1-millennialsprime.cloudfunctions.net/api/users/${_id}`,
-  //     //   { dataToSubmit }
-  //     // );
-  //     // This is what I want with axios private
 
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.log("ERR", err);
-  //   }
-  //   // finally {
-  //   // console.log("It worked!!!");
-  //   // navigation.jumpTo("Business");
-  //   // navigation.navigate("Business");
-  //   // }
-  //   console.log("Handle Submit pressed");
-  // };
 
   return (
     <KeyboardAvoidingView
@@ -381,7 +340,6 @@ export default function MyInfoScreen() {
                   placeholder="Can Users Like your Post?"
                   value={canLike}
                   onChangeText={setCanLike}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleCanLikePicker}
                 ></TextInput>
@@ -410,7 +368,6 @@ export default function MyInfoScreen() {
                   placeholder="Can Users Dislike your Post"
                   value={canDislike}
                   onChangeText={setCanDislike}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleCanDislikePicker}
                 ></TextInput>
@@ -437,7 +394,6 @@ export default function MyInfoScreen() {
                   placeholder="Can Users Comment on Your Post"
                   value={canComment}
                   onChangeText={setCanComment}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleCanCommentPicker}
                 ></TextInput>
@@ -464,7 +420,6 @@ export default function MyInfoScreen() {
                   placeholder="Can Users Share your Post"
                   value={canShare}
                   onChangeText={setCanShare}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleCanSharePicker}
                 ></TextInput>
@@ -493,7 +448,6 @@ export default function MyInfoScreen() {
                   placeholder="What is the Industry you Operate in"
                   value={industry}
                   onChangeText={setIndustry}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleIndustryPicker}
                 ></TextInput>
@@ -554,7 +508,6 @@ export default function MyInfoScreen() {
                   placeholder="Business to Business?"
                   value={B2B}
                   onChangeText={setB2B}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleB2BPicker}
                 ></TextInput>
@@ -579,7 +532,6 @@ export default function MyInfoScreen() {
                   placeholder="Would you like to Sell Items"
                   value={eComm}
                   onChangeText={setEComm}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleECommPicker}
                 ></TextInput>
@@ -604,7 +556,6 @@ export default function MyInfoScreen() {
                   placeholder="Do you have Cont to Upload"
                   value={upload}
                   onChangeText={setUpload}
-                  onChange={handleChange}
                   editable={false}
                   onPressIn={toggleUploadPicker}
                 ></TextInput>
