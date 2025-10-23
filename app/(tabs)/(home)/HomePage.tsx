@@ -129,10 +129,11 @@ export default function Page() {
         // ),
         setPost({
           title: response.items[0].title,
-          // description: response.items[0].metaTags[0].value,
+          description: response.items[0].metaTags?.[0]?.value || "",
           guid: response.items[0].guid,
           dateUploaded: response.items[0].dateUploaded,
           videoLibraryId: response.items[0].videoLibraryId,
+          key: response.items[0].guid,
         })
       )
       .catch((err) => console.error(err));
@@ -170,6 +171,10 @@ export default function Page() {
             time={post.dateUploaded}
             guid={post.guid}
             videoLibraryId={post.videoLibraryId}
+            dateUploaded={post.dateUploaded}
+            url={`https://video.bunnycdn.com/embed/${post.videoLibraryId}/${post.guid}`}
+            libraryId={post.videoLibraryId}
+            videoId={post.guid}
           />
 
           {/* TODO: Then the lastest/ Popular post  */}

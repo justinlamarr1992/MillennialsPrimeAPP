@@ -5,7 +5,9 @@ import useAuth from "./useAuth";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
-  const { auth, setAuth } = useAuth();
+  // TODO: This hook needs to be updated to work with Firebase AuthContext
+  // The current AuthContext only has { user, loading } but this expects { auth, setAuth }
+  const auth = useAuth();
 
   useEffect(() => {
     console.log(`From the useAxiosPrivate file this is the AUTH: ${auth}`);
