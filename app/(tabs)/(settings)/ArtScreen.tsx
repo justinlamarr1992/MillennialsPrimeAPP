@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -10,39 +10,36 @@ import {
   useColorScheme,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { LinearGradient } from "expo-linear-gradient";
-// import UserInfo from "./PostItems/UserInfo";
-
-import axios from "axios";
+import { useRouter } from "expo-router";
 
 export default function ArtScreen() {
+  const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const [modalOpen, setModalOpen] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
-  const [artist, setArtist] = useState(null);
-  const [artistPicker, setArtistPicker] = useState(null);
-  const [professional, setProfessional] = useState(null);
-  const [professionalPicker, setProfessionalPicker] = useState(null);
-  const [purpose, setPurpose] = useState(null);
-  const [affectIssues, setAffectIssues] = useState(null);
-  const [navigateIndustry, setNavigateIndustry] = useState(null);
-  const [inspirationOfWork, setInspirationOfWork] = useState(null);
-  const [styleChanged, setStyleChanged] = useState(null);
-  const [favsOrNoneFavs, setFavsOrNoneFavs] = useState(null);
-  const [network, setNetwork] = useState(null);
-  const [networkPicker, setNetworkPicker] = useState(null);
-  const [support, setSupport] = useState(null);
-  const [critics, setCritics] = useState(null);
-  const [specificIntegral, setSpecificIntegral] = useState(null);
-  const [specificIntegralPicker, setSpecificIntegralPicker] = useState(null);
-  const [whatSpecfic, setWhatSpecfic] = useState(null);
+  const [artist, setArtist] = useState<string>("");
+  const [artistPicker, setArtistPicker] = useState<boolean>(false);
+  const [professional, setProfessional] = useState<string>("");
+  const [professionalPicker, setProfessionalPicker] = useState<boolean>(false);
+  const [purpose, setPurpose] = useState<string>("");
+  const [affectIssues, setAffectIssues] = useState<string>("");
+  const [navigateIndustry, setNavigateIndustry] = useState<string>("");
+  const [inspirationOfWork, setInspirationOfWork] = useState<string>("");
+  const [styleChanged, setStyleChanged] = useState<string>("");
+  const [favsOrNoneFavs, setFavsOrNoneFavs] = useState<string>("");
+  const [network, setNetwork] = useState<string>("");
+  const [networkPicker, setNetworkPicker] = useState<boolean>(false);
+  const [support, setSupport] = useState<string>("");
+  const [critics, setCritics] = useState<string>("");
+  const [specificIntegral, setSpecificIntegral] = useState<string>("");
+  const [specificIntegralPicker, setSpecificIntegralPicker] = useState<boolean>(false);
+  const [whatSpecfic, setWhatSpecfic] = useState<string>("");
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
@@ -74,14 +71,13 @@ export default function ArtScreen() {
     setSpecificIntegralPicker(!specificIntegralPicker);
   };
 
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
-      const currentDate = selectedDate;
-      setDate(currentDate);
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    if (event.type === "set" && selectedDate) {
+      setDate(selectedDate);
 
       if (Platform.OS === "android") {
         toggleDatePicker();
-        setDateOfBirth(currentDate.toDateString());
+        setDateOfBirth(selectedDate.toDateString());
       }
     } else {
       toggleDatePicker();
@@ -93,15 +89,14 @@ export default function ArtScreen() {
     toggleDatePicker();
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
       console.log("Started the try to submit Art Stuff");
     } catch (err) {
       console.log("ERR", err);
     } finally {
       console.log("It worked!!!");
-      // navigation.jumpTo("Business");
-      navigation.navigate("Home");
+      router.push("/(tabs)/(home)/HomePage");
     }
     console.log("Handle Submit pressed");
   };
@@ -141,7 +136,7 @@ export default function ArtScreen() {
               {artistPicker && (
                 <Picker
                   selectedValue={artist}
-                  onValueChange={(itemValue, itemIndex) => setArtist(itemValue)}
+                  onValueChange={(itemValue) => setArtist(itemValue)}
                 >
                   <Picker.Item label="Yes" value="Yes" />
                   <Picker.Item label="No" value="No" />
@@ -167,7 +162,7 @@ export default function ArtScreen() {
                       {professionalPicker && (
                         <Picker
                           selectedValue={professional}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setProfessional(itemValue)
                           }
                         >
@@ -275,7 +270,7 @@ export default function ArtScreen() {
                       {networkPicker && (
                         <Picker
                           selectedValue={network}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setNetwork(itemValue)
                           }
                         >
@@ -315,7 +310,7 @@ export default function ArtScreen() {
                       {specificIntegralPicker && (
                         <Picker
                           selectedValue={specificIntegral}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setSpecificIntegral(itemValue)
                           }
                         >
@@ -346,7 +341,6 @@ export default function ArtScreen() {
             <Pressable
               style={[
                 globalStyles.button,
-                globalStyles.vertMargin,
                 { backgroundColor: colors.triC, marginBottom: 25 },
               ]}
             >
