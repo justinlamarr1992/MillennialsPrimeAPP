@@ -98,8 +98,17 @@ export default function Page() {
   //   setModalOpen(false);
   // };
 
+  // Define interface for BunnyCDN video item structure
+  interface VideoItem {
+    title: string;
+    guid: string;
+    dateUploaded: string;
+    videoLibraryId: string;
+    metaTags?: Array<{ value?: string }>;
+  }
+
   // Helper function to safely extract description from video metadata
-  const getVideoDescription = (item: any): string => {
+  const getVideoDescription = (item: VideoItem): string => {
     if (item?.metaTags && Array.isArray(item.metaTags) && item.metaTags.length > 0) {
       return item.metaTags[0]?.value || "";
     }
