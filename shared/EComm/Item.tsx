@@ -6,8 +6,7 @@ import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
-
-const LoadingPic = require("@/assets/images/MillennialsPrimeLogoNB.png");
+import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 
 interface ItemProps {
   itemName: string;
