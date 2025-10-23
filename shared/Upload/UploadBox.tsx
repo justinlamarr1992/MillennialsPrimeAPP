@@ -17,6 +17,16 @@ import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { logger } from "@/utils/logger";
 
+interface VideoAsset {
+  uri: string;
+  type: string;
+  name: string;
+}
+
+interface VideoPickerResult {
+  assets: VideoAsset[];
+}
+
 export default function UploadBox() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -25,8 +35,9 @@ export default function UploadBox() {
   // const { id } = useContext(AuthContext);
   // const _id = id;
 
-  let videoFile: { uri: string; type: string; name: string } | undefined;
+  let videoFile: VideoAsset | undefined;
 
+  // formData starts as FormData but is reassigned to a plain object in handleSubmit (line 150)
   let formData: FormData | Record<string, unknown> = new FormData();
 
   var tus = require("tus-js-client");
@@ -128,7 +139,7 @@ export default function UploadBox() {
     setValueStuff(stuff);
   }
   //   stuff == videoValue
-  function handleVideoSelect(videoValue: { assets: Array<{ uri: string; type: string; name: string }> }) {
+  function handleVideoSelect(videoValue: VideoPickerResult) {
     // console.log("THIS IS THE INFO From Picture Picker ", videoValue);
     videoFile = videoValue.assets[0];
     console.log("Video file after button click", videoFile);
@@ -224,7 +235,8 @@ export default function UploadBox() {
           }
         }
       } catch (err) {
-        alert("Failed to upload video. Please try again.");
+        const baseMessage = "Failed to upload video. Possible causes:\n- Network connectivity issues\n- Unsupported file format\n- File size exceeds limits\n\nPlease check your connection and file, then try again.";
+        alert(baseMessage);
         logger.error("Upload error:", err);
       } finally {
         console.log("Step 8");

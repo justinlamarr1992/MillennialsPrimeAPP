@@ -98,6 +98,14 @@ export default function Page() {
   //   setModalOpen(false);
   // };
 
+  // Helper function to safely extract description from video metadata
+  const getVideoDescription = (item: any): string => {
+    if (item?.metaTags && Array.isArray(item.metaTags) && item.metaTags.length > 0) {
+      return item.metaTags[0]?.value || "";
+    }
+    return "";
+  };
+
   const getInfo = () => {
     const accessKey = process.env.EXPO_PUBLIC_BUNNYCDN_ACCESS_KEY;
     const libraryId = process.env.EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID;
@@ -129,7 +137,7 @@ export default function Page() {
         // ),
         setPost({
           title: response.items[0].title,
-          description: response.items[0].metaTags?.[0]?.value || "",
+          description: getVideoDescription(response.items[0]),
           guid: response.items[0].guid,
           dateUploaded: response.items[0].dateUploaded,
           videoLibraryId: response.items[0].videoLibraryId,
