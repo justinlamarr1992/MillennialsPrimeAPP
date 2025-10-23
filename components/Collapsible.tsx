@@ -23,7 +23,8 @@ export function Collapsible({
         <Ionicons
           name={isOpen ? "chevron-down" : "chevron-forward-outline"}
           size={18}
-          color={theme === "light" ? Colors.light.icon : Colors.dark.icon}
+          // Using text color for icon as COLORS doesn't have a dedicated icon property
+          color={theme === "light" ? COLORS.light.text : COLORS.dark.text}
         />
         <ThemedText type="defaultSemiBold">{title}</ThemedText>
       </TouchableOpacity>

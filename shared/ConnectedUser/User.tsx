@@ -7,6 +7,15 @@ import { COLORS } from "@/constants/Colors";
 import ConnectedUserInfo from "./ConnectedUserInfo";
 import { Ionicons } from "@expo/vector-icons";
 
+interface UserProps {
+  name: string;
+  industry: string;
+  connected: boolean;
+  matching: boolean;
+  admin: boolean;
+  prime: boolean;
+}
+
 export default function User({
   name,
   industry,
@@ -14,7 +23,7 @@ export default function User({
   matching,
   admin,
   prime,
-}) {
+}: UserProps) {
   const [bConnected, setBConnected] = useState(connected);
   // let prime = false;
   const colorScheme = useColorScheme();

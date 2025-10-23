@@ -4,14 +4,31 @@ import {
   Pressable,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  useColorScheme,
 } from "react-native";
 import React, { useState } from "react";
-import { useTheme, useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import { globalStyles } from "@/constants/global";
+import { COLORS } from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 
 import UserInfo from "../PostComponents/UserInfo";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
+
+interface PrimeCardProps {
+  userPosting: string;
+  id: string;
+  prime: boolean;
+  thumbnail: string;
+  videoLibraryId: string;
+  guid: string;
+  title: string;
+  description: string;
+  dateUploaded: string;
+  name: string;
+  time: string;
+  key: string;
+}
 
 export default function PrimeCard({
   userPosting,
@@ -26,22 +43,25 @@ export default function PrimeCard({
   name,
   time,
   key,
-}) {
-  const navigation = useNavigation();
+}: PrimeCardProps) {
+  const router = useRouter();
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
 
   var confirm;
-
-  const colors = useTheme().colors;
 
   console.log(id, description, prime, userPosting);
 
   const pressedVideo = () => {
-    navigation.navigate("PrimeShow", {
-      guid: guid,
-      videoLibraryId: videoLibraryId,
-      title: title,
-      description: description,
-      dateUploaded: dateUploaded,
+    router.push({
+      pathname: "/TabsLater/(showview)/PrimeShow",
+      params: {
+        guid: guid,
+        videoLibraryId: videoLibraryId,
+        title: title,
+        description: description,
+        dateUploaded: dateUploaded,
+      },
     });
   };
   const deleteVideo = () => {
@@ -85,7 +105,6 @@ export default function PrimeCard({
         globalStyles.post,
         globalStyles.flexRow,
         globalStyles.showView,
-        globalStyles.vertMargin,
       ]}
       colors={
         prime
@@ -100,14 +119,14 @@ export default function PrimeCard({
         <Text
           style={
             prime
-              ? [globalStyles.showViewTitle, { color: colors.primCarT }]
+              ? [globalStyles.showViewTitle, { color: colors.primeCarT }]
               : [globalStyles.showViewTitle, { color: colors.showCarT }]
           }
         >
           {title}
         </Text>
         <Text
-          style={[globalStyles.showViewDescription, { color: colors.primCarT }]}
+          style={[globalStyles.showViewDescription, { color: colors.primeCarT }]}
         >
           {/* "No Description for now" */}
           {!description ? description : "No Description for now"}
@@ -138,9 +157,9 @@ export default function PrimeCard({
           onPress={deleteVideo}
         >
           {prime ? (
-            <Ionicons name="trash" size="large" color="#611821" />
+            <Ionicons name="trash" size={24} color="#611821" />
           ) : (
-            <Ionicons name="trash" size="large" color="#fffd9b" />
+            <Ionicons name="trash" size={24} color="#fffd9b" />
           )}
         </TouchableOpacity>
       )}

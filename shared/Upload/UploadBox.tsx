@@ -15,6 +15,17 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { logger } from "@/utils/logger";
+
+interface VideoAsset {
+  uri: string;
+  type: string;
+  name: string;
+}
+
+interface VideoPickerResult {
+  assets: VideoAsset[];
+}
 
 export default function UploadBox() {
   const colorScheme = useColorScheme();
@@ -24,14 +35,15 @@ export default function UploadBox() {
   // const { id } = useContext(AuthContext);
   // const _id = id;
 
-  let videoFile;
+  let videoFile: VideoAsset | undefined;
 
-  let formData = new FormData();
+  // formData starts as FormData but is reassigned to a plain object in handleSubmit (line 150)
+  let formData: FormData | Record<string, unknown> = new FormData();
 
   var tus = require("tus-js-client");
 
   // Use States
-  const [upload, setUpload] = useState(null);
+  const [upload, setUpload] = useState<string | null>(null);
   const [uploadPicker, setUploadPicker] = useState(false);
   const [userPosting, setUserPosting] = useState({});
   const [title, setTitle] = useState("");
@@ -56,7 +68,7 @@ export default function UploadBox() {
   const [valueStuff, setValueStuff] = useState(false);
 
   //   Use Refs
-  const uploadRef = useRef(false);
+  const uploadRef = useRef(null);
 
   const toggleUploadPicker = () => {
     setUploadPicker(!uploadPicker);
@@ -68,7 +80,7 @@ export default function UploadBox() {
     setCategoryPicker(!categoryPicker);
   };
 
-  const uploadCheck = (e) => {
+  const uploadCheck = (e: string) => {
     setUploadPicker(false);
     console.log(e);
     if (e == "Text") {
@@ -112,37 +124,27 @@ export default function UploadBox() {
       setUpload("E-Commerence");
     }
   };
-  const handleChangeTitle = (e) => {
-    // console.log(e.currentTarget.value);
-    setTitle(e.currentTarget.value);
-    setObject({ ...object, title: title });
-  };
-  const handleChangeDescription = (e) => {
-    // console.log(e.currentTarget.value);
-    setDescription(e.currentTarget.value);
-    setObject({ ...object, description: description });
-  };
-  const handleWhoChange = (e) => {
+  const handleWhoChange = (e: number) => {
     setPrime(e);
     setObject({ ...object, prime: prime });
     setPrimePicker(false);
   };
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = (e: string) => {
     setCategory(e);
     setObject({ ...object, category: category });
     setCategoryPicker(false);
   };
-  function setStuff(stuff) {
+  function setStuff(stuff: boolean) {
     console.log("To the Parent its ", stuff);
     setValueStuff(stuff);
   }
   //   stuff == videoValue
-  function handleVideoSelect(videoValue) {
+  function handleVideoSelect(videoValue: VideoPickerResult) {
     // console.log("THIS IS THE INFO From Picture Picker ", videoValue);
     videoFile = videoValue.assets[0];
     console.log("Video file after button click", videoFile);
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     if (
@@ -176,7 +178,7 @@ export default function UploadBox() {
 
         const response = await axiosPrivate.post(`/videos/bunnyInfo`, formData);
         console.log(response.data);
-        if (response.data.success === true) {
+        if (response.data.success === true && videoFile) {
           try {
             // console.log("Video file after backend data", videoFile);
             // console.log("Video file individual data", videoFile);
@@ -198,11 +200,11 @@ export default function UploadBox() {
                 title: "Is this where the title is changed",
                 collection: "collectionID",
               },
-              onError: function (error) {
+              onError: function (error: Error) {
                 console.log("Step 2.5");
                 console.log("ERROR", error);
               },
-              onProgress: function (bytesUploaded, bytesTotal) {
+              onProgress: function (bytesUploaded: number, bytesTotal: number) {
                 console.log("Step 3");
                 console.log(
                   bytesTotal,
@@ -217,7 +219,7 @@ export default function UploadBox() {
               },
             });
             // Check if there are any previous uploads to continue.
-            upload.findPreviousUploads().then(function (previousUploads) {
+            upload.findPreviousUploads().then(function (previousUploads: unknown[]) {
               // Found previous uploads so we select the first one.
               if (previousUploads.length) {
                 console.log("Step 5");
@@ -233,7 +235,9 @@ export default function UploadBox() {
           }
         }
       } catch (err) {
-        alert("Change this later because you have an err", err);
+        const baseMessage = "Failed to upload video. Possible causes:\n- Network connectivity issues\n- Unsupported file format\n- File size exceeds limits\n\nPlease check your connection and file, then try again.";
+        alert(baseMessage);
+        logger.error("Upload error:", err);
       } finally {
         console.log("Step 8");
         // EDIT VIDEO may need to move this to the backend
@@ -283,7 +287,7 @@ export default function UploadBox() {
             <TextInput
               style={globalStyles.input}
               placeholder="Can Users Like your Post?"
-              value={upload}
+              value={upload || ""}
               //   onChangeText={setUpload}
               //   onChange={handleChange}
               editable={false}
@@ -296,12 +300,12 @@ export default function UploadBox() {
               style={{}}
               ref={uploadRef}
               selectedValue={upload}
-              onValueChange={(itemValue, itemIndex) => uploadCheck(itemValue)}
+              onValueChange={(itemValue) => uploadCheck(itemValue as string)}
             >
               <Picker.Item
                 label="Select your Option"
                 value=""
-                enabled="false"
+                enabled={false}
               />
               <Picker.Item label="Text" value="Text" />
               {/* Later change TEXT to post or something like  words idk */}
@@ -329,12 +333,9 @@ export default function UploadBox() {
               </Text>
               <TextInput
                 style={globalStyles.settingsInput}
-                name="title"
-                id="title"
                 placeholder="Enter Title Here"
                 value={title}
                 onChangeText={(text) => setTitle(text)}
-                onChange={handleChangeTitle}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
@@ -343,12 +344,9 @@ export default function UploadBox() {
               </Text>
               <TextInput
                 style={globalStyles.settingsInput}
-                name="description"
-                id="description"
                 placeholder="Enter A Brief Description Here"
                 value={description}
                 onChangeText={(text) => setDescription(text)}
-                onChange={handleChangeDescription}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
@@ -359,7 +357,7 @@ export default function UploadBox() {
                 <TextInput
                   style={globalStyles.input}
                   placeholder="Select Your Option"
-                  value={prime}
+                  value={String(prime)}
                   //   onChangeText={setUpload}
                   //   onChange={handleChange}
                   editable={false}
@@ -378,7 +376,7 @@ export default function UploadBox() {
                   <Picker.Item
                     label="Select your Option"
                     value=""
-                    enabled="false"
+                    enabled={false}
                   />
                   <Picker.Item label="Millennial's" value="Millennial's" />
                   <Picker.Item label="Primes" value="Primes" />
@@ -413,7 +411,7 @@ export default function UploadBox() {
                   <Picker.Item
                     label="Select your Option"
                     value=""
-                    enabled="false"
+                    enabled={false}
                   />
                   <Picker.Item label="All News" value="All News" />
                   <Picker.Item label="Music" value="Music" />
