@@ -3,17 +3,23 @@ import React, { useEffect, useContext } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
+// TODO: Update this hook to work with Firebase authentication
+// Currently uses old auth structure (auth, setAuth) which doesn't exist in current AuthContext
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
-  const { auth, setAuth } = useAuth();
+  // const { auth, setAuth } = useAuth(); // Commented out - not in current AuthContext
+  const { user } = useAuth();
 
   useEffect(() => {
-    console.log(`From the useAxiosPrivate file this is the AUTH: ${auth}`);
+    // TODO: Update to use Firebase user token
+    console.log(`From the useAxiosPrivate file this is the USER: ${user?.uid}`);
     const requestIntercept = axiosPrivate.interceptors.request.use(
-      (config) => {
+      async (config) => {
         // console.log(config.headers);
-        if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+        if (!config.headers["Authorization"] && user) {
+          // TODO: Get Firebase ID token here
+          // const token = await user.getIdToken();
+          // config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
       },
@@ -38,7 +44,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [auth, refresh]);
+  }, [user, refresh]);
 
   return axiosPrivate;
 };

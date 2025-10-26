@@ -53,7 +53,7 @@ export default function PicturePost({
       <Image
         style={globalStyles.image}
         source={{ blurhash }}
-        placeholder={{ LoadingPic }}
+        placeholder={LoadingPic}
         contentFit="cover"
         transition={1000}
       />
