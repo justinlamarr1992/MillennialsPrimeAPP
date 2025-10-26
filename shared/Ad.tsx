@@ -42,7 +42,7 @@ export default function Ad({ title, description, startDate }: AdProps) {
         {title}
       </Text>
       <DHMSTimer
-        startDate={startDate}
+        startDate={typeof startDate === 'string' ? startDate : startDate.toISOString()}
         // onTimerFinished={onTimerFinished}
       />
     </LinearGradient>

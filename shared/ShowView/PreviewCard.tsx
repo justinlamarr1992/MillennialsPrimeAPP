@@ -1,7 +1,7 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, useColorScheme } from "react-native";
 import React from "react";
 import { globalStyles } from "@/constants/global";
-import { useTheme } from "@react-navigation/native";
+import { COLORS } from "@/constants/Colors";
 
 interface PreviewCardProps {
   thumbnail: string;
@@ -18,13 +18,14 @@ export default function PreviewCard({
   name,
   time,
 }: PreviewCardProps) {
-  const colors = useTheme().colors;
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
   return (
     <View
       style={[
         globalStyles.showView,
         globalStyles.centerItem,
-        globalStyles.vertMargin,
+        globalStyles.marginVertical,
         { backgroundColor: colors.showCar },
       ]}
     >
