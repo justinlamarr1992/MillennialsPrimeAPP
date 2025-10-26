@@ -5,6 +5,8 @@ import {
   TextInput,
   ScrollView,
   useColorScheme,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
 } from "react-native";
 import React, { useState, useRef, useContext } from "react";
 import { Picker } from "@react-native-picker/picker";
@@ -16,6 +18,8 @@ import { COLORS } from "@/constants/Colors";
 import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
+type UploadType = "Text" | "Images" | "Video" | "Music" | "Episode" | "E-Commerence" | null;
+
 export default function UploadBox() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -24,19 +28,20 @@ export default function UploadBox() {
   // const { id } = useContext(AuthContext);
   // const _id = id;
 
-  let videoFile;
+  let videoFile: ImagePicker.ImagePickerAsset | undefined;
 
-  let formData = new FormData();
+  // This is a plain object for axios, not FormData
+  let formData: Record<string, string | number> = {};
 
   var tus = require("tus-js-client");
 
   // Use States
-  const [upload, setUpload] = useState(null);
+  const [upload, setUpload] = useState<UploadType>(null);
   const [uploadPicker, setUploadPicker] = useState(false);
   const [userPosting, setUserPosting] = useState({});
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [prime, setPrime] = useState(0);
+  const [prime, setPrime] = useState("");
   const [primePicker, setPrimePicker] = useState(false);
   const [category, setCategory] = useState("");
   const [categoryPicker, setCategoryPicker] = useState(false);
@@ -56,7 +61,7 @@ export default function UploadBox() {
   const [valueStuff, setValueStuff] = useState(false);
 
   //   Use Refs
-  const uploadRef = useRef(false);
+  const uploadRef = useRef<Picker<UploadType>>(null);
 
   const toggleUploadPicker = () => {
     setUploadPicker(!uploadPicker);
@@ -68,7 +73,7 @@ export default function UploadBox() {
     setCategoryPicker(!categoryPicker);
   };
 
-  const uploadCheck = (e) => {
+  const uploadCheck = (e: UploadType) => {
     setUploadPicker(false);
     console.log(e);
     if (e == "Text") {
@@ -112,38 +117,40 @@ export default function UploadBox() {
       setUpload("E-Commerence");
     }
   };
-  const handleChangeTitle = (e) => {
-    // console.log(e.currentTarget.value);
-    setTitle(e.currentTarget.value);
-    setObject({ ...object, title: title });
+  const handleChangeTitle = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    // In React Native, use e.nativeEvent.text instead of e.currentTarget.value
+    setTitle(e.nativeEvent.text);
+    setObject({ ...object, title: e.nativeEvent.text });
   };
-  const handleChangeDescription = (e) => {
-    // console.log(e.currentTarget.value);
-    setDescription(e.currentTarget.value);
-    setObject({ ...object, description: description });
+  const handleChangeDescription = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    // In React Native, use e.nativeEvent.text instead of e.currentTarget.value
+    setDescription(e.nativeEvent.text);
+    setObject({ ...object, description: e.nativeEvent.text });
   };
-  const handleWhoChange = (e) => {
+  const handleWhoChange = (e: string) => {
     setPrime(e);
-    setObject({ ...object, prime: prime });
+    setObject({ ...object, prime: e });
     setPrimePicker(false);
   };
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = (e: string) => {
     setCategory(e);
-    setObject({ ...object, category: category });
+    setObject({ ...object, category: e });
     setCategoryPicker(false);
   };
-  function setStuff(stuff) {
+  function setStuff(stuff: boolean) {
     console.log("To the Parent its ", stuff);
     setValueStuff(stuff);
   }
   //   stuff == videoValue
-  function handleVideoSelect(videoValue) {
+  function handleVideoSelect(videoValue: ImagePicker.ImagePickerResult) {
     // console.log("THIS IS THE INFO From Picture Picker ", videoValue);
-    videoFile = videoValue.assets[0];
-    console.log("Video file after button click", videoFile);
+    if (!videoValue.canceled && videoValue.assets && videoValue.assets[0]) {
+      videoFile = videoValue.assets[0];
+      console.log("Video file after button click", videoFile);
+    }
   }
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // No e.preventDefault() needed in React Native
 
     if (
       title === "" ||
@@ -194,15 +201,15 @@ export default function UploadBox() {
                 LibraryId: response.data.libraryId,
               },
               metadata: {
-                filetype: videoFile.type,
+                filetype: videoFile?.type || "",
                 title: "Is this where the title is changed",
                 collection: "collectionID",
               },
-              onError: function (error) {
+              onError: function (error: Error) {
                 console.log("Step 2.5");
                 console.log("ERROR", error);
               },
-              onProgress: function (bytesUploaded, bytesTotal) {
+              onProgress: function (bytesUploaded: number, bytesTotal: number) {
                 console.log("Step 3");
                 console.log(
                   bytesTotal,
@@ -217,7 +224,7 @@ export default function UploadBox() {
               },
             });
             // Check if there are any previous uploads to continue.
-            upload.findPreviousUploads().then(function (previousUploads) {
+            upload.findPreviousUploads().then(function (previousUploads: unknown[]) {
               // Found previous uploads so we select the first one.
               if (previousUploads.length) {
                 console.log("Step 5");
@@ -233,7 +240,7 @@ export default function UploadBox() {
           }
         }
       } catch (err) {
-        alert("Change this later because you have an err", err);
+        alert("Change this later because you have an err: " + err);
       } finally {
         console.log("Step 8");
         // EDIT VIDEO may need to move this to the backend
@@ -283,7 +290,7 @@ export default function UploadBox() {
             <TextInput
               style={globalStyles.input}
               placeholder="Can Users Like your Post?"
-              value={upload}
+              value={upload || ""}
               //   onChangeText={setUpload}
               //   onChange={handleChange}
               editable={false}
@@ -301,7 +308,7 @@ export default function UploadBox() {
               <Picker.Item
                 label="Select your Option"
                 value=""
-                enabled="false"
+                enabled={false}
               />
               <Picker.Item label="Text" value="Text" />
               {/* Later change TEXT to post or something like  words idk */}
@@ -329,8 +336,6 @@ export default function UploadBox() {
               </Text>
               <TextInput
                 style={globalStyles.settingsInput}
-                name="title"
-                id="title"
                 placeholder="Enter Title Here"
                 value={title}
                 onChangeText={(text) => setTitle(text)}
@@ -343,8 +348,6 @@ export default function UploadBox() {
               </Text>
               <TextInput
                 style={globalStyles.settingsInput}
-                name="description"
-                id="description"
                 placeholder="Enter A Brief Description Here"
                 value={description}
                 onChangeText={(text) => setDescription(text)}
@@ -378,7 +381,7 @@ export default function UploadBox() {
                   <Picker.Item
                     label="Select your Option"
                     value=""
-                    enabled="false"
+                    enabled={false}
                   />
                   <Picker.Item label="Millennial's" value="Millennial's" />
                   <Picker.Item label="Primes" value="Primes" />
@@ -413,7 +416,7 @@ export default function UploadBox() {
                   <Picker.Item
                     label="Select your Option"
                     value=""
-                    enabled="false"
+                    enabled={false}
                   />
                   <Picker.Item label="All News" value="All News" />
                   <Picker.Item label="Music" value="Music" />
