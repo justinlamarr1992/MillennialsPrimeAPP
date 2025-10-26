@@ -339,7 +339,6 @@ export default function MyInfoScreen() {
                   style={globalStyles.input}
                   placeholder="Can Users Like your Post?"
                   value={canLike}
-                  onChangeText={setCanLike}
                   editable={false}
                   onPressIn={toggleCanLikePicker}
                 ></TextInput>
@@ -367,7 +366,6 @@ export default function MyInfoScreen() {
                   style={globalStyles.input}
                   placeholder="Can Users Dislike your Post"
                   value={canDislike}
-                  onChangeText={setCanDislike}
                   editable={false}
                   onPressIn={toggleCanDislikePicker}
                 ></TextInput>
@@ -393,7 +391,6 @@ export default function MyInfoScreen() {
                   style={globalStyles.input}
                   placeholder="Can Users Comment on Your Post"
                   value={canComment}
-                  onChangeText={setCanComment}
                   editable={false}
                   onPressIn={toggleCanCommentPicker}
                 ></TextInput>
@@ -419,7 +416,6 @@ export default function MyInfoScreen() {
                   style={globalStyles.input}
                   placeholder="Can Users Share your Post"
                   value={canShare}
-                  onChangeText={setCanShare}
                   editable={false}
                   onPressIn={toggleCanSharePicker}
                 ></TextInput>
