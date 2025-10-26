@@ -386,6 +386,8 @@ const handleSubmit = async (e) => {
 **Severity:** CRITICAL
 **Impact:** No safety net for code changes, high regression risk
 
+> **📋 NOTE:** Adding comprehensive test coverage will be handled as a **SEPARATE SCOPE OF WORK**. This is a significant undertaking that requires dedicated planning, infrastructure setup, and ongoing commitment. It will not be tracked as a regular todo item due to its size and complexity.
+
 **Current State:**
 ```bash
 $ find app -name "*.test.*" | wc -l
@@ -424,7 +426,7 @@ describe('SignInScreen', () => {
 });
 ```
 
-**Effort Estimate:** 2-3 weeks (ongoing)
+**Effort Estimate:** 2-3 weeks (ongoing) - **SEPARATE PROJECT**
 
 ---
 
