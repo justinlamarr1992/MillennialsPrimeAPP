@@ -19,11 +19,11 @@ export default function HomeLayout() {
         ),
         headerStyle: {
           backgroundColor: colors["priC"],
-          borderBottomLeftRadius: 32,
-          borderBottomRightRadius: 32,
-          shadowColor: colors["background"],
+          // borderBottomLeftRadius: 32, // Not supported in headerStyle
+          // borderBottomRightRadius: 32, // Not supported in headerStyle
+          // shadowColor: colors["background"], // Not supported in headerStyle
           // height: 200, This is what i need to show more of the users in profiles
-          overflow: "hidden",
+          // overflow: "hidden", // Not supported in headerStyle
         },
         headerTintColor: "#fff",
         headerTitleStyle: {

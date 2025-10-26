@@ -3,13 +3,21 @@ import React from "react";
 import { globalStyles } from "@/constants/global";
 import { useTheme } from "@react-navigation/native";
 
+interface PreviewCardProps {
+  thumbnail: string;
+  title: string;
+  description: string;
+  name: string;
+  time: string;
+}
+
 export default function PreviewCard({
   thumbnail,
   title,
   description,
   name,
   time,
-}) {
+}: PreviewCardProps) {
   const colors = useTheme().colors;
   return (
     <View

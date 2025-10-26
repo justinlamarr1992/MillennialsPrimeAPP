@@ -13,6 +13,21 @@ import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "../PostComponents/UserInfo";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+interface PrimeCardProps {
+  userPosting: string;
+  id: string;
+  prime: boolean;
+  thumbnail: string;
+  videoLibraryId: string;
+  guid: string;
+  title: string;
+  description: string;
+  dateUploaded: string;
+  name: string;
+  time: string;
+  key: string;
+}
+
 export default function PrimeCard({
   userPosting,
   id,
@@ -26,7 +41,7 @@ export default function PrimeCard({
   name,
   time,
   key,
-}) {
+}: PrimeCardProps) {
   const navigation = useNavigation();
 
   var confirm;

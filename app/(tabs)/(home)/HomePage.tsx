@@ -129,10 +129,11 @@ export default function Page() {
         // ),
         setPost({
           title: response.items[0].title,
-          // description: response.items[0].metaTags[0].value,
+          description: response.items[0].metaTags?.[0]?.value || "",
           guid: response.items[0].guid,
           dateUploaded: response.items[0].dateUploaded,
           videoLibraryId: response.items[0].videoLibraryId,
+          key: "1",
         })
       )
       .catch((err) => console.error(err));
@@ -169,7 +170,11 @@ export default function Page() {
             name={name}
             time={post.dateUploaded}
             guid={post.guid}
+            dateUploaded={post.dateUploaded}
             videoLibraryId={post.videoLibraryId}
+            url={`https://vz-e7f8f45f-92b.b-cdn.net/${post.guid}/playlist.m3u8`}
+            libraryId={post.videoLibraryId}
+            videoId={post.guid}
           />
 
           {/* TODO: Then the lastest/ Popular post  */}
