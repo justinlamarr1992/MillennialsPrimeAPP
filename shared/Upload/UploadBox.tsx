@@ -74,7 +74,7 @@ export default function UploadBox() {
 
   const uploadCheck = (e: string) => {
     setUploadPicker(false);
-    console.log(e);
+    logger.log('Upload type selected:', e);
     if (e == "Text") {
       setUpload("Text");
     } else if (e == "Images") {
@@ -99,12 +99,12 @@ export default function UploadBox() {
         fetch("https://video.bunnycdn.com/library/181057/videos", options)
           .then((response) => response.json())
           .then((response) => {
-            console.log(response);
+            logger.log('BunnyCDN video created:', response);
             setVideoID(response.guid);
-            console.log("This is the videoID", videoID, new Date());
+            logger.log('Video ID set:', videoID, new Date());
           });
       } catch (err) {
-        console.log("ERROR", err);
+        logger.error('Error creating video:', err);
       }
 
       // console.log(upload);
@@ -127,15 +127,14 @@ export default function UploadBox() {
     setCategoryPicker(false);
   };
   function setStuff(stuff: boolean) {
-    console.log("To the Parent its ", stuff);
+    logger.log('Parent value set:', stuff);
     setValueStuff(stuff);
   }
   //   stuff == videoValue
   function handleVideoSelect(videoValue: ImagePicker.ImagePickerResult) {
-    // console.log("THIS IS THE INFO From Picture Picker ", videoValue);
     if (!videoValue.canceled && videoValue.assets && videoValue.assets[0]) {
       videoFile = videoValue.assets?.[0];
-      console.log("Video file after button click", videoFile);
+      logger.log('Video file selected:', videoFile);
     }
   }
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -167,16 +166,14 @@ export default function UploadBox() {
 
     const sendToBackEnd = async () => {
       try {
-        console.log("Step 1");
-        console.log("Video file before backend data", videoFile);
+        logger.log('Upload step 1: Starting backend submission');
+        logger.log('Video file before backend:', videoFile);
 
         const response = await axiosPrivate.post(`/videos/bunnyInfo`, formData);
-        console.log(response.data);
+        logger.log('Backend response:', response.data);
         if (response.data.success === true && videoFile) {
           try {
-            // console.log("Video file after backend data", videoFile);
-            // console.log("Video file individual data", videoFile);
-            console.log("Step 2");
+            logger.log('Upload step 2: Initiating TUS upload');
             // Create a new tus upload
             var upload = new tus.Upload(videoFile, {
               // var upload = new tus.Upload(file, {
@@ -195,37 +192,29 @@ export default function UploadBox() {
                 collection: "collectionID",
               },
               onError: function (error: Error) {
-                console.log("Step 2.5");
-                console.log("ERROR", error);
+                logger.error('TUS upload error:', error);
               },
               onProgress: function (bytesUploaded: number, bytesTotal: number) {
-                console.log("Step 3");
-                console.log(
-                  bytesTotal,
-                  "Bytes Total",
-                  bytesUploaded,
-                  "Bytes Uploaded"
-                );
+                logger.log('Upload progress:', { bytesUploaded, bytesTotal, percentage: ((bytesUploaded / bytesTotal) * 100).toFixed(2) + '%' });
               },
               onSuccess: function () {
-                console.log("Step 4");
-                console.log("The video Uploaded Great Job");
+                logger.log('Upload step 4: Video uploaded successfully');
               },
             });
             // Check if there are any previous uploads to continue.
             upload.findPreviousUploads().then(function (previousUploads: unknown[]) {
               // Found previous uploads so we select the first one.
               if (previousUploads.length) {
-                console.log("Step 5");
+                logger.log('Upload step 5: Resuming from previous upload');
                 upload.resumeFromPreviousUpload(previousUploads[0]);
               }
               // Start the upload
-              console.log("Step 6");
+              logger.log('Upload step 6: Starting upload');
               upload.start();
             });
-            console.log("Step 7");
+            logger.log('Upload step 7: Upload initiated');
           } catch (err) {
-            console.log("ERROR", err);
+            logger.error('TUS upload error:', err);
           }
         }
       } catch (err) {
@@ -233,7 +222,7 @@ export default function UploadBox() {
         alert(baseMessage);
         logger.error("Upload error:", err);
       } finally {
-        console.log("Step 8");
+        logger.log('Upload step 8: Finalizing');
         // EDIT VIDEO may need to move this to the backend
         const options = {
           method: "POST",
@@ -255,13 +244,13 @@ export default function UploadBox() {
         )
           .then((response) => response.json())
           .then((response) => {
-            console.log("This is the newly Edited video", response);
+            logger.log('Video metadata updated:', response);
           })
-          .catch((err) => console.error(err));
+          .catch((err) => logger.error('Error updating video metadata:', err));
       }
     };
     sendToBackEnd();
-    console.log("Step 9");
+    logger.log('Upload step 9: Process complete');
   };
 
   return (

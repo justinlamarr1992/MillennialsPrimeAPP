@@ -14,6 +14,7 @@ import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import { logger } from "@/utils/logger";
 
 export default function ArtScreen() {
   const router = useRouter();
@@ -91,14 +92,14 @@ export default function ArtScreen() {
 
   const handleSubmit = async () => {
     try {
-      console.log("Started the try to submit Art Stuff");
+      logger.log('Art settings submission started');
     } catch (err) {
-      console.log("ERR", err);
+      logger.error('Art settings submission error:', err);
     } finally {
-      console.log("It worked!!!");
+      logger.log('Art settings submitted successfully');
       router.push("/(tabs)/(home)/HomePage");
     }
-    console.log("Handle Submit pressed");
+    logger.log('Art settings submit button pressed');
   };
 
   return (

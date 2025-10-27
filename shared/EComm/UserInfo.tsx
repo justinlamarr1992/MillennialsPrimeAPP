@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { logger } from "@/utils/logger";
 import { StyleSheet, View, Text, Image, Button, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "@/constants/global";
@@ -21,7 +22,7 @@ export default function UserInfo({ name, admin, prime }: UserInfoProps) {
   // console.log(prime, name, time);
 
   const namePress = () => {
-    console.log("Name Pressed");
+    logger.log("User name pressed");
   };
   return (
     <View style={globalStyles.postUserInfo}>

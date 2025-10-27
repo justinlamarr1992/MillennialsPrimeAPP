@@ -17,6 +17,7 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { logger } from "@/utils/logger";
 
 // Improved email validation regex with proper structure validation
 // TODO: Extract to shared constants file (e.g., constants/validation.ts) to ensure consistency and DRY
@@ -229,7 +230,7 @@ export default function RegisterScreen() {
                 keyboardType="email-address"
                 onChangeText={(text) => {
                   setEmail(text);
-                  console.log("User is ", email);
+                  logger.log("User email updated. Length:", text.length);
                 }}
               ></TextInput>
             </View>
@@ -245,7 +246,7 @@ export default function RegisterScreen() {
                 //   autoCorrect={false}
                 onChangeText={(text) => {
                   setPassword(text);
-                  console.log("password is ", password);
+                  // Password length logging removed per security best practices
                 }}
               ></TextInput>
             </View>
@@ -260,7 +261,7 @@ export default function RegisterScreen() {
                 secureTextEntry={true}
                 onChangeText={(text) => {
                   setMatchPassword(text);
-                  console.log("Matched is", matchPassword);
+                  // Password match logging removed per security best practices
                 }}
               ></TextInput>
             </View>

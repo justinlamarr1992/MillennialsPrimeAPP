@@ -1,4 +1,5 @@
 import { auth } from "../firebase/firebaseConfig";
+import { logger } from "@/utils/logger";
 
 /**
  * Hook to refresh the Firebase auth token
@@ -18,11 +19,8 @@ const useRefreshToken = () => {
       const token = await currentUser.getIdToken(true);
       return token;
     } catch (error) {
-      // TODO: Replace with proper error tracking service (e.g., Sentry)
-      // Avoid logging sensitive auth information in production
-      if (__DEV__) {
-        console.error("Error refreshing token:", error);
-      }
+      // Logger automatically only logs in development
+      logger.error("Error refreshing token:", error);
       throw error;
     }
   };

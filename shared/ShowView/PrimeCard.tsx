@@ -9,6 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "@/constants/Colors";
 
 import { Ionicons } from "@expo/vector-icons";
+import { logger } from "@/utils/logger";
 
 interface PrimeCardProps {
   userPosting: string;
@@ -44,7 +45,7 @@ export default function PrimeCard({
 
   var confirm;
 
-  console.log(id, description, prime, userPosting);
+  logger.log('PrimeCard rendered:', { id, description, prime, userPosting });
 
   const pressedVideo = () => {
     // TODO: Remove or implement video navigation when ShowView feature is reactivated
@@ -54,11 +55,11 @@ export default function PrimeCard({
     //   2. Implement expo-router navigation: router.push(`/prime-show/${videoLibraryId}`)
     //   3. Remove this warning and implement actual navigation
     if (__DEV__) {
-      console.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
+      logger.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
     }
   };
   const deleteVideo = () => {
-    console.log("Dang you was gone delete the video forreal");
+    logger.log('Delete video initiated');
     const options = {
       method: "DELETE",
       headers: {
@@ -75,16 +76,15 @@ export default function PrimeCard({
       options
     )
       .then((response) => response.json())
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
+      .then((response) => logger.log('Video deleted:', response))
+      .catch((err) => logger.error('Error deleting video:', err));
   };
 
   const checkOriginal = () => {
-    console.log(id);
+    logger.log('Checking if user is original poster:', id);
     userPosting = `"${userPosting}"`;
-    console.log(userPosting);
+    logger.log('Formatted userPosting:', userPosting);
     if (id === userPosting) {
-      // console.log("They match", id, userPosting);
       confirm = true;
       return;
     }

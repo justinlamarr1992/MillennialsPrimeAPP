@@ -2,6 +2,7 @@ import { axiosPrivate } from "../API/axios";
 import { useEffect, useRef } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
+import { logger } from "@/utils/logger";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
@@ -14,7 +15,7 @@ const useAxiosPrivate = () => {
   });
 
   useEffect(() => {
-    console.log(`From the useAxiosPrivate file this is the USER: ${user?.uid}`);
+    logger.log('useAxiosPrivate initialized for user:', user?.uid);
 
     // Reset token cache when user changes
     tokenCacheRef.current = { token: null, promise: null };
@@ -37,7 +38,7 @@ const useAxiosPrivate = () => {
 
             config.headers["Authorization"] = `Bearer ${tokenCacheRef.current.token}`;
           } catch (err) {
-            console.error(`Failed to get Firebase ID token for user ${user?.uid}:`, err);
+            logger.error(`Failed to get Firebase ID token for user ${user?.uid}:`, err);
             // Clear failed token cache
             tokenCacheRef.current = { token: null, promise: null };
             return Promise.reject(err);

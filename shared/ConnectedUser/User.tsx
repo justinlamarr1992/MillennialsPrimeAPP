@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { logger } from "@/utils/logger";
 import { View, Text, useColorScheme, Pressable } from "react-native";
 import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
@@ -30,7 +31,7 @@ export default function User({
   const colors = COLORS[colorScheme ?? "dark"];
 
   const onPressFun = () => {
-    console.log("Pressed");
+    logger.log("User card pressed");
     // TODO: Insert code to make connection in backend to change
     setBConnected(!bConnected);
   };

@@ -1,4 +1,5 @@
 import { View, Text, useColorScheme, ScrollView } from "react-native";
+import { logger } from "@/utils/logger";
 import React, { useRef, useCallback, useMemo } from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -22,7 +23,7 @@ export default function CommentModal({}) {
     bottomCommentSheetModalRef.current?.present();
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    logger.log("Comment modal sheet changed:", index);
   }, []);
 
   return (
