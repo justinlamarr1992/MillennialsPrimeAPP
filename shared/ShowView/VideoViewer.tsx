@@ -1,8 +1,7 @@
-import { View, Text } from "react-native";
 import React from "react";
 import {
-  Text,
   View,
+  Text,
   TouchableWithoutFeedback,
   Keyboard,
   Modal,
@@ -15,7 +14,7 @@ import { globalStyles } from "@/constants/global";
 import axios from "axios";
 
 const VideoViewer = () => {
-  const { navigation } = useNavigation();
+  const navigation = useNavigation();
   return (
     <View>
       <Text>VideoViewer</Text>

@@ -17,15 +17,7 @@ import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { logger } from "@/utils/logger";
 
-interface VideoAsset {
-  uri: string;
-  type: string;
-  name: string;
-}
-
-interface VideoPickerResult {
-  assets: VideoAsset[];
-}
+// Using ImagePicker.ImagePickerAsset directly instead of custom interface
 
 export default function UploadBox() {
   const colorScheme = useColorScheme();
@@ -35,7 +27,7 @@ export default function UploadBox() {
   // const { id } = useContext(AuthContext);
   // const _id = id;
 
-  let videoFile: VideoAsset | undefined;
+  let videoFile: ImagePicker.ImagePickerAsset | undefined;
 
   // formData starts as FormData but is reassigned to a plain object in handleSubmit (line 150)
   let formData: FormData | Record<string, unknown> = new FormData();
@@ -139,10 +131,12 @@ export default function UploadBox() {
     setValueStuff(stuff);
   }
   //   stuff == videoValue
-  function handleVideoSelect(videoValue: VideoPickerResult) {
+  function handleVideoSelect(videoValue: ImagePicker.ImagePickerResult) {
     // console.log("THIS IS THE INFO From Picture Picker ", videoValue);
-    videoFile = videoValue.assets[0];
-    console.log("Video file after button click", videoFile);
+    if (!videoValue.canceled && videoValue.assets && videoValue.assets[0]) {
+      videoFile = videoValue.assets?.[0];
+      console.log("Video file after button click", videoFile);
+    }
   }
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();

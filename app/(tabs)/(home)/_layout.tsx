@@ -19,7 +19,6 @@ export default function HomeLayout() {
         ),
         headerStyle: {
           backgroundColor: colors["priC"],
-          shadowColor: colors["background"],
           // height: 200, This is what i need to show more of the users in profiles
         },
         headerTintColor: "#fff",
