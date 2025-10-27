@@ -53,7 +53,9 @@ export default function PrimeCard({
     //   1. Move ShowView feature from TabsLater to app/(tabs)
     //   2. Implement expo-router navigation: router.push(`/prime-show/${videoLibraryId}`)
     //   3. Remove this warning and implement actual navigation
-    console.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
+    if (__DEV__) {
+      console.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
+    }
   };
   const deleteVideo = () => {
     console.log("Dang you was gone delete the video forreal");

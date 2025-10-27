@@ -13,6 +13,7 @@ interface PicturePostProps {
   name: string;
   title: string;
   description: string;
+  picture: string;
   prime: boolean;
   admin: boolean;
 }
@@ -21,6 +22,7 @@ export default function PicturePost({
   name,
   title,
   description,
+  picture,
   prime,
   admin,
 }: PicturePostProps) {
@@ -52,7 +54,7 @@ export default function PicturePost({
       {/* Picture here */}
       <Image
         style={globalStyles.image}
-        source={{ blurhash }}
+        source={{ uri: picture, blurhash }}
         placeholder={LoadingPic}
         contentFit="cover"
         transition={1000}
