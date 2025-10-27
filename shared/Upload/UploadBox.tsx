@@ -134,7 +134,7 @@ export default function UploadBox() {
   function handleVideoSelect(videoValue: ImagePicker.ImagePickerResult) {
     // console.log("THIS IS THE INFO From Picture Picker ", videoValue);
     if (!videoValue.canceled && videoValue.assets && videoValue.assets[0]) {
-      videoFile = videoValue.assets[0];
+      videoFile = videoValue.assets?.[0];
       console.log("Video file after button click", videoFile);
     }
   }
