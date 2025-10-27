@@ -13,6 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
+import { logger } from "@/utils/logger";
 
 export default function BusinessScreen() {
   // const { auth, accessToken, roles, id, logout, userInfo } =
@@ -109,15 +110,15 @@ export default function BusinessScreen() {
 
   const handleSubmit = async () => {
     try {
-      console.log("Started the try to submit Business Stuff");
+      logger.log('Business settings submission started');
     } catch (err) {
-      console.log("ERR", err);
+      logger.error('Business settings submission error:', err);
     } finally {
-      console.log("It worked!!!");
+      logger.log('Business settings submitted successfully');
       // navigation.jumpTo("Business");
       // navigation.navigate("Art");
     }
-    console.log("Handle Submit pressed");
+    logger.log('Business settings submit button pressed');
   };
 
   return (

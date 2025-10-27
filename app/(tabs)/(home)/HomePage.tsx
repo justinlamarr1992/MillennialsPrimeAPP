@@ -153,7 +153,7 @@ export default function Page() {
           key: response.items[0].guid,
         })
       )
-      .catch((err) => console.error(err));
+      .catch((err) => logger.error('Error fetching BunnyCDN video data:', err));
   };
 
   return (
