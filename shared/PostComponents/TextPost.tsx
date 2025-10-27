@@ -14,7 +14,7 @@ interface TextPostProps {
   description: string;
   prime: boolean;
   admin: boolean;
-  authorId?: string; // ID of post author for ownership check
+  authorId: string; // ID of post author for ownership check
 }
 
 export default function TextPost({ name, title, description, prime, admin, authorId }: TextPostProps) {

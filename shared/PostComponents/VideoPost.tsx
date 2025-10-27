@@ -17,7 +17,7 @@ interface VideoPostProps {
   admin: boolean;
   libraryId?: string | number;
   videoId?: string;
-  authorId?: string; // ID of post author for ownership check
+  authorId: string; // ID of post author for ownership check (required for proper ownership checks)
 }
 
 export default function VideoPost({
