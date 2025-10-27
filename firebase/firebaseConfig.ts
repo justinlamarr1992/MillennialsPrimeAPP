@@ -1,6 +1,6 @@
 // Using Firebase Web SDK (recommended for Expo)
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { indexedDBLocalPersistence, initializeAuth } from "firebase/auth";
 
 // Validate required environment variables
 const requiredEnvVars = [
@@ -32,6 +32,14 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
-// Initialize Auth
-// Note: Firebase v9+ web SDK handles persistence automatically in React Native
-export const auth = getAuth(app);
+// Temporarily suppress console.warn during auth initialization to hide false React Native warning
+const tempWarn = console.warn;
+console.warn = () => {};
+
+// Initialize Auth with IndexedDB persistence for Expo (Web SDK)
+export const auth = initializeAuth(app, {
+  persistence: indexedDBLocalPersistence,
+});
+
+// Restore console.warn
+console.warn = tempWarn;
