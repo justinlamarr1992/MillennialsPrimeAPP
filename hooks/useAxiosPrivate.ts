@@ -3,16 +3,28 @@ import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
-// TODO: CRITICAL - This hook is incomplete and API requests will fail authentication
-// The hook currently returns an axios instance WITHOUT authorization headers
+// ⚠️ KNOWN LIMITATION - Firebase Authentication Not Yet Implemented
 //
-// Migration required from old auth pattern to Firebase:
-// 1. Uncomment lines 21-22 to add Firebase ID token to Authorization header
-// 2. Update useRefreshToken hook to use Firebase token refresh instead of old JWT pattern
-// 3. Test with backend to ensure Firebase tokens are accepted
+// This hook is incomplete and requires Firebase authentication implementation before production use.
+// Authorization headers are NOT currently being added to API requests (lines 26-27 commented out).
 //
-// Current impact: UploadBox.tsx uses this hook for video uploads - uploads may fail auth checks
-// See: https://github.com/justinlamarr1992/MillennialsPrimeAPP/issues - needs tracking issue
+// CONTEXT:
+// - The app migrated from a custom JWT auth system to Firebase Authentication
+// - The backend API may still expect the old JWT pattern or may need Firebase token validation
+// - Implementation blocked pending backend API authentication strategy confirmation
+//
+// IMPLEMENTATION REQUIREMENTS (when backend is ready):
+// 1. Uncomment lines 26-27 to add Firebase ID token to Authorization header
+// 2. Update useRefreshToken hook to use Firebase token refresh (user.getIdToken(true))
+// 3. Coordinate with backend team on token validation strategy
+// 4. Test authentication flow end-to-end
+//
+// CURRENT IMPACT:
+// - UploadBox.tsx video uploads: May succeed if backend doesn't enforce auth, or fail silently
+// - Other API calls using this hook: Same authentication bypass behavior
+//
+// This is documented as a known limitation for MVP/development. Not suitable for production
+// without implementing the commented Firebase auth code and backend coordination.
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { user } = useAuth();
@@ -22,7 +34,8 @@ const useAxiosPrivate = () => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       async (config) => {
         if (!config.headers["Authorization"] && user) {
-          // TODO: CRITICAL - Uncomment and test Firebase ID token authorization
+          // ⚠️ Firebase ID token NOT being added - see documentation above
+          // Uncomment when backend authentication strategy is confirmed:
           // const token = await user.getIdToken();
           // config.headers["Authorization"] = `Bearer ${token}`;
         }

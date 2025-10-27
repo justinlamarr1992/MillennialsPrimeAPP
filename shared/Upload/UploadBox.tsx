@@ -6,7 +6,7 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import ImagePickerComponent from "./ImagePickerComponent";
@@ -24,8 +24,6 @@ export default function UploadBox() {
   // const { id } = useContext(AuthContext);
   // const _id = id;
 
-  let videoFile: ImagePicker.ImagePickerAsset | undefined;
-
   var tus = require("tus-js-client");
 
   // Use States
@@ -41,11 +39,9 @@ export default function UploadBox() {
   const [duration, setDuration] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [videoID, setVideoID] = useState("");
+  const [videoFile, setVideoFile] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
 
   const [valueStuff, setValueStuff] = useState(false);
-
-  //   Use Refs
-  const uploadRef = useRef<Picker<UploadType>>(null);
 
   const toggleUploadPicker = () => {
     setUploadPicker(!uploadPicker);
@@ -123,8 +119,8 @@ export default function UploadBox() {
   function handleVideoSelect(videoValue: ImagePicker.ImagePickerResult) {
     // console.log("THIS IS THE INFO From Picture Picker ", videoValue);
     if (!videoValue.canceled && videoValue.assets && videoValue.assets[0]) {
-      videoFile = videoValue.assets[0];
-      console.log("Video file after button click", videoFile);
+      setVideoFile(videoValue.assets[0]);
+      console.log("Video file after button click", videoValue.assets[0]);
     }
   }
   const handleSubmit = () => {
@@ -186,7 +182,7 @@ export default function UploadBox() {
                 LibraryId: response.data.libraryId,
               },
               metadata: {
-                filetype: videoFile?.type || "",
+                filetype: videoFile.type,
                 title: "Is this where the title is changed",
                 collection: "collectionID",
               },
@@ -286,7 +282,6 @@ export default function UploadBox() {
           {uploadPicker && (
             <Picker
               style={{}}
-              ref={uploadRef}
               selectedValue={upload}
               onValueChange={(itemValue, itemIndex) => uploadCheck(itemValue)}
             >
