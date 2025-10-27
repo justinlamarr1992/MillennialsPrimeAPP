@@ -29,6 +29,16 @@ const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { user } = useAuth();
 
+  // Production safety guard - warn if using unauthenticated requests
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      console.warn(
+        'useAxiosPrivate: Firebase authentication not implemented. ' +
+        'API requests will be unauthenticated. This is not suitable for production.'
+      );
+    }
+  }, []);
+
   useEffect(() => {
     console.log(`From the useAxiosPrivate file this is the USER: ${user?.uid}`);
     const requestIntercept = axiosPrivate.interceptors.request.use(

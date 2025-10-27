@@ -15,6 +15,17 @@ import { COLORS } from "@/constants/Colors";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 type UploadType = "Text" | "Images" | "Video" | "Music" | "Episode" | "E-Commerence" | null;
+type PrimeType = "" | "Millennial's" | "Primes" | "Gen-Zs";
+
+interface VideoUploadData {
+  title: string;
+  description: string;
+  prime: PrimeType;
+  category: string;
+  duration: string;
+  thumbnail: string;
+  videoID: string;
+}
 
 export default function UploadBox() {
   const colorScheme = useColorScheme();
@@ -32,7 +43,7 @@ export default function UploadBox() {
   const [userPosting, setUserPosting] = useState({});
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [prime, setPrime] = useState("");
+  const [prime, setPrime] = useState<PrimeType>("");
   const [primePicker, setPrimePicker] = useState(false);
   const [category, setCategory] = useState("");
   const [categoryPicker, setCategoryPicker] = useState(false);
@@ -104,7 +115,7 @@ export default function UploadBox() {
     setDescription(text);
   };
   const handleWhoChange = (e: string) => {
-    setPrime(e);
+    setPrime(e as PrimeType);
     setPrimePicker(false);
   };
   const handleCategoryChange = (e: string) => {
@@ -138,17 +149,14 @@ export default function UploadBox() {
       return alert("Fill all of the fileds");
 
     // Build form data object for axios request
-    const formData: Record<string, string | number> = {
-      // userPosting: _id,
+    const formData: VideoUploadData = {
       title: title,
       description: description,
       prime: prime,
-      // file: file,
       category: category,
       duration: duration,
       thumbnail: thumbnail,
       videoID: videoID,
-      // later library ID if a Prime Submitter
     };
 
     const sendToBackEnd = async () => {
@@ -221,7 +229,8 @@ export default function UploadBox() {
           }
         }
       } catch (err) {
-        alert("Change this later because you have an err: " + err);
+        alert("Failed to upload video. Please try again.");
+        console.error("Upload error:", err);
       } finally {
         console.log("Step 8");
         // EDIT VIDEO may need to move this to the backend

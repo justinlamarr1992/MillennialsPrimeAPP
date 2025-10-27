@@ -47,20 +47,13 @@ export default function PrimeCard({
   console.log(id, description, prime, userPosting);
 
   const pressedVideo = () => {
-    // Navigation disabled - PrimeShow route not in active navigation structure
-    // This component is only used in TabsLater (inactive code)
-    // When reactivating ShowView feature, migrate to expo-router navigation
+    // TODO: Remove or implement video navigation when ShowView feature is reactivated
+    // This component is currently only used in TabsLater (inactive code)
+    // When ready to reactivate:
+    //   1. Move ShowView feature from TabsLater to app/(tabs)
+    //   2. Implement expo-router navigation: router.push(`/prime-show/${videoLibraryId}`)
+    //   3. Remove this warning and implement actual navigation
     console.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
-
-    /* Legacy navigation code - commented out to remove @ts-ignore directive
-    navigation.navigate("PrimeShow", {
-      guid: guid,
-      videoLibraryId: videoLibraryId,
-      title: title,
-      description: description,
-      dateUploaded: dateUploaded,
-    });
-    */
   };
   const deleteVideo = () => {
     console.log("Dang you was gone delete the video forreal");
