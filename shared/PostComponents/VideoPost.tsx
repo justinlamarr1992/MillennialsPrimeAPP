@@ -7,6 +7,7 @@ import UserInfo from "./UserInfo";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/Colors";
 import LikeComment from "../LikeComment";
+import useAuth from "@/hooks/useAuth";
 
 interface VideoPostProps {
   url?: string;
@@ -16,6 +17,7 @@ interface VideoPostProps {
   admin: boolean;
   libraryId?: string | number;
   videoId?: string;
+  authorId?: string; // ID of post author for ownership check
 }
 
 export default function VideoPost({
@@ -26,14 +28,14 @@ export default function VideoPost({
   admin,
   libraryId,
   videoId,
+  authorId,
 }: VideoPostProps) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const viewer = 12345678;
-  const mine = 12345678;
-  // TODO: Add dynamic ID Check with auth to match if the post can be deleted
+  const { user } = useAuth();
+  const mine = authorId === user?.uid;
 
   const removePost = () => {
     // TODO: Implement post deletion
@@ -87,7 +89,7 @@ export default function VideoPost({
         {description ? description : "No Description Yet"}
       </Text>
       <LikeComment />
-      {viewer == mine && (
+      {mine && (
         <Pressable onPress={removePost} style={globalStyles.alignCenter}>
           <Ionicons
             size={28}

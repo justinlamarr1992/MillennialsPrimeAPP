@@ -67,7 +67,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [user, refresh]);
+  }, [user, refresh]); // axiosPrivate is a stable singleton import, no need to add to deps
 
   return axiosPrivate;
 };
