@@ -1,21 +1,20 @@
 import { axiosPrivate } from "../API/axios";
-import React, { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
-  // TODO: This hook needs to be updated to work with Firebase AuthContext
-  // The current AuthContext only has { user, loading } but this expects { auth, setAuth }
-  const auth = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    console.log(`From the useAxiosPrivate file this is the AUTH: ${auth}`);
+    console.log(`From the useAxiosPrivate file this is the USER: ${user?.uid}`);
     const requestIntercept = axiosPrivate.interceptors.request.use(
-      (config) => {
-        // console.log(config.headers);
-        if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+      async (config) => {
+        if (!config.headers["Authorization"] && user) {
+          // Get Firebase ID token for authorization
+          const token = await user.getIdToken();
+          config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
       },
@@ -40,7 +39,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [auth, refresh]);
+  }, [user, refresh]);
 
   return axiosPrivate;
 };

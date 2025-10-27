@@ -3,10 +3,15 @@ import React, { useState, useMemo, useEffect } from "react";
 import NumberCard from "./NumberCard";
 import { globalStyles } from "@/constants/global";
 
+interface DHMSTimerProps {
+  startDate: string | Date;
+  // onTimerFinished?: () => void;
+}
+
 export default function DHMSTimer({
   startDate,
   // onTimerFinished
-}) {
+}: DHMSTimerProps) {
   const targetTime = new Date(startDate).getTime();
   const [currentTime, setCurrentTime] = useState(Date.now());
   const timeBetween = useMemo(
