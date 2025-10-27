@@ -32,14 +32,33 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
-// Temporarily suppress console.warn during auth initialization to hide false React Native warning
-const tempWarn = console.warn;
-console.warn = () => {};
+// Suppress only the specific Firebase React Native warning during auth initialization
+// Firebase incorrectly detects Expo as React Native and warns about AsyncStorage
+// This is a false positive - Expo uses Firebase Web SDK with IndexedDB persistence
+const originalConsoleWarn = console.warn;
+console.warn = function (...args: unknown[]) {
+  const message = typeof args[0] === "string" ? args[0] : "";
+  // Suppress the known Firebase warning about React Native environment
+  if (
+    message.includes("@firebase/auth") &&
+    message.includes("React Native") &&
+    message.includes("AsyncStorage")
+  ) {
+    return;
+  }
+  // Otherwise, log the warning as usual
+  originalConsoleWarn.apply(console, args);
+};
 
 // Initialize Auth with IndexedDB persistence for Expo (Web SDK)
-export const auth = initializeAuth(app, {
-  persistence: indexedDBLocalPersistence,
-});
+let authInstance;
+try {
+  authInstance = initializeAuth(app, {
+    persistence: indexedDBLocalPersistence,
+  });
+} finally {
+  // Always restore console.warn, even if initialization fails
+  console.warn = originalConsoleWarn;
+}
 
-// Restore console.warn
-console.warn = tempWarn;
+export const auth = authInstance;

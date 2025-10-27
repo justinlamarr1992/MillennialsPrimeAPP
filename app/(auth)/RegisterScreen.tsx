@@ -230,7 +230,7 @@ export default function RegisterScreen() {
                 keyboardType="email-address"
                 onChangeText={(text) => {
                   setEmail(text);
-                  logger.log("User email:", email);
+                  logger.log("User email updated. Length:", text.length);
                 }}
               ></TextInput>
             </View>
@@ -246,7 +246,7 @@ export default function RegisterScreen() {
                 //   autoCorrect={false}
                 onChangeText={(text) => {
                   setPassword(text);
-                  logger.log("Password length:", password.length);
+                  // Password length logging removed per security best practices
                 }}
               ></TextInput>
             </View>
@@ -261,7 +261,7 @@ export default function RegisterScreen() {
                 secureTextEntry={true}
                 onChangeText={(text) => {
                   setMatchPassword(text);
-                  logger.log("Passwords match:", matchPassword === password);
+                  // Password match logging removed per security best practices
                 }}
               ></TextInput>
             </View>
