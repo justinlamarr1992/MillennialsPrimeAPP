@@ -1,7 +1,14 @@
 # Copilot Custom Instructions for Millennials Prime App
 
 ## Project Overview
-This is a React Native mobile application (v1.1.6) built with Expo 53 and React Native 0.79.5. The app uses Firebase Authentication and follows a strict TypeScript-first approach.
+This is a **React Native mobile application** (v1.1.6) built with Expo 53 and React Native 0.79.5. The app uses Firebase Authentication and follows a strict TypeScript-first approach.
+
+### ⚠️ IMPORTANT: This is NOT Next.js
+- **Platform**: React Native (iOS/Android mobile app)
+- **NOT using**: Next.js, React Server Components, or 'use client' directives
+- **Runtime**: Client-side only (mobile devices)
+- All React hooks (useState, useEffect, useRef, etc.) work without 'use client'
+- Do NOT suggest Next.js patterns or directives
 
 ---
 
@@ -290,6 +297,8 @@ console.log('temp debug');
 8. Create duplicate style definitions
 9. Use inline styles for repeated patterns
 10. Commit console.log statements
+11. **Suggest Next.js patterns** (no 'use client', no server components, no app router)
+12. **Suggest web-only React patterns** (this is React Native, not ReactDOM)
 
 ---
 
