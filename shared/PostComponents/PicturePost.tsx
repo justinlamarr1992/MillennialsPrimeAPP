@@ -3,28 +3,28 @@ import { Text, Pressable, useColorScheme } from "react-native";
 import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
+import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 import UserInfo from "./UserInfo";
 import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import LikeComment from "../LikeComment";
-import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 
 interface PicturePostProps {
   name: string;
   title: string;
   description: string;
+  picture: string;
   prime: boolean;
   admin: boolean;
-  picture?: string;
 }
 
 export default function PicturePost({
   name,
   title,
   description,
+  picture,
   prime,
   admin,
-  picture,
 }: PicturePostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -54,8 +54,8 @@ export default function PicturePost({
       {/* Picture here */}
       <Image
         style={globalStyles.image}
-        source={picture ? { uri: picture } : LoadingPic}
-        placeholder={blurhash}
+        source={{ uri: picture, blurhash }}
+        placeholder={LoadingPic}
         contentFit="cover"
         transition={1000}
       />

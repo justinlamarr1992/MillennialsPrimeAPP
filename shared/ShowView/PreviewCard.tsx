@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme } from "react-native";
+import { View, Text, ScrollView, useColorScheme } from "react-native";
 import React from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -25,6 +25,7 @@ export default function PreviewCard({
       style={[
         globalStyles.showView,
         globalStyles.centerItem,
+        globalStyles.marginVertical,
         { backgroundColor: colors.showCar },
       ]}
     >

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, Button, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "@/constants/global";
 import { useTheme } from "@react-navigation/native";
-import { router, Href } from "expo-router";
+import { router, type Href } from "expo-router";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
 
 interface UserInfoProps {

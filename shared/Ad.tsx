@@ -7,6 +7,8 @@ import DHMSTimer from "./Timer/DHMSTimer";
 interface AdProps {
   title: string;
   description?: string;
+  // Accepts both string and Date to support various data sources (API responses, database, etc.)
+  // Normalized to string in the component for DHMSTimer compatibility
   startDate: string | Date;
 }
 
@@ -42,7 +44,7 @@ export default function Ad({ title, description, startDate }: AdProps) {
         {title}
       </Text>
       <DHMSTimer
-        startDate={startDate}
+        startDate={typeof startDate === 'string' ? startDate : startDate.toISOString()}
         // onTimerFinished={onTimerFinished}
       />
     </LinearGradient>
