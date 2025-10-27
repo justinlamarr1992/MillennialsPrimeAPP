@@ -13,6 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
+import { logger } from "@/utils/logger";
 
 export default function MyInfoScreen() {
   // const axiosPrivate = useAxiosPrivate();
@@ -160,7 +161,7 @@ export default function MyInfoScreen() {
   // 4. Update the user document in Firestore with the form values
   const handleSubmit = async () => {
     try {
-      console.log("Started the APP test");
+      logger.log('MyInfo form submission started');
       // let dataToSubmit = {
       //   name,
       //   username,
@@ -181,7 +182,7 @@ export default function MyInfoScreen() {
       // };
       // console.log(`From useContext id: ${id}`);
       // console.log(`Saved to useState _id: ${_id}`);
-      console.log("Starting the try to get in to back end ");
+      logger.log('Attempting backend submission');
       // const response = await axiosPrivate.patch(
       //   `https://us-central1-millennialsprime.cloudfunctions.net/api/users/${_id}`,
       //   { values }
@@ -193,14 +194,14 @@ export default function MyInfoScreen() {
 
       // console.log(response);
     } catch (err) {
-      console.log("ERR", err);
+      logger.error('MyInfo submission error:', err);
     }
     // finally {
     // console.log("It worked!!!");
     // navigation.jumpTo("Business");
     // navigation.navigate("Business");
     // }
-    console.log("Handle Submit pressed");
+    logger.log('MyInfo submit button pressed');
   };
 
 
