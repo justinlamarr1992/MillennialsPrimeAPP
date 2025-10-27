@@ -1,18 +1,13 @@
 import {
-  View,
   Text,
-  Pressable,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   useColorScheme,
 } from "react-native";
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React from "react";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "@/constants/Colors";
 
-import UserInfo from "../PostComponents/UserInfo";
 import { Ionicons } from "@expo/vector-icons";
 
 interface PrimeCardProps {
@@ -44,7 +39,6 @@ export default function PrimeCard({
   time,
   key,
 }: PrimeCardProps) {
-  const navigation = useNavigation();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -53,9 +47,12 @@ export default function PrimeCard({
   console.log(id, description, prime, userPosting);
 
   const pressedVideo = () => {
-    // @ts-ignore - Legacy route 'PrimeShow' not in current navigation structure
-    // TODO: Either remove this legacy route or update navigation types to include it
-    // See: https://github.com/justinlamarr1992/MillennialsPrimeAPP/issues - needs investigation
+    // Navigation disabled - PrimeShow route not in active navigation structure
+    // This component is only used in TabsLater (inactive code)
+    // When reactivating ShowView feature, migrate to expo-router navigation
+    console.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
+
+    /* Legacy navigation code - commented out to remove @ts-ignore directive
     navigation.navigate("PrimeShow", {
       guid: guid,
       videoLibraryId: videoLibraryId,
@@ -63,6 +60,7 @@ export default function PrimeCard({
       description: description,
       dateUploaded: dateUploaded,
     });
+    */
   };
   const deleteVideo = () => {
     console.log("Dang you was gone delete the video forreal");
