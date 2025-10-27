@@ -1,4 +1,5 @@
 import { View, Text, Button, Image } from "react-native";
+import { logger } from "@/utils/logger";
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { globalStyles } from "@/constants/global";
@@ -20,7 +21,7 @@ function ImagePickerComponent({ handleVideoSelect }: ImagePickerComponentProps) 
       quality: 1,
     });
 
-    console.log(result);
+    logger.log("Image picker result:", result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
