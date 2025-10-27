@@ -129,8 +129,7 @@ export default function PrimeCard({
         <Text
           style={[globalStyles.showViewDescription, { color: colors.primeCarT }]}
         >
-          {/* "No Description for now" */}
-          {!description ? description : "No Description for now"}
+          {description ? description : "No Description for now"}
         </Text>
         <Text
           style={[

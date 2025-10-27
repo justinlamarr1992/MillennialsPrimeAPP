@@ -26,9 +26,6 @@ export default function UploadBox() {
 
   let videoFile: ImagePicker.ImagePickerAsset | undefined;
 
-  // This is a plain object for axios, not FormData
-  let formData: Record<string, string | number> = {};
-
   var tus = require("tus-js-client");
 
   // Use States
@@ -44,15 +41,6 @@ export default function UploadBox() {
   const [duration, setDuration] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [videoID, setVideoID] = useState("");
-  const [object, setObject] = useState({
-    userPosting,
-    title,
-    description,
-    prime,
-    category,
-    duration,
-    thumbnail,
-  });
 
   const [valueStuff, setValueStuff] = useState(false);
 
@@ -115,20 +103,16 @@ export default function UploadBox() {
   };
   const handleChangeTitle = (text: string) => {
     setTitle(text);
-    setObject(prev => ({ ...prev, title: text }));
   };
   const handleChangeDescription = (text: string) => {
     setDescription(text);
-    setObject(prev => ({ ...prev, description: text }));
   };
   const handleWhoChange = (e: string) => {
     setPrime(e);
-    setObject(prev => ({ ...prev, prime: e }));
     setPrimePicker(false);
   };
   const handleCategoryChange = (e: string) => {
     setCategory(e);
-    setObject(prev => ({ ...prev, category: e }));
     setCategoryPicker(false);
   };
   function setStuff(stuff: boolean) {
@@ -157,7 +141,8 @@ export default function UploadBox() {
     )
       return alert("Fill all of the fileds");
 
-    formData = {
+    // Build form data object for axios request
+    const formData: Record<string, string | number> = {
       // userPosting: _id,
       title: title,
       description: description,
@@ -178,6 +163,12 @@ export default function UploadBox() {
         const response = await axiosPrivate.post(`/videos/bunnyInfo`, formData);
         console.log(response.data);
         if (response.data.success === true) {
+          // Validate videoFile exists before attempting upload
+          if (!videoFile) {
+            console.error("No video file selected");
+            return alert("Please select a video file before uploading");
+          }
+
           try {
             // console.log("Video file after backend data", videoFile);
             // console.log("Video file individual data", videoFile);
