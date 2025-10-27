@@ -7,6 +7,8 @@ import DHMSTimer from "./Timer/DHMSTimer";
 interface AdProps {
   title: string;
   description?: string;
+  // Accepts both string and Date to support various data sources (API responses, database, etc.)
+  // Normalized to string in the component for DHMSTimer compatibility
   startDate: string | Date;
 }
 

@@ -53,7 +53,9 @@ export default function PrimeCard({
   console.log(id, description, prime, userPosting);
 
   const pressedVideo = () => {
-    // @ts-ignore - Legacy route not in current navigation structure
+    // @ts-ignore - Legacy route 'PrimeShow' not in current navigation structure
+    // TODO: Either remove this legacy route or update navigation types to include it
+    // See: https://github.com/justinlamarr1992/MillennialsPrimeAPP/issues - needs investigation
     navigation.navigate("PrimeShow", {
       guid: guid,
       videoLibraryId: videoLibraryId,

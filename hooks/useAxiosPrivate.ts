@@ -1,23 +1,28 @@
 import { axiosPrivate } from "../API/axios";
-import React, { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 
-// TODO: Update this hook to work with Firebase authentication
-// Currently uses old auth structure (auth, setAuth) which doesn't exist in current AuthContext
+// TODO: CRITICAL - This hook is incomplete and API requests will fail authentication
+// The hook currently returns an axios instance WITHOUT authorization headers
+//
+// Migration required from old auth pattern to Firebase:
+// 1. Uncomment lines 21-22 to add Firebase ID token to Authorization header
+// 2. Update useRefreshToken hook to use Firebase token refresh instead of old JWT pattern
+// 3. Test with backend to ensure Firebase tokens are accepted
+//
+// Current impact: UploadBox.tsx uses this hook for video uploads - uploads may fail auth checks
+// See: https://github.com/justinlamarr1992/MillennialsPrimeAPP/issues - needs tracking issue
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
-  // const { auth, setAuth } = useAuth(); // Commented out - not in current AuthContext
   const { user } = useAuth();
 
   useEffect(() => {
-    // TODO: Update to use Firebase user token
     console.log(`From the useAxiosPrivate file this is the USER: ${user?.uid}`);
     const requestIntercept = axiosPrivate.interceptors.request.use(
       async (config) => {
-        // console.log(config.headers);
         if (!config.headers["Authorization"] && user) {
-          // TODO: Get Firebase ID token here
+          // TODO: CRITICAL - Uncomment and test Firebase ID token authorization
           // const token = await user.getIdToken();
           // config.headers["Authorization"] = `Bearer ${token}`;
         }

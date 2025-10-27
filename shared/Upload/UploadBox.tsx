@@ -5,17 +5,13 @@ import {
   TextInput,
   ScrollView,
   useColorScheme,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
 } from "react-native";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import ImagePickerComponent from "./ImagePickerComponent";
-import { useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 type UploadType = "Text" | "Images" | "Video" | "Music" | "Episode" | "E-Commerence" | null;
@@ -117,24 +113,22 @@ export default function UploadBox() {
       setUpload("E-Commerence");
     }
   };
-  const handleChangeTitle = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    // In React Native, use e.nativeEvent.text instead of e.currentTarget.value
-    setTitle(e.nativeEvent.text);
-    setObject({ ...object, title: e.nativeEvent.text });
+  const handleChangeTitle = (text: string) => {
+    setTitle(text);
+    setObject(prev => ({ ...prev, title: text }));
   };
-  const handleChangeDescription = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    // In React Native, use e.nativeEvent.text instead of e.currentTarget.value
-    setDescription(e.nativeEvent.text);
-    setObject({ ...object, description: e.nativeEvent.text });
+  const handleChangeDescription = (text: string) => {
+    setDescription(text);
+    setObject(prev => ({ ...prev, description: text }));
   };
   const handleWhoChange = (e: string) => {
     setPrime(e);
-    setObject({ ...object, prime: e });
+    setObject(prev => ({ ...prev, prime: e }));
     setPrimePicker(false);
   };
   const handleCategoryChange = (e: string) => {
     setCategory(e);
-    setObject({ ...object, category: e });
+    setObject(prev => ({ ...prev, category: e }));
     setCategoryPicker(false);
   };
   function setStuff(stuff: boolean) {
@@ -338,8 +332,7 @@ export default function UploadBox() {
                 style={globalStyles.settingsInput}
                 placeholder="Enter Title Here"
                 value={title}
-                onChangeText={(text) => setTitle(text)}
-                onChange={handleChangeTitle}
+                onChangeText={handleChangeTitle}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
@@ -350,8 +343,7 @@ export default function UploadBox() {
                 style={globalStyles.settingsInput}
                 placeholder="Enter A Brief Description Here"
                 value={description}
-                onChangeText={(text) => setDescription(text)}
-                onChange={handleChangeDescription}
+                onChangeText={handleChangeDescription}
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
