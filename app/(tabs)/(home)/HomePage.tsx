@@ -133,7 +133,7 @@ export default function Page() {
           guid: response.items[0].guid,
           dateUploaded: response.items[0].dateUploaded,
           videoLibraryId: response.items[0].videoLibraryId,
-          key: "1",
+          key: response.items[0].guid,
         })
       )
       .catch((err) => console.error(err));
