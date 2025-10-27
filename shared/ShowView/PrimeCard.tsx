@@ -1,18 +1,13 @@
 import {
-  View,
   Text,
-  Pressable,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   useColorScheme,
 } from "react-native";
-import React, { useState } from "react";
-import { useRouter } from "expo-router";
+import React from "react";
 import { globalStyles } from "@/constants/global";
-import { COLORS } from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
+import { COLORS } from "@/constants/Colors";
 
-import UserInfo from "../PostComponents/UserInfo";
 import { Ionicons } from "@expo/vector-icons";
 
 interface PrimeCardProps {
@@ -44,7 +39,6 @@ export default function PrimeCard({
   time,
   key,
 }: PrimeCardProps) {
-  const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -53,16 +47,13 @@ export default function PrimeCard({
   console.log(id, description, prime, userPosting);
 
   const pressedVideo = () => {
-    router.push({
-      pathname: "/TabsLater/(showview)/PrimeShow",
-      params: {
-        guid: guid,
-        videoLibraryId: videoLibraryId,
-        title: title,
-        description: description,
-        dateUploaded: dateUploaded,
-      },
-    });
+    // TODO: Remove or implement video navigation when ShowView feature is reactivated
+    // This component is currently only used in TabsLater (inactive code)
+    // When ready to reactivate:
+    //   1. Move ShowView feature from TabsLater to app/(tabs)
+    //   2. Implement expo-router navigation: router.push(`/prime-show/${videoLibraryId}`)
+    //   3. Remove this warning and implement actual navigation
+    console.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
   };
   const deleteVideo = () => {
     console.log("Dang you was gone delete the video forreal");
@@ -105,6 +96,7 @@ export default function PrimeCard({
         globalStyles.post,
         globalStyles.flexRow,
         globalStyles.showView,
+        globalStyles.marginVertical,
       ]}
       colors={
         prime
@@ -128,8 +120,7 @@ export default function PrimeCard({
         <Text
           style={[globalStyles.showViewDescription, { color: colors.primeCarT }]}
         >
-          {/* "No Description for now" */}
-          {!description ? description : "No Description for now"}
+          {description ? description : "No Description for now"}
         </Text>
         <Text
           style={[

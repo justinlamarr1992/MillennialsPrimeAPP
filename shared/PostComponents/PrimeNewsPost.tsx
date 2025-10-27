@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text } from "react-native";
 import { WebView } from "react-native-webview";
+import { Video, ResizeMode } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
 import { globalStyles } from "@/constants/global";

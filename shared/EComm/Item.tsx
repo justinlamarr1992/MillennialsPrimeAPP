@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { useColorScheme, Text, View, Pressable } from "react-native";
 import { Link } from "expo-router";
+import { useTheme } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
+import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
-import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 
 interface ItemProps {
   itemName: string;
@@ -69,8 +70,8 @@ export default function PicturePost({
       {/* Picture here */}
       <Image
         style={globalStyles.itemImage}
-        source={{ uri: picture }}
-        placeholder={blurhash}
+        source={{ blurhash }}
+        placeholder={LoadingPic}
         contentFit="cover"
         transition={1000}
       />
