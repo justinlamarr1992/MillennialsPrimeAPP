@@ -164,8 +164,7 @@ export default function SignInScreen() {
                   globalStyles.button,
                   globalStyles.marginVertical,
                   {
-                    backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
-                    opacity: !isFormValid ? 0.5 : 1
+                    backgroundColor: !isFormValid ? colors["disabledButton"] : colors["triC"],
                   },
                 ]}
                 disabled={!isFormValid}
