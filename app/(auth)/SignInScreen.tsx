@@ -47,11 +47,11 @@ export default function SignInScreen() {
   }, [email, password]);
 
   // Check if form is valid for submission
-  const isFormValid = email.length > 0 && password.length > 0 && !emailError;
+  const isFormValid = email.trim().length > 0 && password.trim().length > 0 && !emailError;
 
   const handleSubmit = async () => {
     // Validate before submission
-    if (emailError || email.length === 0 || password.length === 0) {
+    if (emailError || email.trim().length === 0 || password.trim().length === 0) {
       setErrMsg("Please enter a valid email and password");
       return;
     }

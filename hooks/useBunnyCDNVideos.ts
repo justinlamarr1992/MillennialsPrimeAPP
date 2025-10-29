@@ -43,9 +43,9 @@ const fetchBunnyCDNVideos = async (): Promise<VideoData | null> => {
   const libraryId = process.env.EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID;
   const apiUrl = process.env.EXPO_PUBLIC_BUNNYCDN_API_URL;
 
-  if (!accessKey || !libraryId || !apiUrl) {
-    logger.error("Missing BunnyCDN environment variables");
-    throw new Error("BunnyCDN configuration is incomplete");
+  if (!accessKey?.trim() || !libraryId?.trim() || !apiUrl?.trim()) {
+    logger.error("Missing or empty BunnyCDN environment variables");
+    throw new Error("BunnyCDN configuration is incomplete or empty");
   }
 
   const options = {

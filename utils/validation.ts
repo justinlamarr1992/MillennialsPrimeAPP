@@ -15,10 +15,10 @@ export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{
  * @returns Error message if invalid, null if valid
  */
 export const validateEmail = (email: string): string | null => {
-  if (!email) {
+  if (!email || !email.trim()) {
     return 'Email is required';
   }
-  if (!EMAIL_REGEX.test(email)) {
+  if (!EMAIL_REGEX.test(email.trim())) {
     return 'Invalid email format (e.g., user@example.com)';
   }
   return null;
@@ -30,25 +30,26 @@ export const validateEmail = (email: string): string | null => {
  * @returns Error message if invalid, null if valid
  */
 export const validatePassword = (password: string): string | null => {
-  if (!password) {
+  if (!password || !password.trim()) {
     return 'Password is required';
   }
-  if (password.length < 8) {
+  const trimmedPassword = password.trim();
+  if (trimmedPassword.length < 8) {
     return 'Password must be at least 8 characters';
   }
-  if (password.length > 24) {
+  if (trimmedPassword.length > 24) {
     return 'Password must be no more than 24 characters';
   }
-  if (!/[a-z]/.test(password)) {
+  if (!/[a-z]/.test(trimmedPassword)) {
     return 'Password must contain a lowercase letter';
   }
-  if (!/[A-Z]/.test(password)) {
+  if (!/[A-Z]/.test(trimmedPassword)) {
     return 'Password must contain an uppercase letter';
   }
-  if (!/[0-9]/.test(password)) {
+  if (!/[0-9]/.test(trimmedPassword)) {
     return 'Password must contain a number';
   }
-  if (!/[!@#$%]/.test(password)) {
+  if (!/[!@#$%]/.test(trimmedPassword)) {
     return 'Password must contain a special character (!@#$%)';
   }
   return null;

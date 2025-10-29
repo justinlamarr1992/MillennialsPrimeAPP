@@ -27,16 +27,19 @@ export default function LogOutScreen() {
 
     try {
       await signOut(auth);
-      // Sign-out successful, redirect to sign in
-      router.push("/(auth)/SignInScreen");
+      // Sign-out successful
     } catch (error) {
       const firebaseError = error as FirebaseError;
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
       logger.error('Sign out error:', firebaseError.code, firebaseError.message);
-    } finally {
       setLoading(false);
+      return; // Exit early on error
     }
+
+    // Only navigate if sign out was successful
+    setLoading(false);
+    router.push("/(auth)/SignInScreen");
   };
 
   return (
