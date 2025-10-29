@@ -72,7 +72,8 @@ const fetchBunnyCDNVideos = async (): Promise<VideoData | null> => {
   );
 
   if (!response.ok) {
-    throw new Error(`BunnyCDN API error: ${response.status}`);
+    logger.error(`BunnyCDN API error: status=${response.status}, statusText=${response.statusText}`);
+    throw new Error("Failed to load videos. Please try again later.");
   }
 
   const data: BunnyCDNResponse = await response.json();
