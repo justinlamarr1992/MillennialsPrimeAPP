@@ -124,20 +124,45 @@ export default function RegisterScreen() {
     setDobError(errors.dob);
   };
 
-  // Real-time field validation helpers - now use centralized validation
+  // Real-time field validation helpers - validate individual fields on blur
   const validateEmailField = () => {
-    const errors = validateForm();
-    setEmailError(errors.email);
+    if (email.length > 0) {
+      setEmailError(validateEmail(email));
+    } else {
+      setEmailError(null);
+    }
   };
 
   const validatePasswordField = () => {
-    const errors = validateForm();
-    setPasswordError(errors.password);
+    if (password.length > 0) {
+      setPasswordError(validatePassword(password));
+    } else {
+      setPasswordError(null);
+    }
   };
 
   const validateConfirmPasswordField = () => {
-    const errors = validateForm();
-    setConfirmPasswordError(errors.confirmPassword);
+    if (matchPassword.length > 0) {
+      setConfirmPasswordError(validatePasswordMatch(password, matchPassword));
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
+
+  const validateFirstNameField = () => {
+    if (firstName.trim().length > 0) {
+      setFirstNameError(validateRequired(firstName, "First name"));
+    } else {
+      setFirstNameError(null);
+    }
+  };
+
+  const validateLastNameField = () => {
+    if (lastName.trim().length > 0) {
+      setLastNameError(validateRequired(lastName, "Last name"));
+    } else {
+      setLastNameError(null);
+    }
   };
 
   // Clear general error message when user makes changes
@@ -277,6 +302,7 @@ export default function RegisterScreen() {
                   setFirstName(text);
                   if (firstNameError) setFirstNameError(null);
                 }}
+                onBlur={validateFirstNameField}
               />
               {firstNameError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -297,6 +323,7 @@ export default function RegisterScreen() {
                   setLastName(text);
                   if (lastNameError) setLastNameError(null);
                 }}
+                onBlur={validateLastNameField}
               />
               {lastNameError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
