@@ -66,31 +66,78 @@ export default function RegisterScreen() {
 
   const [errMsg, setErrMsg] = useState("");
 
-  // Real-time email validation - runs on blur or when explicitly triggered
-  const validateEmailField = (value: string) => {
-    if (value.length > 0) {
-      setEmailError(validateEmail(value));
-    } else {
-      setEmailError(null);
-    }
+  // Centralized form validation function
+  // Returns an object with all validation errors and a hasErrors flag
+  interface ValidationErrors {
+    email: string | null;
+    password: string | null;
+    confirmPassword: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    dob: string | null;
+    hasErrors: boolean;
+  }
+
+  const validateForm = (): ValidationErrors => {
+    const emailValidation = email.length > 0 ? validateEmail(email) : null;
+    const passwordValidation = password.length > 0 ? validatePassword(password) : null;
+    const confirmPasswordValidation = matchPassword.length > 0 
+      ? validatePasswordMatch(password, matchPassword) 
+      : null;
+    const firstNameValidation = firstName.trim().length > 0 
+      ? validateRequired(firstName, "First name") 
+      : null;
+    const lastNameValidation = lastName.trim().length > 0 
+      ? validateRequired(lastName, "Last name") 
+      : null;
+    const dobValidation = DOB.length > 0 
+      ? validateRequired(DOB, "Date of birth") 
+      : null;
+
+    const hasErrors = !!(
+      emailValidation ||
+      passwordValidation ||
+      confirmPasswordValidation ||
+      firstNameValidation ||
+      lastNameValidation ||
+      dobValidation
+    );
+
+    return {
+      email: emailValidation,
+      password: passwordValidation,
+      confirmPassword: confirmPasswordValidation,
+      firstName: firstNameValidation,
+      lastName: lastNameValidation,
+      dob: dobValidation,
+      hasErrors
+    };
   };
 
-  // Real-time password validation - runs on blur or when explicitly triggered
-  const validatePasswordField = (value: string) => {
-    if (value.length > 0) {
-      setPasswordError(validatePassword(value));
-    } else {
-      setPasswordError(null);
-    }
+  // Apply validation errors to state
+  const applyValidationErrors = (errors: ValidationErrors) => {
+    setEmailError(errors.email);
+    setPasswordError(errors.password);
+    setConfirmPasswordError(errors.confirmPassword);
+    setFirstNameError(errors.firstName);
+    setLastNameError(errors.lastName);
+    setDobError(errors.dob);
   };
 
-  // Real-time password match validation - runs on blur or when explicitly triggered
-  const validateConfirmPasswordField = (pwd: string, confirmPwd: string) => {
-    if (confirmPwd.length > 0) {
-      setConfirmPasswordError(validatePasswordMatch(pwd, confirmPwd));
-    } else {
-      setConfirmPasswordError(null);
-    }
+  // Real-time field validation helpers - now use centralized validation
+  const validateEmailField = () => {
+    const errors = validateForm();
+    setEmailError(errors.email);
+  };
+
+  const validatePasswordField = () => {
+    const errors = validateForm();
+    setPasswordError(errors.password);
+  };
+
+  const validateConfirmPasswordField = () => {
+    const errors = validateForm();
+    setConfirmPasswordError(errors.confirmPassword);
   };
 
   // Clear general error message when user makes changes
@@ -134,31 +181,12 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
-    // Validate all fields before submission (including re-validation for safety)
-    const emailValidation = validateEmail(email);
-    const passwordValidation = validatePassword(password);
-    const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
-    const firstNameValidation = validateRequired(firstName, "First name");
-    const lastNameValidation = validateRequired(lastName, "Last name");
-    const dobValidation = validateRequired(DOB, "Date of birth");
-
-    // Update all error states
-    setEmailError(emailValidation);
-    setPasswordError(passwordValidation);
-    setConfirmPasswordError(confirmPasswordValidation);
-    setFirstNameError(firstNameValidation);
-    setLastNameError(lastNameValidation);
-    setDobError(dobValidation);
+    // Validate all fields before submission using centralized validation
+    const errors = validateForm();
+    applyValidationErrors(errors);
 
     // If any validation fails, show error and stop
-    if (
-      emailValidation ||
-      passwordValidation ||
-      confirmPasswordValidation ||
-      firstNameValidation ||
-      lastNameValidation ||
-      dobValidation
-    ) {
+    if (errors.hasErrors) {
       setErrMsg("Please fix all errors before submitting");
       return;
     }
@@ -292,7 +320,7 @@ export default function RegisterScreen() {
                   if (emailError) setEmailError(null); // Clear error while typing
                   logger.log("User email updated. Length:", text.length);
                 }}
-                onBlur={() => validateEmailField(email)} // Validate on blur
+                onBlur={validateEmailField} // Validate on blur
               />
               {emailError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -316,7 +344,7 @@ export default function RegisterScreen() {
                   if (passwordError) setPasswordError(null); // Clear error while typing
                   // Password length logging removed per security best practices
                 }}
-                onBlur={() => validatePasswordField(password)} // Validate on blur
+                onBlur={validatePasswordField} // Validate on blur
               />
               {passwordError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -340,7 +368,7 @@ export default function RegisterScreen() {
                   if (confirmPasswordError) setConfirmPasswordError(null); // Clear error while typing
                   // Password match logging removed per security best practices
                 }}
-                onBlur={() => validateConfirmPasswordField(password, matchPassword)} // Validate on blur
+                onBlur={validateConfirmPasswordField} // Validate on blur
               />
               {confirmPasswordError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
