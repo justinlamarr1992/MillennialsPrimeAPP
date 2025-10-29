@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -80,7 +80,8 @@ export default function RegisterScreen() {
   // Centralized form validation function
   // Returns an object with all validation errors and a hasErrors flag
   // Always calls validators to ensure proper 'required' validation
-  const validateForm = (): ValidationErrors => {
+  // Wrapped in useCallback for performance optimization
+  const validateForm = useCallback((): ValidationErrors => {
     const emailValidation = validateEmail(email);
     const passwordValidation = validatePassword(password);
     const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
@@ -106,7 +107,7 @@ export default function RegisterScreen() {
       dob: dobValidation,
       hasErrors
     };
-  };
+  }, [email, password, matchPassword, firstName, lastName, DOB]);
 
   // Apply validation errors to state
   const applyValidationErrors = (errors: ValidationErrors) => {
@@ -120,25 +121,26 @@ export default function RegisterScreen() {
 
   // Real-time field validation helpers - validate individual fields on blur
   // Always call validators to show required errors when fields are empty
-  const validateEmailField = () => {
+  // Wrapped in useCallback to maintain referential stability and prevent unnecessary re-renders
+  const validateEmailField = useCallback(() => {
     setEmailError(validateEmail(email));
-  };
+  }, [email]);
 
-  const validatePasswordField = () => {
+  const validatePasswordField = useCallback(() => {
     setPasswordError(validatePassword(password));
-  };
+  }, [password]);
 
-  const validateConfirmPasswordField = () => {
+  const validateConfirmPasswordField = useCallback(() => {
     setConfirmPasswordError(validatePasswordMatch(password, matchPassword));
-  };
+  }, [password, matchPassword]);
 
-  const validateFirstNameField = () => {
+  const validateFirstNameField = useCallback(() => {
     setFirstNameError(validateRequired(firstName, "First name"));
-  };
+  }, [firstName]);
 
-  const validateLastNameField = () => {
+  const validateLastNameField = useCallback(() => {
     setLastNameError(validateRequired(lastName, "Last name"));
-  };
+  }, [lastName]);
 
   // Clear general error message when user makes changes
   useEffect(() => {
