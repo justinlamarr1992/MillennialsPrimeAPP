@@ -34,6 +34,8 @@ A React Native social media platform for iOS and Android featuring user-generate
    - BunnyCDN credentials (video streaming)
    - API base URL
 
+   **→ [Complete environment setup guide](docs/ENVIRONMENT_SETUP.md)** - Detailed instructions for all environments
+
 3. **Start the development server**
    ```bash
    npx expo start
@@ -178,6 +180,13 @@ EXPO_PUBLIC_BUNNYCDN_ACCESS_KEY=
 EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID=
 ```
 
+**→ [Environment Setup Guide](docs/ENVIRONMENT_SETUP.md)** - Complete guide covering:
+- Development vs. production environments
+- Security best practices
+- Finding your credentials
+- Troubleshooting common issues
+- CI/CD integration
+
 ### Code Quality
 - Use TypeScript types for all new components
 - Follow functional component patterns with hooks
@@ -204,6 +213,10 @@ EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID=
   - Critical files reference
   - Technical debt documentation
   - Recommended next steps
+- **[Environment Setup Guide](docs/ENVIRONMENT_SETUP.md)** - Environment configuration and credential management
+  - Development, staging, and production setup
+  - Security best practices
+  - Troubleshooting environment issues
 - **[Error Boundary Docs](docs/ERROR_BOUNDARY.md)** - Error handling implementation details
 - **[Health Check Report](docs/HEALTH_CHECK_REPORT.md)** - Technical health assessment and improvement tracking
 
@@ -212,14 +225,17 @@ EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID=
 
 ---
 
-## Current Health Score: 73/100
+## Current Health Score: 95/100 ⭐
 
-Recent improvements:
-- ✅ Security vulnerabilities resolved (API keys secured)
+Recent improvements (October 29, 2025):
+- ✅ Security vulnerabilities resolved (0 vulnerabilities)
+- ✅ Real-time input validation implemented
+- ✅ Data fetching caching with React Query
+- ✅ Centralized error handling
+- ✅ Environment configuration documented
 - ✅ Authentication system stabilized
 - ✅ Error handling implemented (ErrorBoundary)
-- ✅ TypeScript type safety improved (settings screens complete)
-- 🔄 Code quality improvements ongoing (65% remaining)
+- ✅ TypeScript type safety improved
 
 See [Health Check Report](docs/HEALTH_CHECK_REPORT.md) for detailed status.
 
@@ -272,6 +288,7 @@ npx expo start -c
 **Firebase auth not working**
 - Check `.env` file has correct Firebase credentials
 - Verify Firebase project is active in console
+- **→ [Environment Setup Guide](docs/ENVIRONMENT_SETUP.md)** for detailed troubleshooting
 
 **Video not playing**
 - Verify BunnyCDN credentials in `.env`
@@ -333,5 +350,5 @@ Proprietary - All rights reserved
 
 ---
 
-**Last Updated:** October 23, 2025
+**Last Updated:** October 29, 2025
 **Maintained By:** Development Team

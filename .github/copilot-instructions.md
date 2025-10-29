@@ -79,10 +79,13 @@ setCount(count + 1);
 
 ## Authentication & API Patterns
 
-### Firebase Authentication
-- This app uses Firebase Authentication (migrated from custom JWT)
+### Firebase Authentication (Web SDK)
+- **IMPORTANT**: This app uses the Firebase **Web SDK** (`firebase/auth`), NOT React Native Firebase
+- Import from: `firebase/auth` (e.g., `import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'`)
+- DO NOT import from `@react-native-firebase/auth` or `@react-native-firebase/app` - these packages are NOT used
 - Use `user.getIdToken()` for API authorization tokens
 - Never access `auth.accessToken` directly (this pattern is deprecated)
+- All auth operations use async/await pattern with Firebase Web SDK methods
 
 ### Axios Interceptors
 - Token retrieval must include error handling with try-catch

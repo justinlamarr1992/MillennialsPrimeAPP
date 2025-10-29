@@ -18,14 +18,13 @@ import { COLORS } from "@/constants/Colors";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { logger } from "@/utils/logger";
-
-// Improved email validation regex with proper structure validation
-// TODO: Extract to shared constants file (e.g., constants/validation.ts) to ensure consistency and DRY
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-// Strong password: 8-24 chars, uppercase, lowercase, number, special char
-const PASSWORD_REGEX =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+import {
+  validateEmail,
+  validatePassword,
+  validatePasswordMatch,
+  validateRequired
+} from "@/utils/validation";
+import { handleAuthError } from "@/utils/errorHandler";
 
 // DateTimePicker event interface for type safety
 interface DatePickerEvent {
@@ -47,42 +46,69 @@ export default function RegisterScreen() {
 
   const [loading, setLoading] = useState(false);
 
-  // const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
-
   const [password, setPassword] = useState("");
-  const [validPassword, setValidPassword] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-
   const [matchPassword, setMatchPassword] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());
   const [DOB, setDOB] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
+  // Field-level error messages for real-time validation feedback
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
+  const [firstNameError, setFirstNameError] = useState<string | null>(null);
+  const [lastNameError, setLastNameError] = useState<string | null>(null);
+  const [dobError, setDobError] = useState<string | null>(null);
+
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    setValidName(EMAIL_REGEX.test(email));
-  }, [email]);
+  // Real-time email validation - runs on blur or when explicitly triggered
+  const validateEmailField = (value: string) => {
+    if (value.length > 0) {
+      setEmailError(validateEmail(value));
+    } else {
+      setEmailError(null);
+    }
+  };
 
-  useEffect(() => {
-    setValidPassword(PASSWORD_REGEX.test(password));
-    setValidMatch(password === matchPassword);
-  }, [password, matchPassword]);
+  // Real-time password validation - runs on blur or when explicitly triggered
+  const validatePasswordField = (value: string) => {
+    if (value.length > 0) {
+      setPasswordError(validatePassword(value));
+    } else {
+      setPasswordError(null);
+    }
+  };
 
+  // Real-time password match validation - runs on blur or when explicitly triggered
+  const validateConfirmPasswordField = (pwd: string, confirmPwd: string) => {
+    if (confirmPwd.length > 0) {
+      setConfirmPasswordError(validatePasswordMatch(pwd, confirmPwd));
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
+
+  // Clear general error message when user makes changes
   useEffect(() => {
     setErrMsg("");
-  }, [email, password, matchPassword]);
+  }, [email, password, matchPassword, firstName, lastName, DOB]);
+
+  // Check if form is valid for submission
+  const isFormValid =
+    email.length > 0 &&
+    password.length > 0 &&
+    matchPassword.length > 0 &&
+    firstName.trim().length > 0 &&
+    lastName.trim().length > 0 &&
+    DOB.length > 0 &&
+    !emailError &&
+    !passwordError &&
+    !confirmPasswordError;
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
@@ -108,36 +134,53 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
+    // Validate all fields before submission (including re-validation for safety)
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+    const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
+    const firstNameValidation = validateRequired(firstName, "First name");
+    const lastNameValidation = validateRequired(lastName, "Last name");
+    const dobValidation = validateRequired(DOB, "Date of birth");
+
+    // Update all error states
+    setEmailError(emailValidation);
+    setPasswordError(passwordValidation);
+    setConfirmPasswordError(confirmPasswordValidation);
+    setFirstNameError(firstNameValidation);
+    setLastNameError(lastNameValidation);
+    setDobError(dobValidation);
+
+    // If any validation fails, show error and stop
+    if (
+      emailValidation ||
+      passwordValidation ||
+      confirmPasswordValidation ||
+      firstNameValidation ||
+      lastNameValidation ||
+      dobValidation
+    ) {
+      setErrMsg("Please fix all errors before submitting");
+      return;
+    }
+
     setErrMsg("");
     setLoading(true);
-
-    const validEmail = EMAIL_REGEX.test(email);
-    const validPassword = PASSWORD_REGEX.test(password);
-
-    if (!validEmail) {
-      setErrMsg("Please enter a valid email address");
-      setLoading(false);
-      return;
-    }
-
-    if (!validPassword) {
-      setErrMsg("Password must be 8-24 characters with uppercase, lowercase, number, and special character (!@#$%)");
-      setLoading(false);
-      return;
-    }
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       // Signed up successfully
-      // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
+      // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
+      // Native alert() is blocking and provides poor user experience on mobile
+      // Consider: react-native-toast-notifications or expo-notifications
       alert("You are registered");
       // add the Mongo information or how to get the data here
       // register(user, password, firstName, lastName, DOB);
       router.replace("/(auth)/SignInScreen");
     } catch (error) {
       const firebaseError = error as FirebaseError;
-      const errorMessage = firebaseError.message || "An error occurred during registration";
+      const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
+      logger.error('Registration error:', firebaseError.code, firebaseError.message);
     } finally {
       setLoading(false);
     }
@@ -201,10 +244,17 @@ export default function RegisterScreen() {
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter First Name"
+                value={firstName}
                 onChangeText={(text) => {
                   setFirstName(text);
+                  if (firstNameError) setFirstNameError(null);
                 }}
-              ></TextInput>
+              />
+              {firstNameError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {firstNameError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -214,10 +264,17 @@ export default function RegisterScreen() {
                 style={globalStyles.input}
                 placeholder="Enter Last Name"
                 placeholderTextColor={colors["plcHoldText"]}
+                value={lastName}
                 onChangeText={(text) => {
                   setLastName(text);
+                  if (lastNameError) setLastNameError(null);
                 }}
-              ></TextInput>
+              />
+              {lastNameError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {lastNameError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -228,11 +285,20 @@ export default function RegisterScreen() {
                 placeholder="Enter Email"
                 placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
+                autoCapitalize="none"
+                value={email}
                 onChangeText={(text) => {
                   setEmail(text);
+                  if (emailError) setEmailError(null); // Clear error while typing
                   logger.log("User email updated. Length:", text.length);
                 }}
-              ></TextInput>
+                onBlur={() => validateEmailField(email)} // Validate on blur
+              />
+              {emailError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {emailError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -243,12 +309,20 @@ export default function RegisterScreen() {
                 placeholder="Enter Password"
                 placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
-                //   autoCorrect={false}
+                autoCapitalize="none"
+                value={password}
                 onChangeText={(text) => {
                   setPassword(text);
+                  if (passwordError) setPasswordError(null); // Clear error while typing
                   // Password length logging removed per security best practices
                 }}
-              ></TextInput>
+                onBlur={() => validatePasswordField(password)} // Validate on blur
+              />
+              {passwordError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {passwordError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -259,11 +333,20 @@ export default function RegisterScreen() {
                 placeholder="Confirm Password"
                 placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
+                autoCapitalize="none"
+                value={matchPassword}
                 onChangeText={(text) => {
                   setMatchPassword(text);
+                  if (confirmPasswordError) setConfirmPasswordError(null); // Clear error while typing
                   // Password match logging removed per security best practices
                 }}
-              ></TextInput>
+                onBlur={() => validateConfirmPasswordField(password, matchPassword)} // Validate on blur
+              />
+              {confirmPasswordError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {confirmPasswordError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -329,6 +412,11 @@ export default function RegisterScreen() {
                   />
                 </Pressable>
               )}
+              {dobError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {dobError}
+                </Text>
+              )}
             </View>
             {loading ? (
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
@@ -337,10 +425,15 @@ export default function RegisterScreen() {
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
-                  { backgroundColor: colors["triC"] },
+                  {
+                    backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
+                    opacity: !isFormValid ? 0.5 : 1
+                  },
                 ]}
+                disabled={!isFormValid}
+                onPress={handleSubmit}
               >
-                <Text style={globalStyles.buttonText} onPress={handleSubmit}>
+                <Text style={globalStyles.buttonText}>
                   Create an Account
                 </Text>
               </Pressable>
