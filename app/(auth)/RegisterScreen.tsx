@@ -66,32 +66,32 @@ export default function RegisterScreen() {
 
   const [errMsg, setErrMsg] = useState("");
 
-  // Real-time email validation
-  useEffect(() => {
-    if (email.length > 0) {
-      setEmailError(validateEmail(email));
+  // Real-time email validation - runs on blur or when explicitly triggered
+  const validateEmailField = (value: string) => {
+    if (value.length > 0) {
+      setEmailError(validateEmail(value));
     } else {
       setEmailError(null);
     }
-  }, [email]);
+  };
 
-  // Real-time password validation
-  useEffect(() => {
-    if (password.length > 0) {
-      setPasswordError(validatePassword(password));
+  // Real-time password validation - runs on blur or when explicitly triggered
+  const validatePasswordField = (value: string) => {
+    if (value.length > 0) {
+      setPasswordError(validatePassword(value));
     } else {
       setPasswordError(null);
     }
-  }, [password]);
+  };
 
-  // Real-time password match validation
-  useEffect(() => {
-    if (matchPassword.length > 0) {
-      setConfirmPasswordError(validatePasswordMatch(password, matchPassword));
+  // Real-time password match validation - runs on blur or when explicitly triggered
+  const validateConfirmPasswordField = (pwd: string, confirmPwd: string) => {
+    if (confirmPwd.length > 0) {
+      setConfirmPasswordError(validatePasswordMatch(pwd, confirmPwd));
     } else {
       setConfirmPasswordError(null);
     }
-  }, [password, matchPassword]);
+  };
 
   // Clear general error message when user makes changes
   useEffect(() => {
@@ -280,8 +280,10 @@ export default function RegisterScreen() {
                 value={email}
                 onChangeText={(text) => {
                   setEmail(text);
+                  if (emailError) setEmailError(null); // Clear error while typing
                   logger.log("User email updated. Length:", text.length);
                 }}
+                onBlur={() => validateEmailField(email)} // Validate on blur
               />
               {emailError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -302,8 +304,10 @@ export default function RegisterScreen() {
                 value={password}
                 onChangeText={(text) => {
                   setPassword(text);
+                  if (passwordError) setPasswordError(null); // Clear error while typing
                   // Password length logging removed per security best practices
                 }}
+                onBlur={() => validatePasswordField(password)} // Validate on blur
               />
               {passwordError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -324,8 +328,10 @@ export default function RegisterScreen() {
                 value={matchPassword}
                 onChangeText={(text) => {
                   setMatchPassword(text);
+                  if (confirmPasswordError) setConfirmPasswordError(null); // Clear error while typing
                   // Password match logging removed per security best practices
                 }}
+                onBlur={() => validateConfirmPasswordField(password, matchPassword)} // Validate on blur
               />
               {confirmPasswordError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>

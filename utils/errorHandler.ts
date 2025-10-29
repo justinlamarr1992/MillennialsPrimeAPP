@@ -1,4 +1,5 @@
 import { FirebaseError } from "firebase/app";
+import { logger } from "./logger";
 
 /**
  * Centralized error handler for Firebase authentication errors
@@ -9,7 +10,7 @@ import { FirebaseError } from "firebase/app";
  */
 export const handleAuthError = (error: FirebaseError): string => {
   switch (error.code) {
-    // Sign In Errors
+    // Sign In & Password Reset Errors
     case 'auth/user-not-found':
       return 'No account found with this email address';
     case 'auth/wrong-password':
@@ -31,9 +32,7 @@ export const handleAuthError = (error: FirebaseError): string => {
     case 'auth/operation-not-allowed':
       return 'Email/password sign-in is not enabled. Please contact support';
 
-    // Password Reset Errors
-    case 'auth/user-not-found':
-      return 'No account found with this email';
+    // Password Reset Specific Errors
     case 'auth/invalid-action-code':
       return 'This password reset link is invalid or has expired';
     case 'auth/expired-action-code':
@@ -54,7 +53,7 @@ export const handleAuthError = (error: FirebaseError): string => {
     // Default
     default:
       // Log the original error code for debugging
-      console.error('Unhandled Firebase auth error:', error.code, error.message);
+      logger.error('Unhandled Firebase auth error:', error.code, error.message);
       return 'An unexpected error occurred. Please try again';
   }
 };
