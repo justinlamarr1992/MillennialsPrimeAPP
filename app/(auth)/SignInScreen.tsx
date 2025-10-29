@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -15,6 +15,9 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { validateEmail } from "@/utils/validation";
+import { handleAuthError } from "@/utils/errorHandler";
+import { logger } from "@/utils/logger";
 
 export default function SignInScreen() {
   const auth = getAuth();
@@ -23,10 +26,36 @@ export default function SignInScreen() {
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
+  // Field-level error messages for real-time validation feedback
+  const [emailError, setEmailError] = useState<string | null>(null);
+
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
+  // Real-time email validation
+  useEffect(() => {
+    if (email.length > 0) {
+      setEmailError(validateEmail(email));
+    } else {
+      setEmailError(null);
+    }
+  }, [email]);
+
+  // Clear general error message when user makes changes
+  useEffect(() => {
+    setErrMsg("");
+  }, [email, password]);
+
+  // Check if form is valid for submission
+  const isFormValid = email.length > 0 && password.length > 0 && !emailError;
+
   const handleSubmit = async () => {
+    // Validate before submission
+    if (emailError || email.length === 0 || password.length === 0) {
+      setErrMsg("Please enter a valid email and password");
+      return;
+    }
+
     setLoading(true);
     setErrMsg("");
 
@@ -37,8 +66,9 @@ export default function SignInScreen() {
       router.replace("/(tabs)/(home)/HomePage");
     } catch (error) {
       const firebaseError = error as FirebaseError;
-      const errorMessage = firebaseError.message || "An error occurred during sign in";
+      const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
+      logger.error('Sign in error:', firebaseError.code, firebaseError.message);
     } finally {
       setLoading(false);
     }
@@ -100,14 +130,17 @@ export default function SignInScreen() {
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
-                placeholderTextColor="#BABBBD"
+                placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
-                // value={user}
                 value={email}
-                // onChangeText={(text) => setUser(text)}
                 onChangeText={(text) => setEmail(text)}
                 autoCapitalize="none"
-              ></TextInput>
+              />
+              {emailError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {emailError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -116,13 +149,12 @@ export default function SignInScreen() {
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Password"
-                placeholderTextColor="#BABBBD"
+                placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
+                autoCapitalize="none"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
-
-                // secureTextEntry={true}
-              ></TextInput>
+              />
             </View>
             {loading ? (
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
@@ -131,9 +163,13 @@ export default function SignInScreen() {
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
-                  { backgroundColor: colors["triC"] },
+                  {
+                    backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
+                    opacity: !isFormValid ? 0.5 : 1
+                  },
                 ]}
-                onPressIn={handleSubmit}
+                disabled={!isFormValid}
+                onPress={handleSubmit}
               >
                 <Text style={globalStyles.buttonText}>Login</Text>
               </Pressable>

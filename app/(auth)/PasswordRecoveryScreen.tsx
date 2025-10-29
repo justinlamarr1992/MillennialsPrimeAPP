@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { router } from "expo-router";
 import {
   useColorScheme,
@@ -15,6 +15,9 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import { validateEmail } from "@/utils/validation";
+import { handleAuthError } from "@/utils/errorHandler";
+import { logger } from "@/utils/logger";
 
 const PasswordRecoveryScreen = () => {
   const auth = getAuth();
@@ -24,10 +27,28 @@ const PasswordRecoveryScreen = () => {
   const colors = COLORS[colorScheme ?? "dark"];
 
   const [errMsg, setErrMsg] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  // Real-time email validation
+  useEffect(() => {
+    if (email.length > 0) {
+      setEmailError(validateEmail(email));
+    } else {
+      setEmailError(null);
+    }
+  }, [email]);
+
+  // Clear error when user types
+  useEffect(() => {
+    setErrMsg("");
+  }, [email]);
+
+  const isFormValid = email.length > 0 && !emailError;
 
   const handleSubmit = async () => {
-    if (!email) {
-      setErrMsg("Please enter your email address");
+    // Validate email before submission
+    if (!email || emailError) {
+      setErrMsg("Please enter a valid email address");
       return;
     }
 
@@ -37,12 +58,13 @@ const PasswordRecoveryScreen = () => {
     try {
       await sendPasswordResetEmail(auth, email);
       // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
-      alert("Check Your Email");
+      alert("Password reset email sent! Check your inbox.");
       router.replace("/(auth)/SignInScreen");
     } catch (error) {
       const firebaseError = error as FirebaseError;
-      const errorMessage = firebaseError.message || "An error occurred sending password reset email";
+      const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
+      logger.error('Password reset error:', firebaseError.code, firebaseError.message);
     } finally {
       setLoading(false);
     }
@@ -96,11 +118,17 @@ const PasswordRecoveryScreen = () => {
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
-                placeholderTextColor="#BABBBD"
+                placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
+                autoCapitalize="none"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
-              ></TextInput>
+              />
+              {emailError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {emailError}
+                </Text>
+              )}
             </View>
             {loading ? (
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
@@ -109,9 +137,13 @@ const PasswordRecoveryScreen = () => {
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
-                  { backgroundColor: colors["triC"] },
+                  {
+                    backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
+                    opacity: !isFormValid ? 0.5 : 1
+                  },
                 ]}
-                onPressIn={handleSubmit}
+                disabled={!isFormValid}
+                onPress={handleSubmit}
               >
                 <Text style={globalStyles.buttonText}>Send Email</Text>
               </Pressable>

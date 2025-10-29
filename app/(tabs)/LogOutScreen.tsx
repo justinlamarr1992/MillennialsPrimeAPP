@@ -1,44 +1,42 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
-  Button,
   useColorScheme,
   Pressable,
   ActivityIndicator,
 } from "react-native";
-// import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { getAuth, signOut } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { handleAuthError } from "@/utils/errorHandler";
+import { logger } from "@/utils/logger";
 
 export default function LogOutScreen() {
-  // const { logout, setIsLoading } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  // const navigation = useNavigation();
-  // const colors = useTheme().colors;
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const auth = getAuth();
 
   const handleLogOut = async () => {
     setLoading(true);
+    setErrMsg("");
 
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-    // setIsLoading(true);
-    // logout();
-    // auth().signOut();
-    router.push("/(auth)/SignInScreen");
-
-    setLoading(false);
+    try {
+      await signOut(auth);
+      // Sign-out successful, redirect to sign in
+      router.push("/(auth)/SignInScreen");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = handleAuthError(firebaseError);
+      setErrMsg(errorMessage);
+      logger.error('Sign out error:', firebaseError.code, firebaseError.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -60,17 +58,19 @@ export default function LogOutScreen() {
       >
         Come Back Soon, There's More to Come
       </Text>
+      {errMsg && (
+        <Text style={[globalStyles.errorText, { color: colors["secC"], marginBottom: 16 }]}>
+          {errMsg}
+        </Text>
+      )}
       {loading ? (
         <ActivityIndicator size={"small"} style={{ margin: 28 }} />
       ) : (
         <Pressable
-          // onPress={logout}
           style={[globalStyles.button, { backgroundColor: colors["priC"] }]}
+          onPress={handleLogOut}
         >
-          <Text
-            style={[globalStyles.buttonText, { color: colors["secT"] }]}
-            onPress={handleLogOut}
-          >
+          <Text style={[globalStyles.buttonText, { color: colors["secT"] }]}>
             Log Out
           </Text>
         </Pressable>
