@@ -32,26 +32,26 @@ export const validateEmail = (email: string): string | null => {
  * @returns Error message if invalid, null if valid
  */
 export const validatePassword = (password: string): string | null => {
-  if (!password || !password.trim()) {
+  if (!password) {
     return 'Password is required';
   }
-  const trimmedPassword = password.trim();
-  if (trimmedPassword.length < 8) {
+  // Use raw password value for all checks (do not trim)
+  if (password.length < 8) {
     return 'Password must be at least 8 characters';
   }
-  if (trimmedPassword.length > 24) {
+  if (password.length > 24) {
     return 'Password must be no more than 24 characters';
   }
-  if (!/[a-z]/.test(trimmedPassword)) {
+  if (!/[a-z]/.test(password)) {
     return 'Password must contain a lowercase letter';
   }
-  if (!/[A-Z]/.test(trimmedPassword)) {
+  if (!/[A-Z]/.test(password)) {
     return 'Password must contain an uppercase letter';
   }
-  if (!/[0-9]/.test(trimmedPassword)) {
+  if (!/[0-9]/.test(password)) {
     return 'Password must contain a number';
   }
-  if (!/[!@#$%]/.test(trimmedPassword)) {
+  if (!/[!@#$%]/.test(password)) {
     return 'Password must contain at least one special character (!@#$%)';
   }
   return null;
