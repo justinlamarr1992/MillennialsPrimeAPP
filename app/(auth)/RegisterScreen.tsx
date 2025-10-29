@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -29,6 +29,17 @@ import { handleAuthError } from "@/utils/errorHandler";
 // DateTimePicker event interface for type safety
 interface DatePickerEvent {
   type: string;
+}
+
+// Form validation errors interface - declared at module level per React best practices
+interface ValidationErrors {
+  email: string | null;
+  password: string | null;
+  confirmPassword: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  dob: string | null;
+  hasErrors: boolean;
 }
 
 // Birth year range constants - targeting Millennials generation
@@ -66,32 +77,70 @@ export default function RegisterScreen() {
 
   const [errMsg, setErrMsg] = useState("");
 
-  // Real-time email validation - runs on blur or when explicitly triggered
-  const validateEmailField = (value: string) => {
-    if (value.length > 0) {
-      setEmailError(validateEmail(value));
-    } else {
-      setEmailError(null);
-    }
+  // Centralized form validation function
+  // Returns an object with all validation errors and a hasErrors flag
+  // Always calls validators to ensure proper 'required' validation
+  // Wrapped in useCallback for performance optimization
+  const validateForm = useCallback((): ValidationErrors => {
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+    const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
+    const firstNameValidation = validateRequired(firstName, "First name");
+    const lastNameValidation = validateRequired(lastName, "Last name");
+    const dobValidation = validateRequired(DOB, "Date of birth");
+
+    const hasErrors = !!(
+      emailValidation ||
+      passwordValidation ||
+      confirmPasswordValidation ||
+      firstNameValidation ||
+      lastNameValidation ||
+      dobValidation
+    );
+
+    return {
+      email: emailValidation,
+      password: passwordValidation,
+      confirmPassword: confirmPasswordValidation,
+      firstName: firstNameValidation,
+      lastName: lastNameValidation,
+      dob: dobValidation,
+      hasErrors
+    };
+  }, [email, password, matchPassword, firstName, lastName, DOB]);
+
+  // Apply validation errors to state
+  const applyValidationErrors = (errors: ValidationErrors) => {
+    setEmailError(errors.email);
+    setPasswordError(errors.password);
+    setConfirmPasswordError(errors.confirmPassword);
+    setFirstNameError(errors.firstName);
+    setLastNameError(errors.lastName);
+    setDobError(errors.dob);
   };
 
-  // Real-time password validation - runs on blur or when explicitly triggered
-  const validatePasswordField = (value: string) => {
-    if (value.length > 0) {
-      setPasswordError(validatePassword(value));
-    } else {
-      setPasswordError(null);
-    }
-  };
+  // Real-time field validation helpers - validate individual fields on blur
+  // Always call validators to show required errors when fields are empty
+  // Wrapped in useCallback to maintain referential stability and prevent unnecessary re-renders
+  const validateEmailField = useCallback(() => {
+    setEmailError(validateEmail(email));
+  }, [email]);
 
-  // Real-time password match validation - runs on blur or when explicitly triggered
-  const validateConfirmPasswordField = (pwd: string, confirmPwd: string) => {
-    if (confirmPwd.length > 0) {
-      setConfirmPasswordError(validatePasswordMatch(pwd, confirmPwd));
-    } else {
-      setConfirmPasswordError(null);
-    }
-  };
+  const validatePasswordField = useCallback(() => {
+    setPasswordError(validatePassword(password));
+  }, [password]);
+
+  const validateConfirmPasswordField = useCallback(() => {
+    setConfirmPasswordError(validatePasswordMatch(password, matchPassword));
+  }, [password, matchPassword]);
+
+  const validateFirstNameField = useCallback(() => {
+    setFirstNameError(validateRequired(firstName, "First name"));
+  }, [firstName]);
+
+  const validateLastNameField = useCallback(() => {
+    setLastNameError(validateRequired(lastName, "Last name"));
+  }, [lastName]);
 
   // Clear general error message when user makes changes
   useEffect(() => {
@@ -134,31 +183,12 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
-    // Validate all fields before submission (including re-validation for safety)
-    const emailValidation = validateEmail(email);
-    const passwordValidation = validatePassword(password);
-    const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
-    const firstNameValidation = validateRequired(firstName, "First name");
-    const lastNameValidation = validateRequired(lastName, "Last name");
-    const dobValidation = validateRequired(DOB, "Date of birth");
-
-    // Update all error states
-    setEmailError(emailValidation);
-    setPasswordError(passwordValidation);
-    setConfirmPasswordError(confirmPasswordValidation);
-    setFirstNameError(firstNameValidation);
-    setLastNameError(lastNameValidation);
-    setDobError(dobValidation);
+    // Validate all fields before submission using centralized validation
+    const errors = validateForm();
+    applyValidationErrors(errors);
 
     // If any validation fails, show error and stop
-    if (
-      emailValidation ||
-      passwordValidation ||
-      confirmPasswordValidation ||
-      firstNameValidation ||
-      lastNameValidation ||
-      dobValidation
-    ) {
+    if (errors.hasErrors) {
       setErrMsg("Please fix all errors before submitting");
       return;
     }
@@ -249,6 +279,7 @@ export default function RegisterScreen() {
                   setFirstName(text);
                   if (firstNameError) setFirstNameError(null);
                 }}
+                onBlur={validateFirstNameField}
               />
               {firstNameError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -269,6 +300,7 @@ export default function RegisterScreen() {
                   setLastName(text);
                   if (lastNameError) setLastNameError(null);
                 }}
+                onBlur={validateLastNameField}
               />
               {lastNameError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -292,7 +324,7 @@ export default function RegisterScreen() {
                   if (emailError) setEmailError(null); // Clear error while typing
                   logger.log("User email updated. Length:", text.length);
                 }}
-                onBlur={() => validateEmailField(email)} // Validate on blur
+                onBlur={validateEmailField} // Validate on blur
               />
               {emailError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -316,7 +348,7 @@ export default function RegisterScreen() {
                   if (passwordError) setPasswordError(null); // Clear error while typing
                   // Password length logging removed per security best practices
                 }}
-                onBlur={() => validatePasswordField(password)} // Validate on blur
+                onBlur={validatePasswordField} // Validate on blur
               />
               {passwordError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
@@ -340,7 +372,7 @@ export default function RegisterScreen() {
                   if (confirmPasswordError) setConfirmPasswordError(null); // Clear error while typing
                   // Password match logging removed per security best practices
                 }}
-                onBlur={() => validateConfirmPasswordField(password, matchPassword)} // Validate on blur
+                onBlur={validateConfirmPasswordField} // Validate on blur
               />
               {confirmPasswordError && (
                 <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
