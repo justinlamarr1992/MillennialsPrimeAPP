@@ -29,11 +29,15 @@ export default function Page() {
       <View
         style={[
           globalStyles.container,
-          { backgroundColor: colors["background"], justifyContent: "center", alignItems: "center" },
+          globalStyles.flexJustifyContentCenter,
+          globalStyles.flexAlignItemsCenter,
+          { backgroundColor: colors["background"] },
         ]}
       >
         <ActivityIndicator size="large" color={colors["triC"]} />
-        <Text style={{ color: colors["text"], marginTop: 16 }}>Loading latest content...</Text>
+        <Text style={[globalStyles.textCenter, { marginTop: 16, color: colors["text"] }]}>
+          Loading latest content...
+        </Text>
       </View>
     );
   }
@@ -44,10 +48,13 @@ export default function Page() {
       <View
         style={[
           globalStyles.container,
-          { backgroundColor: colors["background"], justifyContent: "center", alignItems: "center", padding: 20 },
+          globalStyles.flexJustifyContentCenter,
+          globalStyles.flexAlignItemsCenter,
+          globalStyles.padding,
+          { backgroundColor: colors["background"] },
         ]}
       >
-        <Text style={{ color: colors["secC"], fontSize: 16, textAlign: "center", marginBottom: 16 }}>
+        <Text style={[globalStyles.textCenter, { marginBottom: 16, color: colors["secC"], fontSize: 16 }]}>
           {error instanceof Error && error.message.includes("Unable to load videos")
             ? error.message
             : "Failed to load content. Please try again later."}
@@ -55,7 +62,7 @@ export default function Page() {
         <Pressable
           style={[
             globalStyles.button,
-            { backgroundColor: colors["triC"], paddingHorizontal: 24 }
+            { backgroundColor: colors["triC"] }
           ]}
           onPress={() => refetch()}
         >
@@ -71,10 +78,13 @@ export default function Page() {
       <View
         style={[
           globalStyles.container,
-          { backgroundColor: colors["background"], justifyContent: "center", alignItems: "center", padding: 20 },
+          globalStyles.flexJustifyContentCenter,
+          globalStyles.flexAlignItemsCenter,
+          globalStyles.padding,
+          { backgroundColor: colors["background"] },
         ]}
       >
-        <Text style={{ color: colors["text"], fontSize: 16, textAlign: "center" }}>
+        <Text style={[globalStyles.textCenter, { color: colors["text"], fontSize: 16 }]}>
           No content available at this time.
         </Text>
       </View>
