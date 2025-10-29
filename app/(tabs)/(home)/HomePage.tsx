@@ -5,6 +5,7 @@ import {
   ScrollView,
   useColorScheme,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 
 import Ad from "@/shared/Ad";
@@ -20,7 +21,7 @@ export default function Page() {
   const name = "Millennial's Prime Admin";
 
   // Use React Query hook for cached data fetching
-  const { data: videoData, isLoading, isError } = useBunnyCDNVideos();
+  const { data: videoData, isLoading, isError, error, refetch } = useBunnyCDNVideos();
 
   // Show loading state
   if (isLoading) {
@@ -37,7 +38,7 @@ export default function Page() {
     );
   }
 
-  // Show error state
+  // Show error state with retry option
   if (isError) {
     return (
       <View
@@ -46,9 +47,20 @@ export default function Page() {
           { backgroundColor: colors["background"], justifyContent: "center", alignItems: "center", padding: 20 },
         ]}
       >
-        <Text style={{ color: colors["secC"], fontSize: 16, textAlign: "center" }}>
-          Failed to load content. Please try again later.
+        <Text style={{ color: colors["secC"], fontSize: 16, textAlign: "center", marginBottom: 16 }}>
+          {error instanceof Error && error.message.includes("Unable to load videos")
+            ? error.message
+            : "Failed to load content. Please try again later."}
         </Text>
+        <Pressable
+          style={[
+            globalStyles.button,
+            { backgroundColor: colors["triC"], paddingHorizontal: 24 }
+          ]}
+          onPress={() => refetch()}
+        >
+          <Text style={globalStyles.buttonText}>Retry</Text>
+        </Pressable>
       </View>
     );
   }

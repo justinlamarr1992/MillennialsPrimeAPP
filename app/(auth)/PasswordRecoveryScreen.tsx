@@ -57,7 +57,9 @@ const PasswordRecoveryScreen = () => {
 
     try {
       await sendPasswordResetEmail(auth, email);
-      // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
+      // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
+      // Native alert() is blocking and provides poor user experience on mobile
+      // Consider: react-native-toast-notifications or expo-notifications
       alert("Password reset email sent! Check your inbox.");
       router.replace("/(auth)/SignInScreen");
     } catch (error) {

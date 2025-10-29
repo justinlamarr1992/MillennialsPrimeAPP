@@ -43,16 +43,26 @@ const fetchBunnyCDNVideos = async (): Promise<VideoData | null> => {
   const libraryId = process.env.EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID;
   const apiUrl = process.env.EXPO_PUBLIC_BUNNYCDN_API_URL;
 
-  if (!accessKey?.trim() || !libraryId?.trim() || !apiUrl?.trim()) {
-    logger.error("Missing or empty BunnyCDN environment variables");
-    throw new Error("BunnyCDN configuration is incomplete or empty");
+  // Validate environment variables and provide specific error messages
+  const missingVars: string[] = [];
+  if (!accessKey?.trim()) missingVars.push("EXPO_PUBLIC_BUNNYCDN_ACCESS_KEY");
+  if (!libraryId?.trim()) missingVars.push("EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID");
+  if (!apiUrl?.trim()) missingVars.push("EXPO_PUBLIC_BUNNYCDN_API_URL");
+
+  if (missingVars.length > 0) {
+    logger.error(
+      `Missing or empty BunnyCDN environment variables: ${missingVars.join(", ")}`
+    );
+    // User-friendly message doesn't expose configuration details
+    throw new Error("Unable to load videos. Please try again later.");
   }
 
+  // TypeScript assertion: we've validated these exist above
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      AccessKey: accessKey,
+      AccessKey: accessKey as string,
     },
   };
 

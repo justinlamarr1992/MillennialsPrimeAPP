@@ -7,6 +7,8 @@
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // Strong password: 8-24 chars, uppercase, lowercase, number, special char
+// Note: Special characters limited to !@#$% for Firebase Auth compatibility
+// These are the most common and universally supported special characters
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 /**
@@ -50,7 +52,7 @@ export const validatePassword = (password: string): string | null => {
     return 'Password must contain a number';
   }
   if (!/[!@#$%]/.test(trimmedPassword)) {
-    return 'Password must contain a special character (!@#$%)';
+    return 'Password must contain at least one special character (!@#$%)';
   }
   return null;
 };

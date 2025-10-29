@@ -134,20 +134,27 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
-    // Validate all fields before submission
+    // Validate all fields before submission (including re-validation for safety)
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+    const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
     const firstNameValidation = validateRequired(firstName, "First name");
     const lastNameValidation = validateRequired(lastName, "Last name");
     const dobValidation = validateRequired(DOB, "Date of birth");
 
+    // Update all error states
+    setEmailError(emailValidation);
+    setPasswordError(passwordValidation);
+    setConfirmPasswordError(confirmPasswordValidation);
     setFirstNameError(firstNameValidation);
     setLastNameError(lastNameValidation);
     setDobError(dobValidation);
 
     // If any validation fails, show error and stop
     if (
-      emailError ||
-      passwordError ||
-      confirmPasswordError ||
+      emailValidation ||
+      passwordValidation ||
+      confirmPasswordValidation ||
       firstNameValidation ||
       lastNameValidation ||
       dobValidation
@@ -162,7 +169,9 @@ export default function RegisterScreen() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       // Signed up successfully
-      // TODO: Replace alert() with a proper notification component (toast/snackbar) for better UX
+      // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
+      // Native alert() is blocking and provides poor user experience on mobile
+      // Consider: react-native-toast-notifications or expo-notifications
       alert("You are registered");
       // add the Mongo information or how to get the data here
       // register(user, password, firstName, lastName, DOB);
