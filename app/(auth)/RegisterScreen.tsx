@@ -31,6 +31,17 @@ interface DatePickerEvent {
   type: string;
 }
 
+// Form validation errors interface - declared at module level per React best practices
+interface ValidationErrors {
+  email: string | null;
+  password: string | null;
+  confirmPassword: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  dob: string | null;
+  hasErrors: boolean;
+}
+
 // Birth year range constants - targeting Millennials generation
 // Born between 1981 and 1997 (age 28-44 in 2025)
 const MIN_BIRTH_YEAR = 1981;
@@ -68,31 +79,14 @@ export default function RegisterScreen() {
 
   // Centralized form validation function
   // Returns an object with all validation errors and a hasErrors flag
-  interface ValidationErrors {
-    email: string | null;
-    password: string | null;
-    confirmPassword: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    dob: string | null;
-    hasErrors: boolean;
-  }
-
+  // Always calls validators to ensure proper 'required' validation
   const validateForm = (): ValidationErrors => {
-    const emailValidation = email.length > 0 ? validateEmail(email) : null;
-    const passwordValidation = password.length > 0 ? validatePassword(password) : null;
-    const confirmPasswordValidation = matchPassword.length > 0 
-      ? validatePasswordMatch(password, matchPassword) 
-      : null;
-    const firstNameValidation = firstName.trim().length > 0 
-      ? validateRequired(firstName, "First name") 
-      : null;
-    const lastNameValidation = lastName.trim().length > 0 
-      ? validateRequired(lastName, "Last name") 
-      : null;
-    const dobValidation = DOB.length > 0 
-      ? validateRequired(DOB, "Date of birth") 
-      : null;
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+    const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
+    const firstNameValidation = validateRequired(firstName, "First name");
+    const lastNameValidation = validateRequired(lastName, "Last name");
+    const dobValidation = validateRequired(DOB, "Date of birth");
 
     const hasErrors = !!(
       emailValidation ||
@@ -125,44 +119,25 @@ export default function RegisterScreen() {
   };
 
   // Real-time field validation helpers - validate individual fields on blur
+  // Always call validators to show required errors when fields are empty
   const validateEmailField = () => {
-    if (email.length > 0) {
-      setEmailError(validateEmail(email));
-    } else {
-      setEmailError(null);
-    }
+    setEmailError(validateEmail(email));
   };
 
   const validatePasswordField = () => {
-    if (password.length > 0) {
-      setPasswordError(validatePassword(password));
-    } else {
-      setPasswordError(null);
-    }
+    setPasswordError(validatePassword(password));
   };
 
   const validateConfirmPasswordField = () => {
-    if (matchPassword.length > 0) {
-      setConfirmPasswordError(validatePasswordMatch(password, matchPassword));
-    } else {
-      setConfirmPasswordError(null);
-    }
+    setConfirmPasswordError(validatePasswordMatch(password, matchPassword));
   };
 
   const validateFirstNameField = () => {
-    if (firstName.trim().length > 0) {
-      setFirstNameError(validateRequired(firstName, "First name"));
-    } else {
-      setFirstNameError(null);
-    }
+    setFirstNameError(validateRequired(firstName, "First name"));
   };
 
   const validateLastNameField = () => {
-    if (lastName.trim().length > 0) {
-      setLastNameError(validateRequired(lastName, "Last name"));
-    } else {
-      setLastNameError(null);
-    }
+    setLastNameError(validateRequired(lastName, "Last name"));
   };
 
   // Clear general error message when user makes changes
