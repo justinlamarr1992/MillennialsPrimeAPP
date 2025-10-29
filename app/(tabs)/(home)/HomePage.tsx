@@ -35,7 +35,7 @@ export default function Page() {
         ]}
       >
         <ActivityIndicator size="large" color={colors["triC"]} />
-        <Text style={[globalStyles.textCenter, globalStyles.marginVertical, { color: colors["text"] }]}>
+        <Text style={[globalStyles.textCenter, { marginTop: 16, color: colors["text"] }]}>
           Loading latest content...
         </Text>
       </View>
@@ -54,7 +54,7 @@ export default function Page() {
           { backgroundColor: colors["background"] },
         ]}
       >
-        <Text style={[globalStyles.textCenter, globalStyles.marginB10, { color: colors["secC"], fontSize: 16 }]}>
+        <Text style={[globalStyles.textCenter, { marginBottom: 16, color: colors["secC"], fontSize: 16 }]}>
           {error instanceof Error && error.message.includes("Unable to load videos")
             ? error.message
             : "Failed to load content. Please try again later."}
