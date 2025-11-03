@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -14,83 +14,161 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { AuthContext } from "../../provider/AuthProvider";
-// import UserInfo from "./PostItems/UserInfo";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { logger } from "@/utils/logger";
+import {
+  validateEmail,
+  validatePassword,
+  validatePasswordMatch,
+  validateRequired
+} from "@/utils/validation";
+import { handleAuthError } from "@/utils/errorHandler";
 
-import axios from "axios";
+// DateTimePicker event interface for type safety
+interface DatePickerEvent {
+  type: string;
+}
 
-const USER_REGEX = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i;
-// const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PASSWORD_REGEX =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+// Form validation errors interface - declared at module level per React best practices
+interface ValidationErrors {
+  email: string | null;
+  password: string | null;
+  confirmPassword: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  dob: string | null;
+  hasErrors: boolean;
+}
+
+// Birth year range constants - targeting Millennials generation
+// Born between 1981 and 1997 (age 28-44 in 2025)
+const MIN_BIRTH_YEAR = 1981;
+const MAX_BIRTH_YEAR = 1997;
+const MIN_BIRTH_DATE = new Date(`${MIN_BIRTH_YEAR}-1-1`);
+const MAX_BIRTH_DATE = new Date(`${MAX_BIRTH_YEAR}-1-1`);
 
 export default function RegisterScreen() {
-  console.log(auth);
+  const auth = getAuth();
   // const { register, auth } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const ref = useRef(null);
-  const userRef = useRef();
-  const errRef = useRef();
-
-  const auth = getAuth();
   const [loading, setLoading] = useState(false);
 
-  // const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
-
   const [password, setPassword] = useState("");
-  const [validPassword, setValidPassword] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-
   const [matchPassword, setMatchPassword] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());
   const [DOB, setDOB] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
-  const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
+  // Field-level error messages for real-time validation feedback
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
+  const [firstNameError, setFirstNameError] = useState<string | null>(null);
+  const [lastNameError, setLastNameError] = useState<string | null>(null);
+  const [dobError, setDobError] = useState<string | null>(null);
 
-  useEffect(() => {
-    setValidName(USER_REGEX.test(email));
+  const [errMsg, setErrMsg] = useState("");
+
+  // Centralized form validation function
+  // Returns an object with all validation errors and a hasErrors flag
+  // Always calls validators to ensure proper 'required' validation
+  // Wrapped in useCallback for performance optimization
+  const validateForm = useCallback((): ValidationErrors => {
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+    const confirmPasswordValidation = validatePasswordMatch(password, matchPassword);
+    const firstNameValidation = validateRequired(firstName, "First name");
+    const lastNameValidation = validateRequired(lastName, "Last name");
+    const dobValidation = validateRequired(DOB, "Date of birth");
+
+    const hasErrors = !!(
+      emailValidation ||
+      passwordValidation ||
+      confirmPasswordValidation ||
+      firstNameValidation ||
+      lastNameValidation ||
+      dobValidation
+    );
+
+    return {
+      email: emailValidation,
+      password: passwordValidation,
+      confirmPassword: confirmPasswordValidation,
+      firstName: firstNameValidation,
+      lastName: lastNameValidation,
+      dob: dobValidation,
+      hasErrors
+    };
+  }, [email, password, matchPassword, firstName, lastName, DOB]);
+
+  // Apply validation errors to state
+  const applyValidationErrors = (errors: ValidationErrors) => {
+    setEmailError(errors.email);
+    setPasswordError(errors.password);
+    setConfirmPasswordError(errors.confirmPassword);
+    setFirstNameError(errors.firstName);
+    setLastNameError(errors.lastName);
+    setDobError(errors.dob);
+  };
+
+  // Real-time field validation helpers - validate individual fields on blur
+  // Always call validators to show required errors when fields are empty
+  // Wrapped in useCallback to maintain referential stability and prevent unnecessary re-renders
+  const validateEmailField = useCallback(() => {
+    setEmailError(validateEmail(email));
   }, [email]);
 
-  useEffect(() => {
-    setValidPassword(PASSWORD_REGEX.test(password));
-    setValidMatch(password === matchPassword);
+  const validatePasswordField = useCallback(() => {
+    setPasswordError(validatePassword(password));
+  }, [password]);
+
+  const validateConfirmPasswordField = useCallback(() => {
+    setConfirmPasswordError(validatePasswordMatch(password, matchPassword));
   }, [password, matchPassword]);
 
+  const validateFirstNameField = useCallback(() => {
+    setFirstNameError(validateRequired(firstName, "First name"));
+  }, [firstName]);
+
+  const validateLastNameField = useCallback(() => {
+    setLastNameError(validateRequired(lastName, "Last name"));
+  }, [lastName]);
+
+  // Clear general error message when user makes changes
   useEffect(() => {
     setErrMsg("");
-  }, [email, password, matchPassword]);
+  }, [email, password, matchPassword, firstName, lastName, DOB]);
+
+  // Check if form is valid for submission
+  const isFormValid =
+    email.length > 0 &&
+    password.length > 0 &&
+    matchPassword.length > 0 &&
+    firstName.trim().length > 0 &&
+    lastName.trim().length > 0 &&
+    DOB.length > 0 &&
+    !emailError &&
+    !passwordError &&
+    !confirmPasswordError;
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
   };
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
+  const onChange = (event: DatePickerEvent, selectedDate?: Date) => {
+    if (event.type === "set" && selectedDate) {
       const currentDate = selectedDate;
       setDate(currentDate);
 
       if (Platform.OS === "android") {
         toggleDatePicker();
-        // setDateOfBirth(currentDate.toDateString());
         setDOB(currentDate.toDateString());
       }
     } else {
@@ -104,44 +182,38 @@ export default function RegisterScreen() {
     toggleDatePicker();
   };
 
-  const handleSubmit = async (e) => {
-    setErrMsg(null);
-    setLoading(true);
-    const v1 = USER_REGEX.test(email);
-    const v2 = PASSWORD_REGEX.test(password);
-    if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
+  const handleSubmit = async () => {
+    // Validate all fields before submission using centralized validation
+    const errors = validateForm();
+    applyValidationErrors(errors);
+
+    // If any validation fails, show error and stop
+    if (errors.hasErrors) {
+      setErrMsg("Please fix all errors before submitting");
       return;
     }
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        alert("Your Registered");
-        // add the Mongo information or how to get the datahere
-        // register(user, password, firstName, lastName, DOB);
-        router.navigate("/SignInScreen");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        setErrMsg(errorMessage);
-        // TODO: Create an alert here when something wrong happens then the okay but with reset the button
-      });
-    setLoading(false);
-    // console.log(
-    //   "User: ",
-    //   email,
-    //   " Password: ",
-    //   password,
-    //   " First Name: ",
-    //   firstName,
-    //   " Last Name: ",
-    //   lastName,
-    //   " DOB: ",
-    //   DOB
-    // );
+
+    setErrMsg("");
+    setLoading(true);
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      // Signed up successfully
+      // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
+      // Native alert() is blocking and provides poor user experience on mobile
+      // Consider: react-native-toast-notifications or expo-notifications
+      alert("You are registered");
+      // add the Mongo information or how to get the data here
+      // register(user, password, firstName, lastName, DOB);
+      router.replace("/(auth)/SignInScreen");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = handleAuthError(firebaseError);
+      setErrMsg(errorMessage);
+      logger.error('Registration error:', firebaseError.code, firebaseError.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -202,10 +274,18 @@ export default function RegisterScreen() {
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
                 placeholder="Enter First Name"
+                value={firstName}
                 onChangeText={(text) => {
                   setFirstName(text);
+                  if (firstNameError) setFirstNameError(null);
                 }}
-              ></TextInput>
+                onBlur={validateFirstNameField}
+              />
+              {firstNameError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {firstNameError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -215,10 +295,18 @@ export default function RegisterScreen() {
                 style={globalStyles.input}
                 placeholder="Enter Last Name"
                 placeholderTextColor={colors["plcHoldText"]}
+                value={lastName}
                 onChangeText={(text) => {
                   setLastName(text);
+                  if (lastNameError) setLastNameError(null);
                 }}
-              ></TextInput>
+                onBlur={validateLastNameField}
+              />
+              {lastNameError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {lastNameError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -229,11 +317,20 @@ export default function RegisterScreen() {
                 placeholder="Enter Email"
                 placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
+                autoCapitalize="none"
+                value={email}
                 onChangeText={(text) => {
                   setEmail(text);
-                  console.log("User is ", email);
+                  if (emailError) setEmailError(null); // Clear error while typing
+                  logger.log("User email updated. Length:", text.length);
                 }}
-              ></TextInput>
+                onBlur={validateEmailField} // Validate on blur
+              />
+              {emailError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {emailError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -244,12 +341,20 @@ export default function RegisterScreen() {
                 placeholder="Enter Password"
                 placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
-                //   autoCorrect={false}
+                autoCapitalize="none"
+                value={password}
                 onChangeText={(text) => {
                   setPassword(text);
-                  console.log("password is ", password);
+                  if (passwordError) setPasswordError(null); // Clear error while typing
+                  // Password length logging removed per security best practices
                 }}
-              ></TextInput>
+                onBlur={validatePasswordField} // Validate on blur
+              />
+              {passwordError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {passwordError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -260,11 +365,20 @@ export default function RegisterScreen() {
                 placeholder="Confirm Password"
                 placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
+                autoCapitalize="none"
+                value={matchPassword}
                 onChangeText={(text) => {
                   setMatchPassword(text);
-                  console.log("Matched is", matchPassword);
+                  if (confirmPasswordError) setConfirmPasswordError(null); // Clear error while typing
+                  // Password match logging removed per security best practices
                 }}
-              ></TextInput>
+                onBlur={validateConfirmPasswordField} // Validate on blur
+              />
+              {confirmPasswordError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {confirmPasswordError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -272,14 +386,12 @@ export default function RegisterScreen() {
               </Text>
               {showPicker && (
                 <DateTimePicker
-                  style={globalStyles.datePicker}
                   mode="date"
                   display="spinner"
                   value={date}
                   onChange={onChange}
-                  placeholderTextColor={colors["plcHoldText"]}
-                  maximumDate={new Date("1997-1-1")}
-                  minimumDate={new Date("1981-1-1")}
+                  maximumDate={MAX_BIRTH_DATE}
+                  minimumDate={MIN_BIRTH_DATE}
                 />
               )}
               {/* IMPORTANT THE DATEPICKER TEXT COLOR IS OFF OF THE PHONE DAYTIME/NIGT PREF */}
@@ -332,6 +444,11 @@ export default function RegisterScreen() {
                   />
                 </Pressable>
               )}
+              {dobError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {dobError}
+                </Text>
+              )}
             </View>
             {loading ? (
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
@@ -340,10 +457,15 @@ export default function RegisterScreen() {
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
-                  { backgroundColor: colors["triC"] },
+                  {
+                    backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
+                    opacity: !isFormValid ? 0.5 : 1
+                  },
                 ]}
+                disabled={!isFormValid}
+                onPress={handleSubmit}
               >
-                <Text style={globalStyles.buttonText} onPress={handleSubmit}>
+                <Text style={globalStyles.buttonText}>
                   Create an Account
                 </Text>
               </Pressable>

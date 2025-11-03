@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -9,13 +9,11 @@ import {
   TextInput,
   useColorScheme,
 } from "react-native";
-import { AuthContext } from "@/context/AuthContext";
 import { Picker } from "@react-native-picker/picker";
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-// import UserInfo from "./PostItems/UserInfo";
-
-import axios from "axios";
+import { logger } from "@/utils/logger";
 
 export default function BusinessScreen() {
   // const { auth, accessToken, roles, id, logout, userInfo } =
@@ -23,37 +21,31 @@ export default function BusinessScreen() {
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const [modalOpen, setModalOpen] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
-  const [entrepreneur, setEntrepreneur] = useState(null);
-  const [entrepreneurPicker, setEntrepreneurPicker] = useState(null);
-  const [companyName, setCompanyName] = useState(null);
-  const [industry, setIndustry] = useState(null);
-  const [industryPicker, setIndustryPicker] = useState(null);
-  const [whyIndustry, setWhyIndustry] = useState(null);
-  const [whyIndustryPicker, setWhyIndustryPicker] = useState(null);
-  const [openOnMillPrime, setOpenOnMillPrime] = useState(null);
-  const [openOnMillPrimePicker, setOpenOnMillPrimePicker] = useState(null);
-  const [lengthOpen, setLengthOpen] = useState(null);
-  const [lengthOpenPicker, setLengthOpenPicker] = useState(null);
-  const [whyBusiness, setWhyBusiness] = useState(null);
-  const [whyBusinessPicker, setWhyBusinessPicker] = useState(null);
-  const [firstObjective, setFirstObjective] = useState(null);
-  const [firstObjectivePicker, setFirstObjectivePicker] = useState(null);
-  const [objectiveNow, setObjectiveNow] = useState(null);
-  const [objectiveNowPicker, setObjectiveNowPicker] = useState(null);
-  const [howMany, setHowMany] = useState(null);
-  const [howManyPicker, setHowManyPicker] = useState(null);
-  const [productsAndServices, setProductsAndServices] = useState(null);
-  const [productsAndServicesPicker, setProductsAndServicesPicker] =
-    useState(null);
-  const [primaryPromotion, setPrimaryPromotion] = useState(null);
-  const [primaryPromotionPicker, setPrimaryPromotionPicker] = useState(null);
-  const [factorsOfLocation, setFactorsOfLocation] = useState(null);
-  const [factorsOfLocationPicker, setFactorsOfLocationPicker] = useState(null);
+  const [entrepreneur, setEntrepreneur] = useState<string>("");
+  const [entrepreneurPicker, setEntrepreneurPicker] = useState<boolean>(false);
+  const [companyName, setCompanyName] = useState<string>("");
+  const [industry, setIndustry] = useState<string>("");
+  const [industryPicker, setIndustryPicker] = useState<boolean>(false);
+  const [whyIndustry, setWhyIndustry] = useState<string>("");
+  const [openOnMillPrime, setOpenOnMillPrime] = useState<string>("");
+  const [openOnMillPrimePicker, setOpenOnMillPrimePicker] = useState<boolean>(false);
+  const [lengthOpen, setLengthOpen] = useState<string>("");
+  const [lengthOpenPicker, setLengthOpenPicker] = useState<boolean>(false);
+  const [whyBusiness, setWhyBusiness] = useState<string>("");
+  const [whyBusinessPicker, setWhyBusinessPicker] = useState<boolean>(false);
+  const [firstObjective, setFirstObjective] = useState<string>("");
+  const [objectiveNow, setObjectiveNow] = useState<string>("");
+  const [howMany, setHowMany] = useState<string>("");
+  const [howManyPicker, setHowManyPicker] = useState<boolean>(false);
+  const [productsAndServices, setProductsAndServices] = useState<string>("");
+  const [primaryPromotion, setPrimaryPromotion] = useState<string>("");
+  const [primaryPromotionPicker, setPrimaryPromotionPicker] = useState<boolean>(false);
+  const [factorsOfLocation, setFactorsOfLocation] = useState<string>("");
+  const [factorsOfLocationPicker, setFactorsOfLocationPicker] = useState<boolean>(false);
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
@@ -73,14 +65,13 @@ export default function BusinessScreen() {
     // Conditional to open Picker
     // {_Picker && ()}
   };
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
-      const currentDate = selectedDate;
-      setDate(currentDate);
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    if (event.type === "set" && selectedDate) {
+      setDate(selectedDate);
 
       if (Platform.OS === "android") {
         toggleDatePicker();
-        setDateOfBirth(currentDate.toDateString());
+        setDateOfBirth(selectedDate.toDateString());
       }
     } else {
       toggleDatePicker();
@@ -117,17 +108,17 @@ export default function BusinessScreen() {
     setFactorsOfLocationPicker(!factorsOfLocationPicker);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     try {
-      console.log("Started the try to submit Business Stuff");
+      logger.log('Business settings submission started');
     } catch (err) {
-      console.log("ERR", err);
+      logger.error('Business settings submission error:', err);
     } finally {
-      console.log("It worked!!!");
+      logger.log('Business settings submitted successfully');
       // navigation.jumpTo("Business");
       // navigation.navigate("Art");
     }
-    console.log("Handle Submit pressed");
+    logger.log('Business settings submit button pressed');
   };
 
   return (
@@ -574,7 +565,6 @@ export default function BusinessScreen() {
               <Pressable
                 style={[
                   globalStyles.button,
-                  globalStyles.vertMargin,
                   { backgroundColor: colors.triC, marginBottom: 25 },
                 ]}
               >

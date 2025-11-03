@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Text, Pressable, useColorScheme } from "react-native";
 import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
@@ -9,13 +9,23 @@ import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import LikeComment from "../LikeComment";
 
+interface PicturePostProps {
+  name: string;
+  title: string;
+  description: string;
+  picture: string;
+  prime: boolean;
+  admin: boolean;
+}
+
 export default function PicturePost({
   name,
   title,
   description,
+  picture,
   prime,
   admin,
-}) {
+}: PicturePostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const viewer = 12345678;
@@ -23,7 +33,7 @@ export default function PicturePost({
   // TODO: Add dynamic ID Check with auth to match if the post can be deleted
 
   const removePost = () => {
-    console.log("Post to be removed in the background");
+    // TODO: Implement post deletion
   };
   const blurhash =
     "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
@@ -44,8 +54,8 @@ export default function PicturePost({
       {/* Picture here */}
       <Image
         style={globalStyles.image}
-        source={{ blurhash }}
-        placeholder={{ LoadingPic }}
+        source={{ uri: picture, blurhash }}
+        placeholder={LoadingPic}
         contentFit="cover"
         transition={1000}
       />

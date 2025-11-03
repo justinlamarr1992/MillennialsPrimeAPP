@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Link, router } from "expo-router";
+import React, { useState, useEffect } from "react";
+import { router } from "expo-router";
 import {
   useColorScheme,
   Text,
@@ -14,34 +14,62 @@ import {
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { validateEmail } from "@/utils/validation";
+import { handleAuthError } from "@/utils/errorHandler";
+import { logger } from "@/utils/logger";
 
 const PasswordRecoveryScreen = () => {
-  const errRef = useRef();
-  const [email, setEmail] = useState(null);
+  const auth = getAuth();
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const [errMsg, setErrMsg] = useState(null);
+  const [errMsg, setErrMsg] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
 
-  const handleSubmit = () => {
+  // Real-time email validation
+  useEffect(() => {
+    if (email.length > 0) {
+      setEmailError(validateEmail(email));
+    } else {
+      setEmailError(null);
+    }
+  }, [email]);
+
+  // Clear error when user types
+  useEffect(() => {
+    setErrMsg("");
+  }, [email]);
+
+  const isFormValid = email.length > 0 && !emailError;
+
+  const handleSubmit = async () => {
+    // Validate email before submission
+    if (!email || emailError) {
+      setErrMsg("Please enter a valid email address");
+      return;
+    }
+
     setLoading(true);
-    const auth = getAuth();
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        alert("Check Your Email");
-        setLoading(false);
-        router.navigate("/SignInScreen");
-        // Password reset email sent!
-        // ..
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrMsg(errorMessage);
-        setLoading(false);
-        // ..
-      });
+    setErrMsg("");
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
+      // Native alert() is blocking and provides poor user experience on mobile
+      // Consider: react-native-toast-notifications or expo-notifications
+      alert("Password reset email sent! Check your inbox.");
+      router.replace("/(auth)/SignInScreen");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = handleAuthError(firebaseError);
+      setErrMsg(errorMessage);
+      logger.error('Password reset error:', firebaseError.code, firebaseError.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -92,11 +120,17 @@ const PasswordRecoveryScreen = () => {
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
-                placeholderTextColor="#BABBBD"
+                placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
+                autoCapitalize="none"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
-              ></TextInput>
+              />
+              {emailError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {emailError}
+                </Text>
+              )}
             </View>
             {loading ? (
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
@@ -105,9 +139,13 @@ const PasswordRecoveryScreen = () => {
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
-                  { backgroundColor: colors["triC"] },
+                  {
+                    backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
+                    opacity: !isFormValid ? 0.5 : 1
+                  },
                 ]}
-                onPressIn={handleSubmit}
+                disabled={!isFormValid}
+                onPress={handleSubmit}
               >
                 <Text style={globalStyles.buttonText}>Send Email</Text>
               </Pressable>

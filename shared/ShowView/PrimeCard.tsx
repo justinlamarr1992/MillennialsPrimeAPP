@@ -1,17 +1,30 @@
 import {
-  View,
   Text,
-  Pressable,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  useColorScheme,
 } from "react-native";
-import React, { useState } from "react";
-import { useTheme, useNavigation } from "@react-navigation/native";
+import React from "react";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
+import { COLORS } from "@/constants/Colors";
 
-import UserInfo from "../PostComponents/UserInfo";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
+import { logger } from "@/utils/logger";
+
+interface PrimeCardProps {
+  userPosting: string;
+  id: string;
+  prime: boolean;
+  thumbnail: string;
+  videoLibraryId: string;
+  guid: string;
+  title: string;
+  description: string;
+  dateUploaded: string;
+  name: string;
+  time: string;
+  key: string;
+}
 
 export default function PrimeCard({
   userPosting,
@@ -26,26 +39,27 @@ export default function PrimeCard({
   name,
   time,
   key,
-}) {
-  const navigation = useNavigation();
+}: PrimeCardProps) {
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
 
   var confirm;
 
-  const colors = useTheme().colors;
-
-  console.log(id, description, prime, userPosting);
+  logger.log('PrimeCard rendered:', { id, description, prime, userPosting });
 
   const pressedVideo = () => {
-    navigation.navigate("PrimeShow", {
-      guid: guid,
-      videoLibraryId: videoLibraryId,
-      title: title,
-      description: description,
-      dateUploaded: dateUploaded,
-    });
+    // TODO: Remove or implement video navigation when ShowView feature is reactivated
+    // This component is currently only used in TabsLater (inactive code)
+    // When ready to reactivate:
+    //   1. Move ShowView feature from TabsLater to app/(tabs)
+    //   2. Implement expo-router navigation: router.push(`/prime-show/${videoLibraryId}`)
+    //   3. Remove this warning and implement actual navigation
+    if (__DEV__) {
+      logger.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
+    }
   };
   const deleteVideo = () => {
-    console.log("Dang you was gone delete the video forreal");
+    logger.log('Delete video initiated');
     const options = {
       method: "DELETE",
       headers: {
@@ -62,16 +76,15 @@ export default function PrimeCard({
       options
     )
       .then((response) => response.json())
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
+      .then((response) => logger.log('Video deleted:', response))
+      .catch((err) => logger.error('Error deleting video:', err));
   };
 
   const checkOriginal = () => {
-    console.log(id);
+    logger.log('Checking if user is original poster:', id);
     userPosting = `"${userPosting}"`;
-    console.log(userPosting);
+    logger.log('Formatted userPosting:', userPosting);
     if (id === userPosting) {
-      // console.log("They match", id, userPosting);
       confirm = true;
       return;
     }
@@ -85,7 +98,7 @@ export default function PrimeCard({
         globalStyles.post,
         globalStyles.flexRow,
         globalStyles.showView,
-        globalStyles.vertMargin,
+        globalStyles.marginVertical,
       ]}
       colors={
         prime
@@ -100,17 +113,16 @@ export default function PrimeCard({
         <Text
           style={
             prime
-              ? [globalStyles.showViewTitle, { color: colors.primCarT }]
+              ? [globalStyles.showViewTitle, { color: colors.primeCarT }]
               : [globalStyles.showViewTitle, { color: colors.showCarT }]
           }
         >
           {title}
         </Text>
         <Text
-          style={[globalStyles.showViewDescription, { color: colors.primCarT }]}
+          style={[globalStyles.showViewDescription, { color: colors.primeCarT }]}
         >
-          {/* "No Description for now" */}
-          {!description ? description : "No Description for now"}
+          {description ? description : "No Description for now"}
         </Text>
         <Text
           style={[
@@ -138,9 +150,9 @@ export default function PrimeCard({
           onPress={deleteVideo}
         >
           {prime ? (
-            <Ionicons name="trash" size="large" color="#611821" />
+            <Ionicons name="trash" size={24} color="#611821" />
           ) : (
-            <Ionicons name="trash" size="large" color="#fffd9b" />
+            <Ionicons name="trash" size={24} color="#fffd9b" />
           )}
         </TouchableOpacity>
       )}

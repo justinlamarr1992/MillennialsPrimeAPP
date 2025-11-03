@@ -1,11 +1,18 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "@/constants/global";
-import Countdown from "react-countdown";
 import DHMSTimer from "./Timer/DHMSTimer";
 
-export default function Ad({ title, description, startDate }) {
+interface AdProps {
+  title: string;
+  description?: string;
+  // Accepts both string and Date to support various data sources (API responses, database, etc.)
+  // Normalized to string in the component for DHMSTimer compatibility
+  startDate: string | Date;
+}
+
+export default function Ad({ title, description, startDate }: AdProps) {
   return (
     // <View style={globalStyles.adPost}>
     //   <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>
@@ -37,7 +44,7 @@ export default function Ad({ title, description, startDate }) {
         {title}
       </Text>
       <DHMSTimer
-        startDate={startDate}
+        startDate={typeof startDate === 'string' ? startDate : startDate.toISOString()}
         // onTimerFinished={onTimerFinished}
       />
     </LinearGradient>

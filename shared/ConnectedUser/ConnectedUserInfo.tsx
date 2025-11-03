@@ -1,19 +1,25 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
-  StyleSheet,
   View,
   Text,
   Image,
-  Button,
   useColorScheme,
   Pressable,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { useTheme } from "@react-navigation/native";
+import { logger } from "@/utils/logger";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
+
+interface ConnectedUserInfoProps {
+  name: string;
+  industry: string;
+  prime: boolean;
+  matching: boolean;
+  connected: boolean;
+  admin: boolean;
+}
+
 export default function ConnectedUserInfo({
   name,
   industry,
@@ -21,8 +27,8 @@ export default function ConnectedUserInfo({
   matching,
   connected,
   admin,
-}) {
-  // TODO: come back and change so that prime is past through as child to determine what colors
+}: ConnectedUserInfoProps) {
+  // TODO: come back and change so that prime is passed through as child to determine what colors
 
   //   let name = "Test Name";
   //   let time = Date.now();
@@ -30,12 +36,7 @@ export default function ConnectedUserInfo({
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const namePress = () => {
-    console.log("Name Pressed");
-  };
-  const industryPress = () => {
-    console.log("Industry Pressed");
-  };
+  // Removed unused functions
   return (
     <View style={globalStyles.postUserInfo}>
       <View style={globalStyles.postUserInfoPicContainer}>
@@ -45,7 +46,10 @@ export default function ConnectedUserInfo({
       </View>
       <View style={globalStyles.postUserInfoTextContainer}>
         {/* TODO: make this the route to their userid/Profile */}
-        <Pressable onPress={() => router.push(`/${name}`)}>
+        <Pressable onPress={() => {
+          // TODO: Implement navigation to user profile
+          logger.debug(`Navigate to user: ${name}`);
+        }}>
           <Text
             style={
               admin
@@ -65,7 +69,10 @@ export default function ConnectedUserInfo({
           Industry:
           {/* Make this the route to the page where list of everyone with industry is at may need new page*/}
           {/* DIFFERENT ROUTE TO DIFF PAGE WITH ALL AS THOS W AS AN INDUSTRY */}
-          <Pressable onPress={() => router.push(`/${industry}`)}>
+          <Pressable onPress={() => {
+            // TODO: Implement navigation to industry page
+            logger.debug(`Navigate to industry: ${industry}`);
+          }}>
             <Text style={globalStyles.bold}>
               {/* If Prime */}
               {prime ? (

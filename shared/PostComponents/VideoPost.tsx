@@ -1,13 +1,24 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Text, Pressable, useColorScheme } from "react-native";
 import { WebView } from "react-native-webview";
-import { Video, ResizeMode } from "expo-av";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import UserInfo from "./UserInfo";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/Colors";
 import LikeComment from "../LikeComment";
+import useAuth from "@/hooks/useAuth";
+
+interface VideoPostProps {
+  url?: string;
+  title: string;
+  description: string;
+  prime: boolean;
+  admin: boolean;
+  libraryId?: string | number;
+  videoId?: string;
+  authorId: string; // ID of post author for ownership check (required for proper ownership checks)
+}
 
 export default function VideoPost({
   url,
@@ -17,17 +28,17 @@ export default function VideoPost({
   admin,
   libraryId,
   videoId,
-}) {
+  authorId,
+}: VideoPostProps) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const viewer = 12345678;
-  const mine = 12345678;
-  // TODO: Add dynamic ID Check with auth to match if the post can be deleted
+  const { user } = useAuth();
+  const mine = authorId === user?.uid;
 
   const removePost = () => {
-    console.log("Post to be removed in the background");
+    // TODO: Implement post deletion
   };
   return (
     <LinearGradient
@@ -78,7 +89,7 @@ export default function VideoPost({
         {description ? description : "No Description Yet"}
       </Text>
       <LikeComment />
-      {viewer == mine && (
+      {mine && (
         <Pressable onPress={removePost} style={globalStyles.alignCenter}>
           <Ionicons
             size={28}

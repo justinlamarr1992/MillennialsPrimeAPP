@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -12,48 +12,66 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { globalStyles } from "@/constants/global";
-// import { AuthContext } from "../../provider/AuthProvider";
 import { COLORS } from "@/constants/Colors";
-// import auth from "@react-native-firebase/auth";
-import axios from "axios";
-// import useAuth from "../../hooks/useAuth";
-import { FirebaseError } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { validateEmail } from "@/utils/validation";
+import { handleAuthError } from "@/utils/errorHandler";
+import { logger } from "@/utils/logger";
 
 export default function SignInScreen() {
   const auth = getAuth();
-  // TODO: FIGUGRE OUT WHY THERES NO LOADING NOW
-  // const { login, logout, auth, setIsLoading } = useContext(AuthContext);
   const [email, setEmail] = useState("");
-  // const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState(null);
+  const [errMsg, setErrMsg] = useState("");
 
-  const [modalOpen, setModalOpen] = useState(false);
+  // Field-level error messages for real-time validation feedback
+  const [emailError, setEmailError] = useState<string | null>(null);
+
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const handleSubmit = async (e: any) => {
+  // Real-time email validation
+  useEffect(() => {
+    if (email.length > 0) {
+      setEmailError(validateEmail(email));
+    } else {
+      setEmailError(null);
+    }
+  }, [email]);
+
+  // Clear general error message when user makes changes
+  useEffect(() => {
+    setErrMsg("");
+  }, [email, password]);
+
+  // Check if form is valid for submission
+  const isFormValid = email.trim().length > 0 && password.trim().length > 0 && !emailError;
+
+  const handleSubmit = async () => {
+    // Validate before submission
+    if (emailError || email.trim().length === 0 || password.trim().length === 0) {
+      setErrMsg("Please enter a valid email and password");
+      return;
+    }
+
     setLoading(true);
-    setErrMsg(null);
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // console.log("Success: user ", user);
-        // add the Mongo information or how to get the datahere
-        // login(user, password);
-        router.replace("/(tabs)/(home)/HomePage");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // setErrMsg(errorCode);
-        setErrMsg(errorMessage);
-        // TODO: Create an alert here when something wrong happens then the okay but with reset the button
-      });
-    setLoading(false);
+    setErrMsg("");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // Signed in successfully
+      // add the Mongo information or how to get the data here
+      router.replace("/(tabs)/(home)/HomePage");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = handleAuthError(firebaseError);
+      setErrMsg(errorMessage);
+      logger.error('Sign in error:', firebaseError.code, firebaseError.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -112,14 +130,17 @@ export default function SignInScreen() {
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
-                placeholderTextColor="#BABBBD"
+                placeholderTextColor={colors["plcHoldText"]}
                 keyboardType="email-address"
-                // value={user}
                 value={email}
-                // onChangeText={(text) => setUser(text)}
                 onChangeText={(text) => setEmail(text)}
                 autoCapitalize="none"
-              ></TextInput>
+              />
+              {emailError && (
+                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                  {emailError}
+                </Text>
+              )}
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
@@ -128,13 +149,12 @@ export default function SignInScreen() {
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Password"
-                placeholderTextColor="#BABBBD"
+                placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
+                autoCapitalize="none"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
-
-                // secureTextEntry={true}
-              ></TextInput>
+              />
             </View>
             {loading ? (
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
@@ -143,9 +163,12 @@ export default function SignInScreen() {
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
-                  { backgroundColor: colors["triC"] },
+                  {
+                    backgroundColor: !isFormValid ? colors["disabledButton"] : colors["triC"],
+                  },
                 ]}
-                onPressIn={handleSubmit}
+                disabled={!isFormValid}
+                onPress={handleSubmit}
               >
                 <Text style={globalStyles.buttonText}>Login</Text>
               </Pressable>

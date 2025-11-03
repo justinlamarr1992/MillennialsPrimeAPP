@@ -2,7 +2,12 @@ import { View, Text } from "react-native";
 import React from "react";
 import { globalStyles } from "@/constants/global";
 
-export default function NumberCard({ number = 0, unit }) {
+interface NumberCardProps {
+  number?: number;
+  unit: string;
+}
+
+export default function NumberCard({ number = 0, unit }: NumberCardProps) {
   function numberText() {
     if (number && Math.sign(number) >= 0) {
       if (number.toString().length === 1) {

@@ -9,6 +9,15 @@ import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
 import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
 
+interface ItemProps {
+  itemName: string;
+  picture: string;
+  description: string;
+  price: number;
+  prime: boolean;
+  admin: boolean;
+}
+
 export default function PicturePost({
   itemName,
   picture,
@@ -16,7 +25,7 @@ export default function PicturePost({
   price,
   prime,
   admin,
-}) {
+}: ItemProps) {
   const blurhash =
     "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
   const colorScheme = useColorScheme();
@@ -61,8 +70,8 @@ export default function PicturePost({
       {/* Picture here */}
       <Image
         style={globalStyles.itemImage}
-        source={{ blurhash }}
-        placeholder={{ LoadingPic }}
+        source={{ uri: picture, blurhash }}
+        placeholder={LoadingPic}
         contentFit="cover"
         transition={1000}
       />

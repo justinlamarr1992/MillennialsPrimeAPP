@@ -1,67 +1,45 @@
-// Import the functions you need from the SDKs you need
+// Using Firebase Web SDK (recommended for Expo)
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// import firebase from "firebase/app";
-// import { getAuth } from "firebase/auth";
-// Testing
-import {
-  getAuth,
-  initializeAuth,
-  getReactNativePersistence,
-} from "firebase/auth";
-// import {
-//   getAuth,
-//   initializeAuth,
-//   getReactNativePersistence,
-// } from "firebase/auth/react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-// Testing
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { indexedDBLocalPersistence, initializeAuth } from "firebase/auth";
 
+// Validate required environment variables
+const requiredEnvVars = [
+  'EXPO_PUBLIC_FIREBASE_API_KEY',
+  'EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN',
+  'EXPO_PUBLIC_FIREBASE_PROJECT_ID',
+  'EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET',
+  'EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
+  'EXPO_PUBLIC_FIREBASE_APP_ID',
+] as const;
+
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
+}
+
+// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBKQKpVGfoDr0UQwRubiOMCU0_rmInP8u8",
-  authDomain: "millennialsprime.firebaseapp.com",
-  projectId: "millennialsprime",
-  storageBucket: "millennialsprime.appspot.com",
-  messagingSenderId: "927784632",
-  appId: "1:927784632:web:0f708daf11463ab028de4d",
-  measurementId: "G-29BSPZ140C",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY!,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID!,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID!,
+  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// // Initialize Firebase Authentication and get a reference to the service
-// const auth = getAuth(app);
-// export default auth;
-
-// Testing
-// BIGGEST CHANGE IF IT FAILS
 export const app = initializeApp(firebaseConfig);
+
+// Temporarily suppress console.warn during auth initialization to hide false React Native warning
+const tempWarn = console.warn;
+console.warn = () => {};
+
+// Initialize Auth with IndexedDB persistence for Expo (Web SDK)
 export const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
+  persistence: indexedDBLocalPersistence,
 });
-// Testing
 
-// import { initializeApp } from "firebase/app";
-// import {
-//   initializeAuth,
-//   getReactNativePersistence,
-// } from "firebase/auth/react-native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBKQKpVGfoDr0UQwRubiOMCU0_rmInP8u8",
-//   authDomain: "millennialsprime.firebaseapp.com",
-//   projectId: "millennialsprime",
-//   storageBucket: "millennialsprime.appspot.com",
-//   messagingSenderId: "927784632",
-//   appId: "1:927784632:web:0f708daf11463ab028de4d",
-//   measurementId: "G-29BSPZ140C",
-// };
-
-// export const app = initializeApp(firebaseConfig);
-
-// export const auth = initializeAuth(app, {
-//   persistence: getReactNativePersistence(AsyncStorage),
-// });
+// Restore console.warn
+console.warn = tempWarn;

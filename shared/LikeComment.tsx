@@ -1,4 +1,5 @@
 import { View, Text, Pressable, useColorScheme } from "react-native";
+import { logger } from "@/utils/logger";
 import React, { useState, useRef, useMemo, useCallback } from "react";
 import { COLORS } from "@/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -28,10 +29,10 @@ export default function LikeComment() {
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomCommentSheetModalRef.current?.present();
-    console.log("pressed");
+    logger.log("Like/Comment pressed");
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    logger.log("Sheet changed:", index);
   }, []);
 
   const likePressed = () => {

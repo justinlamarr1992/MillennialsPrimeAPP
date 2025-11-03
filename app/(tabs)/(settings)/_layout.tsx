@@ -13,8 +13,6 @@ export default function SettingsLayout() {
       screenOptions={{
         headerStyle: {
           backgroundColor: colors["priC"],
-          borderBottomLeftRadius: 32,
-          borderBottomRightRadius: 32,
         },
         headerTintColor: colors["secT"],
         headerTitleStyle: {

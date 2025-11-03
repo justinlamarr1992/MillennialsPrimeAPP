@@ -1,19 +1,48 @@
 import { axiosPrivate } from "../API/axios";
-import React, { useEffect, useContext } from "react";
+import { useEffect, useRef } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
+import { logger } from "@/utils/logger";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
-  const { auth, setAuth } = useAuth();
+  const { user } = useAuth();
+
+  // Token caching to prevent race conditions with multiple simultaneous requests
+  const tokenCacheRef = useRef<{ token: string | null; promise: Promise<string> | null }>({
+    token: null,
+    promise: null,
+  });
 
   useEffect(() => {
-    console.log(`From the useAxiosPrivate file this is the AUTH: ${auth}`);
+    logger.log('useAxiosPrivate initialized for user:', user?.uid);
+
+    // Reset token cache when user changes
+    tokenCacheRef.current = { token: null, promise: null };
+
     const requestIntercept = axiosPrivate.interceptors.request.use(
-      (config) => {
-        // console.log(config.headers);
-        if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+      async (config) => {
+        if (!config.headers["Authorization"] && user) {
+          try {
+            // Use cached token if available, otherwise fetch new token
+            // If a token fetch is in progress, reuse the same promise to avoid race conditions
+            if (!tokenCacheRef.current.token && !tokenCacheRef.current.promise) {
+              tokenCacheRef.current.promise = user.getIdToken();
+              tokenCacheRef.current.token = await tokenCacheRef.current.promise;
+              tokenCacheRef.current.promise = null;
+            } else if (tokenCacheRef.current.promise) {
+              // Wait for in-flight token request
+              tokenCacheRef.current.token = await tokenCacheRef.current.promise;
+              tokenCacheRef.current.promise = null;
+            }
+
+            config.headers["Authorization"] = `Bearer ${tokenCacheRef.current.token}`;
+          } catch (err) {
+            logger.error(`Failed to get Firebase ID token for user ${user?.uid}:`, err);
+            // Clear failed token cache
+            tokenCacheRef.current = { token: null, promise: null };
+            return Promise.reject(err);
+          }
         }
         return config;
       },
@@ -38,7 +67,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [auth, refresh]);
+  }, [user, refresh]); // axiosPrivate is a stable singleton import, no need to add to deps
 
   return axiosPrivate;
 };

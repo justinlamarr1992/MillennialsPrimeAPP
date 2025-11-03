@@ -1,8 +1,7 @@
-import { View, Text } from "react-native";
 import React from "react";
 import {
-  Text,
   View,
+  Text,
   TouchableWithoutFeedback,
   Keyboard,
   Modal,
@@ -11,12 +10,11 @@ import {
 } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
-import { AuthContext } from "../../provider/AuthProvider";
 
 import axios from "axios";
 
 const VideoViewer = () => {
-  const { navigation } = useNavigation();
+  const navigation = useNavigation();
   return (
     <View>
       <Text>VideoViewer</Text>

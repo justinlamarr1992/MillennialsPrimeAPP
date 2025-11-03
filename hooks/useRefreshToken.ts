@@ -1,34 +1,30 @@
-import axios from "../API/axios";
-import React, { useContext } from "react";
-import useAuth from "./useAuth";
-import { AuthContext } from "../provider/AuthProvider";
+import { auth } from "../firebase/firebaseConfig";
+import { logger } from "@/utils/logger";
 
+/**
+ * Hook to refresh the Firebase auth token
+ * Note: Firebase handles token refresh automatically, but this hook
+ * can be used to manually force a token refresh if needed
+ */
 const useRefreshToken = () => {
-  const { auth } = useAuth();
-  // const { setAuth } = useContext(AuthContext);
-  console.log(`This is from the RefreshTokem File`);
   const refresh = async () => {
-    const response = await axios.get("/refresh", {
-      withCredentials: true,
-    });
-    // console.log(
-    //   "RESPONSE FROM FIRING useRefreshToken ",
-    //   JSON.stringify(response, null, 2)
-    // );
+    const currentUser = auth.currentUser;
 
-    // Original coed
-    setAuth((prev) => {
-      console.log("Response Prev ", JSON.stringify(prev));
-      console.log("Response ", response.data.accessToken);
-      return {
-        ...prev,
-        roles: response.data.roles,
-        accessToken: response.data.accessToken,
-        _id: response.data._id,
-      };
-    });
-    return response.data.accessToken;
+    if (!currentUser) {
+      throw new Error("No authenticated user found");
+    }
+
+    try {
+      // Force refresh the ID token
+      const token = await currentUser.getIdToken(true);
+      return token;
+    } catch (error) {
+      // Logger automatically only logs in development
+      logger.error("Error refreshing token:", error);
+      throw error;
+    }
   };
+
   return refresh;
 };
 

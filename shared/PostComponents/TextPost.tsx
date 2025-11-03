@@ -6,16 +6,25 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/Colors";
 import UserInfo from "./UserInfo";
 import LikeComment from "../LikeComment";
+import useAuth from "@/hooks/useAuth";
 
-export default function TextPost({ name, title, description, prime, admin }) {
+interface TextPostProps {
+  name: string;
+  title: string;
+  description: string;
+  prime: boolean;
+  admin: boolean;
+  authorId: string; // ID of post author for ownership check
+}
+
+export default function TextPost({ name, title, description, prime, admin, authorId }: TextPostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const viewer = 12345678;
-  const mine = 12345678;
-  // TODO: Add dynamic ID Check with auth to match if the post can be deleted
+  const { user } = useAuth();
+  const mine = authorId === user?.uid;
 
   const removePost = () => {
-    console.log("Post to be removed in the background");
+    // TODO: Implement post deletion
   };
   return (
     <LinearGradient
@@ -62,7 +71,7 @@ export default function TextPost({ name, title, description, prime, admin }) {
       {/* Likes and Comments */}
       <LikeComment />
       {/* User ability to delete */}
-      {viewer == mine && (
+      {mine && (
         <Pressable onPress={removePost} style={globalStyles.alignCenter}>
           <Ionicons
             size={28}
