@@ -55,7 +55,14 @@ export { customRender as render };
 export const waitForLoadingToFinish = () =>
   new Promise((resolve) => setTimeout(resolve, 0));
 
-export const createMockUser = (overrides = {}) => ({
+interface MockUserOverrides {
+  uid?: string;
+  email?: string;
+  emailVerified?: boolean;
+  displayName?: string;
+}
+
+export const createMockUser = (overrides: MockUserOverrides = {}) => ({
   uid: 'test-user-123',
   email: 'test@example.com',
   emailVerified: true,

@@ -31,7 +31,7 @@ jest.mock('@gorhom/bottom-sheet', () => ({
   __esModule: true,
   default: 'BottomSheet',
   BottomSheetModal: 'BottomSheetModal',
-  BottomSheetModalProvider: ({ children }: any) => children,
+  BottomSheetModalProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock expo-router

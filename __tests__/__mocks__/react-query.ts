@@ -7,7 +7,7 @@ export const QueryClient = jest.fn().mockImplementation(() => ({
   getQueryData: jest.fn(),
 }));
 
-export const QueryClientProvider = ({ children }: any) => children;
+export const QueryClientProvider = ({ children }: { children: React.ReactNode }) => children;
 
 export const useQuery = jest.fn().mockReturnValue({
   data: undefined,
