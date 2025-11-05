@@ -83,7 +83,7 @@ export const logger = {
    */
   api: (method: string, url: string, data?: unknown) => {
     if (isDev) {
-      console.log(`[API ${method}]`, url, data ? data : '');
+      console.log(`[API ${method}]`, url, data ?? '');
     }
   },
 };
