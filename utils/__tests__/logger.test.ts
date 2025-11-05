@@ -252,16 +252,34 @@ describe('logger utility', () => {
       expect(console.log).toHaveBeenCalledWith('[API PUT]', '/api/users/1', complexData);
     });
 
-    it('should handle falsy data values as empty string', () => {
-      // The logger.api function uses `data ? data : ''` so falsy values become empty string
+    it('should handle falsy but defined data values (like 0) as-is', () => {
+      // The logger.api function uses `data ?? ''` so only null/undefined become empty string
       logger.api('POST', '/api/endpoint', 0);
-      expect(console.log).toHaveBeenCalledWith('[API POST]', '/api/endpoint', '');
+      expect(console.log).toHaveBeenCalledWith('[API POST]', '/api/endpoint', 0);
     });
 
     it('should handle null data as empty string', () => {
-      // The logger.api function uses `data ? data : ''` so null becomes empty string
+      // The logger.api function uses `data ?? ''` so null becomes empty string
       logger.api('GET', '/api/endpoint', null);
       expect(console.log).toHaveBeenCalledWith('[API GET]', '/api/endpoint', '');
+    });
+
+    it('should handle undefined data as empty string', () => {
+      // The logger.api function uses `data ?? ''` so undefined becomes empty string
+      logger.api('GET', '/api/endpoint', undefined);
+      expect(console.log).toHaveBeenCalledWith('[API GET]', '/api/endpoint', '');
+    });
+
+    it('should handle false as-is', () => {
+      // false is a valid data value and should not be converted
+      logger.api('POST', '/api/endpoint', false);
+      expect(console.log).toHaveBeenCalledWith('[API POST]', '/api/endpoint', false);
+    });
+
+    it('should handle empty string as-is', () => {
+      // Empty string is different from no data
+      logger.api('POST', '/api/endpoint', '');
+      expect(console.log).toHaveBeenCalledWith('[API POST]', '/api/endpoint', '');
     });
   });
 
