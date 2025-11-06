@@ -7,6 +7,7 @@ export const mockRouter = {
 };
 
 export const useRouter = jest.fn(() => mockRouter);
+export const useNavigation = jest.fn(() => mockRouter);
 export const usePathname = jest.fn(() => '/');
 export const useSegments = jest.fn(() => []);
 export const useLocalSearchParams = jest.fn(() => ({}));

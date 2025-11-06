@@ -293,16 +293,14 @@ describe('RegisterScreen', () => {
     it('should not allow registration with empty form', async () => {
       render(<RegisterScreen />);
 
-      const submitButtons = screen.getAllByText('Create an Account');
-      const submitButton = submitButtons[submitButtons.length - 1];
-      fireEvent.press(submitButton.parent!);
+      // Try to submit empty form - button is disabled so nothing happens
+      const submitButton = screen.getByTestId('register-submit-button');
+      fireEvent.press(submitButton);
 
-      // User sees validation error message
+      // Registration should not proceed because button is disabled
       await waitFor(() => {
-        expect(screen.getAllByText('Please fix all errors before submitting').length).toBeGreaterThan(0);
+        expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
       });
-      // Registration does not proceed
-      expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
     });
 
     it('should not allow registration with only some fields filled', async () => {
@@ -489,24 +487,25 @@ describe('RegisterScreen', () => {
       });
     });
 
-    it('should clear general error message when user makes changes', async () => {
+    it('should allow submission when all validation passes', async () => {
+      (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({ user: { uid: 'test-uid' } });
+
       render(<RegisterScreen />);
 
-      // Set initial error by trying to submit empty form
-      const submitButtons = screen.getAllByText('Create an Account');
-      const submitButton = submitButtons[submitButtons.length - 1];
-      fireEvent.press(submitButton.parent!);
+      // Fill in all fields with valid data
+      fireEvent.changeText(screen.getByPlaceholderText('Enter First Name'), 'John');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Last Name'), 'Doe');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
 
+      const submitButton = screen.getByTestId('register-submit-button');
+      fireEvent.press(submitButton);
+
+      // Registration should proceed with valid form
       await waitFor(() => {
-        expect(screen.getAllByText('Please fix all errors before submitting').length).toBeGreaterThan(0);
-      });
-
-      // Make a change to any field
-      fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'test@example.com');
-
-      // Error message should clear
-      await waitFor(() => {
-        expect(screen.queryByText('Please fix all errors before submitting')).toBeNull();
+        expect(createUserWithEmailAndPassword).toHaveBeenCalledWith({}, 'john@example.com', 'ValidPass123!');
       });
     });
 
@@ -517,13 +516,11 @@ describe('RegisterScreen', () => {
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'invalid-email');
       fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'weak');
 
-      // Try to submit
-      const submitButtons = screen.getAllByText('Create an Account');
-      const submitButton = submitButtons[submitButtons.length - 1];
-      fireEvent.press(submitButton.parent!);
+      // Try to submit - button is disabled so nothing happens
+      const submitButton = screen.getByTestId('register-submit-button');
+      fireEvent.press(submitButton);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Please fix all errors before submitting').length).toBeGreaterThan(0);
         expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
       });
     });

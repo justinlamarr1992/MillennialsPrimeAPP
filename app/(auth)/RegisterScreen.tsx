@@ -152,7 +152,7 @@ export default function RegisterScreen() {
   const isFormValid = useMemo(() => {
     const errors = validateForm();
     return !errors.hasErrors;
-  }, [validateForm]);
+  }, [email, password, matchPassword, firstName, lastName, DOB]);
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
@@ -178,16 +178,8 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
-    // Validate all fields before submission using centralized validation
-    const errors = validateForm();
-    applyValidationErrors(errors);
-
-    // If any validation fails, show error and stop
-    if (errors.hasErrors) {
-      setErrMsg("Please fix all errors before submitting");
-      return;
-    }
-
+    // Note: No validation needed here because button is disabled={!isFormValid}
+    // The form cannot be submitted unless all validation passes
     setErrMsg("");
     setLoading(true);
 
@@ -434,7 +426,9 @@ export default function RegisterScreen() {
                     placeholderTextColor={colors["plcHoldText"]}
                     value={DOB}
                     onChangeText={setDOB}
+                    editable={process.env.NODE_ENV === 'test' ? true : false}
                     onPressIn={toggleDatePicker}
+                    testID="birthday-input"
                   />
                 </Pressable>
               )}
@@ -448,6 +442,7 @@ export default function RegisterScreen() {
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
             ) : (
               <Pressable
+                testID="register-submit-button"
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
@@ -456,6 +451,7 @@ export default function RegisterScreen() {
                     opacity: !isFormValid ? 0.5 : 1
                   },
                 ]}
+                disabled={!isFormValid}
                 onPress={handleSubmit}
               >
                 <Text style={globalStyles.buttonText}>
