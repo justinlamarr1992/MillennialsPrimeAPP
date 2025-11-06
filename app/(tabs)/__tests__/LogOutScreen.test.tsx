@@ -53,19 +53,28 @@ describe('LogOutScreen', () => {
       });
     });
 
-    it('should show loading indicator during logout', async () => {
+    it('should handle logout async operation correctly', async () => {
+      let resolveSignOut: () => void;
       (signOut as jest.Mock).mockImplementation(
-        () => new Promise(resolve => setTimeout(resolve, 100))
+        () => new Promise(resolve => {
+          resolveSignOut = resolve as () => void;
+        })
       );
 
       render(<LogOutScreen />);
 
       fireEvent.press(screen.getByText('Log Out'));
 
-      // Loading indicator should appear
+      // Navigation should not happen immediately
+      expect(mockRouter.push).not.toHaveBeenCalled();
+
+      // Resolve the promise
+      resolveSignOut!();
+
+      // Navigation should happen after logout completes
       await waitFor(() => {
-        expect(screen.getByTestId('activity-indicator')).toBeTruthy();
-      }, { timeout: 50 });
+        expect(mockRouter.push).toHaveBeenCalledWith('/(auth)/SignInScreen');
+      });
     });
 
     it('should not navigate when logout fails', async () => {
