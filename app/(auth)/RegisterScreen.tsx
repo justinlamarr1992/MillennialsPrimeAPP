@@ -428,9 +428,9 @@ export default function RegisterScreen() {
                     placeholderTextColor={colors["plcHoldText"]}
                     value={DOB}
                     onChangeText={setDOB}
-                    editable={process.env.NODE_ENV === 'test'}
                     onPressIn={toggleDatePicker}
                     testID="birthday-input"
+                    showSoftInputOnFocus={false}
                   />
                 </Pressable>
               )}
