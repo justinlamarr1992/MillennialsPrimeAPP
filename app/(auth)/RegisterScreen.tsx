@@ -178,8 +178,10 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
-    // Note: No validation needed here because button is disabled={!isFormValid}
-    // The form cannot be submitted unless all validation passes
+    // Safety: Always validate before submitting, even if button is visually disabled
+    // The disabled prop doesn't prevent onPress in all scenarios (rapid taps, accessibility tools)
+    if (!isFormValid) return;
+
     setErrMsg("");
     setLoading(true);
 
@@ -426,7 +428,7 @@ export default function RegisterScreen() {
                     placeholderTextColor={colors["plcHoldText"]}
                     value={DOB}
                     onChangeText={setDOB}
-                    editable={process.env.NODE_ENV === 'test' ? true : false}
+                    editable={process.env.NODE_ENV === 'test'}
                     onPressIn={toggleDatePicker}
                     testID="birthday-input"
                   />
