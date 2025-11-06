@@ -35,7 +35,40 @@ jest.mock('@gorhom/bottom-sheet', () => ({
 }));
 
 // Mock expo-router
-jest.mock('expo-router', () => require('./__mocks__/expo-router'));
+jest.mock('expo-router', () => ({
+  mockRouter: {
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+    canGoBack: jest.fn(() => true),
+    setParams: jest.fn(),
+  },
+  router: {
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+    canGoBack: jest.fn(() => true),
+    setParams: jest.fn(),
+  },
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+    canGoBack: jest.fn(() => true),
+    setParams: jest.fn(),
+  })),
+  usePathname: jest.fn(() => '/'),
+  useSegments: jest.fn(() => []),
+  useLocalSearchParams: jest.fn(() => ({})),
+  Stack: {
+    Screen: 'StackScreen',
+  },
+  Tabs: {
+    Screen: 'TabsScreen',
+  },
+  Link: 'Link',
+  Redirect: 'Redirect',
+}));
 
 // Mock Firebase
 jest.mock('../firebase/firebaseConfig', () => require('./__mocks__/firebase'));
