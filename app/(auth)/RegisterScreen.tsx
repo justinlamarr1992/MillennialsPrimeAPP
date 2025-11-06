@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Link, router } from "expo-router";
 import {
   useColorScheme,
@@ -147,17 +147,12 @@ export default function RegisterScreen() {
     setErrMsg("");
   }, [email, password, matchPassword, firstName, lastName, DOB]);
 
-  // Check if form is valid for submission
-  const isFormValid =
-    email.length > 0 &&
-    password.length > 0 &&
-    matchPassword.length > 0 &&
-    firstName.trim().length > 0 &&
-    lastName.trim().length > 0 &&
-    DOB.length > 0 &&
-    !emailError &&
-    !passwordError &&
-    !confirmPasswordError;
+  // Single source of truth for form validity
+  // Uses the same validateForm() function to ensure consistency
+  const isFormValid = useMemo(() => {
+    const errors = validateForm();
+    return !errors.hasErrors;
+  }, [email, password, matchPassword, firstName, lastName, DOB]);
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
@@ -183,15 +178,9 @@ export default function RegisterScreen() {
   };
 
   const handleSubmit = async () => {
-    // Validate all fields before submission using centralized validation
-    const errors = validateForm();
-    applyValidationErrors(errors);
-
-    // If any validation fails, show error and stop
-    if (errors.hasErrors) {
-      setErrMsg("Please fix all errors before submitting");
-      return;
-    }
+    // Safety: Always validate before submitting, even if button is visually disabled
+    // The disabled prop doesn't prevent onPress in all scenarios (rapid taps, accessibility tools)
+    if (!isFormValid) return;
 
     setErrMsg("");
     setLoading(true);
@@ -439,8 +428,9 @@ export default function RegisterScreen() {
                     placeholderTextColor={colors["plcHoldText"]}
                     value={DOB}
                     onChangeText={setDOB}
-                    editable={false}
                     onPressIn={toggleDatePicker}
+                    testID="birthday-input"
+                    showSoftInputOnFocus={false}
                   />
                 </Pressable>
               )}
@@ -454,6 +444,7 @@ export default function RegisterScreen() {
               <ActivityIndicator size={"small"} style={{ margin: 28 }} />
             ) : (
               <Pressable
+                testID="register-submit-button"
                 style={[
                   globalStyles.button,
                   globalStyles.marginVertical,
