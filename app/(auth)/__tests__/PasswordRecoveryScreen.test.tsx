@@ -28,6 +28,8 @@ const mockRouter = router as jest.Mocked<typeof router>;
 describe('PasswordRecoveryScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Mock global.alert for tests that need it
+    global.alert = jest.fn();
   });
 
   describe('Rendering', () => {
@@ -133,9 +135,6 @@ describe('PasswordRecoveryScreen', () => {
         })
       );
 
-      // Mock alert to prevent actual alerts during tests
-      const mockAlert = jest.spyOn(global, 'alert').mockImplementation();
-
       render(<PasswordRecoveryScreen />);
 
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'test@example.com');
@@ -151,15 +150,10 @@ describe('PasswordRecoveryScreen', () => {
       await waitFor(() => {
         expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
       });
-
-      mockAlert.mockRestore();
     });
 
     it('should show success message and navigate after sending reset email', async () => {
       (sendPasswordResetEmail as jest.Mock).mockResolvedValue(undefined);
-
-      // Mock alert to prevent actual alerts during tests
-      const mockAlert = jest.spyOn(global, 'alert').mockImplementation();
 
       render(<PasswordRecoveryScreen />);
 
@@ -169,8 +163,6 @@ describe('PasswordRecoveryScreen', () => {
       await waitFor(() => {
         expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
       });
-
-      mockAlert.mockRestore();
     });
   });
 

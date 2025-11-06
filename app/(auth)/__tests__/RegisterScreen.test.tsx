@@ -28,6 +28,8 @@ const mockRouter = router as jest.Mocked<typeof router>;
 describe('RegisterScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Mock global.alert for tests that need it
+    global.alert = jest.fn();
   });
 
   describe('Rendering', () => {
@@ -326,9 +328,6 @@ describe('RegisterScreen', () => {
         })
       );
 
-      // Mock alert to prevent actual alerts during tests (alert will be replaced with toast)
-      const mockAlert = jest.spyOn(global, 'alert').mockImplementation();
-
       render(<RegisterScreen />);
 
       // Fill in all fields
@@ -337,7 +336,7 @@ describe('RegisterScreen', () => {
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
       fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
       fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
-      fireEvent(screen.getByPlaceholderText('Birthday'), 'changeText', 'Mon Jan 01 1990');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
 
       // Submit form
       const submitButtons = screen.getAllByText('Create an Account');
@@ -354,17 +353,12 @@ describe('RegisterScreen', () => {
       await waitFor(() => {
         expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
       });
-
-      mockAlert.mockRestore();
     });
 
     it('should call Firebase createUserWithEmailAndPassword on submit', async () => {
       (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({
         user: { uid: 'test-uid', email: 'john@example.com' }
       });
-
-      // Mock alert to prevent actual alerts during tests
-      const mockAlert = jest.spyOn(global, 'alert').mockImplementation();
 
       render(<RegisterScreen />);
 
@@ -374,7 +368,7 @@ describe('RegisterScreen', () => {
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
       fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
       fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
-      fireEvent(screen.getByPlaceholderText('Birthday'), 'changeText', 'Mon Jan 01 1990');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
 
       // Submit form
       const submitButtons = screen.getAllByText('Create an Account');
@@ -388,17 +382,12 @@ describe('RegisterScreen', () => {
           'ValidPass123!'
         );
       });
-
-      mockAlert.mockRestore();
     });
 
     it('should navigate to SignIn screen on successful registration', async () => {
       (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({
         user: { uid: 'test-uid', email: 'john@example.com' }
       });
-
-      // Mock alert to prevent actual alerts during tests
-      const mockAlert = jest.spyOn(global, 'alert').mockImplementation();
 
       render(<RegisterScreen />);
 
@@ -408,7 +397,7 @@ describe('RegisterScreen', () => {
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
       fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
       fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
-      fireEvent(screen.getByPlaceholderText('Birthday'), 'changeText', 'Mon Jan 01 1990');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
 
       // Submit form
       const submitButtons = screen.getAllByText('Create an Account');
@@ -418,8 +407,6 @@ describe('RegisterScreen', () => {
       await waitFor(() => {
         expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
       });
-
-      mockAlert.mockRestore();
     });
   });
 
@@ -438,7 +425,7 @@ describe('RegisterScreen', () => {
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'existing@example.com');
       fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
       fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
-      fireEvent(screen.getByPlaceholderText('Birthday'), 'changeText', 'Mon Jan 01 1990');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
 
       // Submit form
       const submitButtons = screen.getAllByText('Create an Account');
@@ -464,7 +451,7 @@ describe('RegisterScreen', () => {
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
       fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
       fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
-      fireEvent(screen.getByPlaceholderText('Birthday'), 'changeText', 'Mon Jan 01 1990');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
 
       // Submit form
       const submitButtons = screen.getAllByText('Create an Account');
@@ -490,7 +477,7 @@ describe('RegisterScreen', () => {
       fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
       fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
       fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
-      fireEvent(screen.getByPlaceholderText('Birthday'), 'changeText', 'Mon Jan 01 1990');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
 
       // Submit form
       const submitButtons = screen.getAllByText('Create an Account');
