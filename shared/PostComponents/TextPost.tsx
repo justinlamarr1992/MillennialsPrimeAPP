@@ -43,7 +43,7 @@ export default function TextPost({ name, title, description, prime, admin, autho
       // colors={["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]}
     >
       {/* User Info Here */}
-      <UserInfo name={"Post Name Here"} admin={admin} prime={prime} />
+      <UserInfo name={name} admin={admin} prime={prime} />
       {/* Title */}
       <Text
         style={
