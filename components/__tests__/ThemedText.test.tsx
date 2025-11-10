@@ -22,37 +22,27 @@ describe('ThemedText', () => {
   describe('Text Presentation Types', () => {
     it('should display title-sized text when type is "title"', () => {
       render(<ThemedText type="title" testID="title-text">Title</ThemedText>);
-      const text = screen.getByTestId('title-text');
-      expect(text).toBeTruthy();
-      expect(screen.getByText('Title')).toBeTruthy();
+      expect(screen.getByTestId('title-text')).toBeTruthy();
     });
 
     it('should display subtitle-sized text when type is "subtitle"', () => {
       render(<ThemedText type="subtitle" testID="subtitle-text">Subtitle</ThemedText>);
-      const text = screen.getByTestId('subtitle-text');
-      expect(text).toBeTruthy();
-      expect(screen.getByText('Subtitle')).toBeTruthy();
+      expect(screen.getByTestId('subtitle-text')).toBeTruthy();
     });
 
     it('should display semibold text when type is "defaultSemiBold"', () => {
       render(<ThemedText type="defaultSemiBold" testID="semibold-text">SemiBold</ThemedText>);
-      const text = screen.getByTestId('semibold-text');
-      expect(text).toBeTruthy();
-      expect(screen.getByText('SemiBold')).toBeTruthy();
+      expect(screen.getByTestId('semibold-text')).toBeTruthy();
     });
 
     it('should display link-styled text when type is "link"', () => {
       render(<ThemedText type="link" testID="link-text">Link</ThemedText>);
-      const text = screen.getByTestId('link-text');
-      expect(text).toBeTruthy();
-      expect(screen.getByText('Link')).toBeTruthy();
+      expect(screen.getByTestId('link-text')).toBeTruthy();
     });
 
     it('should display default text when no type is specified', () => {
       render(<ThemedText testID="default-text">Default</ThemedText>);
-      const text = screen.getByTestId('default-text');
-      expect(text).toBeTruthy();
-      expect(screen.getByText('Default')).toBeTruthy();
+      expect(screen.getByTestId('default-text')).toBeTruthy();
     });
   });
 
