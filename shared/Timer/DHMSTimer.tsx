@@ -15,7 +15,7 @@ export default function DHMSTimer({
   const targetTime = new Date(startDate).getTime();
   const [currentTime, setCurrentTime] = useState(Date.now());
   const timeBetween = useMemo(
-    () => targetTime - currentTime,
+    () => Math.max(0, targetTime - currentTime),
     [currentTime, targetTime]
   );
   const days = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
@@ -27,18 +27,17 @@ export default function DHMSTimer({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (timeBetween <= 0) {
+      const newTime = Date.now();
+      if (targetTime - newTime <= 0) {
         clearInterval(interval);
+        setCurrentTime(newTime);
         // onTimerFinished();
       } else {
-        setCurrentTime(Date.now());
+        setCurrentTime(newTime);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [
-    timeBetween,
-    // onTimerFinished
-  ]);
+  }, [targetTime]);
   return (
     <View style={[globalStyles.timerContainer]}>
       <NumberCard number={days} unit="days" />

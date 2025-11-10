@@ -15,12 +15,7 @@ describe('UserInfo', () => {
       expect(screen.getByText('John Doe')).toBeTruthy();
     });
 
-    it('should display "Loading" when name is not provided', () => {
-      render(<UserInfo name="" admin={false} prime={false} />);
-      expect(screen.getByText('Loading')).toBeTruthy();
-    });
-
-    it('should display "Loading" when name is falsy', () => {
+    it('should display "Loading" when name is empty or falsy', () => {
       render(<UserInfo name="" admin={false} prime={false} />);
       expect(screen.getByText('Loading')).toBeTruthy();
     });
@@ -105,8 +100,8 @@ describe('UserInfo', () => {
     });
 
     it('should handle unicode characters in name', () => {
-      render(<UserInfo name="Jos� Garc�a" admin={false} prime={false} />);
-      expect(screen.getByText('Jos� Garc�a')).toBeTruthy();
+      render(<UserInfo name="José García" admin={false} prime={false} />);
+      expect(screen.getByText('José García')).toBeTruthy();
     });
   });
 });

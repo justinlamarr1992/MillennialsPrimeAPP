@@ -44,6 +44,11 @@ describe('TextPost', () => {
   });
 
   describe('Post Content Display', () => {
+    it('should display author name', () => {
+      render(<TextPost {...defaultProps} />);
+      expect(screen.getByText('John Doe')).toBeTruthy();
+    });
+
     it('should display post title', () => {
       render(<TextPost {...defaultProps} />);
       expect(screen.getByText('Test Post Title')).toBeTruthy();
@@ -54,22 +59,12 @@ describe('TextPost', () => {
       expect(screen.getByText('This is a test post description')).toBeTruthy();
     });
 
-    it('should display "No Title yet" when title is empty', () => {
+    it('should display "No Title yet" when title is empty or falsy', () => {
       render(<TextPost {...defaultProps} title="" />);
       expect(screen.getByText('No Title yet')).toBeTruthy();
     });
 
-    it('should display "No description Yet" when description is empty', () => {
-      render(<TextPost {...defaultProps} description="" />);
-      expect(screen.getByText('No description Yet')).toBeTruthy();
-    });
-
-    it('should display "No Title yet" when title is undefined or falsy', () => {
-      render(<TextPost {...defaultProps} title="" />);
-      expect(screen.getByText('No Title yet')).toBeTruthy();
-    });
-
-    it('should display "No description Yet" when description is undefined or falsy', () => {
+    it('should display "No description Yet" when description is empty or falsy', () => {
       render(<TextPost {...defaultProps} description="" />);
       expect(screen.getByText('No description Yet')).toBeTruthy();
     });
