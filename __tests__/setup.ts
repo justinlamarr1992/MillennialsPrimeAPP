@@ -26,12 +26,23 @@ jest.mock('react-native-reanimated', () => {
   return Reanimated;
 });
 
+// Mock react-native-gesture-handler
+jest.mock('react-native-gesture-handler', () => ({
+  GestureHandlerRootView: ({ children }: { children: React.ReactNode }) => children,
+  PanGestureHandler: 'PanGestureHandler',
+  State: {},
+  Directions: {},
+}));
+
 // Mock @gorhom/bottom-sheet
 jest.mock('@gorhom/bottom-sheet', () => ({
   __esModule: true,
-  default: 'BottomSheet',
-  BottomSheetModal: 'BottomSheetModal',
+  default: ({ children }: { children: React.ReactNode }) => children,
+  BottomSheetModal: ({ children }: { children: React.ReactNode }) => children,
   BottomSheetModalProvider: ({ children }: { children: React.ReactNode }) => children,
+  BottomSheetView: ({ children }: { children: React.ReactNode }) => children,
+  BottomSheetBackdrop: ({ children }: { children: React.ReactNode }) => children,
+  BottomSheetTextInput: 'BottomSheetTextInput',
 }));
 
 // Mock expo-router
@@ -97,4 +108,9 @@ jest.mock('expo-image-picker', () => ({
 // Mock React Native useColorScheme
 jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
   default: jest.fn(() => 'light'),
+}));
+
+// Mock react-native-webview
+jest.mock('react-native-webview', () => ({
+  WebView: 'WebView',
 }));
