@@ -30,7 +30,7 @@ describe('BusinessScreen', () => {
 
     it('should display business input placeholder', () => {
       render(<BusinessScreen />);
-      expect(screen.getByPlaceholderText('Do your have a Business')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Do you have a Business')).toBeTruthy();
     });
 
     it('should display save changes button', () => {

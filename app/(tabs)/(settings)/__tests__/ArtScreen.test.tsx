@@ -104,7 +104,7 @@ describe('ArtScreen', () => {
 
     it('should not show integral question initially', () => {
       render(<ArtScreen />);
-      expect(screen.queryByText('Anything specific intgral to your work?')).toBeNull();
+      expect(screen.queryByText('Anything specific integral to your work?')).toBeNull();
     });
   });
 
