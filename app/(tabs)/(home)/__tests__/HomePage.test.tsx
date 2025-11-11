@@ -29,21 +29,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
-
-      render(<HomePage />);
-
-      expect(screen.getByText('Loading latest content...')).toBeTruthy();
-    });
-
-    it('should show activity indicator during loading', () => {
-      mockUseBunnyCDNVideos.mockReturnValue({
-        data: undefined,
-        isLoading: true,
-        isError: false,
-        error: null,
-        refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -59,7 +45,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -74,7 +60,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -88,7 +74,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -104,7 +90,7 @@ describe('HomePage', () => {
         isError: true,
         error: new Error('Network error'),
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -118,7 +104,7 @@ describe('HomePage', () => {
         isError: true,
         error: new Error('Unable to load videos from server'),
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -132,7 +118,7 @@ describe('HomePage', () => {
         isError: true,
         error: new Error('Network error'),
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -147,7 +133,7 @@ describe('HomePage', () => {
         isError: true,
         error: new Error('Network error'),
         refetch: mockRefetch,
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -166,7 +152,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -180,7 +166,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -196,7 +182,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -210,7 +196,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -224,7 +210,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       render(<HomePage />);
 
@@ -242,7 +228,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       rerender(<HomePage />);
       expect(screen.getByText('Loading latest content...')).toBeTruthy();
@@ -253,7 +239,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       rerender(<HomePage />);
       expect(screen.getByText('Breaking News Video')).toBeTruthy();
@@ -268,7 +254,7 @@ describe('HomePage', () => {
         isError: false,
         error: null,
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       rerender(<HomePage />);
       expect(screen.getByText('Loading latest content...')).toBeTruthy();
@@ -279,7 +265,7 @@ describe('HomePage', () => {
         isError: true,
         error: new Error('Failed to fetch'),
         refetch: jest.fn(),
-      } as any);
+      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
 
       rerender(<HomePage />);
       expect(screen.getByText('Failed to load content. Please try again later.')).toBeTruthy();

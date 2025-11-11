@@ -4,7 +4,7 @@ import BusinessScreen from '../BusinessScreen';
 
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
-  Picker: ({ children }: any) => children,
+  Picker: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 describe('BusinessScreen', () => {

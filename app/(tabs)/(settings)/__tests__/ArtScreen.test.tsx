@@ -11,7 +11,7 @@ jest.mock('expo-router', () => ({
 
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
-  Picker: ({ children, onValueChange, selectedValue }: any) => {
+  Picker: ({ children, onValueChange, selectedValue }: { children: React.ReactNode; onValueChange?: (value: string) => void; selectedValue?: string; }) => {
     return children;
   },
 }));
