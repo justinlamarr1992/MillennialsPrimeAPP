@@ -525,7 +525,7 @@ export default function MyInfoScreen() {
             </View>
             <View style={globalStyles.labelInput}>
               <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                E-Commerence
+                E-Commerce
               </Text>
               <Pressable>
                 <TextInput
@@ -554,7 +554,7 @@ export default function MyInfoScreen() {
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
-                  placeholder="Do you have Cont to Upload"
+                  placeholder="Do you have Content to Upload"
                   value={upload}
                   onChangeText={setUpload}
                   editable={false}

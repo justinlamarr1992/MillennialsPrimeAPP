@@ -92,9 +92,5 @@ describe('PreviewCard', () => {
       rerender(<PreviewCard {...defaultProps} title="Updated Title" />);
       expect(screen.getByText('Updated Title')).toBeTruthy();
     });
-
-    it('should render without crashing', () => {
-      render(<PreviewCard {...defaultProps} />);
-    });
   });
 });

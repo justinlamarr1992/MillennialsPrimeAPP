@@ -46,7 +46,7 @@ export default function Page() {
         ]}
       >
         <Text style={[globalStyles.buttonText, { color: colors["secT"] }]}>
-          Business Infomation
+          Business Information
         </Text>
       </Pressable>
       <Pressable

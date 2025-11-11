@@ -4,7 +4,7 @@ import MyInfoScreen from '../MyInfoScreen';
 
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
-  Picker: ({ children }: any) => children,
+  Picker: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 describe('MyInfoScreen', () => {
@@ -178,7 +178,7 @@ describe('MyInfoScreen', () => {
 
     it('should display e-commerce label', () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('E-Commerence')).toBeTruthy();
+      expect(screen.getByText('E-Commerce')).toBeTruthy();
     });
 
     it('should display e-commerce placeholder', () => {
@@ -193,7 +193,7 @@ describe('MyInfoScreen', () => {
 
     it('should display upload content placeholder', () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Do you have Cont to Upload')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Do you have Content to Upload')).toBeTruthy();
     });
   });
 

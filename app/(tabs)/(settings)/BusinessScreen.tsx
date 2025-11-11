@@ -148,7 +148,7 @@ export default function BusinessScreen() {
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
-                  placeholder="Do your have a Business"
+                  placeholder="Do you have a Business"
                   placeholderTextColor={colors["plcHoldText"]}
                   value={entrepreneur}
                   onChangeText={setEntrepreneur}
@@ -201,7 +201,7 @@ export default function BusinessScreen() {
                       <Pressable>
                         <TextInput
                           style={globalStyles.input}
-                          placeholder="Do your have a Business"
+                          placeholder="Do you have a Business"
                           value={openOnMillPrime}
                           onChangeText={setOpenOnMillPrime}
                           editable={false}

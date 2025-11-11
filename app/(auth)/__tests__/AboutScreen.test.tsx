@@ -8,10 +8,5 @@ describe('AboutScreen', () => {
       render(<AboutScreen />);
       expect(screen.getByText('About')).toBeTruthy();
     });
-
-    it('should render without crashing', () => {
-      render(<AboutScreen />);
-      expect(screen.getByText('About')).toBeTruthy();
-    });
   });
 });

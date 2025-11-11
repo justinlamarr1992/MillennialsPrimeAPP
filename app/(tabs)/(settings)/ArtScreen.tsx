@@ -296,7 +296,7 @@ export default function ArtScreen() {
 
                     <View style={globalStyles.labelInput}>
                       <Text style={globalStyles.labelText}>
-                        Anything specific intgral to your work?
+                        Anything specific integral to your work?
                       </Text>
                       <Pressable>
                         <TextInput

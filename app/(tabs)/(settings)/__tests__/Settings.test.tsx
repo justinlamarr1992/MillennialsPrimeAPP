@@ -29,7 +29,7 @@ describe('Settings', () => {
 
     it('should display business information button', () => {
       render(<Settings />);
-      expect(screen.getByText('Business Infomation')).toBeTruthy();
+      expect(screen.getByText('Business Information')).toBeTruthy();
     });
 
     it('should display artistry information button', () => {
@@ -41,7 +41,7 @@ describe('Settings', () => {
       render(<Settings />);
 
       expect(screen.getByText('Personal Information')).toBeTruthy();
-      expect(screen.getByText('Business Infomation')).toBeTruthy();
+      expect(screen.getByText('Business Information')).toBeTruthy();
       expect(screen.getByText('Artistry Information')).toBeTruthy();
     });
   });
@@ -59,7 +59,7 @@ describe('Settings', () => {
     it('should navigate to BusinessScreen when business information button is pressed', () => {
       render(<Settings />);
 
-      const businessButton = screen.getByText('Business Infomation');
+      const businessButton = screen.getByText('Business Information');
       fireEvent.press(businessButton);
 
       expect(router.push).toHaveBeenCalledWith('/BusinessScreen');
@@ -86,7 +86,7 @@ describe('Settings', () => {
     it('should call router.push exactly once when business button is pressed', () => {
       render(<Settings />);
 
-      const businessButton = screen.getByText('Business Infomation');
+      const businessButton = screen.getByText('Business Information');
       fireEvent.press(businessButton);
 
       expect(router.push).toHaveBeenCalledTimes(1);
@@ -107,7 +107,7 @@ describe('Settings', () => {
       render(<Settings />);
 
       const personalInfoButton = screen.getByText('Personal Information');
-      const businessButton = screen.getByText('Business Infomation');
+      const businessButton = screen.getByText('Business Information');
       const artButton = screen.getByText('Artistry Information');
 
       fireEvent.press(personalInfoButton);

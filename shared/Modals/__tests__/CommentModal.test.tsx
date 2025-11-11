@@ -6,7 +6,7 @@ describe('CommentModal', () => {
   describe('Modal Content Display', () => {
     it('should display comment modal text', () => {
       render(<CommentModal />);
-      expect(screen.getByText('CommentModalssss')).toBeTruthy();
+      expect(screen.getByText('CommentModal')).toBeTruthy();
     });
   });
 });

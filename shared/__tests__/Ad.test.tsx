@@ -117,31 +117,7 @@ describe('Ad', () => {
     });
   });
 
-  describe('DHMSTimer Integration', () => {
-    it('should integrate with DHMSTimer for countdown', () => {
-      render(<Ad {...defaultProps} />);
-      // Ad should render and contain DHMSTimer
-      expect(screen.getByText('First Update')).toBeTruthy();
-    });
-
-    it('should pass ISO string to DHMSTimer when startDate is string', () => {
-      render(<Ad title="String Date" startDate="2025-01-15T10:00:00Z" />);
-      expect(screen.getByText('String Date')).toBeTruthy();
-    });
-
-    it('should convert Date object to ISO string for DHMSTimer', () => {
-      const dateObj = new Date('2025-06-15T14:30:00Z');
-      render(<Ad title="Date Object" startDate={dateObj} />);
-      expect(screen.getByText('Date Object')).toBeTruthy();
-    });
-  });
-
   describe('Component Structure', () => {
-    it('should render with gradient background', () => {
-      render(<Ad {...defaultProps} />);
-      expect(screen.getByText('First Update')).toBeTruthy();
-    });
-
     it('should maintain consistent layout across renders', () => {
       const { rerender } = render(<Ad {...defaultProps} />);
       expect(screen.getByText('First Update')).toBeTruthy();

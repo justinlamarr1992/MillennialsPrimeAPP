@@ -11,7 +11,7 @@ jest.mock('expo-router', () => ({
 
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
-  Picker: ({ children, onValueChange, selectedValue }: any) => {
+  Picker: ({ children, onValueChange, selectedValue }: { children: React.ReactNode; onValueChange?: (value: string) => void; selectedValue?: string; }) => {
     return children;
   },
 }));
@@ -104,7 +104,7 @@ describe('ArtScreen', () => {
 
     it('should not show integral question initially', () => {
       render(<ArtScreen />);
-      expect(screen.queryByText('Anything specific intgral to your work?')).toBeNull();
+      expect(screen.queryByText('Anything specific integral to your work?')).toBeNull();
     });
   });
 

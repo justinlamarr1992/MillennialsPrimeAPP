@@ -37,7 +37,7 @@ export default function CommentModal({}) {
         onChange={handleSheetChanges}
       >
         <BottomSheetView>
-          <Text>CommentModalssss</Text>
+          <Text>CommentModal</Text>
         </BottomSheetView>
       </BottomSheetModal>
       {/* </BottomSheet> */}

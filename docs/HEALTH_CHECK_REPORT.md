@@ -713,16 +713,13 @@ Coverage:    ~50% overall (Utils: 100%, Hooks: 72.72%, Auth: 100%, Components: 8
   - **UX improvements**: Added validation guard to handleSubmit, better error handling
   - **Testability improvements**: Made Birthday field editable for tests
 
-- ✅ **Phase 5** - Component Testing (PR #21 - READY FOR REVIEW)
-  - 80 component tests, 100% pass rate (removed 8 duplicates)
-  - ThemedText.test.tsx (15 tests): Content, types, themes, accessibility
-  - ErrorBoundary.test.tsx (15 tests): Error catching, fallback UI, recovery
-  - TextPost.test.tsx (19 tests): Content, roles, ownership, author name
-  - UserInfo.test.tsx (17 tests): Name display, badges, interactions
-  - DHMSTimer.test.tsx (24 tests): Countdown, formatting, negative time
-  - LikeComment.test.tsx (3 tests): Counts, stability, re-renders
+- ✅ **Phase 5** - Component Testing (PR #21 - READY FOR REVIEW, PR #22 - IN REVIEW)
+  - 80 component tests + 108 screen tests = 188 total new tests in Phase 5
+  - **Components**: ThemedText (15), ErrorBoundary (15), TextPost (19), UserInfo (17), DHMSTimer (24), LikeComment (3)
+  - **Active Screens**: HomePage (16), Settings (13), ArtScreen (18), BusinessScreen (17), MyInfoScreen (42), AboutScreen (2)
   - **Critical Bugs Fixed**: TextPost name prop, DHMSTimer memory leak, negative time
   - **Code Quality**: Consolidated duplicates, fixed unicode, removed redundant assertions
+  - **Note**: 6 components in `/components` folder (Collapsible, ExternalLink, Header, HelloWave, ParallaxScrollView, ThemedView) appear to be unused Expo boilerplate and are not tested as they're not active in the app
 
 **🔄 In Progress:**
 - Phase 6 - Integration Tests (Final Phase)

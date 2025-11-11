@@ -112,8 +112,8 @@ export default function UploadBox() {
       setUpload("Music");
     } else if (e == "Episode") {
       setUpload("Episode");
-    } else if (e == "E-Commerence") {
-      setUpload("E-Commerence");
+    } else if (e == "E-Commerce") {
+      setUpload("E-Commerce");
     }
   };
   const handleWhoChange = (e: number) => {
@@ -296,7 +296,7 @@ export default function UploadBox() {
               <Picker.Item label="Video" value="Video" />
               <Picker.Item label="Music" value="Music" />
               <Picker.Item label="Episode" value="Episode" />
-              <Picker.Item label="E-Commerence" value="E-Commerence" />
+              <Picker.Item label="E-Commerce" value="E-Commerce" />
             </Picker>
           )}
         </View>
@@ -419,9 +419,9 @@ export default function UploadBox() {
             Episode stuff goes here
           </Text>
         )}
-        {upload == "E-Commerence" && (
+        {upload == "E-Commerce" && (
           <Text style={[{ color: colors["priT"] }]}>
-            E-Commerence stuff goes here
+            E-Commerce stuff goes here
           </Text>
         )}
       </View>
