@@ -22,6 +22,9 @@ yarn-error.*
 # Native builds
 ios/Pods/
 ios/build/
+ios/*.xcworkspace/
+ios/Podfile.lock
+ios/*/PrivacyInfo.xcprivacy
 android/app/build/
 android/.gradle/
 
