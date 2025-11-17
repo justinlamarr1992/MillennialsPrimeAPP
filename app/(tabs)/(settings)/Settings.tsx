@@ -1,13 +1,12 @@
 // TODO: Settings PAge but have Top Tabs for Info/Business/Art
 import {
-  View,
   Text,
   ScrollView,
   Pressable,
   useColorScheme,
 } from "react-native";
-import React, { useContext } from "react";
-import { Link, router } from "expo-router";
+import React from "react";
+import { router } from "expo-router";
 // import { AuthContext } from "../../../provider/AuthProvider";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -26,7 +25,7 @@ export default function Page() {
         Hello, (Name here)
       </Text>
       <Pressable
-        onPress={() => router.push("/MyInfoScreen")}
+        onPress={() => router.push("/(tabs)/(settings)/MyInfoScreen")}
         style={[
           globalStyles.button,
           globalStyles.marginVertical,
@@ -38,7 +37,7 @@ export default function Page() {
         </Text>
       </Pressable>
       <Pressable
-        onPress={() => router.push("/BusinessScreen")}
+        onPress={() => router.push("/(tabs)/(settings)/BusinessScreen")}
         style={[
           globalStyles.button,
           globalStyles.marginVertical,
@@ -50,7 +49,7 @@ export default function Page() {
         </Text>
       </Pressable>
       <Pressable
-        onPress={() => router.push("/ArtScreen")}
+        onPress={() => router.push("/(tabs)/(settings)/ArtScreen")}
         style={[
           globalStyles.button,
           globalStyles.marginVertical,
