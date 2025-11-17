@@ -1,14 +1,9 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
-
-import Header from "../shared/Header";
 
 import Home from "../src/BottomTab/Home";
 import About from "../src/Stack/About";
 import { StyleSheet } from "react-native-web";
-
-import { globalStyles } from "../constants/global";
 
 import { Image } from "react-native";
 import Logo from "../assets/images/MillennialsPrimeLogoNB.png";

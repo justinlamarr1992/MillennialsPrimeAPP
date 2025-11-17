@@ -73,7 +73,7 @@ export default function RegisterScreen() {
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
   const [firstNameError, setFirstNameError] = useState<string | null>(null);
   const [lastNameError, setLastNameError] = useState<string | null>(null);
-  const [dobError, setDobError] = useState<string | null>(null);
+  const [dobError] = useState<string | null>(null);
 
   const [errMsg, setErrMsg] = useState("");
 
@@ -108,16 +108,6 @@ export default function RegisterScreen() {
       hasErrors
     };
   }, [email, password, matchPassword, firstName, lastName, DOB]);
-
-  // Apply validation errors to state
-  const applyValidationErrors = (errors: ValidationErrors) => {
-    setEmailError(errors.email);
-    setPasswordError(errors.password);
-    setConfirmPasswordError(errors.confirmPassword);
-    setFirstNameError(errors.firstName);
-    setLastNameError(errors.lastName);
-    setDobError(errors.dob);
-  };
 
   // Real-time field validation helpers - validate individual fields on blur
   // Always call validators to show required errors when fields are empty

@@ -10,7 +10,6 @@ import {
   useColorScheme,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
@@ -21,16 +20,11 @@ export default function BusinessScreen() {
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [showPicker, setShowPicker] = useState(false);
 
   const [entrepreneur, setEntrepreneur] = useState<string>("");
   const [entrepreneurPicker, setEntrepreneurPicker] = useState<boolean>(false);
-  const [companyName, setCompanyName] = useState<string>("");
   const [industry, setIndustry] = useState<string>("");
   const [industryPicker, setIndustryPicker] = useState<boolean>(false);
-  const [whyIndustry, setWhyIndustry] = useState<string>("");
   const [openOnMillPrime, setOpenOnMillPrime] = useState<string>("");
   const [openOnMillPrimePicker, setOpenOnMillPrimePicker] = useState<boolean>(false);
   const [lengthOpen, setLengthOpen] = useState<string>("");
@@ -46,42 +40,6 @@ export default function BusinessScreen() {
   const [primaryPromotionPicker, setPrimaryPromotionPicker] = useState<boolean>(false);
   const [factorsOfLocation, setFactorsOfLocation] = useState<string>("");
   const [factorsOfLocationPicker, setFactorsOfLocationPicker] = useState<boolean>(false);
-
-  const toggleDatePicker = () => {
-    setShowPicker(!showPicker);
-
-    // Text Input for the Picker
-    // <Pressable>
-    //   <TextInput
-    //     style={globalStyles.input}
-    //     placeholder=""
-    //     value={}
-    //     onChangeText={}
-    //     editable={false}
-    //     onPressIn={toggle_Picker}
-    //   ></TextInput>
-    // </Pressable>;
-
-    // Conditional to open Picker
-    // {_Picker && ()}
-  };
-  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === "set" && selectedDate) {
-      setDate(selectedDate);
-
-      if (Platform.OS === "android") {
-        toggleDatePicker();
-        setDateOfBirth(selectedDate.toDateString());
-      }
-    } else {
-      toggleDatePicker();
-    }
-  };
-
-  const confirmIOSDate = () => {
-    setDateOfBirth(date.toDateString());
-    toggleDatePicker();
-  };
 
   const toggleEntrepreneurPicker = () => {
     setEntrepreneurPicker(!entrepreneurPicker);
@@ -159,7 +117,7 @@ export default function BusinessScreen() {
               {entrepreneurPicker && (
                 <Picker
                   selectedValue={entrepreneur}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue) =>
                     setEntrepreneur(itemValue)
                   }
                   itemStyle={{
@@ -211,7 +169,7 @@ export default function BusinessScreen() {
                       {openOnMillPrimePicker && (
                         <Picker
                           selectedValue={openOnMillPrime}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setOpenOnMillPrime(itemValue)
                           }
                           itemStyle={{
@@ -243,7 +201,7 @@ export default function BusinessScreen() {
                       {industryPicker && (
                         <Picker
                           selectedValue={industry}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setIndustry(itemValue)
                           }
                         >
@@ -324,7 +282,7 @@ export default function BusinessScreen() {
                       {lengthOpenPicker && (
                         <Picker
                           selectedValue={lengthOpen}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setLengthOpen(itemValue)
                           }
                         >
@@ -364,7 +322,7 @@ export default function BusinessScreen() {
                       {whyBusinessPicker && (
                         <Picker
                           selectedValue={whyBusiness}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setWhyBusiness(itemValue)
                           }
                         >
@@ -437,7 +395,7 @@ export default function BusinessScreen() {
                       {howManyPicker && (
                         <Picker
                           selectedValue={howMany}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setHowMany(itemValue)
                           }
                         >
@@ -478,7 +436,7 @@ export default function BusinessScreen() {
                       {primaryPromotionPicker && (
                         <Picker
                           selectedValue={primaryPromotion}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setPrimaryPromotion(itemValue)
                           }
                         >
@@ -523,7 +481,7 @@ export default function BusinessScreen() {
                       {factorsOfLocation && (
                         <Picker
                           selectedValue={lengthOpen}
-                          onValueChange={(itemValue, itemIndex) =>
+                          onValueChange={(itemValue) =>
                             setLengthOpen(itemValue)
                           }
                         >

@@ -1,9 +1,6 @@
-import React, { useContext } from "react";
-import { logger } from "@/utils/logger";
-import { StyleSheet, View, Text, Image, Button, Pressable } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { View, Text, Image, Pressable } from "react-native";
 import { globalStyles } from "@/constants/global";
-import { useTheme } from "@react-navigation/native";
 import { router, type Href } from "expo-router";
 import pic from "@/assets/images/MillennialsPrimeLogoNB.png";
 
@@ -17,13 +14,7 @@ export default function UserInfo({ name, admin, prime }: UserInfoProps) {
   // TODO: come back and change so that prime is past through as child to determine what colors
   // export default function UserInfo({ prime, name, time }) {
   // let name = "Test Name";
-  let time = Date.now();
-  const colors = useTheme().colors;
   // console.log(prime, name, time);
-
-  const namePress = () => {
-    logger.log("User name pressed");
-  };
   return (
     <View style={globalStyles.postUserInfo}>
       <View style={globalStyles.postUserInfoPicContainer}>

@@ -1,6 +1,5 @@
 import React from "react";
 import { Stack } from "expo-router";
-import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";

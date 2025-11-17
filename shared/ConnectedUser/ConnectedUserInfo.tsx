@@ -25,7 +25,6 @@ export default function ConnectedUserInfo({
   industry,
   prime,
   matching,
-  connected,
   admin,
 }: ConnectedUserInfoProps) {
   // TODO: come back and change so that prime is passed through as child to determine what colors

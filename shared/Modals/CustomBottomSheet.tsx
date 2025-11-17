@@ -1,14 +1,11 @@
 import { View, Text, useColorScheme } from "react-native";
-import React, { useMemo, useCallback, useRef, forwardRef } from "react";
+import React, { useMemo, forwardRef } from "react";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 interface Props {
   title: string;
@@ -19,16 +16,6 @@ const CustomBottomSheet = forwardRef<Ref, Props>((props, ref) => {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], []);
-  const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        appearsOnIndex={3}
-        disappearsOnIndex={1}
-        {...props}
-      />
-    ),
-    []
-  );
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

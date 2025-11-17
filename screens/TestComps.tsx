@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, Button } from "react-native";
-import { globalStyles, images } from "../constants/global";
-import Card from "../shared/Card";
-import PostComponent from "../shared/PostComponent";
+import { View, Button } from "react-native";
+import { globalStyles } from "../constants/global";
 import UserInfo from "../shared/PostItems/UserInfo";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function TestComps({ navigation }) {
   // Determins if the post will be red or gold
-  const [prime, setPrime] = useState(false);
+  const [prime] = useState(false);
   const name = "Test Name";
   const time = "5 mins ago";
   // const { item } = route.params;

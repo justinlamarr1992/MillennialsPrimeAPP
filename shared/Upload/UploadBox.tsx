@@ -6,14 +6,12 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import ImagePickerComponent from "./ImagePickerComponent";
-import { useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { AuthContext } from "@/context/AuthContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { logger } from "@/utils/logger";
 
@@ -23,9 +21,6 @@ export default function UploadBox() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const axiosPrivate = useAxiosPrivate();
-  // AuthContext
-  // const { id } = useContext(AuthContext);
-  // const _id = id;
 
   let videoFile: ImagePicker.ImagePickerAsset | undefined;
 
@@ -37,27 +32,15 @@ export default function UploadBox() {
   // Use States
   const [upload, setUpload] = useState<string | null>(null);
   const [uploadPicker, setUploadPicker] = useState(false);
-  const [userPosting, setUserPosting] = useState({});
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [prime, setPrime] = useState(0);
   const [primePicker, setPrimePicker] = useState(false);
   const [category, setCategory] = useState("");
   const [categoryPicker, setCategoryPicker] = useState(false);
-  const [duration, setDuration] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
+  const [duration] = useState("");
+  const [thumbnail] = useState("");
   const [videoID, setVideoID] = useState("");
-  const [object, setObject] = useState({
-    userPosting,
-    title,
-    description,
-    prime,
-    category,
-    duration,
-    thumbnail,
-  });
-
-  const [valueStuff, setValueStuff] = useState(false);
 
   //   Use Refs
   const uploadRef = useRef(null);
@@ -118,18 +101,12 @@ export default function UploadBox() {
   };
   const handleWhoChange = (e: number) => {
     setPrime(e);
-    setObject({ ...object, prime: prime });
     setPrimePicker(false);
   };
   const handleCategoryChange = (e: string) => {
     setCategory(e);
-    setObject({ ...object, category: category });
     setCategoryPicker(false);
   };
-  function setStuff(stuff: boolean) {
-    logger.log('Parent value set:', stuff);
-    setValueStuff(stuff);
-  }
   //   stuff == videoValue
   function handleVideoSelect(videoValue: ImagePicker.ImagePickerResult) {
     if (!videoValue.canceled && videoValue.assets && videoValue.assets[0]) {
@@ -352,7 +329,7 @@ export default function UploadBox() {
                 <Picker
                   style={{}}
                   selectedValue={prime}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue) =>
                     handleWhoChange(itemValue)
                   }
                 >
@@ -387,7 +364,7 @@ export default function UploadBox() {
                   style={{}}
                   selectedValue={category}
                   onValueChange={
-                    (itemValue, itemIndex) => handleCategoryChange(itemValue)
+                    (itemValue) => handleCategoryChange(itemValue)
                     // console.log("Category picker working")
                   }
                 >

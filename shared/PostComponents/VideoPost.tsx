@@ -11,7 +11,6 @@ import useAuth from "@/hooks/useAuth";
 
 interface VideoPostProps {
   name: string;
-  url?: string;
   title: string;
   description: string;
   prime: boolean;
@@ -23,7 +22,6 @@ interface VideoPostProps {
 
 function VideoPost({
   name,
-  url,
   title,
   description,
   prime,
@@ -32,8 +30,6 @@ function VideoPost({
   videoId,
   authorId,
 }: VideoPostProps) {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const { user } = useAuth();
