@@ -10,6 +10,7 @@ import {
   useColorScheme,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
@@ -69,12 +70,14 @@ export default function BusinessScreen() {
   const handleSubmit = async () => {
     try {
       logger.log('Business settings submission started');
+      // TODO: Add backend API call to save business settings
+      // await axiosPrivate.patch(`/users/${userId}/business-settings`, { ... });
     } catch (err) {
       logger.error('Business settings submission error:', err);
     } finally {
       logger.log('Business settings submitted successfully');
-      // navigation.jumpTo("Business");
-      // navigation.navigate("Art");
+      // Navigate to ArtScreen (next step in settings flow)
+      router.push("/(tabs)/(settings)/ArtScreen");
     }
     logger.log('Business settings submit button pressed');
   };

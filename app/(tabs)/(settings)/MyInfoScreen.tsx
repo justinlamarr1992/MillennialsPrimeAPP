@@ -10,6 +10,7 @@ import {
   useColorScheme,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
@@ -118,45 +119,18 @@ export default function MyInfoScreen() {
   const handleSubmit = async () => {
     try {
       logger.log('MyInfo form submission started');
-      // let dataToSubmit = {
-      //   name,
-      //   username,
-      //   email,
-      //   DOB,
-      //   country,
-      //   state,
-      //   city,
-      //   zip,
-      //   canLike,
-      //   canDislike,
-      //   canComment,
-      //   canShare,
-      //   industry,
-      //   B2B,
-      //   eComm,
-      //   upload,
-      // };
-      // console.log(`From useContext id: ${id}`);
-      // console.log(`Saved to useState _id: ${_id}`);
-      logger.log('Attempting backend submission');
-      // const response = await axiosPrivate.patch(
-      //   `https://us-central1-millennialsprime.cloudfunctions.net/api/users/${_id}`,
-      //   { values }
-      // );
-      // const response = await axios.patch(
-      //   `users/profilesettings/662a6321a0e8a4dd4be50586`,
-      //   { dataToSubmit }
-      // );
+      // TODO: Add backend API call to save user info
+      // await axiosPrivate.patch(`/users/${userId}`, {
+      //   name, username, email, DOB, country, state, city, zip,
+      //   canLike, canDislike, canComment, canShare, industry, B2B, eComm, upload
+      // });
 
-      // console.log(response);
+      logger.log('MyInfo settings saved successfully');
+      // Navigate to BusinessScreen (next step in settings flow)
+      router.push("/(tabs)/(settings)/BusinessScreen");
     } catch (err) {
       logger.error('MyInfo submission error:', err);
     }
-    // finally {
-    // console.log("It worked!!!");
-    // navigation.jumpTo("Business");
-    // navigation.navigate("Business");
-    // }
     logger.log('MyInfo submit button pressed');
   };
 

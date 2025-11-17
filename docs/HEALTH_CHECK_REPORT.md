@@ -1910,13 +1910,19 @@ npx eslint "**/*.{ts,tsx}"
 
 The following items are planned for future implementation but are **not currently ready** to be worked on. They require additional planning, architectural decisions, or external dependencies before implementation can begin:
 
-1. **Review React 19 + RN 0.79.5 compatibility** - Paused per user request. Requires stability assessment and potential migration planning.
+1. **Create dynamic user routing for social features** - Backend API dependency. Frontend infrastructure is ready (dynamic route exists at `/app/TabsLater/(social)/[id].tsx`, UserInfo component can be updated to navigate), but requires backend endpoints for fetching user profile data (`GET /api/users/{userId}`) and user posts (`GET /api/users/{userId}/posts`). Frontend skeleton can be implemented, but will only show placeholder data without backend support.
 
-2. **Consider state management library (Zustand or Redux Toolkit)** - Architecture decision needed. Requires evaluation of current state management patterns and identification of pain points before selecting solution.
+2. **Implement post deletion functionality** - Backend API decision needed. Requires backend endpoint implementation for delete operations, ownership verification logic, and database cascade delete strategy. Frontend implementation depends on backend API availability.
 
-3. **Integrate error tracking (Sentry or Bugsnag)** - Infrastructure decision needed. Requires account setup, budget approval, and integration planning.
+3. **Set up CI/CD pipeline (GitHub Actions)** - Infrastructure decision needed. Requires repository access configuration, environment secrets setup, and definition of deployment workflows (test automation, linting, builds, deployment targets).
 
-4. **Add analytics tracking (Firebase Analytics or Amplitude)** - Product decision needed. Requires definition of key metrics to track and privacy policy updates.
+4. **Review React 19 + RN 0.79.5 compatibility** - Paused per user request. Requires stability assessment and potential migration planning.
+
+5. **Consider state management library (Zustand or Redux Toolkit)** - Architecture decision needed. Requires evaluation of current state management patterns and identification of pain points before selecting solution.
+
+6. **Integrate error tracking (Sentry or Bugsnag)** - Infrastructure decision needed. Requires account setup, budget approval, and integration planning.
+
+7. **Add analytics tracking (Firebase Analytics or Amplitude)** - Product decision needed. Requires definition of key metrics to track and privacy policy updates.
 
 These items will be revisited when the prerequisites are met and the project is ready to move forward with them.
 
