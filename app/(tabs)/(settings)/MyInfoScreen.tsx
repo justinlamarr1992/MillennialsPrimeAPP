@@ -127,8 +127,8 @@ export default function MyInfoScreen() {
       // });
 
       // Navigate to BusinessScreen (next step in settings flow)
-      router.push("/(tabs)/(settings)/BusinessScreen");
       logger.log('MyInfo settings saved successfully');
+      router.push("/(tabs)/(settings)/BusinessScreen");
     } catch (err) {
       logger.error('MyInfo submission error:', err);
       // Optionally show error message to user
