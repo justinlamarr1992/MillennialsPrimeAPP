@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Text, Pressable, useColorScheme } from "react-native";
 import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
@@ -8,6 +8,7 @@ import UserInfo from "./UserInfo";
 import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import LikeComment from "../LikeComment";
+import useAuth from "@/hooks/useAuth";
 
 interface PicturePostProps {
   name: string;
@@ -16,21 +17,22 @@ interface PicturePostProps {
   picture: string;
   prime: boolean;
   admin: boolean;
+  authorId: string; // ID of post author for ownership check
 }
 
-export default function PicturePost({
+function PicturePost({
   name,
   title,
   description,
   picture,
   prime,
   admin,
+  authorId,
 }: PicturePostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const viewer = 12345678;
-  const mine = 12345678;
-  // TODO: Add dynamic ID Check with auth to match if the post can be deleted
+  const { user } = useAuth();
+  const mine = authorId === user?.uid;
 
   const removePost = () => {
     // TODO: Implement post deletion
@@ -50,7 +52,7 @@ export default function PicturePost({
       }
     >
       {/* User info here */}
-      <UserInfo name={"Picture post Name Here"} admin={admin} prime={prime} />
+      <UserInfo name={name} admin={admin} prime={prime} />
       {/* Picture here */}
       <Image
         style={globalStyles.image}
@@ -85,7 +87,7 @@ export default function PicturePost({
       </Text>
       {/* likes and comments */}
       <LikeComment />
-      {viewer == mine && (
+      {mine && (
         <Pressable onPress={removePost} style={globalStyles.alignCenter}>
           <Ionicons
             size={28}
@@ -104,3 +106,5 @@ export default function PicturePost({
     </LinearGradient>
   );
 }
+
+export default memo(PicturePost);

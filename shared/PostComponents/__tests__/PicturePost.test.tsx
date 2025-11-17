@@ -4,18 +4,19 @@ import PicturePost from '../PicturePost';
 
 describe('PicturePost', () => {
   const defaultProps = {
-    name: 'Jane Smith',
+    name: 'John Doe',
     title: 'Beautiful Sunset',
     description: 'A stunning sunset over the mountains',
     picture: 'https://example.com/sunset.jpg',
     prime: false,
     admin: false,
+    authorId: 'test-author-123',
   };
 
   describe('Picture Content Display', () => {
-    it('should display hardcoded name "Picture post Name Here"', () => {
+    it('should display author name from props', () => {
       render(<PicturePost {...defaultProps} />);
-      expect(screen.getByText('Picture post Name Here')).toBeTruthy();
+      expect(screen.getByText('John Doe')).toBeTruthy();
     });
 
     it('should display picture title', () => {

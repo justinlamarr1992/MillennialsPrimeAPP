@@ -1,5 +1,5 @@
-import { View, Text, Pressable, useColorScheme } from "react-native";
-import React from "react";
+import { Text, Pressable, useColorScheme } from "react-native";
+import React, { memo } from "react";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,7 +17,7 @@ interface TextPostProps {
   authorId: string; // ID of post author for ownership check
 }
 
-export default function TextPost({ name, title, description, prime, admin, authorId }: TextPostProps) {
+function TextPost({ name, title, description, prime, admin, authorId }: TextPostProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const { user } = useAuth();
@@ -90,6 +90,8 @@ export default function TextPost({ name, title, description, prime, admin, autho
     </LinearGradient>
   );
 }
+
+export default memo(TextPost);
 
 // "Colors of what needs to be renderd"={
 //         admin

@@ -23,6 +23,7 @@ describe('VideoPost', () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 
   const defaultProps = {
+    name: 'Video Author',
     title: 'Test Video Title',
     description: 'This is a test video description',
     prime: false,
@@ -45,9 +46,9 @@ describe('VideoPost', () => {
   });
 
   describe('Video Content Display', () => {
-    it('should display hardcoded name "Video Post Name Here"', () => {
+    it('should display author name from props', () => {
       render(<VideoPost {...defaultProps} />);
-      expect(screen.getByText('Video Post Name Here')).toBeTruthy();
+      expect(screen.getByText('Video Author')).toBeTruthy();
     });
 
     it('should display video title', () => {
@@ -180,6 +181,7 @@ describe('VideoPost', () => {
     it('should render with minimal required props', () => {
       render(
         <VideoPost
+          name="Test Author"
           title="Minimal Video"
           description="Basic description"
           prime={false}
@@ -194,6 +196,7 @@ describe('VideoPost', () => {
     it('should handle missing library ID and video ID', () => {
       render(
         <VideoPost
+          name="Test Author"
           title="Test Video"
           description="Test description"
           prime={false}
