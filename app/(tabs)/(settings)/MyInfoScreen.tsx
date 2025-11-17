@@ -117,6 +117,7 @@ export default function MyInfoScreen() {
   // 3. OR migrate to Firebase Firestore for data storage
   // 4. Update the user document in Firestore with the form values
   const handleSubmit = async () => {
+    logger.log('MyInfo submit button pressed');
     try {
       logger.log('MyInfo form submission started');
       // TODO: Add backend API call to save user info
@@ -125,14 +126,12 @@ export default function MyInfoScreen() {
       //   canLike, canDislike, canComment, canShare, industry, B2B, eComm, upload
       // });
 
-      logger.log('MyInfo settings saved successfully');
       // Navigate to BusinessScreen (next step in settings flow)
       router.push("/(tabs)/(settings)/BusinessScreen");
+      logger.log('MyInfo settings saved successfully');
     } catch (err) {
       logger.error('MyInfo submission error:', err);
       // Optionally show error message to user
-    } finally {
-      logger.log('MyInfo submit button pressed');
     }
   };
 

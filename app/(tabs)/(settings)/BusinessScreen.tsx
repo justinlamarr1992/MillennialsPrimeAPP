@@ -68,19 +68,18 @@ export default function BusinessScreen() {
   };
 
   const handleSubmit = async () => {
+    logger.log('Business settings submit button pressed');
     try {
       logger.log('Business settings submission started');
       // TODO: Add backend API call to save business settings
       // await axiosPrivate.patch(`/users/${userId}/business-settings`, { ... });
 
-      logger.log('Business settings submitted successfully');
       // Navigate to ArtScreen (next step in settings flow)
       router.push("/(tabs)/(settings)/ArtScreen");
+      logger.log('Business settings submitted successfully');
     } catch (err) {
       logger.error('Business settings submission error:', err);
       // Optionally show error message to user
-    } finally {
-      logger.log('Business settings submit button pressed');
     }
   };
 

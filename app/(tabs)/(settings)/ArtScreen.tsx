@@ -52,18 +52,17 @@ export default function ArtScreen() {
   };
 
   const handleSubmit = async () => {
+    logger.log('Art settings submit button pressed');
     try {
       logger.log('Art settings submission started');
       // TODO: Add backend API call to save art settings
       // await axiosPrivate.patch(`/users/${userId}/art-settings`, { ... });
 
-      logger.log('Art settings submitted successfully');
       router.push("/(tabs)/(home)/HomePage");
+      logger.log('Art settings submitted successfully');
     } catch (err) {
       logger.error('Art settings submission error:', err);
       // Optionally show error message to user
-    } finally {
-      logger.log('Art settings submit button pressed');
     }
   };
 
