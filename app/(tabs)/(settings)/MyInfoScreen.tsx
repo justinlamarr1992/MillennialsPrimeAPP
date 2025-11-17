@@ -130,8 +130,10 @@ export default function MyInfoScreen() {
       router.push("/(tabs)/(settings)/BusinessScreen");
     } catch (err) {
       logger.error('MyInfo submission error:', err);
+      // Optionally show error message to user
+    } finally {
+      logger.log('MyInfo submit button pressed');
     }
-    logger.log('MyInfo submit button pressed');
   };
 
 

@@ -22,9 +22,6 @@ export default [
   prettierConfig,
   {
     rules: {
-      // Prettier
-      'prettier/prettier': 'warn',
-
       // TypeScript
       '@typescript-eslint/no-unused-vars': [
         'warn',
