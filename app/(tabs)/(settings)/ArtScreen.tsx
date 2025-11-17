@@ -10,7 +10,6 @@ import {
   useColorScheme,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { useRouter } from "expo-router";
@@ -20,9 +19,6 @@ export default function ArtScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [showPicker, setShowPicker] = useState(false);
 
   const [artist, setArtist] = useState<string>("");
   const [artistPicker, setArtistPicker] = useState<boolean>(false);
@@ -42,23 +38,6 @@ export default function ArtScreen() {
   const [specificIntegralPicker, setSpecificIntegralPicker] = useState<boolean>(false);
   const [whatSpecfic, setWhatSpecfic] = useState<string>("");
 
-  const toggleDatePicker = () => {
-    setShowPicker(!showPicker);
-    // Text Input for the Picker
-    // <Pressable>
-    //   <TextInput
-    //     style={globalStyles.input}
-    //     placeholder=""
-    //     value={}
-    //     onChangeText={}
-    //     editable={false}
-    //     onPressIn={toggle_Picker}
-    //   ></TextInput>
-    // </Pressable>;
-
-    // Conditional to open Picker
-    // {_Picker && ()}
-  };
   const toggleArtistPicker = () => {
     setArtistPicker(!artistPicker);
   };
@@ -72,34 +51,19 @@ export default function ArtScreen() {
     setSpecificIntegralPicker(!specificIntegralPicker);
   };
 
-  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === "set" && selectedDate) {
-      setDate(selectedDate);
-
-      if (Platform.OS === "android") {
-        toggleDatePicker();
-        setDateOfBirth(selectedDate.toDateString());
-      }
-    } else {
-      toggleDatePicker();
-    }
-  };
-
-  const confirmIOSDate = () => {
-    setDateOfBirth(date.toDateString());
-    toggleDatePicker();
-  };
-
   const handleSubmit = async () => {
+    logger.log('Art settings submit button pressed');
     try {
       logger.log('Art settings submission started');
+      // TODO: Add backend API call to save art settings
+      // await axiosPrivate.patch(`/users/${userId}/art-settings`, { ... });
+
+      router.push("/(tabs)/(home)/HomePage");
+      logger.log('Art settings submitted successfully');
     } catch (err) {
       logger.error('Art settings submission error:', err);
-    } finally {
-      logger.log('Art settings submitted successfully');
-      router.push("/(tabs)/(home)/HomePage");
+      // Optionally show error message to user
     }
-    logger.log('Art settings submit button pressed');
   };
 
   return (

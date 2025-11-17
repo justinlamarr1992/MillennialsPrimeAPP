@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { logger } from "@/utils/logger";
-import { View, Text, useColorScheme, Pressable } from "react-native";
-import { router } from "expo-router";
+import { View, useColorScheme, Pressable } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import { COLORS } from "@/constants/Colors";

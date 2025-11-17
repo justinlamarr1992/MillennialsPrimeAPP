@@ -1,17 +1,11 @@
 import { Tabs } from "expo-router";
-import { useColorScheme, Button } from "react-native";
+import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import {
-  SafeAreaInsetsContext,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
 
 const TabsLayout = () => {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{

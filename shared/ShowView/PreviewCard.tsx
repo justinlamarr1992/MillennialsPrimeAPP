@@ -1,22 +1,16 @@
-import { View, Text, ScrollView, useColorScheme } from "react-native";
+import { View, Text, useColorScheme } from "react-native";
 import React from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
 interface PreviewCardProps {
-  thumbnail: string;
   title: string;
   description: string;
-  name: string;
-  time: string;
 }
 
 export default function PreviewCard({
-  thumbnail,
   title,
   description,
-  name,
-  time,
 }: PreviewCardProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];

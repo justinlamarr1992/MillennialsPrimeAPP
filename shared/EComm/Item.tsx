@@ -1,13 +1,10 @@
-import React, { useContext } from "react";
-import { useColorScheme, Text, View, Pressable } from "react-native";
+import React from "react";
+import { Text, View, Pressable } from "react-native";
 import { Link } from "expo-router";
-import { useTheme } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
 import LoadingPic from "@/assets/images/MillennialsPrimeLogoNB.png";
-import { COLORS } from "@/constants/Colors";
-import UserInfo from "./UserInfo";
 
 interface ItemProps {
   itemName: string;
@@ -28,8 +25,6 @@ export default function PicturePost({
 }: ItemProps) {
   const blurhash =
     "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
-  const colorScheme = useColorScheme();
-  const colors = COLORS[colorScheme ?? "dark"];
 
   return (
     <LinearGradient

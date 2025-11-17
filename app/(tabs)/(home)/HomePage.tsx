@@ -18,7 +18,6 @@ import { useBunnyCDNVideos } from "@/hooks/useBunnyCDNVideos";
 export default function Page() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const name = "Millennial's Prime Admin";
 
   // Use React Query hook for cached data fetching
   const { data: videoData, isLoading, isError, error, refetch } = useBunnyCDNVideos();
@@ -105,14 +104,8 @@ export default function Page() {
             admin={true}
             title={videoData.title}
             description={videoData.description}
-            name={name}
-            time={videoData.dateUploaded}
             guid={videoData.guid}
             videoLibraryId={videoData.videoLibraryId}
-            dateUploaded={videoData.dateUploaded}
-            url={`https://video.bunnycdn.com/embed/${videoData.videoLibraryId}/${videoData.guid}`}
-            libraryId={videoData.videoLibraryId}
-            videoId={videoData.guid}
           />
 
           {/* Timer */}

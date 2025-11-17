@@ -10,7 +10,7 @@ import {
   useColorScheme,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
@@ -27,12 +27,9 @@ export default function MyInfoScreen() {
   const colors = COLORS[colorScheme ?? "dark"];
 
   // Use States
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [date, setDate] = useState(new Date());
   const [name, setName] = useState("");
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [DOB, setDOB] = useState<string>("");
+  const [username] = useState<string>("");
+  const [DOB] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [state, setState] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -47,7 +44,6 @@ export default function MyInfoScreen() {
   const [upload, setUpload] = useState<string>("");
 
   // Pickers
-  const [showPicker, setShowPicker] = useState(false);
   const [canLikePicker, setCanLikePicker] = useState(false);
   const [canDislikePicker, setCanDislikePicker] = useState(false);
   const [canCommentPicker, setCanCommentPicker] = useState(false);
@@ -56,25 +52,6 @@ export default function MyInfoScreen() {
   const [B2BPicker, setB2BPicker] = useState(false);
   const [eCommPicker, setECommPicker] = useState(false);
   const [uploadPicker, setUploadPicker] = useState(false);
-
-  let values = {
-    name,
-    username,
-    email,
-    DOB,
-    country,
-    state,
-    city,
-    zip,
-    canLike,
-    canDislike,
-    canComment,
-    canShare,
-    industry,
-    B2B,
-    eComm,
-    upload,
-  };
 
   // Values to the back end
   // const [values, setValues] = useState({
@@ -107,9 +84,6 @@ export default function MyInfoScreen() {
   // },
   // });
 
-  const toggleDatePicker = () => {
-    setShowPicker(!showPicker);
-  };
   const toggleCanLikePicker = () => {
     setCanLikePicker(!canLikePicker);
   };
@@ -134,23 +108,6 @@ export default function MyInfoScreen() {
   const toggleUploadPicker = () => {
     setUploadPicker(!uploadPicker);
   };
-  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === "set" && selectedDate) {
-      setDate(selectedDate);
-
-      if (Platform.OS === "android") {
-        toggleDatePicker();
-        setDateOfBirth(selectedDate.toDateString());
-      }
-    } else {
-      toggleDatePicker();
-    }
-  };
-
-  const confirmIOSDate = () => {
-    setDateOfBirth(date.toDateString());
-    toggleDatePicker();
-  };
 
   // TODO: Implement Firebase integration for form submission
   // The commented code below shows the original backend integration pattern.
@@ -160,48 +117,22 @@ export default function MyInfoScreen() {
   // 3. OR migrate to Firebase Firestore for data storage
   // 4. Update the user document in Firestore with the form values
   const handleSubmit = async () => {
+    logger.log('MyInfo submit button pressed');
     try {
       logger.log('MyInfo form submission started');
-      // let dataToSubmit = {
-      //   name,
-      //   username,
-      //   email,
-      //   DOB,
-      //   country,
-      //   state,
-      //   city,
-      //   zip,
-      //   canLike,
-      //   canDislike,
-      //   canComment,
-      //   canShare,
-      //   industry,
-      //   B2B,
-      //   eComm,
-      //   upload,
-      // };
-      // console.log(`From useContext id: ${id}`);
-      // console.log(`Saved to useState _id: ${_id}`);
-      logger.log('Attempting backend submission');
-      // const response = await axiosPrivate.patch(
-      //   `https://us-central1-millennialsprime.cloudfunctions.net/api/users/${_id}`,
-      //   { values }
-      // );
-      // const response = await axios.patch(
-      //   `users/profilesettings/662a6321a0e8a4dd4be50586`,
-      //   { dataToSubmit }
-      // );
+      // TODO: Add backend API call to save user info
+      // await axiosPrivate.patch(`/users/${userId}`, {
+      //   name, username, email, DOB, country, state, city, zip,
+      //   canLike, canDislike, canComment, canShare, industry, B2B, eComm, upload
+      // });
 
-      // console.log(response);
+      // Navigate to BusinessScreen (next step in settings flow)
+      logger.log('MyInfo settings saved successfully');
+      router.push("/(tabs)/(settings)/BusinessScreen");
     } catch (err) {
       logger.error('MyInfo submission error:', err);
+      // Optionally show error message to user
     }
-    // finally {
-    // console.log("It worked!!!");
-    // navigation.jumpTo("Business");
-    // navigation.navigate("Business");
-    // }
-    logger.log('MyInfo submit button pressed');
   };
 
 
@@ -350,7 +281,7 @@ export default function MyInfoScreen() {
                 <Picker
                   style={{}}
                   selectedValue={canLike}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue) =>
                     setCanLike(itemValue)
                   }
                 >
@@ -376,7 +307,7 @@ export default function MyInfoScreen() {
               {canDislikePicker && (
                 <Picker
                   selectedValue={canDislike}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue) =>
                     setCanDislike(itemValue)
                   }
                 >
@@ -402,7 +333,7 @@ export default function MyInfoScreen() {
               {canCommentPicker && (
                 <Picker
                   selectedValue={canComment}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue) =>
                     setCanComment(itemValue)
                   }
                 >
@@ -428,7 +359,7 @@ export default function MyInfoScreen() {
               {canSharePicker && (
                 <Picker
                   selectedValue={canShare}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue) =>
                     setCanShare(itemValue)
                   }
                 >
@@ -456,7 +387,7 @@ export default function MyInfoScreen() {
               {industryPicker && (
                 <Picker
                   selectedValue={industry}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue) =>
                     setIndustry(itemValue)
                   }
                 >
@@ -516,7 +447,7 @@ export default function MyInfoScreen() {
               {B2BPicker && (
                 <Picker
                   selectedValue={B2B}
-                  onValueChange={(itemValue, itemIndex) => setB2B(itemValue)}
+                  onValueChange={(itemValue) => setB2B(itemValue)}
                 >
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
@@ -540,7 +471,7 @@ export default function MyInfoScreen() {
               {eCommPicker && (
                 <Picker
                   selectedValue={eComm}
-                  onValueChange={(itemValue, itemIndex) => setEComm(itemValue)}
+                  onValueChange={(itemValue) => setEComm(itemValue)}
                 >
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
@@ -564,7 +495,7 @@ export default function MyInfoScreen() {
               {uploadPicker && (
                 <Picker
                   selectedValue={upload}
-                  onValueChange={(itemValue, itemIndex) => setUpload(itemValue)}
+                  onValueChange={(itemValue) => setUpload(itemValue)}
                 >
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />

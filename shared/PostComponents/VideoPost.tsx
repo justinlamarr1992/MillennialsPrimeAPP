@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Text, Pressable, useColorScheme } from "react-native";
 import { WebView } from "react-native-webview";
 import { globalStyles } from "@/constants/global";
@@ -10,7 +10,7 @@ import LikeComment from "../LikeComment";
 import useAuth from "@/hooks/useAuth";
 
 interface VideoPostProps {
-  url?: string;
+  name: string;
   title: string;
   description: string;
   prime: boolean;
@@ -20,8 +20,8 @@ interface VideoPostProps {
   authorId: string; // ID of post author for ownership check (required for proper ownership checks)
 }
 
-export default function VideoPost({
-  url,
+function VideoPost({
+  name,
   title,
   description,
   prime,
@@ -30,8 +30,6 @@ export default function VideoPost({
   videoId,
   authorId,
 }: VideoPostProps) {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const { user } = useAuth();
@@ -52,7 +50,7 @@ export default function VideoPost({
       }
     >
       {/* User info here */}
-      <UserInfo name={"Video Post Name Here"} admin={admin} prime={prime} />
+      <UserInfo name={name} admin={admin} prime={prime} />
       {/* TODO: Round the corners */}
       <WebView
         source={{
@@ -108,3 +106,5 @@ export default function VideoPost({
     </LinearGradient>
   );
 }
+
+export default memo(VideoPost);

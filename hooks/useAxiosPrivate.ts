@@ -15,7 +15,7 @@ const useAxiosPrivate = () => {
   });
 
   useEffect(() => {
-    logger.log('useAxiosPrivate initialized for user:', user?.uid);
+    logger.log('useAxiosPrivate initialized for user:', user?.uid || 'anonymous');
 
     // Reset token cache when user changes
     tokenCacheRef.current = { token: null, promise: null };
@@ -38,7 +38,7 @@ const useAxiosPrivate = () => {
 
             config.headers["Authorization"] = `Bearer ${tokenCacheRef.current.token}`;
           } catch (err) {
-            logger.error(`Failed to get Firebase ID token for user ${user?.uid}:`, err);
+            logger.error('Failed to get Firebase ID token for user:', user?.uid || 'anonymous', err);
             // Clear failed token cache
             tokenCacheRef.current = { token: null, promise: null };
             return Promise.reject(err);

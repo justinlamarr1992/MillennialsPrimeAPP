@@ -5,17 +5,11 @@ import PrimeNewsPost from '../PrimeNewsPost';
 describe('PrimeNewsPost', () => {
   const defaultProps = {
     guid: 'test-guid-123',
-    dateUploaded: '2025-01-15T10:00:00Z',
     videoLibraryId: '147838',
-    name: 'Admin User',
-    time: '2025-01-15T10:00:00Z',
-    url: 'https://video.bunnycdn.com/embed/147838/test-guid-123',
     title: 'Breaking News Update',
     description: 'Important announcement for all members',
     prime: true,
     admin: false,
-    libraryId: '147838',
-    videoId: 'test-guid-123',
   };
 
   describe('News Content Display', () => {
@@ -131,31 +125,18 @@ describe('PrimeNewsPost', () => {
       render(
         <PrimeNewsPost
           {...defaultProps}
-          libraryId="123456"
-          videoId="custom-video-id"
+          videoLibraryId="123456"
+          guid="custom-video-id"
         />
       );
       expect(screen.getByText('Breaking News Update')).toBeTruthy();
     });
 
     it('should render with valid date formats', () => {
-      const dates = [
-        '2025-01-15T10:00:00Z',
-        '2025-12-31T23:59:59Z',
-        '2025-06-01T12:00:00.000Z',
-      ];
-
-      dates.forEach((date) => {
-        const { unmount } = render(
-          <PrimeNewsPost
-            {...defaultProps}
-            dateUploaded={date}
-            time={date}
-          />
-        );
-        expect(screen.getByText('Breaking News Update')).toBeTruthy();
-        unmount();
-      });
+      // This test is no longer relevant since dateUploaded and time props were removed
+      // The component now only needs guid and videoLibraryId
+      render(<PrimeNewsPost {...defaultProps} />);
+      expect(screen.getByText('Breaking News Update')).toBeTruthy();
     });
   });
 

@@ -15,14 +15,11 @@ interface PrimeCardProps {
   userPosting: string;
   id: string;
   prime: boolean;
-  thumbnail: string;
   videoLibraryId: string;
   guid: string;
   title: string;
   description: string;
   dateUploaded: string;
-  name: string;
-  time: string;
   key: string;
 }
 
@@ -30,14 +27,11 @@ export default function PrimeCard({
   userPosting,
   id,
   prime,
-  thumbnail,
   videoLibraryId,
   guid,
   title,
   description,
   dateUploaded,
-  name,
-  time,
   key,
 }: PrimeCardProps) {
   const colorScheme = useColorScheme();

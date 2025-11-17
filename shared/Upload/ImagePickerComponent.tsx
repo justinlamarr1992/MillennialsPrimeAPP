@@ -1,4 +1,4 @@
-import { View, Text, Button, Image } from "react-native";
+import { View, Button, Image } from "react-native";
 import { logger } from "@/utils/logger";
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";

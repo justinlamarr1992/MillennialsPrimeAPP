@@ -53,7 +53,7 @@ describe('Settings', () => {
       const personalInfoButton = screen.getByText('Personal Information');
       fireEvent.press(personalInfoButton);
 
-      expect(router.push).toHaveBeenCalledWith('/MyInfoScreen');
+      expect(router.push).toHaveBeenCalledWith('/(tabs)/(settings)/MyInfoScreen');
     });
 
     it('should navigate to BusinessScreen when business information button is pressed', () => {
@@ -62,7 +62,7 @@ describe('Settings', () => {
       const businessButton = screen.getByText('Business Information');
       fireEvent.press(businessButton);
 
-      expect(router.push).toHaveBeenCalledWith('/BusinessScreen');
+      expect(router.push).toHaveBeenCalledWith('/(tabs)/(settings)/BusinessScreen');
     });
 
     it('should navigate to ArtScreen when artistry information button is pressed', () => {
@@ -71,7 +71,7 @@ describe('Settings', () => {
       const artButton = screen.getByText('Artistry Information');
       fireEvent.press(artButton);
 
-      expect(router.push).toHaveBeenCalledWith('/ArtScreen');
+      expect(router.push).toHaveBeenCalledWith('/(tabs)/(settings)/ArtScreen');
     });
 
     it('should call router.push exactly once when personal info button is pressed', () => {
@@ -115,9 +115,9 @@ describe('Settings', () => {
       fireEvent.press(artButton);
 
       expect(router.push).toHaveBeenCalledTimes(3);
-      expect(router.push).toHaveBeenNthCalledWith(1, '/MyInfoScreen');
-      expect(router.push).toHaveBeenNthCalledWith(2, '/BusinessScreen');
-      expect(router.push).toHaveBeenNthCalledWith(3, '/ArtScreen');
+      expect(router.push).toHaveBeenNthCalledWith(1, '/(tabs)/(settings)/MyInfoScreen');
+      expect(router.push).toHaveBeenNthCalledWith(2, '/(tabs)/(settings)/BusinessScreen');
+      expect(router.push).toHaveBeenNthCalledWith(3, '/(tabs)/(settings)/ArtScreen');
     });
 
     it('should handle rapid button presses on same button', () => {
@@ -130,7 +130,7 @@ describe('Settings', () => {
       fireEvent.press(personalInfoButton);
 
       expect(router.push).toHaveBeenCalledTimes(3);
-      expect(router.push).toHaveBeenCalledWith('/MyInfoScreen');
+      expect(router.push).toHaveBeenCalledWith('/(tabs)/(settings)/MyInfoScreen');
     });
   });
 });

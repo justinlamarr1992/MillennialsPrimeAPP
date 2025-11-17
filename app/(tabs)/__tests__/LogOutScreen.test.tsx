@@ -49,7 +49,7 @@ describe('LogOutScreen', () => {
       fireEvent.press(screen.getByText('Log Out'));
 
       await waitFor(() => {
-        expect(mockRouter.push).toHaveBeenCalledWith('/(auth)/SignInScreen');
+        expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
       });
     });
 
@@ -66,14 +66,14 @@ describe('LogOutScreen', () => {
       fireEvent.press(screen.getByText('Log Out'));
 
       // Navigation should not happen immediately
-      expect(mockRouter.push).not.toHaveBeenCalled();
+      expect(mockRouter.replace).not.toHaveBeenCalled();
 
       // Resolve the promise
       resolveSignOut!();
 
       // Navigation should happen after logout completes
       await waitFor(() => {
-        expect(mockRouter.push).toHaveBeenCalledWith('/(auth)/SignInScreen');
+        expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
       });
     });
 
@@ -92,7 +92,7 @@ describe('LogOutScreen', () => {
       });
 
       // Should not navigate on error
-      expect(mockRouter.push).not.toHaveBeenCalled();
+      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
   });
 
@@ -148,7 +148,7 @@ describe('LogOutScreen', () => {
       fireEvent.press(screen.getByText('Log Out'));
 
       await waitFor(() => {
-        expect(mockRouter.push).toHaveBeenCalledWith('/(auth)/SignInScreen');
+        expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
       });
     });
   });

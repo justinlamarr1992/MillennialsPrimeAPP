@@ -1,15 +1,12 @@
 import { View, Text, Pressable, useColorScheme } from "react-native";
 import { logger } from "@/utils/logger";
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { COLORS } from "@/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { globalStyles } from "@/constants/global";
-import BottomSheet, {
+import {
   BottomSheetModal,
-  BottomSheetView,
-  BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function LikeComment() {
   const colorScheme = useColorScheme();
@@ -24,15 +21,10 @@ export default function LikeComment() {
   // useRef
   const bottomCommentSheetModalRef = useRef<BottomSheetModal>(null);
 
-  //   useMemo
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomCommentSheetModalRef.current?.present();
     logger.log("Like/Comment pressed");
-  }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    logger.log("Sheet changed:", index);
   }, []);
 
   const likePressed = () => {

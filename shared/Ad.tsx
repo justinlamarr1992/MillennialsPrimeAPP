@@ -12,7 +12,7 @@ interface AdProps {
   startDate: string | Date;
 }
 
-export default function Ad({ title, description, startDate }: AdProps) {
+export default function Ad({ title, startDate }: AdProps) {
   return (
     // <View style={globalStyles.adPost}>
     //   <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>
