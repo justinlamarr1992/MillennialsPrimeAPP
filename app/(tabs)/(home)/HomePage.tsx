@@ -13,14 +13,14 @@ import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { useBunnyCDNVideos } from "@/hooks/useBunnyCDNVideos";
+import { useBunnyCDNSingleVideo } from "@/hooks/useBunnyCDNVideos";
 
 export default function Page() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  // Use React Query hook for cached data fetching
-  const { data: videoData, isLoading, isError, error, refetch } = useBunnyCDNVideos();
+  // Use React Query hook for cached data fetching (backward compatibility)
+  const { data: videoData, isLoading, isError, error, refetch } = useBunnyCDNSingleVideo();
 
   // Show loading state
   if (isLoading) {
