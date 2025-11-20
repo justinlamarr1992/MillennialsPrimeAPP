@@ -61,7 +61,7 @@ const ContentCard = ({
             description={description}
             dateUploaded={dateUploaded}
             textColor={textColor}
-            isPrime={isPrime}
+            // isPrime={isPrime} // TODO: Uncomment when subscription model is implemented
           />
         </TouchableOpacity>
         {showMenu && <MenuButton onPress={onMenuPress} isPrime={isPrime} />}
@@ -75,10 +75,10 @@ const ContentCard = ({
  *
  * @pure Same input always returns same output
  */
-const getGradientColors = (isPrime: boolean): string[] =>
+const getGradientColors = (isPrime: boolean) =>
   isPrime
-    ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]
-    : ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"];
+    ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"] as const
+    : ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"] as const;
 
 /**
  * Pure function to determine text color
@@ -111,13 +111,13 @@ const CardBody = ({
   description,
   dateUploaded,
   textColor,
-  isPrime,
+  // isPrime, // TODO: Uncomment when subscription model is implemented
 }: {
   title: string;
   description?: string;
   dateUploaded?: string;
   textColor: string;
-  isPrime: boolean;
+  // isPrime: boolean; // TODO: Uncomment when subscription model is implemented
 }): JSX.Element => (
   <>
     <Text style={[styles.title, { color: textColor }]} numberOfLines={2}>

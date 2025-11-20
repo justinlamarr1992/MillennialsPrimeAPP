@@ -21,7 +21,7 @@ global.fetch = jest.fn();
 
 // Mock React Query since we can't test it easily without full React setup
 jest.mock('@tanstack/react-query', () => ({
-  useQuery: jest.fn((options) => {
+  useQuery: jest.fn(() => {
     // Return a mock query result
     return {
       data: undefined,

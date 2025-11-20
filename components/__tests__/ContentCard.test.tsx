@@ -87,7 +87,7 @@ describe("ContentCard", () => {
 
   describe("Menu button", () => {
     it("should not show menu button by default", () => {
-      const { queryByTestId } = render(<ContentCard {...createBaseProps()} />);
+      render(<ContentCard {...createBaseProps()} />);
 
       // Menu button contains an Ionicon, look for the icon
       const menuButtons = screen.queryAllByText("ellipsis-vertical");
@@ -142,17 +142,17 @@ describe("ContentCard", () => {
 
   describe("Prime status styling", () => {
     it("should apply prime styling when isPrime is true", () => {
-      const { container } = render(<ContentCard {...createPrimeProps()} />);
+      render(<ContentCard {...createPrimeProps()} />);
 
-      expect(container).toBeTruthy();
-      // Visual styling is applied via LinearGradient, which is tested through snapshots
+      // Visual styling is applied via LinearGradient
+      expect(screen.getByText("Test Video Title")).toBeTruthy();
     });
 
     it("should apply non-prime styling when isPrime is false", () => {
-      const { container } = render(<ContentCard {...createNonPrimeProps()} />);
+      render(<ContentCard {...createNonPrimeProps()} />);
 
-      expect(container).toBeTruthy();
-      // Visual styling is applied via LinearGradient, which is tested through snapshots
+      // Visual styling is applied via LinearGradient
+      expect(screen.getByText("Test Video Title")).toBeTruthy();
     });
   });
 

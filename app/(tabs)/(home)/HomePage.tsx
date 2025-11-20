@@ -8,19 +8,32 @@ import {
   Pressable,
 } from "react-native";
 
-import Ad from "@/shared/Ad";
-import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
-
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { useBunnyCDNSingleVideo } from "@/hooks/useBunnyCDNVideos";
+import { useBunnyCDNVideos, VideoData } from "@/hooks/useBunnyCDNVideos";
+import ContentCarousel from "@/components/ContentCarousel";
+import ContentCard from "@/components/ContentCard";
+import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
+import Ad from "@/shared/Ad";
+
+/**
+ * Pure function to split videos into HBO-style sections
+ *
+ * @pure Deterministic output based on input, no side effects
+ */
+const createVideoSections = (videos: VideoData[]) => ({
+  featured: videos[0] ?? null,
+  newEpisodes: videos.slice(1, 4),
+  popular: videos.slice(4, 7),
+  recommended: videos.slice(7, 10),
+});
 
 export default function Page() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  // Use React Query hook for cached data fetching (backward compatibility)
-  const { data: videoData, isLoading, isError, error, refetch } = useBunnyCDNSingleVideo();
+  // Fetch multiple videos for HBO-style sections
+  const { data: videos, isLoading, isError, error, refetch } = useBunnyCDNVideos();
 
   // Show loading state
   if (isLoading) {
@@ -72,7 +85,7 @@ export default function Page() {
   }
 
   // Show message if no video data
-  if (!videoData) {
+  if (!videos || videos.length === 0) {
     return (
       <View
         style={[
@@ -90,6 +103,9 @@ export default function Page() {
     );
   }
 
+  // Create HBO-style sections from videos
+  const sections = createVideoSections(videos);
+
   return (
     <View
       style={[
@@ -98,17 +114,70 @@ export default function Page() {
       ]}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={[globalStyles.padding]}>
-          <PrimeNewsPost
-            prime={true}
-            admin={true}
-            title={videoData.title}
-            description={videoData.description}
-            guid={videoData.guid}
-            videoLibraryId={videoData.videoLibraryId}
-          />
+        {/* Featured/Hero Video */}
+        {sections.featured && (
+          <View style={[globalStyles.padding]}>
+            <PrimeNewsPost
+              prime={true}
+              admin={true}
+              title={sections.featured.title}
+              description={sections.featured.description}
+              guid={sections.featured.guid}
+              videoLibraryId={sections.featured.videoLibraryId}
+            />
+          </View>
+        )}
 
-          {/* Timer */}
+        {/* New Episodes Section */}
+        {sections.newEpisodes.length > 0 && (
+          <ContentCarousel title="New Episodes" showBadge badgeText="New">
+            {sections.newEpisodes.map((video, index) => (
+              <ContentCard
+                key={`${video.guid}-${index}`}
+                title={video.title}
+                description={video.description}
+                dateUploaded={video.dateUploaded}
+                isPrime={index === 0}
+                showNewBadge={index === 0}
+                showMenu
+              />
+            ))}
+          </ContentCarousel>
+        )}
+
+        {/* Popular Content Section */}
+        {sections.popular.length > 0 && (
+          <ContentCarousel title="Popular">
+            {sections.popular.map((video, index) => (
+              <ContentCard
+                key={`${video.guid}-${index}`}
+                title={video.title}
+                description={video.description}
+                dateUploaded={video.dateUploaded}
+                showMenu
+              />
+            ))}
+          </ContentCarousel>
+        )}
+
+        {/* Recommended Section */}
+        {sections.recommended.length > 0 && (
+          <ContentCarousel title="Recommended for You">
+            {sections.recommended.map((video, index) => (
+              <ContentCard
+                key={`${video.guid}-${index}`}
+                title={video.title}
+                description={video.description}
+                dateUploaded={video.dateUploaded}
+                isPrime={index === 0}
+                showMenu
+              />
+            ))}
+          </ContentCarousel>
+        )}
+
+        {/* Timer/Ad */}
+        <View style={[globalStyles.padding]}>
           <Ad title={"First Update"} startDate={"2024-08-22T08:00:00.493Z"} />
         </View>
       </ScrollView>

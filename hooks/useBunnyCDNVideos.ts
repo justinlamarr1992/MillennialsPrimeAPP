@@ -111,6 +111,44 @@ const buildVideoApiUrl = (
   `${apiUrl}/library/${libraryId}/videos?page=1&itemsPerPage=${itemsPerPage}&orderBy=date`;
 
 /**
+ * Pure function to generate dummy video data for testing/demo
+ * Used when BunnyCDN doesn't have enough content
+ *
+ * @pure Deterministic output, no side effects
+ */
+const generateDummyVideos = (realVideos: VideoData[], targetCount: number = 10): VideoData[] => {
+  if (realVideos.length >= targetCount) {
+    return realVideos;
+  }
+
+  const dummyVideos: VideoData[] = [...realVideos];
+  const titles = [
+    "Breaking News Update",
+    "Weekly Highlights",
+    "Special Report",
+    "Market Analysis",
+    "Tech Innovation",
+    "Global Events",
+    "Expert Interview",
+    "Community Stories",
+    "Behind the Scenes",
+    "Future Insights"
+  ];
+
+  for (let i = realVideos.length; i < targetCount; i++) {
+    dummyVideos.push({
+      title: titles[i % titles.length] + ` #${i + 1}`,
+      description: `This is placeholder content for demonstration purposes. Video ${i + 1} will be replaced with real content.`,
+      guid: `dummy-${i}-${Date.now()}`,
+      dateUploaded: new Date(Date.now() - i * 86400000).toISOString(),
+      videoLibraryId: realVideos[0]?.videoLibraryId || "dummy-library"
+    });
+  }
+
+  return dummyVideos;
+};
+
+/**
  * Fetches videos from BunnyCDN API
  * Returns array of videos for multiple content sections
  */
@@ -132,7 +170,10 @@ const fetchBunnyCDNVideos = async (): Promise<VideoData[]> => {
     return [];
   }
 
-  return data.items.map(transformVideoItem);
+  const realVideos = data.items.map(transformVideoItem);
+
+  // Generate dummy data if we don't have enough videos for HBO-style layout
+  return generateDummyVideos(realVideos, 10);
 };
 
 /**
