@@ -74,8 +74,14 @@ const ContentCard = ({
  * Determines gradient colors based on prime status.
  * Pure function - same input always returns same output.
  */
-const getGradientColors = (isPrime: boolean, colors: Colors) =>
-  (isPrime ? colors.primeGradient : colors.showGradient) as readonly string[];
+const getGradientColors = (
+  isPrime: boolean,
+  colors: Colors
+): readonly [string, string, ...string[]] => {
+  const gradient = isPrime ? colors.primeGradient : colors.showGradient;
+  // Type assertion is safe because our gradients are guaranteed to have 5 elements
+  return gradient as readonly [string, string, ...string[]];
+};
 
 /**
  * Determines text color based on prime status and color scheme.
