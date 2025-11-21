@@ -11,7 +11,7 @@ interface TestCompsProps {
 }
 
 export default function TestComps({ navigation }: TestCompsProps) {
-  // Determins if the post will be red or gold
+  // Determines if the post will be red or gold
   const [prime] = useState(false);
   const name = "Test Name";
   const admin = false;
