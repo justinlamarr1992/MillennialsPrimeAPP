@@ -2,7 +2,6 @@ import React from "react";
 import { useColorScheme } from "react-native";
 import { Drawer } from "expo-router/drawer";
 import { Stack } from "expo-router";
-import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -24,7 +23,7 @@ export default function Layout() {
         options={{
           headerTitle: "Episodes",
           drawerLabel: "Episodes",
-          drawerIcon: ({ size, color }) => (
+          drawerIcon: ({ color }) => (
             <Ionicons size={28} name="star-half" color={color} />
           ),
         }}
@@ -34,7 +33,7 @@ export default function Layout() {
         options={{
           headerTitle: "Prime Users",
           drawerLabel: "Prime Users",
-          drawerIcon: ({ size, color }) => (
+          drawerIcon: ({ color }) => (
             <Ionicons size={28} name="star" color={color} />
           ),
         }}

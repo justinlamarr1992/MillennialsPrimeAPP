@@ -1,21 +1,18 @@
 import {
-  View,
   Text,
   ScrollView,
   Pressable,
   useColorScheme,
 } from "react-native";
-import React, { useContext } from "react";
+import React from "react";
 import { Link, router } from "expo-router";
-import { AuthContext } from "../../../context/AuthContext";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import PicturePost from "../../../shared/PostComponents/PicturePost";
-import VideoPost from "../../../shared/PostComponents/VideoPost";
-import TextPost from "../../../shared/PostComponents/TextPost";
 
 export default function Page() {
-  const { auth, id, accessToken, roles } = useContext(AuthContext);
+  // TODO: Get user data from AuthContext when available
+  const id = "test-user-id";
+  const roles = "user";
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];

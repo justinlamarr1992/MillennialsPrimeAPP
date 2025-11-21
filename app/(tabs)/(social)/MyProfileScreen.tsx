@@ -1,6 +1,5 @@
-import { View, Text, ScrollView, useColorScheme } from "react-native";
-import React, { useContext, useState } from "react";
-import { AuthContext } from "@/context/AuthContext";
+import { ScrollView, useColorScheme } from "react-native";
+import React from "react";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -9,11 +8,10 @@ import PicturePost from "@/shared/PostComponents/PicturePost";
 import TextPost from "@/shared/PostComponents/TextPost";
 
 export default function MyProfileScreen() {
-  // const { auth, id, accessToken, roles } = useContext(AuthContext);
-  const { auth, admin, prime, id, accessToken, roles } =
-    useContext(AuthContext);
-  // const [admin, setAdmin] = useState(false);
-  // const [prime, setPrime] = useState(true);
+  // TODO: Get user data from AuthContext when available
+  const admin = false;
+  const prime = false;
+  const id = "test-user-id";
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -23,20 +21,25 @@ export default function MyProfileScreen() {
       style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
     >
       <TextPost
+        name={"Test User"}
         title={"Testing the Title for the User Profile Post"}
         description={
           "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
         }
         prime={prime}
         admin={admin}
+        authorId={id}
       />
       <PicturePost
+        name={"Test User"}
         title={"Test"}
         description={
           "This is where the description of the pst willl go, but it will be shortened to only two lines max..."
         }
+        picture=""
         prime={prime}
         admin={admin}
+        authorId={id}
       />
       <VideoPost
         name={"Test User"}
@@ -48,7 +51,7 @@ export default function MyProfileScreen() {
         admin={admin}
         libraryId={147838}
         videoId={"ec4cbe34-8750-4695-b252-69f53e51627a"}
-        authorId={id || "test-user-id"}
+        authorId={id}
       />
     </ScrollView>
   );

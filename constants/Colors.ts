@@ -43,6 +43,7 @@ export type Colors = {
   showGradient: readonly string[];
   primeMenuIcon: string;
   showMenuIcon: string;
+  disabledButton: string;
 };
 
 const LIGHT: Colors = {
@@ -85,6 +86,7 @@ const LIGHT: Colors = {
   showGradient: ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"],
   primeMenuIcon: "#611821",
   showMenuIcon: "#fffd9b",
+  disabledButton: "#DEDEDE",
 };
 const DARK: Colors = {
   background: "#000000",
@@ -127,6 +129,7 @@ const DARK: Colors = {
   showGradient: ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"],
   primeMenuIcon: "#020101",
   showMenuIcon: "#fffd9b",
+  disabledButton: "#8F92A1",
 };
 enum COLOR_SCHEME {
   LIGHT = "light",

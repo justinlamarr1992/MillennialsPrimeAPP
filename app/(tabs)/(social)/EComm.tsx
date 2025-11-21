@@ -1,17 +1,9 @@
 import { View, Text, ScrollView, useColorScheme, Button } from "react-native";
-import React, {
-  useContext,
-  useState,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
-import { AuthContext } from "@/context/AuthContext";
+import React, { useRef, useMemo, useCallback } from "react";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import Item from "@/shared/EComm/Item";
-import CustomBottomSheet from "@/shared/Modals/CustomBottomSheet";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetTextInput,
@@ -19,7 +11,6 @@ import BottomSheet, {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function EComm() {
-  const { auth, admin, prime } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -70,7 +61,7 @@ export default function EComm() {
             itemName="User Item"
             picture=""
             description="This is what the description for an item for sale buy a Regular User will Look like the description with be limited to 2 lines"
-            price="$###.##"
+            price={99.99}
             prime={false}
             admin={false}
           />
@@ -78,7 +69,7 @@ export default function EComm() {
             itemName="Prime Item"
             picture=""
             description="This is what the description for an item for sale buy a Prime User will Look like the description with be limited to 2 lines"
-            price="$###.##"
+            price={149.99}
             prime={true}
             admin={false}
           />
@@ -86,7 +77,7 @@ export default function EComm() {
             itemName="Admin Item"
             picture=""
             description="This is what the description for an item for sale buy a Admin User will Look like the description with be limited to 2 lines"
-            price="$###.##"
+            price={199.99}
             prime={true}
             admin={true}
           />

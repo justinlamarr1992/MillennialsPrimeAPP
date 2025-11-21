@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { View, Button } from "react-native";
 import { globalStyles } from "../constants/global";
-import UserInfo from "../shared/PostItems/UserInfo";
+import UserInfo from "../shared/PostComponents/UserInfo";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function TestComps({ navigation }) {
+interface TestCompsProps {
+  navigation: {
+    goBack: () => void;
+  };
+}
+
+export default function TestComps({ navigation }: TestCompsProps) {
   // Determins if the post will be red or gold
   const [prime] = useState(false);
   const name = "Test Name";
-  const time = "5 mins ago";
-  // const { item } = route.params;
-
-  // const rating = item.rating;
+  const admin = false;
 
   const pressHandler = () => {
     navigation.goBack();
@@ -27,7 +30,7 @@ export default function TestComps({ navigation }) {
             : ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
         }
       >
-        <UserInfo prime={prime} name={name} time={time} />
+        <UserInfo prime={prime} name={name} admin={admin} />
       </LinearGradient>
 
       <Button title="Back to Home Screen" onPress={pressHandler} />

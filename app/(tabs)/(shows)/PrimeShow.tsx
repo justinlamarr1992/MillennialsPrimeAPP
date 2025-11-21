@@ -1,29 +1,29 @@
-import React, { useEffect } from "react";
-import {
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Modal,
-  KeyboardAvoidingView,
-  ScrollView,
-  useColorScheme,
-} from "react-native";
+import React from "react";
+import { Text, View, useColorScheme } from "react-native";
 import { WebView } from "react-native-webview";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation, useTheme } from "@react-navigation/native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { AuthContext } from "@/context/AuthContext";
 // import UserInfo from "@/shared/PostComponents/UserInfo";
 
-import axios from "axios";
+interface RouteParams {
+  guid: string;
+  videoLibraryId: string;
+  title: string;
+  description: string;
+  dateUploaded: string;
+}
 
-const PrimeShow = ({ route, navigation }) => {
+interface PrimeShowProps {
+  route: {
+    params: RouteParams;
+  };
+}
+
+const PrimeShow = ({ route }: PrimeShowProps) => {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const prime = true;
-  const name = "Ted Drew";
   // const [post, setPost] = useState({
   //   title: "",
   //   description: "",
@@ -32,8 +32,7 @@ const PrimeShow = ({ route, navigation }) => {
   //   videoLibraryId: "",
   //   key: "1",
   // });
-  const { guid, videoLibraryId, title, description, dateUploaded } =
-    route.params;
+  const { guid, videoLibraryId, title, description } = route.params;
   console.log(`The Guid is ${guid}`);
   console.log(`The Library ID is ${videoLibraryId}`);
 
@@ -119,7 +118,7 @@ const PrimeShow = ({ route, navigation }) => {
         >
           {description ? description : "Loading"}
         </Text>
-        <UserInfo prime={prime} name={name} time={dateUploaded} />
+        {/* <UserInfo prime={prime} name={name} time={dateUploaded} /> */}
       </LinearGradient>
     </View>
   );
