@@ -78,7 +78,11 @@ const TabsLayout = () => {
           ),
         }}
       />
-      {/* TODO: ADD THESE WITH LATER UPDATES THEY ARE IN THE TABSLATER FOLDER */}
+      {/*
+        TODO: Enable these tabs when features are ready for production
+        All feature code is implemented in app/(tabs)/(social), app/(tabs)/(upload), and app/(tabs)/(shows)
+        Uncomment the screens below to enable them in the tab bar
+      */}
       {/* <Tabs.Screen
         name="(social)"
         options={{
@@ -95,7 +99,7 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          title: "Users",
+          title: "Social",
           tabBarIcon: ({ color }) => (
             <Ionicons name="people-circle" size={28} color={color} />
           ),
@@ -105,6 +109,7 @@ const TabsLayout = () => {
         name="(upload)"
         options={{
           headerShown: true,
+          headerTitle: "Upload",
           headerStyle: {
             backgroundColor: colors["priC"],
             borderBottomLeftRadius: 32,
@@ -117,16 +122,16 @@ const TabsLayout = () => {
             fontWeight: "bold",
           },
           title: "Upload",
-          headerTitle: "Tabs Layout",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="star" size={28} color={color} />
+            <Ionicons name="cloud-upload" size={28} color={color} />
           ),
         }}
       /> */}
       {/* <Tabs.Screen
-        name="(showview)"
+        name="(shows)"
         options={{
           headerShown: true,
+          headerTitle: "Shows",
           headerStyle: {
             backgroundColor: colors["priC"],
             borderBottomLeftRadius: 32,
@@ -138,8 +143,7 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          title: "Episodes",
-          headerTitle: "Tabs Layout",
+          title: "Shows",
           tabBarIcon: ({ color }) => (
             <Ionicons name="play-circle" size={28} color={color} />
           ),
