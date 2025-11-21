@@ -137,7 +137,7 @@ export default function Page() {
           <ContentCarousel title="New Episodes" showBadge badgeText="New">
             {sections.newEpisodes.map((video, index) => (
               <ContentCard
-                key={`${video.guid}-${index}`}
+                key={`new-episodes-${video.guid}-${index}`}
                 title={video.title}
                 description={video.description}
                 dateUploaded={video.dateUploaded}
@@ -154,7 +154,7 @@ export default function Page() {
           <ContentCarousel title="Popular">
             {sections.popular.map((video, index) => (
               <ContentCard
-                key={`${video.guid}-${index}`}
+                key={`popular-${video.guid}-${index}`}
                 title={video.title}
                 description={video.description}
                 dateUploaded={video.dateUploaded}
@@ -169,7 +169,7 @@ export default function Page() {
           <ContentCarousel title="Recommended for You">
             {sections.recommended.map((video, index) => (
               <ContentCard
-                key={`${video.guid}-${index}`}
+                key={`recommended-${video.guid}-${index}`}
                 title={video.title}
                 description={video.description}
                 dateUploaded={video.dateUploaded}

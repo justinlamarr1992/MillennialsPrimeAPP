@@ -43,7 +43,7 @@ const ContentCard = ({
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const gradientColors = getGradientColors(isPrime);
+  const gradientColors = getGradientColors(isPrime, colors);
   const textColor = getTextColor(isPrime, colors);
 
   return (
@@ -64,7 +64,7 @@ const ContentCard = ({
             // isPrime={isPrime} // TODO: Uncomment when subscription model is implemented
           />
         </TouchableOpacity>
-        {showMenu && <MenuButton onPress={onMenuPress} isPrime={isPrime} />}
+        {showMenu && <MenuButton onPress={onMenuPress} isPrime={isPrime} colors={colors} />}
       </LinearGradient>
     </View>
   );
@@ -74,10 +74,8 @@ const ContentCard = ({
  * Determines gradient colors based on prime status.
  * Pure function - same input always returns same output.
  */
-const getGradientColors = (isPrime: boolean) =>
-  isPrime
-    ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"] as const
-    : ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"] as const;
+const getGradientColors = (isPrime: boolean, colors: Colors) =>
+  (isPrime ? colors.primeGradient : colors.showGradient) as readonly string[];
 
 /**
  * Determines text color based on prime status and color scheme.
@@ -139,9 +137,11 @@ const CardBody = ({
 const MenuButton = ({
   onPress,
   isPrime,
+  colors,
 }: {
   onPress?: () => void;
   isPrime: boolean;
+  colors: Colors;
 }): JSX.Element => (
   <TouchableOpacity
     style={styles.menuButton}
@@ -151,7 +151,7 @@ const MenuButton = ({
     <Ionicons
       name="ellipsis-vertical"
       size={20}
-      color={isPrime ? "#611821" : "#fffd9b"}
+      color={isPrime ? colors.primeMenuIcon : colors.showMenuIcon}
     />
   </TouchableOpacity>
 );
@@ -161,16 +161,15 @@ const MenuButton = ({
  * Pure function - same input always returns same output.
  */
 const formatDate = (dateString: string): string => {
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  } catch {
-    return dateString;
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    return "Invalid Date";
   }
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 };
 
 const styles = StyleSheet.create({

@@ -39,6 +39,10 @@ export type Colors = {
   loadingButton: string;
   loadingText: string;
   loadingTextOppo: string;
+  primeGradient: readonly string[];
+  showGradient: readonly string[];
+  primeMenuIcon: string;
+  showMenuIcon: string;
 };
 
 const LIGHT: Colors = {
@@ -77,6 +81,10 @@ const LIGHT: Colors = {
   loadingButton: "#611821",
   loadingText: "#ffffff",
   loadingTextOppo: "#020101",
+  primeGradient: ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"],
+  showGradient: ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"],
+  primeMenuIcon: "#611821",
+  showMenuIcon: "#fffd9b",
 };
 const DARK: Colors = {
   background: "#000000",
@@ -115,6 +123,10 @@ const DARK: Colors = {
   loadingButton: "#fffd9b",
   loadingText: "#020101",
   loadingTextOppo: "#ffffff",
+  primeGradient: ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"],
+  showGradient: ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"],
+  primeMenuIcon: "#020101",
+  showMenuIcon: "#fffd9b",
 };
 enum COLOR_SCHEME {
   LIGHT = "light",
