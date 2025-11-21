@@ -113,7 +113,10 @@ export default function Page() {
         { backgroundColor: colors["background"] },
       ]}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
         {/* Featured/Hero Video */}
         {sections.featured && (
           <View style={[globalStyles.padding]}>
