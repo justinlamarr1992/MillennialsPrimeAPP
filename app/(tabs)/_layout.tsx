@@ -81,11 +81,17 @@ const TabsLayout = () => {
       {/*
         TODO: Enable these tabs when features are ready for production
         All feature code is implemented in app/(tabs)/(social), app/(tabs)/(upload), and app/(tabs)/(shows)
-        Uncomment the screens below to enable them in the tab bar
+
+        These tabs are hidden from the tab bar using href: null
+        To enable a tab:
+        1. Remove the href: null line
+        2. Uncomment the tabBarIcon and title properties
+        3. Test thoroughly before deploying
       */}
-      {/* <Tabs.Screen
+      <Tabs.Screen
         name="(social)"
         options={{
+          href: null,
           headerShown: true,
           headerTitle: "Social",
           headerStyle: {
@@ -99,15 +105,16 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          title: "Social",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="people-circle" size={28} color={color} />
-          ),
+          // title: "Social",
+          // tabBarIcon: ({ color }) => (
+          //   <Ionicons name="people-circle" size={28} color={color} />
+          // ),
         }}
-      /> */}
-      {/* <Tabs.Screen
+      />
+      <Tabs.Screen
         name="(upload)"
         options={{
+          href: null,
           headerShown: true,
           headerTitle: "Upload",
           headerStyle: {
@@ -121,15 +128,16 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          title: "Upload",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="cloud-upload" size={28} color={color} />
-          ),
+          // title: "Upload",
+          // tabBarIcon: ({ color }) => (
+          //   <Ionicons name="cloud-upload" size={28} color={color} />
+          // ),
         }}
-      /> */}
-      {/* <Tabs.Screen
+      />
+      <Tabs.Screen
         name="(shows)"
         options={{
+          href: null,
           headerShown: true,
           headerTitle: "Shows",
           headerStyle: {
@@ -143,12 +151,12 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          title: "Shows",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="play-circle" size={28} color={color} />
-          ),
+          // title: "Shows",
+          // tabBarIcon: ({ color }) => (
+          //   <Ionicons name="play-circle" size={28} color={color} />
+          // ),
         }}
-      /> */}
+      />
       <Tabs.Screen
         name="LogOutScreen"
         options={{
