@@ -4,6 +4,7 @@ import { WebView } from "react-native-webview";
 import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
+import { logger } from "@/utils/logger";
 // import UserInfo from "@/shared/PostComponents/UserInfo";
 
 interface RouteParams {
@@ -11,7 +12,7 @@ interface RouteParams {
   videoLibraryId: string;
   title: string;
   description: string;
-  dateUploaded: string;
+  dateUploaded: string; // TODO: Will be used when UserInfo component is re-enabled (line 121)
 }
 
 interface PrimeShowProps {
@@ -33,8 +34,8 @@ const PrimeShow = ({ route }: PrimeShowProps) => {
   //   key: "1",
   // });
   const { guid, videoLibraryId, title, description } = route.params;
-  console.log(`The Guid is ${guid}`);
-  console.log(`The Library ID is ${videoLibraryId}`);
+  logger.debug(`The Guid is ${guid}`);
+  logger.debug(`The Library ID is ${videoLibraryId}`);
 
   // useEffect(() => {
   //   getInfo();

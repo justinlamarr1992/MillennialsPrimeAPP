@@ -34,7 +34,7 @@ export default function MyProfileScreen() {
         name={"Test User"}
         title={"Test"}
         description={
-          "This is where the description of the pst willl go, but it will be shortened to only two lines max..."
+          "This is where the description of the post will go, but it will be shortened to only two lines max..."
         }
         picture=""
         prime={prime}
@@ -45,7 +45,7 @@ export default function MyProfileScreen() {
         name={"Test User"}
         title={"This is a Video Post Title"}
         description={
-          "This is where the description of the pst willl go, but it will be shortened to only two lines max..."
+          "This is where the description of the post will go, but it will be shortened to only two lines max..."
         }
         prime={prime}
         admin={admin}
