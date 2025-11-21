@@ -112,7 +112,9 @@ describe("ContentCard", () => {
         />
       );
 
-      const menuButton = screen.getAllByRole("button")[1]; // Second button (first is card)
+      // Find menu button by testID
+      const menuButtons = screen.getAllByA11yHint("Menu");
+      const menuButton = menuButtons[0];
       fireEvent.press(menuButton);
 
       expect(mockOnMenuPress).toHaveBeenCalledTimes(1);
@@ -125,7 +127,8 @@ describe("ContentCard", () => {
 
       render(<ContentCard {...createBaseProps()} onPress={mockOnPress} />);
 
-      const card = screen.getAllByRole("button")[0];
+      // Find the TouchableOpacity by accessibility hint
+      const card = screen.getByA11yHint("View video details");
       fireEvent.press(card);
 
       expect(mockOnPress).toHaveBeenCalledTimes(1);
@@ -134,7 +137,8 @@ describe("ContentCard", () => {
     it("should not crash when onPress is not provided", () => {
       render(<ContentCard {...createBaseProps()} />);
 
-      const card = screen.getAllByRole("button")[0];
+      // Find the TouchableOpacity by accessibility hint
+      const card = screen.getByA11yHint("View video details");
 
       expect(() => fireEvent.press(card)).not.toThrow();
     });
@@ -193,8 +197,8 @@ describe("ContentCard", () => {
 
       render(<ContentCard {...props} />);
 
-      // Should render the invalid date string as-is
-      expect(screen.getByText("invalid-date")).toBeTruthy();
+      // Should render "Invalid Date" for invalid date strings
+      expect(screen.getByText("Invalid Date")).toBeTruthy();
     });
 
     it("should handle very long titles", () => {

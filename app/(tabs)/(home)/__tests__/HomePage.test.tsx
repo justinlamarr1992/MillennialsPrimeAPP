@@ -9,13 +9,78 @@ import { useBunnyCDNVideos } from '@/hooks/useBunnyCDNVideos';
 const mockUseBunnyCDNVideos = useBunnyCDNVideos as jest.MockedFunction<typeof useBunnyCDNVideos>;
 
 describe('HomePage', () => {
-  const mockVideoData = {
-    title: 'Breaking News Video',
-    description: 'Important update for all members',
-    guid: 'test-guid-123',
-    videoLibraryId: '147838',
-    dateUploaded: '2025-01-15T10:00:00Z',
-  };
+  const mockVideoData = [
+    {
+      title: 'Breaking News Video',
+      description: 'Important update for all members',
+      guid: 'test-guid-123',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-15T10:00:00Z',
+    },
+    {
+      title: 'Episode 2',
+      description: 'Description 2',
+      guid: 'test-guid-456',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-16T10:00:00Z',
+    },
+    {
+      title: 'Episode 3',
+      description: 'Description 3',
+      guid: 'test-guid-789',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-17T10:00:00Z',
+    },
+    {
+      title: 'Episode 4',
+      description: 'Description 4',
+      guid: 'test-guid-101',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-18T10:00:00Z',
+    },
+    {
+      title: 'Episode 5',
+      description: 'Description 5',
+      guid: 'test-guid-102',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-19T10:00:00Z',
+    },
+    {
+      title: 'Episode 6',
+      description: 'Description 6',
+      guid: 'test-guid-103',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-20T10:00:00Z',
+    },
+    {
+      title: 'Episode 7',
+      description: 'Description 7',
+      guid: 'test-guid-104',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-21T10:00:00Z',
+    },
+    {
+      title: 'Episode 8',
+      description: 'Description 8',
+      guid: 'test-guid-105',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-22T10:00:00Z',
+    },
+    {
+      title: 'Episode 9',
+      description: 'Description 9',
+      guid: 'test-guid-106',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-23T10:00:00Z',
+    },
+    {
+      title: 'Episode 10',
+      description: 'Description 10',
+      guid: 'test-guid-107',
+      videoLibraryId: '147838',
+      dateUploaded: '2025-01-24T10:00:00Z',
+    },
+  ];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -176,8 +241,11 @@ describe('HomePage', () => {
 
   describe('Data Variations', () => {
     it('should handle different video titles', () => {
+      const customData = [...mockVideoData];
+      customData[0] = { ...customData[0], title: 'Special Announcement' };
+
       mockUseBunnyCDNVideos.mockReturnValue({
-        data: { ...mockVideoData, title: 'Special Announcement' },
+        data: customData,
         isLoading: false,
         isError: false,
         error: null,
@@ -190,8 +258,11 @@ describe('HomePage', () => {
     });
 
     it('should handle different video descriptions', () => {
+      const customData = [...mockVideoData];
+      customData[0] = { ...customData[0], description: 'New feature release' };
+
       mockUseBunnyCDNVideos.mockReturnValue({
-        data: { ...mockVideoData, description: 'New feature release' },
+        data: customData,
         isLoading: false,
         isError: false,
         error: null,
@@ -204,8 +275,11 @@ describe('HomePage', () => {
     });
 
     it('should handle different upload dates', () => {
+      const customData = [...mockVideoData];
+      customData[0] = { ...customData[0], dateUploaded: '2025-12-31T23:59:59Z' };
+
       mockUseBunnyCDNVideos.mockReturnValue({
-        data: { ...mockVideoData, dateUploaded: '2025-12-31T23:59:59Z' },
+        data: customData,
         isLoading: false,
         isError: false,
         error: null,

@@ -111,10 +111,9 @@ const buildVideoApiUrl = (
   `${apiUrl}/library/${libraryId}/videos?page=1&itemsPerPage=${itemsPerPage}&orderBy=date`;
 
 /**
- * Pure function to generate dummy video data for testing/demo
- * Used when BunnyCDN doesn't have enough content
- *
- * @pure Deterministic output, no side effects
+ * Generates dummy video data for testing/demo purposes.
+ * Used when BunnyCDN doesn't have enough content.
+ * Pure function - deterministic output, no side effects.
  */
 const generateDummyVideos = (realVideos: VideoData[], targetCount: number = 10): VideoData[] => {
   if (realVideos.length >= targetCount) {
@@ -123,7 +122,7 @@ const generateDummyVideos = (realVideos: VideoData[], targetCount: number = 10):
 
   const dummyVideos: VideoData[] = [...realVideos];
   const titles = [
-    "Breaking News Update",
+    "Exclusive Content",
     "Weekly Highlights",
     "Special Report",
     "Market Analysis",
@@ -135,12 +134,15 @@ const generateDummyVideos = (realVideos: VideoData[], targetCount: number = 10):
     "Future Insights"
   ];
 
+  // Use a fixed base date: January 1, 2024 UTC for deterministic output
+  const baseDate = Date.UTC(2024, 0, 1);
+
   for (let i = realVideos.length; i < targetCount; i++) {
     dummyVideos.push({
       title: titles[i % titles.length] + ` #${i + 1}`,
       description: `This is placeholder content for demonstration purposes. Video ${i + 1} will be replaced with real content.`,
-      guid: `dummy-${i}-${Date.now()}`,
-      dateUploaded: new Date(Date.now() - i * 86400000).toISOString(),
+      guid: `dummy-${i}`,
+      dateUploaded: new Date(baseDate + i * 86400000).toISOString(),
       videoLibraryId: realVideos[0]?.videoLibraryId || "dummy-library"
     });
   }

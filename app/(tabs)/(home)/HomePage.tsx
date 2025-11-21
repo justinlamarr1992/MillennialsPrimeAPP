@@ -6,6 +6,7 @@ import {
   useColorScheme,
   ActivityIndicator,
   Pressable,
+  StyleSheet,
 } from "react-native";
 
 import { globalStyles } from "@/constants/global";
@@ -115,7 +116,7 @@ export default function Page() {
     >
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.scrollContent}
       >
         {/* Featured/Hero Video */}
         {sections.featured && (
@@ -187,3 +188,9 @@ export default function Page() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollContent: {
+    paddingBottom: 100,
+  },
+});

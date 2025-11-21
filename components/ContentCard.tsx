@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "@/constants/Colors";
+import { COLORS, Colors } from "@/constants/Colors";
 
 interface ContentCardProps {
   title: string;
@@ -26,10 +26,9 @@ const { width } = Dimensions.get("window");
 const CARD_WIDTH = width * 0.7;
 
 /**
- * Pure component for rendering content cards in carousels
- * Follows clean code and functional principles
- *
- * @pure No side effects, renders based on props only
+ * Component for rendering content cards in carousels.
+ * Follows clean code and functional principles.
+ * Pure component - no side effects, renders based on props only.
  */
 const ContentCard = ({
   title,
@@ -54,6 +53,7 @@ const ContentCard = ({
           style={styles.cardContent}
           onPress={onPress}
           activeOpacity={0.8}
+          accessibilityHint="View video details"
         >
           {showNewBadge && <NewBadge colors={colors} />}
           <CardBody
@@ -71,9 +71,8 @@ const ContentCard = ({
 };
 
 /**
- * Pure function to determine gradient colors based on prime status
- *
- * @pure Same input always returns same output
+ * Determines gradient colors based on prime status.
+ * Pure function - same input always returns same output.
  */
 const getGradientColors = (isPrime: boolean) =>
   isPrime
@@ -81,19 +80,17 @@ const getGradientColors = (isPrime: boolean) =>
     : ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"] as const;
 
 /**
- * Pure function to determine text color
- *
- * @pure Same input always returns same output
+ * Determines text color based on prime status and color scheme.
+ * Pure function - same input always returns same output.
  */
-const getTextColor = (isPrime: boolean, colors: any): string =>
+const getTextColor = (isPrime: boolean, colors: Colors): string =>
   isPrime ? colors.primeCarT : colors.showCarT;
 
 /**
- * Pure component for "New" badge display
- *
- * @pure Renders UI based on props only
+ * Component for "New" badge display.
+ * Pure component - renders UI based on props only.
  */
-const NewBadge = ({ colors }: { colors: any }): JSX.Element => (
+const NewBadge = ({ colors }: { colors: Colors }): JSX.Element => (
   <View style={[styles.newBadge, { backgroundColor: colors.triC }]}>
     <Text style={[styles.newBadgeText, { color: colors.secT }]}>
       New Episode
@@ -102,9 +99,8 @@ const NewBadge = ({ colors }: { colors: any }): JSX.Element => (
 );
 
 /**
- * Pure component for card body content
- *
- * @pure Renders UI based on props only
+ * Component for card body content.
+ * Pure component - renders UI based on props only.
  */
 const CardBody = ({
   title,
@@ -137,9 +133,8 @@ const CardBody = ({
 );
 
 /**
- * Pure component for 3-dot menu button
- *
- * @pure Renders UI based on props only
+ * Component for 3-dot menu button.
+ * Pure component - renders UI based on props only.
  */
 const MenuButton = ({
   onPress,
@@ -148,7 +143,11 @@ const MenuButton = ({
   onPress?: () => void;
   isPrime: boolean;
 }): JSX.Element => (
-  <TouchableOpacity style={styles.menuButton} onPress={onPress}>
+  <TouchableOpacity
+    style={styles.menuButton}
+    onPress={onPress}
+    accessibilityHint="Menu"
+  >
     <Ionicons
       name="ellipsis-vertical"
       size={20}
@@ -158,9 +157,8 @@ const MenuButton = ({
 );
 
 /**
- * Pure function to format date string
- *
- * @pure Same input always returns same output
+ * Formats date string to readable format.
+ * Pure function - same input always returns same output.
  */
 const formatDate = (dateString: string): string => {
   try {

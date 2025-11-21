@@ -109,7 +109,9 @@ describe('useBunnyCDNVideos hook', () => {
         const result = await fetchBunnyCDNVideos();
 
         expect(Array.isArray(result)).toBe(true);
-        expect(result).toHaveLength(2);
+        // Function generates dummy data to reach 10 videos (2 real + 8 dummy)
+        expect(result).toHaveLength(10);
+        // Verify the first two real videos
         expect(result[0]).toEqual({
           title: 'Test Video 1',
           description: 'Test description 1',
@@ -124,6 +126,9 @@ describe('useBunnyCDNVideos hook', () => {
           dateUploaded: '2025-11-06T00:00:00Z',
           videoLibraryId: 'lib-456',
         });
+        // Verify dummy videos were generated (starts at index 2 with title pattern)
+        expect(result[2].title).toContain('Special Report');
+        expect(result[2].description).toContain('placeholder content');
       });
 
       it('should handle video without metaTags', async () => {
@@ -148,7 +153,7 @@ describe('useBunnyCDNVideos hook', () => {
 
         const result = await fetchBunnyCDNVideos();
 
-        expect(result?.description).toBe('');
+        expect(result[0]?.description).toBe('');
       });
 
       it('should handle empty metaTags array', async () => {
@@ -174,7 +179,7 @@ describe('useBunnyCDNVideos hook', () => {
 
         const result = await fetchBunnyCDNVideos();
 
-        expect(result?.description).toBe('');
+        expect(result[0]?.description).toBe('');
       });
 
       it('should return empty array when items array is empty', async () => {

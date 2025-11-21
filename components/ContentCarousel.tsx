@@ -19,10 +19,9 @@ interface ContentCarouselProps {
 const { width } = Dimensions.get("window");
 
 /**
- * Pure component for rendering a horizontal scrolling carousel
- * Follows HBO Max-style content sections
- *
- * @pure No side effects, renders based on props only
+ * Component for rendering a horizontal scrolling carousel.
+ * Follows HBO Max-style content sections.
+ * Pure component - no side effects, renders based on props only.
  */
 const ContentCarousel = ({
   title,
@@ -49,9 +48,8 @@ const ContentCarousel = ({
 };
 
 /**
- * Pure component for section header with optional badge
- *
- * @pure Renders UI based on props only
+ * Component for section header with optional badge.
+ * Pure component - renders UI based on props only.
  */
 const SectionHeader = ({
   title,
@@ -83,9 +81,8 @@ const SectionHeader = ({
 );
 
 /**
- * Pure component for badge display
- *
- * @pure Renders UI based on props only
+ * Component for badge display.
+ * Pure component - renders UI based on props only.
  */
 const Badge = ({
   text,
@@ -104,9 +101,8 @@ const Badge = ({
 );
 
 /**
- * Pure component for horizontal scrolling container
- *
- * @pure Renders children in horizontal scroll view
+ * Component for horizontal scrolling container.
+ * Pure component - renders children in horizontal scroll view.
  */
 const HorizontalScroll = ({
   children,
