@@ -10,7 +10,8 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
 export default function Page() {
-  // TODO: Get user data from AuthContext when available
+  // NOTE: Intentional hardcoded values. AuthContext only contains { user, loading }.
+  // User id/roles will be derived from user data structure when available.
   const id = "test-user-id";
   const roles = "user";
 

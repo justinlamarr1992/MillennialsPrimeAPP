@@ -8,7 +8,8 @@ import PicturePost from "@/shared/PostComponents/PicturePost";
 import TextPost from "@/shared/PostComponents/TextPost";
 
 export default function MyProfileScreen() {
-  // TODO: Get user data from AuthContext when available
+  // NOTE: Intentional hardcoded values. AuthContext only contains { user, loading }.
+  // Admin/prime/id will be derived from user data structure when available.
   const admin = false;
   const prime = false;
   const id = "test-user-id";

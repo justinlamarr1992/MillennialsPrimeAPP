@@ -7,7 +7,8 @@ export default function Layout() {
   // const { auth, id, accessToken, roles } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  // TODO: Get admin/prime status from user data when available
+  // NOTE: Intentional hardcoded values. AuthContext only contains { user, loading }.
+  // Admin/prime status will be derived from user data structure when available.
   const admin = false;
   const prime = false;
   const userColor = admin

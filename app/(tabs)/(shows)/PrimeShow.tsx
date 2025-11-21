@@ -12,7 +12,7 @@ interface RouteParams {
   videoLibraryId: string;
   title: string;
   description: string;
-  dateUploaded: string; // TODO: Will be used when UserInfo component is re-enabled (line 121)
+  dateUploaded: string; // TODO: Will be used when UserInfo component is re-enabled (line 122)
 }
 
 interface PrimeShowProps {
