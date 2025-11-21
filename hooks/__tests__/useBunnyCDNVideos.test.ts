@@ -2,12 +2,11 @@
  * Tests for useBunnyCDNVideos hook
  * Target Coverage: 85%
  *
- * Note: This hook is a thin wrapper around React Query's useQuery.
- * We test the actual business logic (fetchBunnyCDNVideos function) which the hook uses.
- * Testing the useQuery wrapper itself would test library behavior, not our code.
+ * Following functional programming and clean code principles
+ * Testing pure functions and hook behavior
  */
 
-import { useBunnyCDNVideos } from '../useBunnyCDNVideos';
+import { useBunnyCDNVideos, useBunnyCDNSingleVideo } from '../useBunnyCDNVideos';
 import { logger } from '@/utils/logger';
 
 // Mock logger
@@ -22,7 +21,7 @@ global.fetch = jest.fn();
 
 // Mock React Query since we can't test it easily without full React setup
 jest.mock('@tanstack/react-query', () => ({
-  useQuery: jest.fn((options) => {
+  useQuery: jest.fn(() => {
     // Return a mock query result
     return {
       data: undefined,
@@ -79,20 +78,27 @@ describe('useBunnyCDNVideos hook', () => {
     });
 
     describe('successful data fetching', () => {
-      it('should fetch and return video data', async () => {
+      it('should fetch and return array of video data', async () => {
         const mockVideoData = {
           items: [
             {
-              title: 'Test Video',
+              title: 'Test Video 1',
               guid: 'video-123',
               dateUploaded: '2025-11-05T00:00:00Z',
               videoLibraryId: 'lib-123',
-              metaTags: [{ value: 'Test description' }],
+              metaTags: [{ value: 'Test description 1' }],
+            },
+            {
+              title: 'Test Video 2',
+              guid: 'video-456',
+              dateUploaded: '2025-11-06T00:00:00Z',
+              videoLibraryId: 'lib-456',
+              metaTags: [{ value: 'Test description 2' }],
             },
           ],
-          totalItems: 1,
+          totalItems: 2,
           currentPage: 1,
-          itemsPerPage: 2,
+          itemsPerPage: 10,
         };
 
         (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -102,13 +108,27 @@ describe('useBunnyCDNVideos hook', () => {
 
         const result = await fetchBunnyCDNVideos();
 
-        expect(result).toEqual({
-          title: 'Test Video',
-          description: 'Test description',
+        expect(Array.isArray(result)).toBe(true);
+        // Function generates dummy data to reach 10 videos (2 real + 8 dummy)
+        expect(result).toHaveLength(10);
+        // Verify the first two real videos
+        expect(result[0]).toEqual({
+          title: 'Test Video 1',
+          description: 'Test description 1',
           guid: 'video-123',
           dateUploaded: '2025-11-05T00:00:00Z',
           videoLibraryId: 'lib-123',
         });
+        expect(result[1]).toEqual({
+          title: 'Test Video 2',
+          description: 'Test description 2',
+          guid: 'video-456',
+          dateUploaded: '2025-11-06T00:00:00Z',
+          videoLibraryId: 'lib-456',
+        });
+        // Verify dummy videos were generated (starts at index 2 with title pattern)
+        expect(result[2].title).toContain('Special Report');
+        expect(result[2].description).toContain('placeholder content');
       });
 
       it('should handle video without metaTags', async () => {
@@ -133,7 +153,7 @@ describe('useBunnyCDNVideos hook', () => {
 
         const result = await fetchBunnyCDNVideos();
 
-        expect(result?.description).toBe('');
+        expect(result[0]?.description).toBe('');
       });
 
       it('should handle empty metaTags array', async () => {
@@ -159,15 +179,15 @@ describe('useBunnyCDNVideos hook', () => {
 
         const result = await fetchBunnyCDNVideos();
 
-        expect(result?.description).toBe('');
+        expect(result[0]?.description).toBe('');
       });
 
-      it('should return null when items array is empty', async () => {
+      it('should return empty array when items array is empty', async () => {
         const mockVideoData = {
           items: [],
           totalItems: 0,
           currentPage: 1,
-          itemsPerPage: 2,
+          itemsPerPage: 10,
         };
 
         (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -177,7 +197,8 @@ describe('useBunnyCDNVideos hook', () => {
 
         const result = await fetchBunnyCDNVideos();
 
-        expect(result).toBeNull();
+        expect(Array.isArray(result)).toBe(true);
+        expect(result).toHaveLength(0);
       });
     });
 
@@ -288,7 +309,7 @@ describe('useBunnyCDNVideos hook', () => {
         await fetchBunnyCDNVideos();
 
         expect(global.fetch).toHaveBeenCalledWith(
-          'https://api.bunnycdn.com/library/test-library-id/videos?page=1&itemsPerPage=2&orderBy=date',
+          'https://api.bunnycdn.com/library/test-library-id/videos?page=1&itemsPerPage=10&orderBy=date',
           {
             method: 'GET',
             headers: {
@@ -298,6 +319,103 @@ describe('useBunnyCDNVideos hook', () => {
           }
         );
       });
+    });
+  });
+
+  describe('useBunnyCDNSingleVideo hook', () => {
+    beforeEach(() => {
+      // Mock useQuery to simulate different states
+      const { useQuery } = require('@tanstack/react-query');
+      useQuery.mockImplementation(() => {
+        // Simulate successful query with multiple videos
+        return {
+          data: [
+            {
+              title: 'First Video',
+              description: 'First Description',
+              guid: 'guid-1',
+              dateUploaded: '2024-01-15T10:00:00Z',
+              videoLibraryId: 'library-1',
+            },
+            {
+              title: 'Second Video',
+              description: 'Second Description',
+              guid: 'guid-2',
+              dateUploaded: '2024-01-16T10:00:00Z',
+              videoLibraryId: 'library-2',
+            },
+          ],
+          isLoading: false,
+          isSuccess: true,
+          isError: false,
+          error: null,
+          refetch: jest.fn(),
+        };
+      });
+    });
+
+    it('should return first video from array', () => {
+      const result = useBunnyCDNSingleVideo();
+
+      expect(result.data).toEqual({
+        title: 'First Video',
+        description: 'First Description',
+        guid: 'guid-1',
+        dateUploaded: '2024-01-15T10:00:00Z',
+        videoLibraryId: 'library-1',
+      });
+    });
+
+    it('should return null when no videos available', () => {
+      const { useQuery } = require('@tanstack/react-query');
+      useQuery.mockImplementation(() => ({
+        data: [],
+        isLoading: false,
+        isSuccess: true,
+        isError: false,
+        error: null,
+        refetch: jest.fn(),
+      }));
+
+      const result = useBunnyCDNSingleVideo();
+
+      expect(result.data).toBeNull();
+    });
+
+    it('should return null when data is undefined', () => {
+      const { useQuery } = require('@tanstack/react-query');
+      useQuery.mockImplementation(() => ({
+        data: undefined,
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        error: null,
+        refetch: jest.fn(),
+      }));
+
+      const result = useBunnyCDNSingleVideo();
+
+      expect(result.data).toBeNull();
+    });
+
+    it('should maintain other query properties', () => {
+      const mockRefetch = jest.fn();
+      const { useQuery } = require('@tanstack/react-query');
+      useQuery.mockImplementation(() => ({
+        data: [{ title: 'Test' }],
+        isLoading: false,
+        isSuccess: true,
+        isError: false,
+        error: null,
+        refetch: mockRefetch,
+      }));
+
+      const result = useBunnyCDNSingleVideo();
+
+      expect(result.isLoading).toBe(false);
+      expect(result.isSuccess).toBe(true);
+      expect(result.isError).toBe(false);
+      expect(result.refetch).toBe(mockRefetch);
     });
   });
 });
