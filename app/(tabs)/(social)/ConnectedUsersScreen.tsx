@@ -1,23 +1,12 @@
-import { View, Text, useColorScheme, ScrollView } from "react-native";
-import React, { useContext, useState } from "react";
-import { router, useLocalSearchParams } from "expo-router";
+import { useColorScheme, ScrollView } from "react-native";
+import React from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-// import { AuthContext } from "../../context/AuthContext";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import User from "@/shared/ConnectedUser/User";
 
 export default function ConnectedUsersScreen() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const [connected, setConnected] = useState(true);
-  const [matching, setMatching] = useState(true);
-  const [admin, setAdmin] = useState(false);
-  const [prime, setPrime] = useState(false);
-
-  let name: String;
-  let industry: String;
   // const axiosPrivate = useAxiosPrivate();
   // const { auth, id, accessToken, roles } = useContext(AuthContext);
 

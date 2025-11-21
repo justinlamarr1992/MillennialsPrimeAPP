@@ -1,22 +1,12 @@
-import { View, Text, ScrollView, useColorScheme } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/context/AuthContext";
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { Text, ScrollView, useColorScheme } from "react-native";
+import React from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import axios from "../../../API/axios";
-import PrimeCard from "@/shared/ShowView/PrimeCard";
 
 export default function ShowViewScreen() {
   // const { auth, isLoading, roles, id } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-
-  //   const [videos, setVideos] = useState({});
-  const [videoData, setVideoData] = useState();
-  const [originalUser, setOriginalUser] = useState(false);
-  // var videoData = [];
-  let mappedVideos;
   //   Get Library Videos from bunny.net
 
   // useEffect(() => {

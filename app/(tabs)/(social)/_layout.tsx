@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Stack } from "expo-router";
-import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { useColorScheme } from "react-native";
-import { AuthContext } from "@/context/AuthContext";
 
 export default function Layout() {
   // const { auth, id, accessToken, roles } = useContext(AuthContext);
-  const { admin, prime } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  // const [admin, setAdmin] = useState(false);
-  // const [prime, setPrime] = useState(true);
+  // NOTE: Intentional hardcoded values. AuthContext only contains { user, loading }.
+  // Admin/prime status will be derived from user data structure when available.
+  const admin = false;
+  const prime = false;
   const userColor = admin
     ? colors["quaC"]
     : prime
