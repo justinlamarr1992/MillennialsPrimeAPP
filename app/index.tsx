@@ -6,6 +6,7 @@ import {
   Pressable,
   Image,
 } from "react-native";
+import Constants from "expo-constants";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
@@ -97,7 +98,7 @@ export default function Index() {
             { color: colors["loadingTextOppo"] },
           ]}
         >
-          Version: 1.1.5
+          Version: {Constants.expoConfig?.version}
         </Text>
       </View>
     </View>
