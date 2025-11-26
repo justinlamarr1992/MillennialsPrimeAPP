@@ -36,7 +36,8 @@ android/.gradle/
 *.mobileprovision
 *.orig.*
 google-services.json
-GoogleService-Info.plist
+/GoogleService-Info.plist
+!ios/MillennialsPrimeAPP/GoogleService-Info.plist
 
 # IDE
 .vscode/
