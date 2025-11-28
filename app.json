@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.justappin.millennials-prime-app",
-      "buildNumber": "22",
+      "buildNumber": "23",
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
