@@ -3,7 +3,7 @@
 A React Native social media platform for iOS and Android featuring user-generated content, video streaming, and community engagement.
 
 **Version:** 1.1.6
-**Platform:** React Native 0.79.5 + Expo 53
+**Platform:** React Native 0.79.6 + Expo 53
 **Status:** Active Development - Core features operational, advanced features in progress
 
 ---
@@ -261,14 +261,59 @@ npx expo start
 # Then press 'i' or 'a' and navigate to screen
 ```
 
+### Version Bumping
+
+This project includes an automated version bump script that keeps all version numbers in sync across `app.json`, `Info.plist`, and `project.pbxproj`.
+
+**Important:** When a native `ios/` folder exists, EAS Build reads the build number from `Info.plist`, not from `app.json`. This script ensures all files stay synchronized.
+
+```bash
+# Run the version bump script
+npm run version:bump
+```
+
+The script offers:
+- **Build only** - Increment build number, keep version (for TestFlight updates)
+- **Patch** - e.g., 1.1.6 → 1.1.7 (bug fixes)
+- **Minor** - e.g., 1.1.6 → 1.2.0 (new features)
+- **Major** - e.g., 1.1.6 → 2.0.0 (breaking changes)
+- **Custom** - Enter your own values
+
 ### Building for Production
 ```bash
-# iOS
-eas build --platform ios
+# iOS (build only)
+eas build --platform ios --profile production
+
+# iOS (build + auto-submit to TestFlight)
+eas build --platform ios --profile production --auto-submit
 
 # Android
-eas build --platform android
+eas build --platform android --profile production
 ```
+
+### TestFlight Release Workflow
+
+1. **Ensure main branch is up to date:**
+   ```bash
+   git checkout main && git pull origin main
+   ```
+
+2. **Validate code:**
+   ```bash
+   npm run validate
+   ```
+
+3. **Bump version:**
+   ```bash
+   npm run version:bump
+   ```
+
+4. **Build and submit:**
+   ```bash
+   eas build --platform ios --profile production --auto-submit
+   ```
+
+5. **In App Store Connect:** Add "What to Test" notes and configure test groups
 
 ### Clearing Cache
 ```bash
@@ -358,5 +403,5 @@ Proprietary - All rights reserved
 
 ---
 
-**Last Updated:** October 29, 2025
+**Last Updated:** November 27, 2025
 **Maintained By:** Development Team

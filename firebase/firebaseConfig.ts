@@ -1,8 +1,9 @@
 // Using Firebase Web SDK (recommended for Expo)
 import { initializeApp } from "firebase/app";
-import { indexedDBLocalPersistence, initializeAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import { logger } from "@/utils/logger";
 
-// Validate required environment variables
+// Log warning if environment variables are missing (prevents crashes in release builds)
 const requiredEnvVars = [
   'EXPO_PUBLIC_FIREBASE_API_KEY',
   'EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN',
@@ -12,9 +13,11 @@ const requiredEnvVars = [
   'EXPO_PUBLIC_FIREBASE_APP_ID',
 ] as const;
 
-for (const envVar of requiredEnvVars) {
-  if (!process.env[envVar]) {
-    throw new Error(`Missing required environment variable: ${envVar}`);
+if (__DEV__) {
+  for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+      logger.warn(`Missing environment variable: ${envVar}`);
+    }
   }
 }
 
@@ -32,14 +35,5 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
-// Temporarily suppress console.warn during auth initialization to hide false React Native warning
-const tempWarn = console.warn;
-console.warn = () => {};
-
-// Initialize Auth with IndexedDB persistence for Expo (Web SDK)
-export const auth = initializeAuth(app, {
-  persistence: indexedDBLocalPersistence,
-});
-
-// Restore console.warn
-console.warn = tempWarn;
+// Initialize Auth - getAuth uses default persistence appropriate for the platform
+export const auth = getAuth(app);
