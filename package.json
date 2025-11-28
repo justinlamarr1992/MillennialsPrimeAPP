@@ -17,15 +17,22 @@
     "test:update-snapshots": "jest --updateSnapshot",
     "lint": "expo lint",
     "lint:fix": "expo lint --fix",
+    "build:simulator": "eas build --platform ios --profile preview-simulator",
+    "build:preview": "eas build --platform ios --profile preview",
+    "build:prod": "eas build --platform ios --profile production",
+    "run:simulator": "eas build:run --platform ios --latest",
+    "submit:ios": "eas submit --platform ios --latest",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "type-check": "tsc --noEmit",
     "validate:checks": "npm run type-check && npm run lint && npm run format:check",
-    "validate": "npm run validate:checks && npm test"
+    "validate": "npm run validate:checks && npm test",
+    "version:bump": "./scripts/bump-version.sh"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
     "@gorhom/bottom-sheet": "^4.6.4",
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/datetimepicker": "8.4.1",
     "@react-native-picker/picker": "2.11.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
