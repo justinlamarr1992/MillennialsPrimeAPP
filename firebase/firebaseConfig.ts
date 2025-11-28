@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// Log warning if environment variables are missing (don't throw to avoid crashes)
+// Log warning if environment variables are missing (prevents crashes in release builds)
 const requiredEnvVars = [
   'EXPO_PUBLIC_FIREBASE_API_KEY',
   'EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN',

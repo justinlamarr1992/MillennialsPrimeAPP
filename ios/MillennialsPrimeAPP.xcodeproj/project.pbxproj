@@ -349,7 +349,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = MillennialsPrimeAPP/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Milennials Prime";
+				INFOPLIST_KEY_CFBundleDisplayName = "Millennials Prime";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -382,7 +382,7 @@
 				CODE_SIGN_ENTITLEMENTS = MillennialsPrimeAPP/MillennialsPrimeAPP.entitlements;
 				CURRENT_PROJECT_VERSION = 22;
 				INFOPLIST_FILE = MillennialsPrimeAPP/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Milennials Prime";
+				INFOPLIST_KEY_CFBundleDisplayName = "Millennials Prime";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (

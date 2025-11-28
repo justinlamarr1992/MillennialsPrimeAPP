@@ -133,9 +133,6 @@ sed -i '' "s/\"buildNumber\": \"$CURRENT_BUILD_APP_JSON\"/\"buildNumber\": \"$NE
 echo -e "  ✓ Updated buildNumber in app.json"
 
 # Update Info.plist - CFBundleShortVersionString
-sed -i '' "s/<key>CFBundleShortVersionString<\/key>\\n[[:space:]]*<string>[^<]*<\/string>/<key>CFBundleShortVersionString<\/key>\\
-    <string>$NEW_VERSION<\/string>/" "$INFO_PLIST"
-# Simpler approach for CFBundleShortVersionString
 perl -i -0pe "s/(<key>CFBundleShortVersionString<\/key>\s*<string>)[^<]*(<\/string>)/\${1}$NEW_VERSION\${2}/s" "$INFO_PLIST"
 echo -e "  ✓ Updated CFBundleShortVersionString in Info.plist"
 
