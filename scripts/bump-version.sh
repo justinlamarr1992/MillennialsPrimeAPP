@@ -2,6 +2,7 @@
 
 # Version Bump Script for Expo/React Native with Native iOS
 # Updates version numbers across all config files consistently
+# Note: Uses macOS/BSD sed syntax (-i '' flag)
 
 set -e
 
@@ -49,6 +50,10 @@ fi
 
 # Calculate suggested versions
 IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+if [ ${#VERSION_PARTS[@]} -ne 3 ]; then
+    echo -e "${RED}Error: Version format must be MAJOR.MINOR.PATCH (found: $CURRENT_VERSION)${NC}"
+    exit 1
+fi
 MAJOR=${VERSION_PARTS[0]}
 MINOR=${VERSION_PARTS[1]}
 PATCH=${VERSION_PARTS[2]}

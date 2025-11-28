@@ -27,7 +27,7 @@
     "type-check": "tsc --noEmit",
     "validate:checks": "npm run type-check && npm run lint && npm run format:check",
     "validate": "npm run validate:checks && npm test",
-    "version:bump": "./scripts/bump-version.sh"
+    "version:bump": "bash ./scripts/bump-version.sh"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",

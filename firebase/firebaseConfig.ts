@@ -1,6 +1,7 @@
 // Using Firebase Web SDK (recommended for Expo)
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { logger } from "@/utils/logger";
 
 // Log warning if environment variables are missing (prevents crashes in release builds)
 const requiredEnvVars = [
@@ -15,7 +16,7 @@ const requiredEnvVars = [
 if (__DEV__) {
   for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
-      console.warn(`Missing environment variable: ${envVar}`);
+      logger.warn(`Missing environment variable: ${envVar}`);
     }
   }
 }
