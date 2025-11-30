@@ -179,5 +179,7 @@ fi
 
 echo ""
 echo -e "${BLUE}Next steps:${NC}"
-echo -e "  Run: ${YELLOW}eas build --platform ios --profile production --auto-submit${NC}"
+echo -e "  Build for TestFlight:  ${YELLOW}npm run build:prod${NC}"
+echo -e "  Submit to App Store:   ${YELLOW}npm run submit:ios${NC}"
+echo -e "  Test on simulator:     ${YELLOW}npm run build:simulator${NC} then ${YELLOW}npm run run:simulator${NC}"
 echo ""
