@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "expo-router";
 import {
   Text,
   View,
@@ -7,6 +8,7 @@ import {
   ActivityIndicator,
   Pressable,
   StyleSheet,
+  Button,
 } from "react-native";
 
 import { globalStyles } from "@/constants/global";
@@ -67,16 +69,18 @@ export default function Page() {
           { backgroundColor: colors["background"] },
         ]}
       >
-        <Text style={[globalStyles.textCenter, { marginBottom: 16, color: colors["secC"], fontSize: 16 }]}>
+        <Text
+          style={[
+            globalStyles.textCenter,
+            { marginBottom: 16, color: colors["secC"], fontSize: 16 },
+          ]}
+        >
           {error instanceof Error && error.message.includes("Unable to load videos")
             ? error.message
             : "Failed to load content. Please try again later."}
         </Text>
         <Pressable
-          style={[
-            globalStyles.button,
-            { backgroundColor: colors["triC"] }
-          ]}
+          style={[globalStyles.button, { backgroundColor: colors["triC"] }]}
           onPress={() => refetch()}
         >
           <Text style={globalStyles.buttonText}>Retry</Text>
@@ -108,16 +112,8 @@ export default function Page() {
   const sections = createVideoSections(videos);
 
   return (
-    <View
-      style={[
-        globalStyles.container,
-        { backgroundColor: colors["background"] },
-      ]}
-    >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
+    <View style={[globalStyles.container, { backgroundColor: colors["background"] }]}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Featured/Hero Video */}
         {sections.featured && (
           <View style={[globalStyles.padding]}>
@@ -131,6 +127,16 @@ export default function Page() {
             />
           </View>
         )}
+
+        {/* Test buttons to go to Page That is being worked on */}
+        <Link
+          style={[globalStyles.buttonText, { color: colors["defaultText"] }]}
+          replace
+          href="/(social)/ConnectedUsersScreen"
+          asChild
+        >
+          <Text>Test Page Link</Text>
+        </Link>
 
         {/* New Episodes Section */}
         {sections.newEpisodes.length > 0 && (

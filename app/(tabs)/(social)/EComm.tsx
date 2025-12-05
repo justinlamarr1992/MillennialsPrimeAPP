@@ -4,16 +4,16 @@ import React, { useRef, useMemo, useCallback } from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import Item from "@/shared/EComm/Item";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetBackdrop, BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function EComm() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // TODO: Make this SLIDING MODAL component reusable in every page. it will be the default for the comment section
+
   // SLIDING MODAL CODE ITS WORKS inside of component
   const snapPoints = useMemo(() => ["1%", "25%", "50%", "70%", "100%"], []);
   //userefs
@@ -23,29 +23,17 @@ export default function EComm() {
   const handleClosePress = () => bottomSheetRef.current?.close();
   const handleOpenPress = () => bottomSheetRef.current?.expand();
   const handleCollapsePress = () => bottomSheetRef.current?.collapse();
-  const snapToIndex = (index: number) =>
-    bottomSheetRef.current?.snapToIndex(index);
+  const snapToIndex = (index: number) => bottomSheetRef.current?.snapToIndex(index);
 
   const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        appearsOnIndex={3}
-        disappearsOnIndex={1}
-        {...props}
-      />
-    ),
+    (props: any) => <BottomSheetBackdrop appearsOnIndex={3} disappearsOnIndex={1} {...props} />,
     []
   );
   // SLIDING MODAL CODE ITS WORKS
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View
-        style={[
-          globalStyles.padding,
-          { backgroundColor: colors["background"] },
-        ]}
-      >
+      <View style={[globalStyles.padding, { backgroundColor: colors["background"] }]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           // style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
@@ -94,13 +82,7 @@ export default function EComm() {
         backgroundStyle={{ backgroundColor: colors["backgroundModal"] }}
       >
         <View>
-          <Text
-            style={[
-              globalStyles.textHuge,
-              globalStyles.padding,
-              { color: colors["priT"] },
-            ]}
-          >
+          <Text style={[globalStyles.textHuge, globalStyles.padding, { color: colors["priT"] }]}>
             This is the tester
           </Text>
         </View>
