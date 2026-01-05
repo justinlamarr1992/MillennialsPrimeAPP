@@ -6,16 +6,18 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { router } from "expo-router";
 import useAuth from "@/hooks/useAuth";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
+import ProfilePicture from "@/components/ProfilePicture";
 
 export default function Page() {
   const { user, loading } = useAuth();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+  const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -40,7 +42,13 @@ export default function Page() {
       style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
     >
       <View style={globalStyles.formTitle}>
-        <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
+        <ProfilePicture
+          imageUri={profileImageUri}
+          onImageSelected={setProfileImageUri}
+          size={120}
+          editable={true}
+        />
+        <Text style={[globalStyles.textTitle, { color: colors["text"], marginTop: 16 }]}>
           Settings
         </Text>
         <Text style={[globalStyles.textMedium, { color: colors["secC"], marginTop: 8 }]}>
