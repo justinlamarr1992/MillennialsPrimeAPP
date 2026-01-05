@@ -196,8 +196,7 @@ export default function BusinessScreen() {
                             setOpenOnMillPrime(itemValue)
                           }
                           itemStyle={{
-                            color: "pink",
-                            backgroundColor: "orange",
+                            color: colors.text,
                           }}
                         >
                           <Picker.Item label="Yes" value="Yes" />
@@ -208,7 +207,7 @@ export default function BusinessScreen() {
                   </View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What is the Industry you Operate in
                       </Text>
                       <Pressable>
@@ -280,7 +279,7 @@ export default function BusinessScreen() {
                       )}
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Why start a business in the Industry
                       </Text>
                       <TextInput
@@ -289,7 +288,7 @@ export default function BusinessScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         How long have you ran your business?
                       </Text>
                       <Pressable>
@@ -329,7 +328,7 @@ export default function BusinessScreen() {
                       )}
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Why did you decide to start your own business
                       </Text>
                       <Pressable>
@@ -380,7 +379,7 @@ export default function BusinessScreen() {
 
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What were the first objectives for the business?
                       </Text>
                       <TextInput
@@ -391,7 +390,7 @@ export default function BusinessScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What are the objectives now?
                       </Text>
                       <TextInput
@@ -402,7 +401,7 @@ export default function BusinessScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         How many people work for the business?
                       </Text>
                       <Pressable>
@@ -432,7 +431,7 @@ export default function BusinessScreen() {
                   </View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What products or services do you offer?
                       </Text>
                       <TextInput
@@ -443,7 +442,7 @@ export default function BusinessScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What Primary Method Promotes the Business?
                       </Text>
                       <Pressable>
@@ -488,7 +487,7 @@ export default function BusinessScreen() {
                       )}
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What factors influenced the location?
                       </Text>
                       <Pressable>

@@ -92,7 +92,7 @@ export default function ArtScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={globalStyles.labelText}>Are you an Artist</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Are you an Artist</Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.settingsInput}
@@ -116,7 +116,7 @@ export default function ArtScreen() {
                 <View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Have you worked as a professional artist before?
                       </Text>
                       <Pressable>
@@ -143,7 +143,7 @@ export default function ArtScreen() {
                     </View>
 
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What is the purpose of your work?
                       </Text>
                       <TextInput
@@ -154,7 +154,7 @@ export default function ArtScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Favorite and least favorite parts of professional art?
                       </Text>
                       <TextInput
@@ -165,7 +165,7 @@ export default function ArtScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         How can your work affect societal issues?
                       </Text>
                       <TextInput
@@ -178,7 +178,7 @@ export default function ArtScreen() {
                   </View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Which art/music trends inspire your current work?
                       </Text>
                       <TextInput
@@ -189,7 +189,7 @@ export default function ArtScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         How has your style changed over time?
                       </Text>
                       <TextInput
@@ -200,7 +200,7 @@ export default function ArtScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What have critics said about your work?
                       </Text>
                       <TextInput
@@ -211,7 +211,7 @@ export default function ArtScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         How do you navigate the professional art industry?
                       </Text>
                       <TextInput
@@ -224,7 +224,7 @@ export default function ArtScreen() {
                   </View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Do you have a network of other Artist
                       </Text>
                       <Pressable>
@@ -251,7 +251,7 @@ export default function ArtScreen() {
                     </View>
                     {network == "Yes" && (
                       <View style={globalStyles.labelInput}>
-                        <Text style={globalStyles.labelText}>
+                        <Text style={[globalStyles.labelText, { color: colors.text }]}>
                           How do they Support you?
                         </Text>
                         <TextInput
@@ -264,7 +264,7 @@ export default function ArtScreen() {
                     )}
 
                     <View style={globalStyles.labelInput}>
-                      <Text style={globalStyles.labelText}>
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Anything specific integral to your work?
                       </Text>
                       <Pressable>
@@ -291,7 +291,7 @@ export default function ArtScreen() {
                     </View>
                     {specificIntegral == "Yes" && (
                       <View style={globalStyles.labelInput}>
-                        <Text style={globalStyles.labelText}>What is it?</Text>
+                        <Text style={[globalStyles.labelText, { color: colors.text }]}>What is it?</Text>
                         <TextInput
                           style={globalStyles.settingsInput}
                           placeholder="We need deets"
