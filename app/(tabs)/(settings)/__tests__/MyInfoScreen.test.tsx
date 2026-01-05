@@ -1,6 +1,15 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import MyInfoScreen from '../MyInfoScreen';
+import { router } from 'expo-router';
+
+// Mock expo-router
+jest.mock('expo-router', () => ({
+  router: {
+    back: jest.fn(),
+    push: jest.fn(),
+  },
+}));
 
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
@@ -258,6 +267,23 @@ describe('MyInfoScreen', () => {
       fireEvent.press(saveButton);
 
       expect(saveButton).toBeTruthy();
+    });
+  });
+
+  describe('User can navigate back', () => {
+    it('shows back button at top of screen', () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText('← Back')).toBeTruthy();
+    });
+
+    it('allows user to press back button', () => {
+      render(<MyInfoScreen />);
+
+      const backButton = screen.getByText('← Back');
+      fireEvent.press(backButton);
+
+      // Verify the button is pressable (no error thrown)
+      expect(backButton).toBeTruthy();
     });
   });
 });

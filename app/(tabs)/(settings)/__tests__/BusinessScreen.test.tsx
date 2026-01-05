@@ -1,6 +1,15 @@
 import React from 'react';
-import { render, screen } from '@/__tests__/test-utils';
+import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import BusinessScreen from '../BusinessScreen';
+import { router } from 'expo-router';
+
+// Mock expo-router
+jest.mock('expo-router', () => ({
+  router: {
+    back: jest.fn(),
+    push: jest.fn(),
+  },
+}));
 
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
@@ -98,6 +107,23 @@ describe('BusinessScreen', () => {
     it('should not show location factors question initially', () => {
       render(<BusinessScreen />);
       expect(screen.queryByText('What factors influenced the location?')).toBeNull();
+    });
+  });
+
+  describe('User can navigate back', () => {
+    it('shows back button at top of screen', () => {
+      render(<BusinessScreen />);
+      expect(screen.getByText('← Back')).toBeTruthy();
+    });
+
+    it('allows user to press back button', () => {
+      render(<BusinessScreen />);
+
+      const backButton = screen.getByText('← Back');
+      fireEvent.press(backButton);
+
+      // Verify the button is pressable (no error thrown)
+      expect(backButton).toBeTruthy();
     });
   });
 });

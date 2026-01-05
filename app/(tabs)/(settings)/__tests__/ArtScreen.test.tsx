@@ -2,11 +2,20 @@ import React from 'react';
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import ArtScreen from '../ArtScreen';
 
+// Create mock functions
+const mockPush = jest.fn();
+const mockBack = jest.fn();
+
 // Mock expo-router
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(() => ({
-    push: jest.fn(),
+    push: mockPush,
+    back: mockBack,
   })),
+  router: {
+    back: mockBack,
+    push: mockPush,
+  },
 }));
 
 // Mock @react-native-picker/picker
@@ -19,13 +28,13 @@ jest.mock('@react-native-picker/picker', () => ({
 import { useRouter } from 'expo-router';
 
 describe('ArtScreen', () => {
-  let mockPush: jest.Mock;
-
   beforeEach(() => {
     jest.clearAllMocks();
-    mockPush = jest.fn();
+    mockPush.mockClear();
+    mockBack.mockClear();
     (useRouter as jest.Mock).mockReturnValue({
       push: mockPush,
+      back: mockBack,
     });
   });
 
@@ -136,6 +145,23 @@ describe('ArtScreen', () => {
       fireEvent.press(saveButton);
 
       expect(mockPush).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('User can navigate back', () => {
+    it('shows back button at top of screen', () => {
+      render(<ArtScreen />);
+      expect(screen.getByText('← Back')).toBeTruthy();
+    });
+
+    it('allows user to press back button', () => {
+      render(<ArtScreen />);
+
+      const backButton = screen.getByText('← Back');
+      fireEvent.press(backButton);
+
+      // Verify the button is pressable (no error thrown)
+      expect(backButton).toBeTruthy();
     });
   });
 });

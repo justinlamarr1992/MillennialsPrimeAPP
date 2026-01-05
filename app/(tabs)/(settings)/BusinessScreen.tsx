@@ -113,6 +113,14 @@ export default function BusinessScreen() {
           style={[globalStyles.padding, globalStyles.marginB100, {}]}
           showsVerticalScrollIndicator={false}
         >
+          <Pressable
+            onPress={() => router.back()}
+            style={{ marginBottom: 16 }}
+          >
+            <Text style={[globalStyles.labelText, { color: colors.priC }]}>
+              ← Back
+            </Text>
+          </Pressable>
           <View style={globalStyles.formTitle}>
             <Text style={[globalStyles.textTitle, { color: colors.text }]}>
               Business Information
