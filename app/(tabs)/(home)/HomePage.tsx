@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Pressable,
   StyleSheet,
-  Button,
 } from "react-native";
 
 import { globalStyles } from "@/constants/global";

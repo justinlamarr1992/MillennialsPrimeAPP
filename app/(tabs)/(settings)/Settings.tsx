@@ -1,29 +1,57 @@
-// TODO: Settings PAge but have Top Tabs for Info/Business/Art
 import {
   Text,
   ScrollView,
   Pressable,
   useColorScheme,
+  View,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { router } from "expo-router";
-// import { AuthContext } from "../../../provider/AuthProvider";
+import useAuth from "@/hooks/useAuth";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
 export default function Page() {
-  // const { auth, id, accessToken, roles } = useContext(AuthContext);
-
+  const { user, loading } = useAuth();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+
+  if (loading) {
+    return (
+      <View
+        style={[
+          globalStyles.container,
+          globalStyles.flexJustifyContentCenter,
+          globalStyles.flexAlignItemsCenter,
+          { backgroundColor: colors["background"] },
+        ]}
+      >
+        <ActivityIndicator size="large" color={colors["priC"]} />
+      </View>
+    );
+  }
+
+  const displayName = user?.displayName || user?.email?.split("@")[0] || "User";
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
     >
-      <Text style={[globalStyles.textMedium, { color: colors["text"] }]}>
-        Hello, (Name here)
-      </Text>
+      <View style={globalStyles.formTitle}>
+        <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
+          Settings
+        </Text>
+        <Text style={[globalStyles.textMedium, { color: colors["secC"], marginTop: 8 }]}>
+          Hello, {displayName}
+        </Text>
+        {user?.email && (
+          <Text style={[globalStyles.labelText, { color: colors["secC"], marginTop: 4 }]}>
+            {user.email}
+          </Text>
+        )}
+      </View>
       <Pressable
         onPress={() => router.push("/(tabs)/(settings)/MyInfoScreen")}
         style={[

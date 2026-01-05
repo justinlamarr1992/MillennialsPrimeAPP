@@ -8,12 +8,14 @@ import {
   Pressable,
   TextInput,
   useColorScheme,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
+import { validateRequired } from "@/utils/validation";
 
 export default function BusinessScreen() {
   // const { auth, accessToken, roles, id, logout, userInfo } =
@@ -69,6 +71,23 @@ export default function BusinessScreen() {
 
   const handleSubmit = async () => {
     logger.log('Business settings submit button pressed');
+
+    // Only validate if user indicated they have a business
+    if (entrepreneur === "Yes") {
+      const errors: string[] = [];
+
+      // Validate required fields for business owners
+      const industryError = validateRequired(industry, 'Industry');
+      if (industryError) errors.push(industryError);
+
+      // Show validation errors if any
+      if (errors.length > 0) {
+        Alert.alert('Validation Error', errors.join('\n'));
+        logger.warn('Business settings validation failed:', errors);
+        return;
+      }
+    }
+
     try {
       logger.log('Business settings submission started');
       // TODO: Add backend API call to save business settings
@@ -79,7 +98,7 @@ export default function BusinessScreen() {
       logger.log('Business settings submitted successfully');
     } catch (err) {
       logger.error('Business settings submission error:', err);
-      // Optionally show error message to user
+      Alert.alert('Error', 'Failed to save business settings. Please try again.');
     }
   };
 

@@ -8,6 +8,7 @@ import {
   Pressable,
   TextInput,
   useColorScheme,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { globalStyles } from "@/constants/global";
@@ -53,6 +54,10 @@ export default function ArtScreen() {
 
   const handleSubmit = async () => {
     logger.log('Art settings submit button pressed');
+
+    // Validation is optional for art settings since all fields are optional
+    // Users can skip this section if they're not artists
+
     try {
       logger.log('Art settings submission started');
       // TODO: Add backend API call to save art settings
@@ -62,7 +67,7 @@ export default function ArtScreen() {
       logger.log('Art settings submitted successfully');
     } catch (err) {
       logger.error('Art settings submission error:', err);
-      // Optionally show error message to user
+      Alert.alert('Error', 'Failed to save art settings. Please try again.');
     }
   };
 

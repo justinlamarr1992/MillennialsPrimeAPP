@@ -8,12 +8,14 @@ import {
   Pressable,
   TextInput,
   useColorScheme,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
+import { validateName, validateZip } from "@/utils/validation";
 
 export default function MyInfoScreen() {
   // const axiosPrivate = useAxiosPrivate();
@@ -118,6 +120,23 @@ export default function MyInfoScreen() {
   // 4. Update the user document in Firestore with the form values
   const handleSubmit = async () => {
     logger.log('MyInfo submit button pressed');
+
+    // Validate form fields
+    const nameError = validateName(name);
+    const zipError = validateZip(zip);
+
+    // Collect all errors
+    const errors: string[] = [];
+    if (nameError) errors.push(nameError);
+    if (zipError) errors.push(zipError);
+
+    // Show validation errors if any
+    if (errors.length > 0) {
+      Alert.alert('Validation Error', errors.join('\n'));
+      logger.warn('MyInfo validation failed:', errors);
+      return;
+    }
+
     try {
       logger.log('MyInfo form submission started');
       // TODO: Add backend API call to save user info
@@ -131,7 +150,7 @@ export default function MyInfoScreen() {
       router.push("/(tabs)/(settings)/BusinessScreen");
     } catch (err) {
       logger.error('MyInfo submission error:', err);
-      // Optionally show error message to user
+      Alert.alert('Error', 'Failed to save settings. Please try again.');
     }
   };
 
