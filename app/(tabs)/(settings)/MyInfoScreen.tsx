@@ -16,6 +16,7 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
 import { validateName, validateZip } from "@/utils/validation";
+import ProfilePicture from "@/components/ProfilePicture";
 
 export default function MyInfoScreen() {
   // const axiosPrivate = useAxiosPrivate();
@@ -29,6 +30,7 @@ export default function MyInfoScreen() {
   const colors = COLORS[colorScheme ?? "dark"];
 
   // Use States
+  const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [username] = useState<string>("");
   const [DOB] = useState<string>("");
@@ -167,7 +169,13 @@ export default function MyInfoScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={globalStyles.formTitle}>
-            <Text style={[globalStyles.textTitle, { color: colors.text }]}>
+            <ProfilePicture
+              imageUri={profileImageUri}
+              onImageSelected={setProfileImageUri}
+              size={120}
+              editable={true}
+            />
+            <Text style={[globalStyles.textTitle, { color: colors.text, marginTop: 16 }]}>
               Basic Information
             </Text>
             <Text style={[globalStyles.labelText, { color: colors.text }]}>
