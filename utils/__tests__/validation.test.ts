@@ -8,6 +8,8 @@ import {
   validatePassword,
   validatePasswordMatch,
   validateRequired,
+  validateZip,
+  validateName,
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from '../validation';
@@ -346,6 +348,204 @@ describe('validation utilities', () => {
       it('should use provided field name in error message', () => {
         expect(validateRequired('', 'Email Address')).toBe(
           'Email Address is required'
+        );
+      });
+    });
+  });
+
+  describe('validateZip', () => {
+    describe('valid ZIP codes', () => {
+      it('should return null for valid 5-digit ZIP', () => {
+        expect(validateZip('12345')).toBeNull();
+      });
+
+      it('should return null for valid ZIP+4 format', () => {
+        expect(validateZip('12345-6789')).toBeNull();
+      });
+
+      it('should return null for empty string (ZIP is optional)', () => {
+        expect(validateZip('')).toBeNull();
+      });
+
+      it('should return null for whitespace only (ZIP is optional)', () => {
+        expect(validateZip('   ')).toBeNull();
+      });
+
+      it('should trim whitespace and validate 5-digit ZIP', () => {
+        expect(validateZip('  12345  ')).toBeNull();
+      });
+
+      it('should trim whitespace and validate ZIP+4', () => {
+        expect(validateZip('  12345-6789  ')).toBeNull();
+      });
+    });
+
+    describe('invalid ZIP codes', () => {
+      it('should return error for 4-digit ZIP', () => {
+        expect(validateZip('1234')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for 6-digit ZIP', () => {
+        expect(validateZip('123456')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for ZIP+3 format', () => {
+        expect(validateZip('12345-678')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for ZIP+5 format', () => {
+        expect(validateZip('12345-67890')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for letters in ZIP', () => {
+        expect(validateZip('1234A')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for special characters', () => {
+        expect(validateZip('12345!')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for space in middle', () => {
+        expect(validateZip('123 45')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for multiple hyphens', () => {
+        expect(validateZip('12345--6789')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+
+      it('should return error for hyphen without extension', () => {
+        expect(validateZip('12345-')).toBe(
+          'Invalid ZIP code format (e.g., 12345 or 12345-6789)'
+        );
+      });
+    });
+  });
+
+  describe('validateName', () => {
+    describe('valid names', () => {
+      it('should return null for simple name', () => {
+        expect(validateName('John')).toBeNull();
+      });
+
+      it('should return null for name with space', () => {
+        expect(validateName('John Doe')).toBeNull();
+      });
+
+      it('should return null for name with hyphen', () => {
+        expect(validateName('Mary-Jane')).toBeNull();
+      });
+
+      it('should return null for name with apostrophe', () => {
+        expect(validateName("O'Brien")).toBeNull();
+      });
+
+      it('should return null for name with multiple words', () => {
+        expect(validateName('Mary Jane Watson')).toBeNull();
+      });
+
+      it('should return null for name with mixed special chars', () => {
+        expect(validateName("Mary-Jane O'Brien")).toBeNull();
+      });
+
+      it('should return null for 2 character name (minimum)', () => {
+        expect(validateName('Li')).toBeNull();
+      });
+
+      it('should return null for 100 character name (maximum)', () => {
+        const longName = 'a'.repeat(100);
+        expect(validateName(longName)).toBeNull();
+      });
+
+      it('should trim whitespace and validate', () => {
+        expect(validateName('  John Doe  ')).toBeNull();
+      });
+
+      it('should return null for lowercase names', () => {
+        expect(validateName('john doe')).toBeNull();
+      });
+
+      it('should return null for uppercase names', () => {
+        expect(validateName('JOHN DOE')).toBeNull();
+      });
+
+      it('should return null for mixed case names', () => {
+        expect(validateName('JoHn DoE')).toBeNull();
+      });
+    });
+
+    describe('invalid names', () => {
+      it('should return error for empty string', () => {
+        expect(validateName('')).toBe('Name is required');
+      });
+
+      it('should return error for whitespace only', () => {
+        expect(validateName('   ')).toBe('Name is required');
+      });
+
+      it('should return error for name with numbers', () => {
+        expect(validateName('John123')).toBe(
+          'Name can only contain letters, spaces, hyphens, and apostrophes'
+        );
+      });
+
+      it('should return error for name with special characters', () => {
+        expect(validateName('John@Doe')).toBe(
+          'Name can only contain letters, spaces, hyphens, and apostrophes'
+        );
+      });
+
+      it('should return error for name with underscore', () => {
+        expect(validateName('John_Doe')).toBe(
+          'Name can only contain letters, spaces, hyphens, and apostrophes'
+        );
+      });
+
+      it('should return error for name with period', () => {
+        expect(validateName('John.Doe')).toBe(
+          'Name can only contain letters, spaces, hyphens, and apostrophes'
+        );
+      });
+
+      it('should return error for name with exclamation', () => {
+        expect(validateName('John!')).toBe(
+          'Name can only contain letters, spaces, hyphens, and apostrophes'
+        );
+      });
+
+      it('should return error for single character name', () => {
+        expect(validateName('J')).toBe('Name must be at least 2 characters');
+      });
+
+      it('should return error for name over 100 characters', () => {
+        const longName = 'a'.repeat(101);
+        expect(validateName(longName)).toBe(
+          'Name must be no more than 100 characters'
+        );
+      });
+
+      it('should return error for 1 character after trimming', () => {
+        expect(validateName('  J  ')).toBe('Name must be at least 2 characters');
+      });
+
+      it('should return error for emojis', () => {
+        expect(validateName('John 😀')).toBe(
+          'Name can only contain letters, spaces, hyphens, and apostrophes'
         );
       });
     });

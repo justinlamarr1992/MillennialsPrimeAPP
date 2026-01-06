@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import BusinessScreen from '../BusinessScreen';
-import { router } from 'expo-router';
 
 // Mock expo-router
 jest.mock('expo-router', () => ({

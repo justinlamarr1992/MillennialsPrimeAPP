@@ -78,7 +78,13 @@ export default function ProfilePicture({
     return (
       <Pressable
         onPress={handleImagePick}
-        style={[styles.editButton, { backgroundColor: colors["priC"] }]}
+        style={[
+          styles.editButton,
+          {
+            backgroundColor: colors["priC"],
+            borderColor: colors["background"],
+          },
+        ]}
       >
         <Text style={[styles.editButtonText, { color: colors["secT"] }]}>
           ✎
@@ -146,7 +152,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
-    borderColor: "white",
   },
   editButtonText: {
     fontSize: 18,
