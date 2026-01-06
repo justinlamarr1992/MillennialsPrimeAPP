@@ -14,14 +14,10 @@ import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
+import useAuth from "@/hooks/useAuth";
 
 export default function MyInfoScreen() {
-  // const axiosPrivate = useAxiosPrivate();
-  // const { auth, accessToken, roles, id, logout, userInfo } =
-  //   useContext(AuthContext);
-  // let _id = id;
-
-  // console.log(`AuthContext ${accessToken}`);
+  const { user, loading } = useAuth();
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -112,16 +108,20 @@ export default function MyInfoScreen() {
   // TODO: Implement Firebase integration for form submission
   // The commented code below shows the original backend integration pattern.
   // To implement:
-  // 1. Uncomment imports: useAxiosPrivate, useContext, AuthContext (lines 18-21)
-  // 2. Update AuthContext to include: auth, accessToken, roles, id, logout, userInfo
-  // 3. OR migrate to Firebase Firestore for data storage
-  // 4. Update the user document in Firestore with the form values
+  // 1. Migrate to Firebase Firestore for data storage
+  // 2. Update the user document in Firestore with the form values
   const handleSubmit = async () => {
     logger.log('MyInfo submit button pressed');
     try {
       logger.log('MyInfo form submission started');
+
+      if (!user) {
+        logger.warn('No authenticated user found');
+        return;
+      }
+
       // TODO: Add backend API call to save user info
-      // await axiosPrivate.patch(`/users/${userId}`, {
+      // await axiosPrivate.patch(`/users/${user.uid}`, {
       //   name, username, email, DOB, country, state, city, zip,
       //   canLike, canDislike, canComment, canShare, industry, B2B, eComm, upload
       // });
