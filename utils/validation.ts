@@ -88,3 +88,41 @@ export const validateRequired = (value: string, fieldName: string): string | nul
   }
   return null;
 };
+
+/**
+ * Validates ZIP code (US format: 5 digits or 5+4 digits)
+ * @param zip - ZIP code to validate
+ * @returns Error message if invalid, null if valid
+ */
+export const validateZip = (zip: string): string | null => {
+  if (!zip || !zip.trim()) {
+    return null; // ZIP is optional
+  }
+  const zipRegex = /^\d{5}(-\d{4})?$/;
+  if (!zipRegex.test(zip.trim())) {
+    return 'Invalid ZIP code format (e.g., 12345 or 12345-6789)';
+  }
+  return null;
+};
+
+/**
+ * Validates name field (allows letters, spaces, hyphens, apostrophes)
+ * @param name - Name to validate
+ * @returns Error message if invalid, null if valid
+ */
+export const validateName = (name: string): string | null => {
+  if (!name || !name.trim()) {
+    return 'Name is required';
+  }
+  const nameRegex = /^[a-zA-Z\s'-]+$/;
+  if (!nameRegex.test(name.trim())) {
+    return 'Name can only contain letters, spaces, hyphens, and apostrophes';
+  }
+  if (name.trim().length < 2) {
+    return 'Name must be at least 2 characters';
+  }
+  if (name.trim().length > 100) {
+    return 'Name must be no more than 100 characters';
+  }
+  return null;
+};

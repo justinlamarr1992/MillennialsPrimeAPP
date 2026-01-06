@@ -9,6 +9,19 @@ jest.mock('expo-router', () => ({
   },
 }));
 
+// Mock useAuth hook
+jest.mock('@/hooks/useAuth', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    user: {
+      uid: 'test-user-id',
+      email: 'testuser@example.com',
+      displayName: 'Test User',
+    },
+    loading: false,
+  })),
+}));
+
 import { router } from 'expo-router';
 
 describe('Settings', () => {
@@ -17,9 +30,19 @@ describe('Settings', () => {
   });
 
   describe('Content Display', () => {
-    it('should display greeting message', () => {
+    it('should display greeting message with user name', () => {
       render(<Settings />);
-      expect(screen.getByText('Hello, (Name here)')).toBeTruthy();
+      expect(screen.getByText('Hello, Test User')).toBeTruthy();
+    });
+
+    it('should display user email', () => {
+      render(<Settings />);
+      expect(screen.getByText('testuser@example.com')).toBeTruthy();
+    });
+
+    it('should display Settings title', () => {
+      render(<Settings />);
+      expect(screen.getByText('Settings')).toBeTruthy();
     });
 
     it('should display personal information button', () => {
