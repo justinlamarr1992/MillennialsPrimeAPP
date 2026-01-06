@@ -29,6 +29,9 @@ export const globalStyles = StyleSheet.create({
   authModal: { backgroundColor: "#ffffff" },
 
   // B
+  backButton: {
+    marginBottom: 16,
+  },
   bold: { fontWeight: "bold" },
   borderDefault: {
     borderWidth: 1,

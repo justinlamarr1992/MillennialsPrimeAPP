@@ -84,7 +84,7 @@ export default function ArtScreen() {
         >
           <Pressable
             onPress={() => router.back()}
-            style={{ marginBottom: 16 }}
+            style={globalStyles.backButton}
           >
             <Text style={[globalStyles.labelText, { color: colors.priC }]}>
               ← Back
