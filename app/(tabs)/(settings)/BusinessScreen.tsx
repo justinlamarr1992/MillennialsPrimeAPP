@@ -16,10 +16,10 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
 import { validateRequired } from "@/utils/validation";
+import useAuth from "@/hooks/useAuth";
 
 export default function BusinessScreen() {
-  // const { auth, accessToken, roles, id, logout, userInfo } =
-  //   useContext(AuthContext);
+  const { user, loading } = useAuth();
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -90,8 +90,18 @@ export default function BusinessScreen() {
 
     try {
       logger.log('Business settings submission started');
+
+      if (!user) {
+        logger.warn('No authenticated user found');
+        return;
+      }
+
       // TODO: Add backend API call to save business settings
-      // await axiosPrivate.patch(`/users/${userId}/business-settings`, { ... });
+      // await axiosPrivate.patch(`/users/${user.uid}/business-settings`, {
+      //   entrepreneur, industry, openOnMillPrime, lengthOpen, whyBusiness,
+      //   firstObjective, objectiveNow, howMany, productsAndServices,
+      //   primaryPromotion, factorsOfLocation
+      // });
 
       // Navigate to ArtScreen (next step in settings flow)
       router.push("/(tabs)/(settings)/ArtScreen");
