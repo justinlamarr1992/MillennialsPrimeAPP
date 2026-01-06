@@ -52,7 +52,7 @@ A React Native social media platform for iOS and Android featuring user-generate
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
-| **Framework** | React Native 0.79.5 + Expo 53 | Cross-platform mobile |
+| **Framework** | React Native 0.79.6 + Expo 53 | Cross-platform mobile |
 | **Routing** | Expo Router | File-based navigation |
 | **Authentication** | Firebase Auth | User management |
 | **Video Delivery** | Bunny CDN | Video streaming & hosting |
@@ -72,8 +72,11 @@ A React Native social media platform for iOS and Android featuring user-generate
 - **Content Feed:** View posts with text, photos, and videos
 - **Video Streaming:** Integrated Bunny CDN player
 - **User Roles:** Admin (gold), Prime (red), Regular (gray) with visual distinctions
-- **Settings:** Profile and account management screens
-- **Dark/Light Mode:** Theme support
+- **Settings:** Profile and account management screens with validation
+  - Profile picture upload and management
+  - Form validation (name, ZIP code)
+  - Back navigation between settings screens
+- **Dark/Light Mode:** Theme support with consistent theming
 
 ### 🚧 In Development
 - Social features (user profiles, connections)
@@ -194,12 +197,12 @@ EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID=
 - Implement error boundaries for new feature sections
 - Write props interfaces for all components
 
-#### TypeScript Status (Last updated: November 21, 2025)
-- **Production code:** ✅ Clean (66 errors fixed)
-- **Test files:** ⚠️ 26 minor type errors remaining
-  - All 608 tests passing despite TypeScript warnings
-  - Errors are in test mocks only, not affecting runtime
-  - Safe to ship - can be cleaned up during future refactoring
+#### TypeScript Status (Last updated: January 6, 2026)
+- **Production code:** ✅ Clean (all errors resolved)
+- **Test files:** ✅ Clean (all type errors resolved)
+  - All 664 tests passing
+  - No TypeScript errors in production or test code
+  - Safe to ship
 - Run `npx tsc --noEmit` to see current status
 
 **→ [Critical files and gotchas to be aware of](docs/ONBOARD.md#critical-files-to-know)**
@@ -233,17 +236,19 @@ EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID=
 
 ---
 
-## Current Health Score: 95/100 ⭐
+## Current Health Score: 97/100 ⭐
 
-Recent improvements (October 29, 2025):
+Recent improvements (January 2026):
+- ✅ Settings screens enhanced with profile picture management
+- ✅ Form validation for name and ZIP code fields
+- ✅ Back navigation implemented across settings flows
+- ✅ Theme consistency improvements
+- ✅ Test coverage expanded (664 tests, all passing)
+- ✅ TypeScript errors fully resolved
 - ✅ Security vulnerabilities resolved (0 vulnerabilities)
 - ✅ Real-time input validation implemented
-- ✅ Data fetching caching with React Query
 - ✅ Centralized error handling
-- ✅ Environment configuration documented
 - ✅ Authentication system stabilized
-- ✅ Error handling implemented (ErrorBoundary)
-- ✅ TypeScript type safety improved
 
 See [Health Check Report](docs/HEALTH_CHECK_REPORT.md) for detailed status.
 
@@ -403,5 +408,5 @@ Proprietary - All rights reserved
 
 ---
 
-**Last Updated:** November 27, 2025
+**Last Updated:** January 6, 2026
 **Maintained By:** Development Team
