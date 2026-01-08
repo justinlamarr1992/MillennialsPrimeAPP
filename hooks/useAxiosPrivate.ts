@@ -1,49 +1,21 @@
-import { axiosPrivate } from "../API/axios";
-import { useEffect, useRef } from "react";
-import useRefreshToken from "./useRefreshToken";
-import useAuth from "./useAuth";
-import { logger } from "@/utils/logger";
+import { axiosPrivate } from '../API/axios';
+import { useEffect } from 'react';
+import { serverAuth } from '@/services/serverAuth';
+import { logger } from '@/utils/logger';
 
 const useAxiosPrivate = () => {
-  const refresh = useRefreshToken();
-  const { user } = useAuth();
-
-  // Token caching to prevent race conditions with multiple simultaneous requests
-  const tokenCacheRef = useRef<{ token: string | null; promise: Promise<string> | null }>({
-    token: null,
-    promise: null,
-  });
-
   useEffect(() => {
-    logger.log('useAxiosPrivate initialized for user:', user?.uid || 'anonymous');
-
-    // Reset token cache when user changes
-    tokenCacheRef.current = { token: null, promise: null };
+    logger.log('useAxiosPrivate: Setting up interceptors for server auth');
 
     const requestIntercept = axiosPrivate.interceptors.request.use(
       async (config) => {
-        if (!config.headers["Authorization"] && user) {
-          try {
-            // Use cached token if available, otherwise fetch new token
-            // If a token fetch is in progress, reuse the same promise to avoid race conditions
-            if (!tokenCacheRef.current.token && !tokenCacheRef.current.promise) {
-              tokenCacheRef.current.promise = user.getIdToken();
-              tokenCacheRef.current.token = await tokenCacheRef.current.promise;
-              tokenCacheRef.current.promise = null;
-            } else if (tokenCacheRef.current.promise) {
-              // Wait for in-flight token request
-              tokenCacheRef.current.token = await tokenCacheRef.current.promise;
-              tokenCacheRef.current.promise = null;
-            }
+        // Get server access token from AsyncStorage
+        const accessToken = await serverAuth.getAccessToken();
 
-            config.headers["Authorization"] = `Bearer ${tokenCacheRef.current.token}`;
-          } catch (err) {
-            logger.error('Failed to get Firebase ID token for user:', user?.uid || 'anonymous', err);
-            // Clear failed token cache
-            tokenCacheRef.current = { token: null, promise: null };
-            return Promise.reject(err);
-          }
+        if (accessToken && !config.headers['Authorization']) {
+          config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
+
         return config;
       },
       (error) => Promise.reject(error)
@@ -53,12 +25,23 @@ const useAxiosPrivate = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
+
+        // If 403 (Forbidden - token expired) and haven't retried yet
         if (error?.response?.status === 403 && !prevRequest?.sent) {
           prevRequest.sent = true;
-          const newAccessToken = await refresh();
-          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          return axiosPrivate(prevRequest);
+
+          try {
+            // Attempt token refresh
+            const newAccessToken = await serverAuth.refreshToken();
+            prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+            return axiosPrivate(prevRequest);
+          } catch (refreshError) {
+            logger.error('Token refresh failed:', refreshError);
+            // Could trigger logout here
+            return Promise.reject(refreshError);
+          }
         }
+
         return Promise.reject(error);
       }
     );
@@ -67,7 +50,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [user, refresh]); // axiosPrivate is a stable singleton import, no need to add to deps
+  }, []); // Empty dependency array - set up once on mount
 
   return axiosPrivate;
 };
