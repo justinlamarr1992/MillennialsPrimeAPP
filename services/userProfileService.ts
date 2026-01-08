@@ -2,7 +2,7 @@
  * Service for managing user profile data with the server
  */
 
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import { axiosPrivate } from '@/API/axios';
 import { serverAuth } from './serverAuth';
 import type {
   ServerUserProfile,
@@ -19,7 +19,6 @@ export const userProfileService = {
     const userId = await serverAuth.getUserId();
     if (!userId) throw new Error('User ID not found');
 
-    const axiosPrivate = useAxiosPrivate();
     const response = await axiosPrivate.get(`/users/${userId}`);
     return response.data;
   },
@@ -31,14 +30,14 @@ export const userProfileService = {
     const userId = await serverAuth.getUserId();
     if (!userId) throw new Error('User ID not found');
 
-    const axiosPrivate = useAxiosPrivate();
+    const parsedZip = Number.parseInt(data.zip, 10);
     await axiosPrivate.patch(`/users/${userId}`, {
       name: data.name,
       location: {
         country: data.country,
         state: data.state,
         city: data.city,
-        zip: parseInt(data.zip) || 0,
+        zip: Number.isNaN(parsedZip) ? undefined : parsedZip,
       },
     });
   },
@@ -50,7 +49,6 @@ export const userProfileService = {
     const userId = await serverAuth.getUserId();
     if (!userId) throw new Error('User ID not found');
 
-    const axiosPrivate = useAxiosPrivate();
     await axiosPrivate.patch(`/users/business/${userId}`, {
       entrepreneur: data.entrepreneur === 'Yes',
       industry: data.industry,
@@ -66,7 +64,6 @@ export const userProfileService = {
     const userId = await serverAuth.getUserId();
     if (!userId) throw new Error('User ID not found');
 
-    const axiosPrivate = useAxiosPrivate();
     await axiosPrivate.patch(`/users/art/${userId}`, {
       artist: data.artist === 'Yes',
       professional: data.professionalArtist === 'Yes',
@@ -86,7 +83,6 @@ export const userProfileService = {
     const userId = await serverAuth.getUserId();
     if (!userId) throw new Error('User ID not found');
 
-    const axiosPrivate = useAxiosPrivate();
     await axiosPrivate.post('/users/pic', {
       image: base64Image,
       userID: userId,
@@ -100,7 +96,6 @@ export const userProfileService = {
     const userId = await serverAuth.getUserId();
     if (!userId) throw new Error('User ID not found');
 
-    const axiosPrivate = useAxiosPrivate();
     const response = await axiosPrivate.post('/users/getpic', {
       userID: userId,
     });

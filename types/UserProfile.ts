@@ -45,7 +45,7 @@ export interface ServerUserProfile {
     support?: string;
     critics?: string;
     specificIntegral?: boolean;
-    whatSpecfic?: string;
+    whatSpecfic?: string; // Note: Typo exists in server schema - should be "whatSpecific"
   };
   profileSettings?: {
     canLike?: boolean;

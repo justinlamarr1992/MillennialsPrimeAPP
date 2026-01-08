@@ -14,29 +14,24 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
     clear: jest.fn(),
   },
 }));
-jest.mock('@/hooks/useAxiosPrivate');
+jest.mock('@/API/axios', () => ({
+  axiosPrivate: {
+    get: jest.fn(),
+    post: jest.fn(),
+    patch: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
 jest.mock('@/services/serverAuth');
 jest.mock('@/utils/logger');
 
 import { userProfileService } from '../userProfileService';
 import { serverAuth } from '../serverAuth';
+import { axiosPrivate } from '@/API/axios';
 import type { ServerUserProfile, MyInfoFormData, BusinessFormData, ArtFormData } from '@/types/UserProfile';
 
-// Mock axios instance that will be returned by useAxiosPrivate
-const mockAxiosInstance = {
-  get: jest.fn(),
-  post: jest.fn(),
-  patch: jest.fn(),
-  delete: jest.fn(),
-};
-
-// Mock useAxiosPrivate to return our mock axios instance
-jest.mock('@/hooks/useAxiosPrivate', () => ({
-  __esModule: true,
-  default: jest.fn(() => mockAxiosInstance),
-}));
-
 const mockedServerAuth = serverAuth as jest.Mocked<typeof serverAuth>;
+const mockedAxiosPrivate = axiosPrivate as jest.Mocked<typeof axiosPrivate>;
 
 describe('userProfileService', () => {
   const mockUserId = 'user-123-abc';
@@ -61,12 +56,12 @@ describe('userProfileService', () => {
         },
       };
 
-      mockAxiosInstance.get.mockResolvedValueOnce({ data: mockProfile });
+      axiosPrivate.get.mockResolvedValueOnce({ data: mockProfile });
 
       const result = await userProfileService.fetchProfile();
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(mockAxiosInstance.get).toHaveBeenCalledWith(`/users/${mockUserId}`);
+      expect(axiosPrivate.get).toHaveBeenCalledWith(`/users/${mockUserId}`);
       expect(result).toEqual(mockProfile);
     });
 
@@ -78,7 +73,7 @@ describe('userProfileService', () => {
 
     it('handles server errors', async () => {
       const mockError = new Error('Server error');
-      mockAxiosInstance.get.mockRejectedValueOnce(mockError);
+      axiosPrivate.get.mockRejectedValueOnce(mockError);
 
       await expect(userProfileService.fetchProfile()).rejects.toThrow('Server error');
     });
@@ -94,12 +89,12 @@ describe('userProfileService', () => {
         zip: '10001',
       };
 
-      mockAxiosInstance.patch.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateMyInfo(formData);
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(mockAxiosInstance.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
         name: 'Jane Doe',
         location: {
           country: 'USA',
@@ -119,11 +114,11 @@ describe('userProfileService', () => {
         zip: '90210',
       };
 
-      mockAxiosInstance.patch.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateMyInfo(formData);
 
-      expect(mockAxiosInstance.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
         name: 'Test User',
         location: {
           country: 'USA',
@@ -143,17 +138,17 @@ describe('userProfileService', () => {
         zip: 'invalid',
       };
 
-      mockAxiosInstance.patch.mockResolvedValueOnce({ data: {} });
+      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateMyInfo(formData);
 
-      expect(mockAxiosInstance.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
+      expect(mockedAxiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
         name: 'Test User',
         location: {
           country: 'USA',
           state: 'CA',
           city: 'LA',
-          zip: 0,
+          zip: undefined,
         },
       });
     });
@@ -182,12 +177,12 @@ describe('userProfileService', () => {
         businessLocationReason: 'Access to talent',
       };
 
-      mockAxiosInstance.patch.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateBusiness(formData);
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(mockAxiosInstance.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
         entrepreneur: true,
         industry: 'Technology',
         lengthOpen: 'Medium',
@@ -201,11 +196,11 @@ describe('userProfileService', () => {
         industry: 'Retail',
       };
 
-      mockAxiosInstance.patch.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateBusiness(formData);
 
-      expect(mockAxiosInstance.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
         entrepreneur: false,
         industry: 'Retail',
         lengthOpen: undefined,
@@ -237,12 +232,12 @@ describe('userProfileService', () => {
         integral: 'Yes',
       };
 
-      mockAxiosInstance.patch.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateArt(formData);
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(mockAxiosInstance.patch).toHaveBeenCalledWith(`/users/art/${mockUserId}`, {
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/art/${mockUserId}`, {
         artist: true,
         professional: true,
         purpose: 'Expression',
@@ -262,11 +257,11 @@ describe('userProfileService', () => {
         integral: 'No',
       };
 
-      mockAxiosInstance.patch.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateArt(formData);
 
-      expect(mockAxiosInstance.patch).toHaveBeenCalledWith(`/users/art/${mockUserId}`, {
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/art/${mockUserId}`, {
         artist: false,
         professional: false,
         purpose: undefined,
@@ -293,12 +288,12 @@ describe('userProfileService', () => {
     it('uploads profile picture successfully', async () => {
       const base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANS...';
 
-      mockAxiosInstance.post.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.post.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.uploadProfilePicture(base64Image);
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(mockAxiosInstance.post).toHaveBeenCalledWith('/users/pic', {
+      expect(axiosPrivate.post).toHaveBeenCalledWith('/users/pic', {
         image: base64Image,
         userID: mockUserId,
       });
@@ -314,19 +309,19 @@ describe('userProfileService', () => {
   describe('getProfilePicture', () => {
     it('retrieves profile picture successfully', async () => {
       const mockImage = 'data:image/png;base64,iVBORw0KGgoAAAANS...';
-      mockAxiosInstance.post.mockResolvedValueOnce({ data: { image: mockImage } });
+      axiosPrivate.post.mockResolvedValueOnce({ data: { image: mockImage } });
 
       const result = await userProfileService.getProfilePicture();
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(mockAxiosInstance.post).toHaveBeenCalledWith('/users/getpic', {
+      expect(axiosPrivate.post).toHaveBeenCalledWith('/users/getpic', {
         userID: mockUserId,
       });
       expect(result).toBe(mockImage);
     });
 
     it('returns null when no image exists', async () => {
-      mockAxiosInstance.post.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.post.mockResolvedValueOnce({ data: {} });
 
       const result = await userProfileService.getProfilePicture();
 
@@ -334,7 +329,7 @@ describe('userProfileService', () => {
     });
 
     it('returns null when image is null', async () => {
-      mockAxiosInstance.post.mockResolvedValueOnce({ data: { image: null } });
+      axiosPrivate.post.mockResolvedValueOnce({ data: { image: null } });
 
       const result = await userProfileService.getProfilePicture();
 
