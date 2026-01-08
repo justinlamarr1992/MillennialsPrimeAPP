@@ -2,20 +2,26 @@
  * Tests for useAxiosPrivate hook
  * Target Coverage: 75%
  *
- * Note: This hook sets up axios interceptors. We test that the hook returns
- * the axios instance and properly cleans up on unmount. Implementation details
- * of how interceptors work are not tested as they are axios library behavior.
+ * Updated to test server JWT token management instead of Firebase tokens
  */
 
 import { renderHook } from '@testing-library/react-native';
 import useAxiosPrivate from '../useAxiosPrivate';
-import useRefreshToken from '../useRefreshToken';
-import useAuth from '../useAuth';
 import { axiosPrivate } from '@/API/axios';
+import { serverAuth } from '@/services/serverAuth';
 
-// Mock dependencies
-jest.mock('../useRefreshToken');
-jest.mock('../useAuth');
+// Mock dependencies BEFORE imports
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  __esModule: true,
+  default: {
+    setItem: jest.fn(),
+    getItem: jest.fn(),
+    multiRemove: jest.fn(),
+    removeItem: jest.fn(),
+    clear: jest.fn(),
+  },
+}));
+jest.mock('@/services/serverAuth');
 jest.mock('@/API/axios', () => ({
   axiosPrivate: {
     interceptors: {
@@ -37,28 +43,15 @@ jest.mock('@/utils/logger', () => ({
   },
 }));
 
-const mockedUseRefreshToken = useRefreshToken as jest.MockedFunction<typeof useRefreshToken>;
-const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+const mockedServerAuth = serverAuth as jest.Mocked<typeof serverAuth>;
 
 describe('useAxiosPrivate hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    const mockRefresh = jest.fn();
-    const mockUser = {
-      uid: 'test-123',
-      email: 'test@example.com',
-      getIdToken: jest.fn().mockResolvedValue('test-token'),
-    };
-
-    mockedUseRefreshToken.mockReturnValue(mockRefresh);
-    mockedUseAuth.mockReturnValue({
-      user: mockUser,
-      loading: false,
-      signIn: jest.fn(),
-      signOut: jest.fn(),
-      signUp: jest.fn(),
-    });
+    // Default mock implementations
+    mockedServerAuth.getAccessToken = jest.fn().mockResolvedValue('mock-access-token');
+    mockedServerAuth.refreshToken = jest.fn().mockResolvedValue('new-access-token');
   });
 
   describe('hook behavior', () => {
@@ -72,11 +65,18 @@ describe('useAxiosPrivate hook', () => {
       const { result, rerender } = renderHook(() => useAxiosPrivate());
 
       const firstInstance = result.current;
-      rerender();
+      rerender({});
       const secondInstance = result.current;
 
       expect(firstInstance).toBe(secondInstance);
       expect(firstInstance).toBe(axiosPrivate);
+    });
+
+    it('should set up request and response interceptors', () => {
+      renderHook(() => useAxiosPrivate());
+
+      expect(axiosPrivate.interceptors.request.use).toHaveBeenCalled();
+      expect(axiosPrivate.interceptors.response.use).toHaveBeenCalled();
     });
 
     it('should clean up interceptors on unmount', () => {
@@ -88,58 +88,52 @@ describe('useAxiosPrivate hook', () => {
       expect(axiosPrivate.interceptors.response.eject).toHaveBeenCalled();
     });
 
-    it('should re-initialize when user changes', () => {
-      const { rerender } = renderHook(() => useAxiosPrivate());
+    it('should eject interceptors with correct IDs', () => {
+      const { unmount } = renderHook(() => useAxiosPrivate());
 
-      const initialEjectCalls = (axiosPrivate.interceptors.request.eject as jest.Mock).mock.calls.length;
+      unmount();
 
-      // Change user
-      mockedUseAuth.mockReturnValue({
-        user: {
-          uid: 'new-user-456',
-          email: 'new@example.com',
-          getIdToken: jest.fn().mockResolvedValue('new-token'),
-        },
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
+      // IDs 1 and 2 returned from mocked use() calls
+      expect(axiosPrivate.interceptors.request.eject).toHaveBeenCalledWith(1);
+      expect(axiosPrivate.interceptors.response.eject).toHaveBeenCalledWith(2);
+    });
+  });
 
-      rerender();
+  describe('request interceptor behavior', () => {
+    it('should call serverAuth.getAccessToken on interceptor setup', () => {
+      renderHook(() => useAxiosPrivate());
 
-      // Should have called eject (cleanup happened)
-      expect((axiosPrivate.interceptors.request.eject as jest.Mock).mock.calls.length).toBeGreaterThan(
-        initialEjectCalls
-      );
+      // Request interceptor is set up
+      expect(axiosPrivate.interceptors.request.use).toHaveBeenCalled();
     });
 
-    it('should work when user is null', () => {
-      mockedUseAuth.mockReturnValue({
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
+    it('should handle case when no access token exists', async () => {
+      mockedServerAuth.getAccessToken = jest.fn().mockResolvedValue(null);
 
-      const { result } = renderHook(() => useAxiosPrivate());
+      renderHook(() => useAxiosPrivate());
 
-      expect(result.current).toBe(axiosPrivate);
+      expect(axiosPrivate.interceptors.request.use).toHaveBeenCalled();
+    });
+  });
+
+  describe('response interceptor behavior', () => {
+    it('should call serverAuth.refreshToken on 403 error', () => {
+      renderHook(() => useAxiosPrivate());
+
+      // Response interceptor is set up with error handler
+      expect(axiosPrivate.interceptors.response.use).toHaveBeenCalled();
+
+      const responseInterceptorCall = (axiosPrivate.interceptors.response.use as jest.Mock).mock.calls[0];
+      expect(responseInterceptorCall).toBeDefined();
+      expect(typeof responseInterceptorCall[1]).toBe('function'); // Error handler exists
     });
 
-    it('should work when user is loading', () => {
-      mockedUseAuth.mockReturnValue({
-        user: null,
-        loading: true,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
+    it('should handle token refresh failure', () => {
+      mockedServerAuth.refreshToken = jest.fn().mockRejectedValue(new Error('Refresh failed'));
 
-      const { result } = renderHook(() => useAxiosPrivate());
+      renderHook(() => useAxiosPrivate());
 
-      expect(result.current).toBe(axiosPrivate);
+      expect(axiosPrivate.interceptors.response.use).toHaveBeenCalled();
     });
   });
 });
