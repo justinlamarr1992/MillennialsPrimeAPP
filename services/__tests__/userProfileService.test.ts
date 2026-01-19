@@ -1,6 +1,8 @@
 /**
  * Tests for userProfileService
  * Following TDD approach - tests written first
+ *
+ * IMPORTANT: Server expects data wrapped in `values` object for all update endpoints.
  */
 
 // Mock dependencies BEFORE imports
@@ -80,7 +82,7 @@ describe('userProfileService', () => {
   });
 
   describe('updateMyInfo', () => {
-    it('updates basic profile info successfully', async () => {
+    it('updates basic profile info successfully with values wrapper', async () => {
       const formData: MyInfoFormData = {
         name: 'Jane Doe',
         country: 'USA',
@@ -95,8 +97,8 @@ describe('userProfileService', () => {
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
-        name: 'Jane Doe',
-        location: {
+        values: {
+          name: 'Jane Doe',
           country: 'USA',
           state: 'New York',
           city: 'New York City',
@@ -119,8 +121,8 @@ describe('userProfileService', () => {
       await userProfileService.updateMyInfo(formData);
 
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
-        name: 'Test User',
-        location: {
+        values: {
+          name: 'Test User',
           country: 'USA',
           state: 'CA',
           city: 'LA',
@@ -143,8 +145,8 @@ describe('userProfileService', () => {
       await userProfileService.updateMyInfo(formData);
 
       expect(mockedAxiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
-        name: 'Test User',
-        location: {
+        values: {
+          name: 'Test User',
           country: 'USA',
           state: 'CA',
           city: 'LA',
@@ -169,7 +171,7 @@ describe('userProfileService', () => {
   });
 
   describe('updateBusiness', () => {
-    it('updates business profile successfully', async () => {
+    it('updates business profile successfully with values wrapper', async () => {
       const formData: BusinessFormData = {
         entrepreneur: 'Yes',
         industry: 'Technology',
@@ -183,10 +185,12 @@ describe('userProfileService', () => {
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
-        entrepreneur: true,
-        industry: 'Technology',
-        lengthOpen: 'Medium',
-        factorsOfLocation: 'Access to talent',
+        values: {
+          entrepreneur: true,
+          industry: 'Technology',
+          lengthOpen: 'Medium',
+          factorsOfLocation: 'Access to talent',
+        },
       });
     });
 
@@ -201,10 +205,12 @@ describe('userProfileService', () => {
       await userProfileService.updateBusiness(formData);
 
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
-        entrepreneur: false,
-        industry: 'Retail',
-        lengthOpen: undefined,
-        factorsOfLocation: undefined,
+        values: {
+          entrepreneur: false,
+          industry: 'Retail',
+          lengthOpen: undefined,
+          factorsOfLocation: undefined,
+        },
       });
     });
 
@@ -220,7 +226,7 @@ describe('userProfileService', () => {
   });
 
   describe('updateArt', () => {
-    it('updates artist profile successfully', async () => {
+    it('updates artist profile successfully with values wrapper', async () => {
       const formData: ArtFormData = {
         artist: 'Yes',
         professionalArtist: 'Yes',
@@ -238,14 +244,16 @@ describe('userProfileService', () => {
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/art/${mockUserId}`, {
-        artist: true,
-        professional: true,
-        purpose: 'Expression',
-        favsOrNoneFavs: 'Abstract',
-        affectIssues: 'Climate change',
-        navigateIndustry: 'Networking',
-        network: true,
-        specificIntegral: true,
+        values: {
+          artist: true,
+          professional: true,
+          purpose: 'Expression',
+          favsOrNoneFavs: 'Abstract',
+          affectIssues: 'Climate change',
+          navigateIndustry: 'Networking',
+          network: true,
+          specificIntegral: true,
+        },
       });
     });
 
@@ -262,14 +270,16 @@ describe('userProfileService', () => {
       await userProfileService.updateArt(formData);
 
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/art/${mockUserId}`, {
-        artist: false,
-        professional: false,
-        purpose: undefined,
-        favsOrNoneFavs: undefined,
-        affectIssues: undefined,
-        navigateIndustry: undefined,
-        network: false,
-        specificIntegral: false,
+        values: {
+          artist: false,
+          professional: false,
+          purpose: undefined,
+          favsOrNoneFavs: undefined,
+          affectIssues: undefined,
+          navigateIndustry: undefined,
+          network: false,
+          specificIntegral: false,
+        },
       });
     });
 
@@ -285,7 +295,7 @@ describe('userProfileService', () => {
   });
 
   describe('uploadProfilePicture', () => {
-    it('uploads profile picture successfully', async () => {
+    it('uploads profile picture with correct server format', async () => {
       const base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANS...';
 
       axiosPrivate.post.mockResolvedValueOnce({ data: {} });
@@ -294,8 +304,10 @@ describe('userProfileService', () => {
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
       expect(axiosPrivate.post).toHaveBeenCalledWith('/users/pic', {
-        image: base64Image,
-        userID: mockUserId,
+        _id: mockUserId,
+        newImage: {
+          image: base64Image,
+        },
       });
     });
 
@@ -307,15 +319,15 @@ describe('userProfileService', () => {
   });
 
   describe('getProfilePicture', () => {
-    it('retrieves profile picture successfully', async () => {
+    it('retrieves profile picture with correct server format', async () => {
       const mockImage = 'data:image/png;base64,iVBORw0KGgoAAAANS...';
-      axiosPrivate.post.mockResolvedValueOnce({ data: { image: mockImage } });
+      axiosPrivate.post.mockResolvedValueOnce({ data: { getImageToClient: mockImage } });
 
       const result = await userProfileService.getProfilePicture();
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
       expect(axiosPrivate.post).toHaveBeenCalledWith('/users/getpic', {
-        userID: mockUserId,
+        _id: mockUserId,
       });
       expect(result).toBe(mockImage);
     });
@@ -328,8 +340,8 @@ describe('userProfileService', () => {
       expect(result).toBeNull();
     });
 
-    it('returns null when image is null', async () => {
-      axiosPrivate.post.mockResolvedValueOnce({ data: { image: null } });
+    it('returns null when getImageToClient is null', async () => {
+      axiosPrivate.post.mockResolvedValueOnce({ data: { getImageToClient: null } });
 
       const result = await userProfileService.getProfilePicture();
 
