@@ -7,6 +7,7 @@
     ],
     "jsx": "react-native",
     "moduleResolution": "bundler",
+    "customConditions": ["react-native"],
     "allowJs": true,
     "noEmit": true,
     "isolatedModules": true,

@@ -1,14 +1,20 @@
-import { FirebaseError } from "firebase/app";
 import { logger } from "./logger";
+
+// Firebase error interface that works with both web and native SDKs
+interface FirebaseAuthError {
+  code: string;
+  message: string;
+}
 
 /**
  * Centralized error handler for Firebase authentication errors
  * Provides user-friendly error messages for common Firebase auth errors
+ * Works with both @react-native-firebase/auth and firebase/auth
  *
  * @param error - Firebase error object
  * @returns User-friendly error message
  */
-export const handleAuthError = (error: FirebaseError): string => {
+export const handleAuthError = (error: FirebaseAuthError): string => {
   switch (error.code) {
     // Sign In & Password Reset Errors
     case 'auth/user-not-found':

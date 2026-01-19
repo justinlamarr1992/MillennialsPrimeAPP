@@ -1,6 +1,7 @@
 import Expo
 import React
 import ReactAppDependencyProvider
+import Firebase
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -13,6 +14,11 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // Configure Firebase before initializing React Native
+    // This initializes Firebase with settings from GoogleService-Info.plist
+    // Required for React Native Firebase SDK to function properly
+    FirebaseApp.configure()
+
     let delegate = ReactNativeDelegate()
     let factory = ExpoReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()

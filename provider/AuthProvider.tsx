@@ -1,6 +1,5 @@
 import React, { useState, useEffect, ReactNode } from "react";
-import { User, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase/firebaseConfig";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { AuthContext, AuthContextType } from "../context/AuthContext";
 
 interface AuthProviderProps {
@@ -8,12 +7,14 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Subscribe to Firebase auth state changes
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    // NOTE: auth().onAuthStateChanged() will be deprecated in React Native Firebase v22
+    // See firebase/firebaseConfig.ts for migration details
+    const unsubscribe = auth().onAuthStateChanged((firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);
     });

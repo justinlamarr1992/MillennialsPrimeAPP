@@ -15,8 +15,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
+import auth from "@react-native-firebase/auth";
 import { logger } from "@/utils/logger";
 import {
   validateEmail,
@@ -50,8 +49,6 @@ const MIN_BIRTH_DATE = new Date(`${MIN_BIRTH_YEAR}-1-1`);
 const MAX_BIRTH_DATE = new Date(`${MAX_BIRTH_YEAR}-1-1`);
 
 export default function RegisterScreen() {
-  const auth = getAuth();
-  // const { register, auth } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -176,7 +173,7 @@ export default function RegisterScreen() {
     setLoading(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await auth().createUserWithEmailAndPassword(email, password);
       // Signed up successfully
       // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
       // Native alert() is blocking and provides poor user experience on mobile
@@ -186,7 +183,7 @@ export default function RegisterScreen() {
       // register(user, password, firstName, lastName, DOB);
       router.replace("/(auth)/SignInScreen");
     } catch (error) {
-      const firebaseError = error as FirebaseError;
+      const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
       logger.error('Registration error:', firebaseError.code, firebaseError.message);
