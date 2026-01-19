@@ -79,13 +79,14 @@ setCount(count + 1);
 
 ## Authentication & API Patterns
 
-### Firebase Authentication (Web SDK)
-- **IMPORTANT**: This app uses the Firebase **Web SDK** (`firebase/auth`), NOT React Native Firebase
-- Import from: `firebase/auth` (e.g., `import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'`)
-- DO NOT import from `@react-native-firebase/auth` or `@react-native-firebase/app` - these packages are NOT used
+### Firebase Authentication (React Native Firebase)
+- **IMPORTANT**: This app uses **React Native Firebase** (`@react-native-firebase/auth`), NOT Firebase Web SDK
+- Import from: `@react-native-firebase/auth` (e.g., `import auth from '@react-native-firebase/auth'`)
+- DO NOT import from `firebase/auth` - the Web SDK is NOT used
+- Use namespaced API pattern: `auth().signInWithEmailAndPassword()` NOT `signInWithEmailAndPassword(auth, ...)`
 - Use `user.getIdToken()` for API authorization tokens
-- Never access `auth.accessToken` directly (this pattern is deprecated)
-- All auth operations use async/await pattern with Firebase Web SDK methods
+- Auth persistence is handled automatically via native iOS Keychain/Android Keystore
+- All auth operations use async/await pattern with React Native Firebase methods
 
 ### Axios Interceptors
 - Token retrieval must include error handling with try-catch
@@ -223,11 +224,12 @@ import { TouchableOpacity } from "react-native";
 ### Firebase Errors
 - Use specific Firebase error codes for user-friendly messages
 - Create centralized error handlers for common operations
+- React Native Firebase provides `.code` property on errors for error handling
 
 ```typescript
-import { FirebaseError } from '@react-native-firebase/app';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
-const handleAuthError = (error: FirebaseError): string => {
+const handleAuthError = (error: FirebaseAuthTypes.NativeFirebaseAuthError): string => {
   switch (error.code) {
     case 'auth/user-not-found':
       return 'No account found with this email';
@@ -357,7 +359,8 @@ chore: Remove unused imports
 - Update `.env.example` when adding new variables
 
 ### Dependencies
-- Firebase Authentication: `@react-native-firebase/auth`
+- Firebase Authentication: `@react-native-firebase/auth` v23.8.3+
+- Firebase Core: `@react-native-firebase/app` v23.8.3+
 - Navigation: Expo Router (NOT React Navigation directly)
 - State Management: React hooks + Context (no Redux)
 - API Calls: Axios with interceptors
@@ -445,6 +448,6 @@ npm run lint
 
 ---
 
-**Last Updated**: October 27, 2025
+**Last Updated**: January 19, 2026
 **Health Score Target**: 95/100
 **Current Health Score**: 83/100
