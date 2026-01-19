@@ -1,15 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
 import PasswordRecoveryScreen from '../PasswordRecoveryScreen';
-import { sendPasswordResetEmail } from 'firebase/auth';
 import { router } from 'expo-router';
+import { sendPasswordResetEmail } from '@/__tests__/__mocks__/firebase';
 
-// Mock Firebase auth
-jest.mock('firebase/auth', () => ({
-  ...jest.requireActual('firebase/auth'),
-  getAuth: jest.fn(() => ({})),
-  sendPasswordResetEmail: jest.fn(),
-}));
+// @react-native-firebase/auth is already mocked in setup.ts
 
 /**
  * NOTE: alert() is intentionally NOT tested
@@ -123,7 +118,7 @@ describe('PasswordRecoveryScreen', () => {
       fireEvent.press(screen.getByText('Send Email'));
 
       await waitFor(() => {
-        expect(sendPasswordResetEmail).toHaveBeenCalledWith({}, 'test@example.com');
+        expect(sendPasswordResetEmail).toHaveBeenCalledWith('test@example.com');
       });
     });
 
