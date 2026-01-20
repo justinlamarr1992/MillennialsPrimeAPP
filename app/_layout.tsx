@@ -42,12 +42,9 @@ function RootLayoutNav() {
     } else if (!user && !inAuthGroup && segments[0] !== undefined) {
       // User is not signed in but trying to access protected routes, redirect to sign in
       router.replace("/(auth)/SignInScreen");
-    } else if (user && segments[0] === undefined) {
-      // User is signed in but no route is set, redirect to home
-      router.replace("/(tabs)/(home)/HomePage");
-    } else if (!user && segments[0] === undefined) {
-      // No user and no route, redirect to sign in
-      router.replace("/(auth)/SignInScreen");
+    } else if (segments[0] === undefined) {
+      // No route set, redirect based on auth state
+      router.replace(user ? "/(tabs)/(home)/HomePage" : "/(auth)/SignInScreen");
     }
   }, [user, loading, segments]);
 

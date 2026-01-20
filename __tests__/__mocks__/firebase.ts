@@ -56,5 +56,13 @@ export const resetFirebaseMocks = () => {
   mockAuthInstance.currentUser = null;
 };
 
+// Mock FirebaseAuthTypes namespace for type compatibility
+// This allows tests to import types from the mock
+interface FirebaseAuthTypesNamespace {
+  [key: string]: unknown;
+}
+
+export const FirebaseAuthTypes: FirebaseAuthTypesNamespace = {};
+
 // Export default for: import auth from '@react-native-firebase/auth'
 export default auth;
