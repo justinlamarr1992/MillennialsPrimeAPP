@@ -13,14 +13,12 @@ import {
 } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
+import auth from "@react-native-firebase/auth";
 import { validateEmail } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
 
 export default function SignInScreen() {
-  const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -60,12 +58,12 @@ export default function SignInScreen() {
     setErrMsg("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await auth().signInWithEmailAndPassword(email, password);
       // Signed in successfully
       // add the Mongo information or how to get the data here
       router.replace("/(tabs)/(home)/HomePage");
     } catch (error) {
-      const firebaseError = error as FirebaseError;
+      const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
       logger.error('Sign in error:', firebaseError.code, firebaseError.message);

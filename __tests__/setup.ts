@@ -91,6 +91,14 @@ jest.mock('expo-router', () => ({
 // Mock Firebase
 jest.mock('../firebase/firebaseConfig', () => require('./__mocks__/firebase'));
 
+// Mock React Native Firebase
+jest.mock('@react-native-firebase/auth', () => require('./__mocks__/firebase'));
+
+jest.mock('@react-native-firebase/app', () => ({
+  apps: [],
+  initializeApp: jest.fn(),
+}));
+
 // Mock React Query
 jest.mock('@tanstack/react-query', () => require('./__mocks__/react-query'));
 

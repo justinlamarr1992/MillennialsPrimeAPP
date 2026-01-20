@@ -1,39 +1,19 @@
-// Using Firebase Web SDK (recommended for Expo)
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { logger } from "@/utils/logger";
+// Using React Native Firebase SDK (native implementation)
+// Configuration is automatically read from GoogleService-Info.plist (iOS) and google-services.json (Android)
+// Firebase is initialized in AppDelegate.swift via FirebaseApp.configure()
 
-// Log warning if environment variables are missing (prevents crashes in release builds)
-const requiredEnvVars = [
-  'EXPO_PUBLIC_FIREBASE_API_KEY',
-  'EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN',
-  'EXPO_PUBLIC_FIREBASE_PROJECT_ID',
-  'EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET',
-  'EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',
-  'EXPO_PUBLIC_FIREBASE_APP_ID',
-] as const;
+// DEPRECATION NOTE (for future maintainers):
+// React Native Firebase will deprecate the current namespaced API in v22 in favor of modular API
+// Current usage: auth().signInWithEmailAndPassword()
+// Future v22 usage: Will match Firebase Web SDK modular API (getAuth(), signInWithEmailAndPassword())
+// Migration guide: https://rnfirebase.io/migrating-to-v22
+// This is a FUTURE change - current code works correctly and warnings are informational only
 
-if (__DEV__) {
-  for (const envVar of requiredEnvVars) {
-    if (!process.env[envVar]) {
-      logger.warn(`Missing environment variable: ${envVar}`);
-    }
-  }
-}
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
-// Firebase configuration using environment variables
-const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY!,
-  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN!,
-  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID!,
-  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET!,
-  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
-  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID!,
-  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
-};
+// Export the auth module instance
+// Persistence is handled automatically by the native SDK
+export { auth };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-
-// Initialize Auth - getAuth uses default persistence appropriate for the platform
-export const auth = getAuth(app);
+// Export types for use throughout the app
+export type { FirebaseAuthTypes };

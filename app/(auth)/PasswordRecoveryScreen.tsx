@@ -13,14 +13,12 @@ import {
 } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
+import auth from "@react-native-firebase/auth";
 import { validateEmail } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
 
 const PasswordRecoveryScreen = () => {
-  const auth = getAuth();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const colorScheme = useColorScheme();
@@ -56,14 +54,14 @@ const PasswordRecoveryScreen = () => {
     setErrMsg("");
 
     try {
-      await sendPasswordResetEmail(auth, email);
+      await auth().sendPasswordResetEmail(email);
       // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
       // Native alert() is blocking and provides poor user experience on mobile
       // Consider: react-native-toast-notifications or expo-notifications
       alert("Password reset email sent! Check your inbox.");
       router.replace("/(auth)/SignInScreen");
     } catch (error) {
-      const firebaseError = error as FirebaseError;
+      const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
       logger.error('Password reset error:', firebaseError.code, firebaseError.message);

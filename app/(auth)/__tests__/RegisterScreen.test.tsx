@@ -1,15 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
 import RegisterScreen from '../RegisterScreen';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { router } from 'expo-router';
+import { createUserWithEmailAndPassword } from '@/__tests__/__mocks__/firebase';
 
-// Mock Firebase auth
-jest.mock('firebase/auth', () => ({
-  ...jest.requireActual('firebase/auth'),
-  getAuth: jest.fn(() => ({})),
-  createUserWithEmailAndPassword: jest.fn(),
-}));
+// @react-native-firebase/auth is already mocked in setup.ts
 
 /**
  * NOTE: alert() is intentionally NOT tested
@@ -375,7 +370,6 @@ describe('RegisterScreen', () => {
 
       await waitFor(() => {
         expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
-          {},
           'john@example.com',
           'ValidPass123!'
         );
@@ -505,7 +499,7 @@ describe('RegisterScreen', () => {
 
       // Registration should proceed with valid form
       await waitFor(() => {
-        expect(createUserWithEmailAndPassword).toHaveBeenCalledWith({}, 'john@example.com', 'ValidPass123!');
+        expect(createUserWithEmailAndPassword).toHaveBeenCalledWith('john@example.com', 'ValidPass123!');
       });
     });
 

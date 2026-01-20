@@ -9,8 +9,7 @@ import {
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { router } from "expo-router";
-import { getAuth, signOut } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
+import auth from "@react-native-firebase/auth";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
 
@@ -19,17 +18,16 @@ export default function LogOutScreen() {
   const colors = COLORS[colorScheme ?? "dark"];
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const auth = getAuth();
 
   const handleLogOut = async () => {
     setLoading(true);
     setErrMsg("");
 
     try {
-      await signOut(auth);
+      await auth().signOut();
       // Sign-out successful
     } catch (error) {
-      const firebaseError = error as FirebaseError;
+      const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
       logger.error('Sign out error:', firebaseError.code, firebaseError.message);

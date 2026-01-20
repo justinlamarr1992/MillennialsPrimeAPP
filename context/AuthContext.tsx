@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { User } from "firebase/auth";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 // Define the shape of our Auth Context
 export interface AuthContextType {
-  user: User | null;
+  user: FirebaseAuthTypes.User | null;
   loading: boolean;
 }
 

@@ -1,15 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
 import LogOutScreen from '../LogOutScreen';
-import { signOut } from 'firebase/auth';
 import { router } from 'expo-router';
+import { signOut } from '@/__tests__/__mocks__/firebase';
 
-// Mock Firebase auth
-jest.mock('firebase/auth', () => ({
-  ...jest.requireActual('firebase/auth'),
-  getAuth: jest.fn(() => ({})),
-  signOut: jest.fn(),
-}));
+// @react-native-firebase/auth is already mocked in setup.ts
 
 // expo-router is already mocked in setup.ts
 const mockRouter = router as jest.Mocked<typeof router>;
@@ -37,7 +32,7 @@ describe('LogOutScreen', () => {
       fireEvent.press(screen.getByText('Log Out'));
 
       await waitFor(() => {
-        expect(signOut).toHaveBeenCalledWith({});
+        expect(signOut).toHaveBeenCalled();
       });
     });
 
