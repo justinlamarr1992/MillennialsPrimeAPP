@@ -122,3 +122,18 @@ jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
 jest.mock('react-native-webview', () => ({
   WebView: 'WebView',
 }));
+
+// Mock AsyncStorage
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  __esModule: true,
+  default: {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    multiRemove: jest.fn(),
+    clear: jest.fn(),
+    getAllKeys: jest.fn(),
+    multiGet: jest.fn(),
+    multiSet: jest.fn(),
+  },
+}));

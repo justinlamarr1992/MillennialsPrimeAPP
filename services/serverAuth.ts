@@ -36,20 +36,40 @@ export const serverAuth = {
    */
   async loginToServer(email: string, password: string): Promise<ServerAuthResponse> {
     try {
-      const response = await axios.post('/auth', {
+      const payload = {
         user: email,
         pwd: password
+      };
+
+      logger.log('🔐 Attempting server login:', {
+        email,
+        passwordLength: password?.length,
+        baseURL: axios.defaults.baseURL
       });
+      logger.log('📦 Login payload:', JSON.stringify(payload));
+
+      const response = await axios.post('/auth', payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      logger.log('✅ Server response status:', response.status);
+      logger.log('📥 Server response data:', JSON.stringify(response.data));
 
       const { accessToken, _id, roles } = response.data;
 
       await AsyncStorage.setItem(SERVER_TOKEN_KEY, accessToken);
       await AsyncStorage.setItem(SERVER_USER_ID_KEY, _id);
 
-      logger.log('Server authentication successful');
+      logger.log('✅ Server authentication successful, token stored');
       return { accessToken, _id, roles };
-    } catch (error) {
-      logger.error('Server authentication failed:', error);
+    } catch (error: any) {
+      logger.error('❌ Server authentication failed');
+      logger.error('Error status:', error?.response?.status);
+      logger.error('Error data:', JSON.stringify(error?.response?.data));
+      logger.error('Error message:', error?.message);
+      logger.error('Full error:', error);
       throw error;
     }
   },
@@ -59,17 +79,36 @@ export const serverAuth = {
    */
   async registerOnServer(userData: RegisterUserData): Promise<void> {
     try {
-      await axios.post('/register', {
+      const payload = {
         user: userData.email,
         pwd: userData.password,
         firstName: userData.firstName,
         lastName: userData.lastName,
         DOB: userData.DOB
+      };
+
+      logger.log('📝 Attempting server registration:', {
+        email: userData.email,
+        hasPassword: !!userData.password,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        DOB: userData.DOB
+      });
+      logger.log('📦 Registration payload:', JSON.stringify(payload));
+
+      const response = await axios.post('/register', payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
-      logger.log('Server registration successful');
-    } catch (error) {
-      logger.error('Server registration failed:', error);
+      logger.log('✅ Server registration successful');
+      logger.log('📥 Registration response:', JSON.stringify(response.data));
+    } catch (error: any) {
+      logger.error('❌ Server registration failed');
+      logger.error('Error status:', error?.response?.status);
+      logger.error('Error data:', JSON.stringify(error?.response?.data));
+      logger.error('Error message:', error?.message);
       throw error;
     }
   },

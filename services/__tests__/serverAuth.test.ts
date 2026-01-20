@@ -44,6 +44,10 @@ describe('serverAuth', () => {
       expect(axios.post).toHaveBeenCalledWith('/auth', {
         user: 'test@example.com',
         pwd: 'password123'
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       // Verify tokens stored in AsyncStorage
@@ -106,6 +110,10 @@ describe('serverAuth', () => {
         firstName: 'John',
         lastName: 'Doe',
         DOB: '1990-01-01'
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
     });
 
@@ -123,6 +131,10 @@ describe('serverAuth', () => {
         firstName: undefined,
         lastName: undefined,
         DOB: undefined
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
     });
 

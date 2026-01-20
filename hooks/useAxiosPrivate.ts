@@ -12,8 +12,19 @@ const useAxiosPrivate = () => {
         // Get server access token from AsyncStorage
         const accessToken = await serverAuth.getAccessToken();
 
+        logger.log('🔑 Request interceptor - Token check:', {
+          hasToken: !!accessToken,
+          tokenPreview: accessToken ? `${accessToken.substring(0, 20)}...` : 'null',
+          url: config.url,
+          method: config.method,
+          hasExistingAuth: !!config.headers['Authorization']
+        });
+
         if (accessToken && !config.headers['Authorization']) {
           config.headers['Authorization'] = `Bearer ${accessToken}`;
+          logger.log('✅ Added Authorization header to request');
+        } else if (!accessToken) {
+          logger.warn('⚠️ No JWT token found in AsyncStorage for authenticated request');
         }
 
         return config;

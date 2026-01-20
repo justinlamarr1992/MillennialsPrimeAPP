@@ -7,6 +7,7 @@ const BASE_URL = "https://us-central1-millennialsprime.cloudfunctions.net/api";
 
 export default axios.create({
   baseURL: BASE_URL,
+  headers: { "Content-Type": "application/json" },
   //   back end server
 });
 

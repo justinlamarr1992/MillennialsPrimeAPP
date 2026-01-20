@@ -12,6 +12,7 @@ import { router } from "expo-router";
 import auth from "@react-native-firebase/auth";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
+import { serverAuth } from "@/services/serverAuth";
 
 export default function LogOutScreen() {
   const colorScheme = useColorScheme();
@@ -24,13 +25,20 @@ export default function LogOutScreen() {
     setErrMsg("");
 
     try {
+      // Step 1: Sign out from Firebase
+      logger.log('🔓 Signing out from Firebase...');
       await auth().signOut();
-      // Sign-out successful
+      logger.log('✅ Firebase sign-out successful');
+
+      // Step 2: Clear MongoDB server credentials
+      logger.log('🔓 Clearing MongoDB server credentials...');
+      await serverAuth.logout();
+      logger.log('✅ MongoDB credentials cleared');
     } catch (error) {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
-      logger.error('Sign out error:', firebaseError.code, firebaseError.message);
+      logger.error('❌ Sign out error:', firebaseError.code, firebaseError.message);
       setLoading(false);
       return; // Exit early on error
     }
