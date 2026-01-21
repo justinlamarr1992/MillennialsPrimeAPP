@@ -46,18 +46,25 @@ export const userProfileService = {
       },
     };
 
-    logger.log('💾 Updating profile for user:', userId);
-    logger.log('📦 Update payload:', JSON.stringify(payload));
+    if (__DEV__) {
+      logger.log('💾 Updating profile for user:', userId);
+      logger.log('📦 Update payload:', JSON.stringify(payload));
+    }
 
     try {
       const response = await axiosPrivate.patch(`/users/${userId}`, payload);
-      logger.log('✅ Profile updated successfully');
-      logger.log('📥 Response:', JSON.stringify(response.data));
-    } catch (error: any) {
+      if (__DEV__) {
+        logger.log('✅ Profile updated successfully');
+        logger.log('📥 Response:', JSON.stringify(response.data));
+      }
+    } catch (error: unknown) {
       logger.error('❌ Profile update failed');
-      logger.error('Error status:', error?.response?.status);
-      logger.error('Error data:', JSON.stringify(error?.response?.data));
-      logger.error('Error message:', error?.message);
+      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number; data?: unknown }; message?: string };
+        logger.error('Error status:', axiosError.response?.status);
+        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
+        logger.error('Error message:', axiosError.message);
+      }
       throw error;
     }
   },

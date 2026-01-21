@@ -24,8 +24,8 @@ import { userProfileService } from "@/services/userProfileService";
 import { useEffect } from "react";
 
 export default function MyInfoScreen() {
-  const { user, loading } = useAuth();
-  const { profile, loading: profileLoading, error: profileError, refetch } = useUserProfile();
+  const { user } = useAuth();
+  const { profile, refetch } = useUserProfile();
   useAxiosPrivate(); // Set up axios interceptors for authenticated requests
 
   const colorScheme = useColorScheme();
@@ -52,7 +52,9 @@ export default function MyInfoScreen() {
   // Populate form fields when profile data is fetched
   useEffect(() => {
     if (profile) {
-      logger.log('📝 Populating form with profile data:', profile);
+      if (__DEV__) {
+        logger.log('📝 Populating form with profile data:', profile);
+      }
       setName(profile.name || "");
       setCountry(profile.location?.country || "");
       setState(profile.location?.state || "");

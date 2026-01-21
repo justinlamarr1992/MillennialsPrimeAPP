@@ -43,9 +43,13 @@ export const useUserProfile = (): UseUserProfileResult => {
       setLoading(true);
       setError(null);
 
-      logger.log('📥 Fetching user profile from server...');
+      if (__DEV__) {
+        logger.log('📥 Fetching user profile from server...');
+      }
       const profileData = await userProfileService.fetchProfile();
-      logger.log('✅ Profile data fetched:', JSON.stringify(profileData));
+      if (__DEV__) {
+        logger.log('✅ Profile data fetched:', JSON.stringify(profileData));
+      }
       setProfile(profileData);
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to fetch profile');
