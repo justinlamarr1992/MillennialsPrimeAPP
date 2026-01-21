@@ -18,9 +18,15 @@ import { logger } from "@/utils/logger";
 import { validateName, validateZip } from "@/utils/validation";
 import ProfilePicture from "@/components/ProfilePicture";
 import useAuth from "@/hooks/useAuth";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import { userProfileService } from "@/services/userProfileService";
+import { useEffect } from "react";
 
 export default function MyInfoScreen() {
   const { user, loading } = useAuth();
+  const { profile, loading: profileLoading, error: profileError, refetch } = useUserProfile();
+  useAxiosPrivate(); // Set up axios interceptors for authenticated requests
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -28,7 +34,7 @@ export default function MyInfoScreen() {
   // Use States
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [name, setName] = useState("");
-  const [username] = useState<string>("");
+  const [username] = useState<string>(user?.email || "");
   const [DOB] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [state, setState] = useState<string>("");
@@ -42,6 +48,18 @@ export default function MyInfoScreen() {
   const [B2B, setB2B] = useState<string>("");
   const [eComm, setEComm] = useState<string>("");
   const [upload, setUpload] = useState<string>("");
+
+  // Populate form fields when profile data is fetched
+  useEffect(() => {
+    if (profile) {
+      logger.log('📝 Populating form with profile data:', profile);
+      setName(profile.name || "");
+      setCountry(profile.location?.country || "");
+      setState(profile.location?.state || "");
+      setCity(profile.location?.city || "");
+      setZip(profile.location?.zip?.toString() || "");
+    }
+  }, [profile]);
 
   // Pickers
   const [canLikePicker, setCanLikePicker] = useState(false);
@@ -109,13 +127,8 @@ export default function MyInfoScreen() {
     setUploadPicker(!uploadPicker);
   };
 
-  // TODO: Implement Firebase integration for form submission
-  // The commented code below shows the original backend integration pattern.
-  // To implement:
-  // 1. Migrate to Firebase Firestore for data storage
-  // 2. Update the user document in Firestore with the form values
   const handleSubmit = async () => {
-    logger.log('MyInfo submit button pressed');
+    logger.log('💾 MyInfo submit button pressed');
 
     // Validate form fields
     const nameError = validateName(name);
@@ -129,29 +142,38 @@ export default function MyInfoScreen() {
     // Show validation errors if any
     if (errors.length > 0) {
       Alert.alert('Validation Error', errors.join('\n'));
-      logger.warn('MyInfo validation failed:', errors);
+      logger.warn('⚠️ MyInfo validation failed:', errors);
       return;
     }
 
     try {
-      logger.log('MyInfo form submission started');
+      logger.log('📤 MyInfo form submission started');
 
       if (!user) {
-        logger.warn('No authenticated user found');
+        logger.warn('⚠️ No authenticated user found');
         return;
       }
 
-      // TODO: Add backend API call to save user info
-      // await axiosPrivate.patch(`/users/${user.uid}`, {
-      //   name, username, email, DOB, country, state, city, zip,
-      //   canLike, canDislike, canComment, canShare, industry, B2B, eComm, upload
-      // });
+      // Save profile data to MongoDB server
+      await userProfileService.updateMyInfo({
+        name,
+        country,
+        state,
+        city,
+        zip,
+      });
+
+      logger.log('✅ MyInfo settings saved successfully');
+
+      // Refetch profile to get updated data
+      await refetch();
+
+      Alert.alert('Success', 'Your profile has been updated!');
 
       // Navigate to BusinessScreen (next step in settings flow)
-      logger.log('MyInfo settings saved successfully');
       router.push("/(tabs)/(settings)/BusinessScreen");
     } catch (err) {
-      logger.error('MyInfo submission error:', err);
+      logger.error('❌ MyInfo submission error:', err);
       Alert.alert('Error', 'Failed to save settings. Please try again.');
     }
   };

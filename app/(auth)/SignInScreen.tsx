@@ -17,6 +17,7 @@ import auth from "@react-native-firebase/auth";
 import { validateEmail } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
+import { serverAuth } from "@/services/serverAuth";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
@@ -58,15 +59,30 @@ export default function SignInScreen() {
     setErrMsg("");
 
     try {
+      // Step 1: Authenticate with Firebase
+      logger.log('🔐 Signing in with Firebase...');
       await auth().signInWithEmailAndPassword(email, password);
-      // Signed in successfully
-      // add the Mongo information or how to get the data here
+      logger.log('✅ Firebase sign-in successful');
+
+      // Step 2: Authenticate with MongoDB server
+      logger.log('🔐 Authenticating with MongoDB server...');
+      try {
+        await serverAuth.loginToServer(email, password);
+        logger.log('✅ MongoDB authentication successful');
+      } catch (mongoError) {
+        logger.error('❌ MongoDB authentication failed:', mongoError);
+        // Don't block the user from accessing the app if MongoDB auth fails
+        // They're still authenticated with Firebase
+        setErrMsg('Warning: Could not connect to server. Some features may be limited.');
+      }
+
+      // Navigate to home page
       router.replace("/(tabs)/(home)/HomePage");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
-      logger.error('Sign in error:', firebaseError.code, firebaseError.message);
+      logger.error('❌ Sign in error:', firebaseError.code, firebaseError.message);
     } finally {
       setLoading(false);
     }

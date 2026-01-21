@@ -7,6 +7,7 @@
 
 import { axiosPrivate } from '@/API/axios';
 import { serverAuth } from './serverAuth';
+import { logger } from '@/utils/logger';
 import type {
   ServerUserProfile,
   MyInfoFormData,
@@ -35,7 +36,7 @@ export const userProfileService = {
     if (!userId) throw new Error('User ID not found');
 
     const parsedZip = Number.parseInt(data.zip, 10);
-    await axiosPrivate.patch(`/users/${userId}`, {
+    const payload = {
       values: {
         name: data.name,
         country: data.country,
@@ -43,7 +44,22 @@ export const userProfileService = {
         city: data.city,
         zip: Number.isNaN(parsedZip) ? undefined : parsedZip,
       },
-    });
+    };
+
+    logger.log('💾 Updating profile for user:', userId);
+    logger.log('📦 Update payload:', JSON.stringify(payload));
+
+    try {
+      const response = await axiosPrivate.patch(`/users/${userId}`, payload);
+      logger.log('✅ Profile updated successfully');
+      logger.log('📥 Response:', JSON.stringify(response.data));
+    } catch (error: any) {
+      logger.error('❌ Profile update failed');
+      logger.error('Error status:', error?.response?.status);
+      logger.error('Error data:', JSON.stringify(error?.response?.data));
+      logger.error('Error message:', error?.message);
+      throw error;
+    }
   },
 
   /**

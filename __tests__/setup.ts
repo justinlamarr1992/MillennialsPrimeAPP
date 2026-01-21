@@ -122,3 +122,29 @@ jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
 jest.mock('react-native-webview', () => ({
   WebView: 'WebView',
 }));
+
+// Mock AsyncStorage
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  __esModule: true,
+  default: {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    multiRemove: jest.fn(),
+    clear: jest.fn(),
+    getAllKeys: jest.fn(),
+    multiGet: jest.fn(),
+    multiSet: jest.fn(),
+  },
+}));
+
+// Mock expo-secure-store for encrypted token storage
+jest.mock('expo-secure-store', () => ({
+  getItemAsync: jest.fn(),
+  setItemAsync: jest.fn(),
+  deleteItemAsync: jest.fn(),
+  WHEN_UNLOCKED: 'WHEN_UNLOCKED',
+  AFTER_FIRST_UNLOCK: 'AFTER_FIRST_UNLOCK',
+  ALWAYS: 'ALWAYS',
+  WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: 'WHEN_PASSCODE_SET_THIS_DEVICE_ONLY',
+}));
