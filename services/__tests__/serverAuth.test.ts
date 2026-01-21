@@ -1,23 +1,16 @@
 /**
- * Tests for serverAuth service
+ * Tests for serverAuth service with SecureStore
  * Following TDD approach - tests written first
  */
 
 // Mock dependencies BEFORE imports
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  __esModule: true,
-  default: {
-    setItem: jest.fn(),
-    getItem: jest.fn(),
-    multiRemove: jest.fn(),
-    removeItem: jest.fn(),
-    clear: jest.fn(),
-  },
-}));
+jest.mock('expo-secure-store');
+jest.mock('@react-native-async-storage/async-storage');
 jest.mock('@/API/axios');
 jest.mock('@/utils/logger');
 
 import { serverAuth } from '../serverAuth';
+import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '@/API/axios';
 
@@ -50,12 +43,12 @@ describe('serverAuth', () => {
         }
       });
 
-      // Verify tokens stored in AsyncStorage
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      // Verify tokens stored in SecureStore (encrypted storage)
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
         '@server_access_token',
         'mock-access-token-123'
       );
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
         '@server_user_id',
         'user-mongodb-id-456'
       );
@@ -152,25 +145,29 @@ describe('serverAuth', () => {
   });
 
   describe('getAccessToken', () => {
-    it('retrieves stored access token', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce('stored-token-abc');
+    it('retrieves stored access token from SecureStore', async () => {
+      // Mock: migration already completed
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check
+        .mockResolvedValueOnce('stored-token-abc'); // actual token
 
       const token = await serverAuth.getAccessToken();
 
-      expect(AsyncStorage.getItem).toHaveBeenCalledWith('@server_access_token');
       expect(token).toBe('stored-token-abc');
     });
 
     it('returns null when no token stored', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check
+        .mockResolvedValueOnce(null); // no token
 
       const token = await serverAuth.getAccessToken();
 
       expect(token).toBeNull();
     });
 
-    it('returns null on AsyncStorage error', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(
+    it('returns null on SecureStore error', async () => {
+      (SecureStore.getItemAsync as jest.Mock).mockRejectedValueOnce(
         new Error('Storage error')
       );
 
@@ -178,28 +175,56 @@ describe('serverAuth', () => {
 
       expect(token).toBeNull();
     });
+
+    it('migrates token from AsyncStorage on first access', async () => {
+      // Mock: migration not completed yet
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce(null) // migration not done
+        .mockResolvedValueOnce('migrated-token'); // token after migration
+
+      (AsyncStorage.getItem as jest.Mock)
+        .mockResolvedValueOnce('old-async-token') // old token
+        .mockResolvedValueOnce('old-user-id'); // old user ID
+
+      const token = await serverAuth.getAccessToken();
+
+      // Verify migration happened
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
+        '@server_access_token',
+        'old-async-token'
+      );
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
+        '@server_user_id',
+        'old-user-id'
+      );
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@server_access_token');
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@server_user_id');
+    });
   });
 
   describe('getUserId', () => {
-    it('retrieves stored user ID', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce('user-id-789');
+    it('retrieves stored user ID from SecureStore', async () => {
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check
+        .mockResolvedValueOnce('user-id-789'); // actual user ID
 
       const userId = await serverAuth.getUserId();
 
-      expect(AsyncStorage.getItem).toHaveBeenCalledWith('@server_user_id');
       expect(userId).toBe('user-id-789');
     });
 
     it('returns null when no user ID stored', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null);
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check
+        .mockResolvedValueOnce(null); // no user ID
 
       const userId = await serverAuth.getUserId();
 
       expect(userId).toBeNull();
     });
 
-    it('returns null on AsyncStorage error', async () => {
-      (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(
+    it('returns null on SecureStore error', async () => {
+      (SecureStore.getItemAsync as jest.Mock).mockRejectedValueOnce(
         new Error('Storage error')
       );
 
@@ -210,19 +235,18 @@ describe('serverAuth', () => {
   });
 
   describe('logout', () => {
-    it('clears both token and user ID from storage', async () => {
-      (AsyncStorage.multiRemove as jest.Mock).mockResolvedValueOnce(undefined);
+    it('clears both token and user ID from SecureStore', async () => {
+      (SecureStore.deleteItemAsync as jest.Mock).mockResolvedValue(undefined);
 
       await serverAuth.logout();
 
-      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
-        '@server_access_token',
-        '@server_user_id'
-      ]);
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith('@server_access_token');
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith('@server_user_id');
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledTimes(2);
     });
 
-    it('does not throw on AsyncStorage error', async () => {
-      (AsyncStorage.multiRemove as jest.Mock).mockRejectedValueOnce(
+    it('does not throw on SecureStore error', async () => {
+      (SecureStore.deleteItemAsync as jest.Mock).mockRejectedValue(
         new Error('Storage error')
       );
 
@@ -232,7 +256,7 @@ describe('serverAuth', () => {
   });
 
   describe('refreshToken', () => {
-    it('refreshes token and stores new credentials', async () => {
+    it('refreshes token and stores new credentials in SecureStore', async () => {
       const mockResponse = {
         data: {
           accessToken: 'new-refreshed-token-xyz',
@@ -245,11 +269,11 @@ describe('serverAuth', () => {
       const newToken = await serverAuth.refreshToken();
 
       expect(axios.post).toHaveBeenCalledWith('/refresh');
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
         '@server_access_token',
         'new-refreshed-token-xyz'
       );
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
         '@server_user_id',
         'user-id-789'
       );
@@ -266,8 +290,10 @@ describe('serverAuth', () => {
 
   describe('hasValidCredentials', () => {
     it('returns true when both token and user ID exist', async () => {
-      (AsyncStorage.getItem as jest.Mock)
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check for token
         .mockResolvedValueOnce('token-123') // getAccessToken call
+        .mockResolvedValueOnce('true') // migration check for user ID
         .mockResolvedValueOnce('user-456'); // getUserId call
 
       const hasCredentials = await serverAuth.hasValidCredentials();
@@ -276,8 +302,10 @@ describe('serverAuth', () => {
     });
 
     it('returns false when token is missing', async () => {
-      (AsyncStorage.getItem as jest.Mock)
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check
         .mockResolvedValueOnce(null) // no token
+        .mockResolvedValueOnce('true') // migration check
         .mockResolvedValueOnce('user-456'); // has user ID
 
       const hasCredentials = await serverAuth.hasValidCredentials();
@@ -286,8 +314,10 @@ describe('serverAuth', () => {
     });
 
     it('returns false when user ID is missing', async () => {
-      (AsyncStorage.getItem as jest.Mock)
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check
         .mockResolvedValueOnce('token-123') // has token
+        .mockResolvedValueOnce('true') // migration check
         .mockResolvedValueOnce(null); // no user ID
 
       const hasCredentials = await serverAuth.hasValidCredentials();
@@ -296,9 +326,11 @@ describe('serverAuth', () => {
     });
 
     it('returns false when both are missing', async () => {
-      (AsyncStorage.getItem as jest.Mock)
-        .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(null);
+      (SecureStore.getItemAsync as jest.Mock)
+        .mockResolvedValueOnce('true') // migration check
+        .mockResolvedValueOnce(null) // no token
+        .mockResolvedValueOnce('true') // migration check
+        .mockResolvedValueOnce(null); // no user ID
 
       const hasCredentials = await serverAuth.hasValidCredentials();
 
