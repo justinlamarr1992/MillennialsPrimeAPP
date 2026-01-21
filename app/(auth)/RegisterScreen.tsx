@@ -175,12 +175,18 @@ export default function RegisterScreen() {
 
     try {
       // Step 1: Register with Firebase
-      logger.log('🔐 Registering with Firebase...');
+      if (__DEV__) {
+        logger.log('🔐 Registering with Firebase...');
+      }
       await auth().createUserWithEmailAndPassword(email, password);
-      logger.log('✅ Firebase registration successful');
+      if (__DEV__) {
+        logger.log('✅ Firebase registration successful');
+      }
 
       // Step 2: Register with MongoDB server
-      logger.log('🔐 Registering with MongoDB server...');
+      if (__DEV__) {
+        logger.log('🔐 Registering with MongoDB server...');
+      }
       try {
         await serverAuth.registerOnServer({
           email,
@@ -189,7 +195,9 @@ export default function RegisterScreen() {
           lastName,
           DOB
         });
-        logger.log('✅ MongoDB registration successful');
+        if (__DEV__) {
+          logger.log('✅ MongoDB registration successful');
+        }
       } catch (mongoError: unknown) {
         logger.error('❌ MongoDB registration failed:', mongoError);
         // Cleanup: sign out and delete Firebase user to avoid orphaned accounts
