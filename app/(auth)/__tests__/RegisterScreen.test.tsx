@@ -3,8 +3,16 @@ import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
 import RegisterScreen from '../RegisterScreen';
 import { router } from 'expo-router';
 import { createUserWithEmailAndPassword } from '@/__tests__/__mocks__/firebase';
+import { serverAuth } from '@/services/serverAuth';
 
 // @react-native-firebase/auth is already mocked in setup.ts
+
+// Mock serverAuth
+jest.mock('@/services/serverAuth', () => ({
+  serverAuth: {
+    registerOnServer: jest.fn(),
+  },
+}));
 
 /**
  * NOTE: alert() is intentionally NOT tested
@@ -517,6 +525,116 @@ describe('RegisterScreen', () => {
       await waitFor(() => {
         expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('MongoDB Server Registration', () => {
+    beforeEach(() => {
+      (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({
+        user: { uid: 'test-uid', email: 'john@example.com' }
+      });
+      (serverAuth.registerOnServer as jest.Mock).mockResolvedValue(undefined);
+    });
+
+    it('should register with MongoDB server after Firebase registration succeeds', async () => {
+      render(<RegisterScreen />);
+
+      // Fill in all fields
+      fireEvent.changeText(screen.getByPlaceholderText('Enter First Name'), 'John');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Last Name'), 'Doe');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
+
+      // Submit form
+      const submitButtons = screen.getAllByText('Create an Account');
+      const submitButton = submitButtons[submitButtons.length - 1];
+      fireEvent.press(submitButton.parent!);
+
+      await waitFor(() => {
+        expect(serverAuth.registerOnServer).toHaveBeenCalledWith({
+          email: 'john@example.com',
+          password: 'ValidPass123!',
+          firstName: 'John',
+          lastName: 'Doe',
+          DOB: 'Mon Jan 01 1990'
+        });
+      });
+    });
+
+    it('should navigate to SignIn screen when both Firebase and MongoDB registration succeed', async () => {
+      render(<RegisterScreen />);
+
+      // Fill in all fields
+      fireEvent.changeText(screen.getByPlaceholderText('Enter First Name'), 'John');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Last Name'), 'Doe');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
+
+      // Submit form
+      const submitButtons = screen.getAllByText('Create an Account');
+      const submitButton = submitButtons[submitButtons.length - 1];
+      fireEvent.press(submitButton.parent!);
+
+      await waitFor(() => {
+        expect(mockRouter.replace).toHaveBeenCalledWith('/(auth)/SignInScreen');
+      });
+    });
+
+    it('should show warning when MongoDB registration fails', async () => {
+      (serverAuth.registerOnServer as jest.Mock).mockRejectedValue(
+        new Error('MongoDB connection failed')
+      );
+
+      render(<RegisterScreen />);
+
+      // Fill in all fields
+      fireEvent.changeText(screen.getByPlaceholderText('Enter First Name'), 'John');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Last Name'), 'Doe');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
+
+      // Submit form
+      const submitButtons = screen.getAllByText('Create an Account');
+      const submitButton = submitButtons[submitButtons.length - 1];
+      fireEvent.press(submitButton.parent!);
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Warning: Account created but server registration failed. Please contact support.').length).toBeGreaterThan(0);
+      });
+    });
+
+    it('should not navigate when MongoDB registration fails', async () => {
+      (serverAuth.registerOnServer as jest.Mock).mockRejectedValue(
+        new Error('MongoDB connection failed')
+      );
+
+      render(<RegisterScreen />);
+
+      // Fill in all fields
+      fireEvent.changeText(screen.getByPlaceholderText('Enter First Name'), 'John');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Last Name'), 'Doe');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
+
+      // Submit form
+      const submitButtons = screen.getAllByText('Create an Account');
+      const submitButton = submitButtons[submitButtons.length - 1];
+      fireEvent.press(submitButton.parent!);
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Warning: Account created but server registration failed. Please contact support.').length).toBeGreaterThan(0);
+      });
+
+      // Should not navigate
+      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
   });
 });

@@ -24,6 +24,7 @@ import {
   validateRequired
 } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
+import { serverAuth } from "@/services/serverAuth";
 
 // DateTimePicker event interface for type safety
 interface DatePickerEvent {
@@ -173,14 +174,36 @@ export default function RegisterScreen() {
     setLoading(true);
 
     try {
+      // Step 1: Register with Firebase
+      logger.log('🔐 Registering with Firebase...');
       await auth().createUserWithEmailAndPassword(email, password);
+      logger.log('✅ Firebase registration successful');
+
+      // Step 2: Register with MongoDB server
+      logger.log('🔐 Registering with MongoDB server...');
+      try {
+        await serverAuth.registerOnServer({
+          email,
+          password,
+          firstName,
+          lastName,
+          DOB
+        });
+        logger.log('✅ MongoDB registration successful');
+      } catch (mongoError) {
+        logger.error('❌ MongoDB registration failed:', mongoError);
+        // If MongoDB registration fails, we should probably delete the Firebase user
+        // but for now, just warn the user
+        setErrMsg('Warning: Account created but server registration failed. Please contact support.');
+        setLoading(false);
+        return;
+      }
+
       // Signed up successfully
       // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
       // Native alert() is blocking and provides poor user experience on mobile
       // Consider: react-native-toast-notifications or expo-notifications
       alert("You are registered");
-      // add the Mongo information or how to get the data here
-      // register(user, password, firstName, lastName, DOB);
       router.replace("/(auth)/SignInScreen");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };

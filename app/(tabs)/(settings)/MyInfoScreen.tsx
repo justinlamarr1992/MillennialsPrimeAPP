@@ -35,7 +35,7 @@ export default function MyInfoScreen() {
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [username] = useState<string>(user?.email || "");
-  const [DOB] = useState<string>("");
+  const [DOB, setDOB] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [state, setState] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -58,6 +58,12 @@ export default function MyInfoScreen() {
       setState(profile.location?.state || "");
       setCity(profile.location?.city || "");
       setZip(profile.location?.zip?.toString() || "");
+
+      // Format DOB date for display
+      if (profile.DOB) {
+        const dobDate = new Date(profile.DOB);
+        setDOB(dobDate.toDateString());
+      }
     }
   }, [profile]);
 
