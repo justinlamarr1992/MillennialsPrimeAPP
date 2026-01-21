@@ -190,11 +190,21 @@ export default function RegisterScreen() {
           DOB
         });
         logger.log('✅ MongoDB registration successful');
-      } catch (mongoError) {
+      } catch (mongoError: unknown) {
         logger.error('❌ MongoDB registration failed:', mongoError);
-        // If MongoDB registration fails, we should probably delete the Firebase user
-        // but for now, just warn the user
-        setErrMsg('Warning: Account created but server registration failed. Please contact support.');
+        // Cleanup: delete Firebase user to avoid orphaned accounts
+        try {
+          const currentUser = auth().currentUser;
+          if (currentUser) {
+            await currentUser.delete();
+            logger.log('🧹 Firebase user deleted after MongoDB registration failure');
+          } else {
+            logger.log('ℹ️ No Firebase user found to delete after MongoDB failure');
+          }
+        } catch (cleanupError) {
+          logger.error('⚠️ Failed to delete Firebase user after MongoDB failure:', cleanupError);
+        }
+        setErrMsg('Registration failed on the server. Your account was not created. Please try again.');
         setLoading(false);
         return;
       }
