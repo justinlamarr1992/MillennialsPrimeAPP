@@ -605,8 +605,13 @@ describe('RegisterScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Warning: Account created but server registration failed. Please contact support.').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.').length).toBeGreaterThan(0);
       });
+
+      // Verify Firebase user cleanup was attempted
+      const mockAuth = require('@react-native-firebase/auth').default;
+      expect(mockAuth().signOut).toHaveBeenCalled();
+      expect(mockAuth().currentUser.delete).toHaveBeenCalled();
     });
 
     it('should not navigate when MongoDB registration fails', async () => {
@@ -630,8 +635,13 @@ describe('RegisterScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Warning: Account created but server registration failed. Please contact support.').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.').length).toBeGreaterThan(0);
       });
+
+      // Verify Firebase user cleanup was attempted
+      const mockAuth = require('@react-native-firebase/auth').default;
+      expect(mockAuth().signOut).toHaveBeenCalled();
+      expect(mockAuth().currentUser.delete).toHaveBeenCalled();
 
       // Should not navigate
       expect(mockRouter.replace).not.toHaveBeenCalled();

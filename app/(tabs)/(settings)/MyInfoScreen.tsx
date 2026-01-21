@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -21,7 +21,6 @@ import useAuth from "@/hooks/useAuth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { userProfileService } from "@/services/userProfileService";
-import { useEffect } from "react";
 
 export default function MyInfoScreen() {
   const { user } = useAuth();
@@ -34,7 +33,7 @@ export default function MyInfoScreen() {
   // Use States
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [name, setName] = useState("");
-  const [username] = useState<string>(user?.email || "");
+  const [username, setUsername] = useState<string>("");
   const [DOB, setDOB] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [state, setState] = useState<string>("");
@@ -48,6 +47,13 @@ export default function MyInfoScreen() {
   const [B2B, setB2B] = useState<string>("");
   const [eComm, setEComm] = useState<string>("");
   const [upload, setUpload] = useState<string>("");
+
+  // Update username when user loads
+  useEffect(() => {
+    if (user?.email) {
+      setUsername(user.email);
+    }
+  }, [user]);
 
   // Populate form fields when profile data is fetched
   useEffect(() => {

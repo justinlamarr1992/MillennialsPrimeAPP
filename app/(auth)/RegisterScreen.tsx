@@ -192,20 +192,25 @@ export default function RegisterScreen() {
         logger.log('✅ MongoDB registration successful');
       } catch (mongoError: unknown) {
         logger.error('❌ MongoDB registration failed:', mongoError);
-        // Cleanup: delete Firebase user to avoid orphaned accounts
+        // Cleanup: sign out and delete Firebase user to avoid orphaned accounts
         try {
           const currentUser = auth().currentUser;
           if (currentUser) {
+            // Sign out first to ensure auth listener sees a clean unauthenticated state
+            await auth().signOut();
             await currentUser.delete();
-            logger.log('🧹 Firebase user deleted after MongoDB registration failure');
+            if (__DEV__) {
+              logger.log('🧹 Firebase user signed out and deleted after MongoDB registration failure');
+            }
           } else {
-            logger.log('ℹ️ No Firebase user found to delete after MongoDB failure');
+            if (__DEV__) {
+              logger.log('ℹ️ No Firebase user found to delete after MongoDB failure');
+            }
           }
-        } catch (cleanupError) {
-          logger.error('⚠️ Failed to delete Firebase user after MongoDB failure:', cleanupError);
+        } catch (cleanupError: unknown) {
+          logger.error('⚠️ Failed to sign out/delete Firebase user after MongoDB failure:', cleanupError);
         }
         setErrMsg('Registration failed on the server. Your account was not created. Please try again.');
-        setLoading(false);
         return;
       }
 
