@@ -3,6 +3,7 @@ export const mockUser = {
   email: 'test@example.com',
   emailVerified: true,
   displayName: 'Test User',
+  delete: jest.fn().mockResolvedValue(undefined),
 };
 
 // Mock auth methods - these return promises to match React Native Firebase behavior
@@ -16,7 +17,7 @@ const onAuthStateChanged = jest.fn();
 // Mock auth() function that returns an object with all methods
 // This matches the React Native Firebase SDK pattern: auth().methodName()
 export const mockAuthInstance = {
-  currentUser: null,
+  currentUser: mockUser as typeof mockUser | null,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
@@ -53,7 +54,8 @@ export const resetFirebaseMocks = () => {
   sendPasswordResetEmail.mockReset();
   updateProfile.mockReset();
   onAuthStateChanged.mockReset();
-  mockAuthInstance.currentUser = null;
+  mockUser.delete.mockClear();
+  mockAuthInstance.currentUser = mockUser;
 };
 
 // Mock FirebaseAuthTypes namespace for type compatibility

@@ -24,6 +24,7 @@ import {
   validateRequired
 } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
+import { serverAuth } from "@/services/serverAuth";
 
 // DateTimePicker event interface for type safety
 interface DatePickerEvent {
@@ -173,14 +174,58 @@ export default function RegisterScreen() {
     setLoading(true);
 
     try {
+      // Step 1: Register with Firebase
+      if (__DEV__) {
+        logger.log('🔐 Registering with Firebase...');
+      }
       await auth().createUserWithEmailAndPassword(email, password);
+      if (__DEV__) {
+        logger.log('✅ Firebase registration successful');
+      }
+
+      // Step 2: Register with MongoDB server
+      if (__DEV__) {
+        logger.log('🔐 Registering with MongoDB server...');
+      }
+      try {
+        await serverAuth.registerOnServer({
+          email,
+          password,
+          firstName,
+          lastName,
+          DOB
+        });
+        if (__DEV__) {
+          logger.log('✅ MongoDB registration successful');
+        }
+      } catch (mongoError: unknown) {
+        logger.error('❌ MongoDB registration failed:', mongoError);
+        // Cleanup: delete Firebase user to avoid orphaned accounts
+        try {
+          const currentUser = auth().currentUser;
+          if (currentUser) {
+            // Delete user first (this automatically signs them out)
+            await currentUser.delete();
+            if (__DEV__) {
+              logger.log('🧹 Firebase user deleted after MongoDB registration failure');
+            }
+          } else {
+            if (__DEV__) {
+              logger.log('ℹ️ No Firebase user found to delete after MongoDB failure');
+            }
+          }
+        } catch (cleanupError: unknown) {
+          logger.error('⚠️ Failed to sign out/delete Firebase user after MongoDB failure:', cleanupError);
+        }
+        setErrMsg('Registration failed on the server. Your account was not created. Please try again.');
+        return;
+      }
+
       // Signed up successfully
       // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
       // Native alert() is blocking and provides poor user experience on mobile
       // Consider: react-native-toast-notifications or expo-notifications
       alert("You are registered");
-      // add the Mongo information or how to get the data here
-      // register(user, password, firstName, lastName, DOB);
       router.replace("/(auth)/SignInScreen");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };

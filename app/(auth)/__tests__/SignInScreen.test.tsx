@@ -165,9 +165,13 @@ describe('SignInScreen', () => {
       // Resolve the promise
       resolveSignIn!({ user: { uid: 'test-uid', email: 'test@example.com' } });
 
-      // Navigation should happen after sign in completes
+      // Navigation is handled by root layout auth listener, not by SignInScreen
+      // Verify sign in completed successfully instead
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith('/(tabs)/(home)/HomePage');
+        expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+          'test@example.com',
+          'ValidPass123!'
+        );
       });
     });
 
@@ -195,7 +199,7 @@ describe('SignInScreen', () => {
       });
     });
 
-    it('should navigate to HomePage on successful sign in', async () => {
+    it('should complete sign in successfully without explicit navigation', async () => {
       (signInWithEmailAndPassword as jest.Mock).mockResolvedValue({
         user: { uid: 'test-uid', email: 'test@example.com' }
       });
@@ -211,9 +215,12 @@ describe('SignInScreen', () => {
       const submitButton = screen.getByText('Login');
       fireEvent.press(submitButton.parent!);
 
+      // Navigation is handled by root layout auth listener
+      // Verify sign in completed without calling router.replace
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith('/(tabs)/(home)/HomePage');
+        expect(signInWithEmailAndPassword).toHaveBeenCalled();
       });
+      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
 
   });

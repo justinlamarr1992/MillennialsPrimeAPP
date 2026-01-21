@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -21,11 +21,10 @@ import useAuth from "@/hooks/useAuth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { userProfileService } from "@/services/userProfileService";
-import { useEffect } from "react";
 
 export default function MyInfoScreen() {
-  const { user, loading } = useAuth();
-  const { profile, loading: profileLoading, error: profileError, refetch } = useUserProfile();
+  const { user } = useAuth();
+  const { profile, refetch } = useUserProfile();
   useAxiosPrivate(); // Set up axios interceptors for authenticated requests
 
   const colorScheme = useColorScheme();
@@ -34,8 +33,8 @@ export default function MyInfoScreen() {
   // Use States
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [name, setName] = useState("");
-  const [username] = useState<string>(user?.email || "");
-  const [DOB] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [DOB, setDOB] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [state, setState] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -49,15 +48,30 @@ export default function MyInfoScreen() {
   const [eComm, setEComm] = useState<string>("");
   const [upload, setUpload] = useState<string>("");
 
+  // Update username when user loads
+  useEffect(() => {
+    if (user?.email) {
+      setUsername(user.email);
+    }
+  }, [user]);
+
   // Populate form fields when profile data is fetched
   useEffect(() => {
     if (profile) {
-      logger.log('📝 Populating form with profile data:', profile);
+      if (__DEV__) {
+        logger.log('📝 Populating form with profile data:', profile);
+      }
       setName(profile.name || "");
       setCountry(profile.location?.country || "");
       setState(profile.location?.state || "");
       setCity(profile.location?.city || "");
       setZip(profile.location?.zip?.toString() || "");
+
+      // Format DOB date for display
+      if (profile.DOB) {
+        const dobDate = new Date(profile.DOB);
+        setDOB(dobDate.toDateString());
+      }
     }
   }, [profile]);
 

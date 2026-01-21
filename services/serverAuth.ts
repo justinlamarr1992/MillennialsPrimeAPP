@@ -85,12 +85,14 @@ export const serverAuth = {
         pwd: password
       };
 
-      logger.log('🔐 Attempting server login:', {
-        email,
-        passwordLength: password?.length,
-        baseURL: axios.defaults.baseURL
-      });
-      logger.log('📦 Login payload:', JSON.stringify(payload));
+      if (__DEV__) {
+        logger.log('🔐 Attempting server login:', {
+          email,
+          passwordLength: password?.length,
+          baseURL: axios.defaults.baseURL
+        });
+        logger.log('📦 Login payload:', JSON.stringify(payload));
+      }
 
       const response = await axios.post('/auth', payload, {
         headers: {
@@ -98,8 +100,10 @@ export const serverAuth = {
         }
       });
 
-      logger.log('✅ Server response status:', response.status);
-      logger.log('📥 Server response data:', JSON.stringify(response.data));
+      if (__DEV__) {
+        logger.log('✅ Server response status:', response.status);
+        logger.log('📥 Server response data:', JSON.stringify(response.data));
+      }
 
       const { accessToken, _id, roles } = response.data;
 
@@ -109,12 +113,14 @@ export const serverAuth = {
 
       logger.log('✅ Server authentication successful, tokens stored securely');
       return { accessToken, _id, roles };
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error('❌ Server authentication failed');
-      logger.error('Error status:', error?.response?.status);
-      logger.error('Error data:', JSON.stringify(error?.response?.data));
-      logger.error('Error message:', error?.message);
-      logger.error('Full error:', error);
+      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number; data?: unknown }; message?: string };
+        logger.error('Error status:', axiosError.response?.status);
+        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
+        logger.error('Error message:', axiosError.message);
+      }
       throw error;
     }
   },
@@ -132,14 +138,16 @@ export const serverAuth = {
         DOB: userData.DOB
       };
 
-      logger.log('📝 Attempting server registration:', {
-        email: userData.email,
-        hasPassword: !!userData.password,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        DOB: userData.DOB
-      });
-      logger.log('📦 Registration payload:', JSON.stringify(payload));
+      if (__DEV__) {
+        logger.log('📝 Attempting server registration:', {
+          email: userData.email,
+          hasPassword: !!userData.password,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          DOB: userData.DOB
+        });
+        logger.log('📦 Registration payload:', JSON.stringify(payload));
+      }
 
       const response = await axios.post('/register', payload, {
         headers: {
@@ -147,13 +155,18 @@ export const serverAuth = {
         }
       });
 
-      logger.log('✅ Server registration successful');
-      logger.log('📥 Registration response:', JSON.stringify(response.data));
-    } catch (error: any) {
+      if (__DEV__) {
+        logger.log('✅ Server registration successful');
+        logger.log('📥 Registration response:', JSON.stringify(response.data));
+      }
+    } catch (error: unknown) {
       logger.error('❌ Server registration failed');
-      logger.error('Error status:', error?.response?.status);
-      logger.error('Error data:', JSON.stringify(error?.response?.data));
-      logger.error('Error message:', error?.message);
+      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number; data?: unknown }; message?: string };
+        logger.error('Error status:', axiosError.response?.status);
+        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
+        logger.error('Error message:', axiosError.message);
+      }
       throw error;
     }
   },

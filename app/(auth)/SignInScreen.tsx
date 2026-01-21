@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import {
   useColorScheme,
   Text,
@@ -76,8 +76,7 @@ export default function SignInScreen() {
         setErrMsg('Warning: Could not connect to server. Some features may be limited.');
       }
 
-      // Navigate to home page
-      router.replace("/(tabs)/(home)/HomePage");
+      // Navigation handled automatically by root layout auth listener
     } catch (error) {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
