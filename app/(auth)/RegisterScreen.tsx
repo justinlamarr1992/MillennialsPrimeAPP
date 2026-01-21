@@ -200,15 +200,14 @@ export default function RegisterScreen() {
         }
       } catch (mongoError: unknown) {
         logger.error('❌ MongoDB registration failed:', mongoError);
-        // Cleanup: sign out and delete Firebase user to avoid orphaned accounts
+        // Cleanup: delete Firebase user to avoid orphaned accounts
         try {
           const currentUser = auth().currentUser;
           if (currentUser) {
-            // Sign out first to ensure auth listener sees a clean unauthenticated state
-            await auth().signOut();
+            // Delete user first (this automatically signs them out)
             await currentUser.delete();
             if (__DEV__) {
-              logger.log('🧹 Firebase user signed out and deleted after MongoDB registration failure');
+              logger.log('🧹 Firebase user deleted after MongoDB registration failure');
             }
           } else {
             if (__DEV__) {
