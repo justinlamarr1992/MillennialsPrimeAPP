@@ -15,7 +15,7 @@ function ImagePickerComponent({ handleVideoSelect }: ImagePickerComponentProps) 
     // No Permission request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       // THIS IS ONLY VIDOES FOR THE PURPOSE BUT CAN BE ALL
-      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      mediaTypes: 'videos',
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
