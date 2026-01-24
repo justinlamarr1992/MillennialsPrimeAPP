@@ -5,11 +5,17 @@ import { logger } from '@/utils/logger';
 import { userProfileService } from '@/services/userProfileService';
 import useAuth from './useAuth';
 
+interface UseProfilePictureUploadResult {
+  profileImageUri: string | null;
+  handleImageSelected: (uri: string) => Promise<void>;
+  isUploading: boolean;
+}
+
 /**
  * Custom hook for managing profile picture upload
  * Handles loading from server, converting to base64, and uploading
  */
-export function useProfilePictureUpload() {
+export function useProfilePictureUpload(): UseProfilePictureUploadResult {
   const { user } = useAuth();
   const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -49,6 +55,9 @@ export function useProfilePictureUpload() {
 
   // Handle profile picture upload when user selects a new image
   const handleImageSelected = useCallback(async (uri: string) => {
+    // Store previous URI for rollback on error
+    const previousUri = profileImageUri;
+
     try {
       setIsUploading(true);
       if (__DEV__) {
@@ -56,7 +65,7 @@ export function useProfilePictureUpload() {
         logger.log('📁 Image URI:', uri);
       }
 
-      // Update UI immediately
+      // Update UI immediately (optimistic update)
       setProfileImageUri(uri);
 
       // Convert image URI to base64 using expo-file-system
@@ -95,18 +104,12 @@ export function useProfilePictureUpload() {
       }
       Alert.alert('Error', 'Failed to upload profile picture. Please try again.');
 
-      // Revert to previous image on error
-      try {
-        const previousUri = await userProfileService.getProfilePicture();
-        setProfileImageUri(previousUri);
-      } catch {
-        // If we can't load previous image, just set to null
-        setProfileImageUri(null);
-      }
+      // Revert to previous image on error (use stored value, no server call needed)
+      setProfileImageUri(previousUri);
     } finally {
       setIsUploading(false);
     }
-  }, []);
+  }, [profileImageUri]);
 
   return {
     profileImageUri,
