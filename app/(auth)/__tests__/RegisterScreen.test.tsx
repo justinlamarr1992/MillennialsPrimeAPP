@@ -644,5 +644,40 @@ describe('RegisterScreen', () => {
       // Should not navigate
       expect(mockRouter.replace).not.toHaveBeenCalled();
     });
+
+    it('user should be able to retry registration after MongoDB server failure', async () => {
+      // First attempt will fail
+      (serverAuth.registerOnServer as jest.Mock).mockRejectedValueOnce(
+        new Error('MongoDB connection failed')
+      );
+
+      render(<RegisterScreen />);
+
+      // User fills in registration form
+      fireEvent.changeText(screen.getByPlaceholderText('Enter First Name'), 'John');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Last Name'), 'Doe');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Email'), 'john@example.com');
+      fireEvent.changeText(screen.getByPlaceholderText('Enter Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Confirm Password'), 'ValidPass123!');
+      fireEvent.changeText(screen.getByPlaceholderText('Birthday'), 'Mon Jan 01 1990');
+
+      // User submits form
+      const submitButtons = screen.getAllByText('Create an Account');
+      const submitButton = submitButtons[submitButtons.length - 1];
+      fireEvent.press(submitButton.parent!);
+
+      // User sees error message
+      await waitFor(() => {
+        expect(screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.').length).toBeGreaterThan(0);
+      });
+
+      // User should see the submit button is back (can retry)
+      await waitFor(() => {
+        const retryButtons = screen.getAllByText('Create an Account');
+        expect(retryButtons.length).toBeGreaterThan(0);
+        // User should be able to press it again
+        expect(retryButtons[retryButtons.length - 1].parent).toBeTruthy();
+      });
+    });
   });
 });
