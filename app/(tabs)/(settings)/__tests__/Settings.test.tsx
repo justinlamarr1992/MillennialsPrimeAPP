@@ -22,11 +22,46 @@ jest.mock('@/hooks/useAuth', () => ({
   })),
 }));
 
+// Mock useAxiosPrivate hook
+jest.mock('@/hooks/useAxiosPrivate', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+// Mock useProfilePictureUpload hook
+jest.mock('@/hooks/useProfilePictureUpload', () => ({
+  useProfilePictureUpload: jest.fn(() => ({
+    profileImageUri: null,
+    handleImageSelected: jest.fn(),
+    isUploading: false,
+  })),
+}));
+
+// Mock ProfilePicture component
+jest.mock('@/components/ProfilePicture', () => {
+  return jest.fn(() => {
+    const React = require('react');
+    const { View } = require('react-native');
+    return React.createElement(View, { testID: 'mock-profile-picture' });
+  });
+});
+
 import { router } from 'expo-router';
 
 describe('Settings', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  describe('Screen Loads Successfully', () => {
+    it('user should see Settings screen load without errors', () => {
+      render(<Settings />);
+
+      // User should see the Settings screen content
+      expect(screen.getByText('Settings')).toBeTruthy();
+      expect(screen.getByText('Hello, Test User')).toBeTruthy();
+      expect(screen.getByText('testuser@example.com')).toBeTruthy();
+    });
   });
 
   describe('Content Display', () => {

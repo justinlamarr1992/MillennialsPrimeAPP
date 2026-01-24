@@ -38,7 +38,7 @@ export default function ProfilePicture({
 
       // Launch image picker
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: 'images',
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.8,
@@ -47,7 +47,16 @@ export default function ProfilePicture({
       if (!result.canceled && result.assets[0]) {
         const uri = result.assets[0].uri;
         logger.log("Profile picture selected:", uri);
-        onImageSelected(uri);
+        logger.log("Calling onImageSelected callback...");
+        logger.log("Callback type:", typeof onImageSelected);
+        logger.log("Callback is:", onImageSelected);
+        try {
+          const result = onImageSelected(uri);
+          logger.log("onImageSelected returned:", result);
+          logger.log("onImageSelected callback completed successfully");
+        } catch (callbackError) {
+          logger.error("onImageSelected callback threw error:", callbackError);
+        }
       }
     } catch (error) {
       logger.error("Error picking image:", error);
@@ -94,8 +103,9 @@ export default function ProfilePicture({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="profile-picture">
       <Pressable
+        testID="profile-picture-pressable"
         onPress={handleImagePick}
         disabled={!editable}
         style={[

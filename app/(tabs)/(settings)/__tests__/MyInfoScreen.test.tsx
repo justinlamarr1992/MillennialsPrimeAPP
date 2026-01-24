@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, act } from '@/__tests__/test-utils';
 import MyInfoScreen from '../MyInfoScreen';
 
 // Mock expo-router
@@ -10,14 +10,84 @@ jest.mock('expo-router', () => ({
   },
 }));
 
+// Mock expo-file-system
+jest.mock('expo-file-system', () => ({
+  readAsStringAsync: jest.fn(),
+  EncodingType: {
+    Base64: 'base64',
+  },
+}));
+
+// Mock expo-image-picker
+jest.mock('expo-image-picker', () => ({
+  requestMediaLibraryPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
+  launchImageLibraryAsync: jest.fn(),
+}));
+
+// Mock ProfilePicture component
+jest.mock('@/components/ProfilePicture', () => {
+  return jest.fn((props) => {
+    const React = require('react');
+    const { Pressable, Text } = require('react-native');
+    return React.createElement(
+      Pressable,
+      {
+        testID: 'mock-profile-picture',
+        onPress: () => props.onImageSelected('file:///path/to/image.jpg'),
+      },
+      React.createElement(Text, {}, 'Mock Profile Picture')
+    );
+  });
+});
+
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
   Picker: ({ children }: { children: React.ReactNode }) => children,
 }));
 
+// Mock useAuth hook
+jest.mock('@/hooks/useAuth', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    user: {
+      uid: 'test-user-id',
+      email: 'testuser@example.com',
+      displayName: 'Test User',
+    },
+    loading: false,
+  })),
+}));
+
+// Mock useUserProfile hook
+jest.mock('@/hooks/useUserProfile', () => ({
+  useUserProfile: jest.fn(() => ({
+    profile: null,
+    loading: false,
+    error: null,
+    refetch: jest.fn(),
+  })),
+}));
+
+// Mock useAxiosPrivate hook
+jest.mock('@/hooks/useAxiosPrivate', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+// Mock useProfilePictureUpload hook
+const mockHandleImageSelected = jest.fn();
+jest.mock('@/hooks/useProfilePictureUpload', () => ({
+  useProfilePictureUpload: jest.fn(() => ({
+    profileImageUri: null,
+    handleImageSelected: mockHandleImageSelected,
+    isUploading: false,
+  })),
+}));
+
 describe('MyInfoScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockHandleImageSelected.mockClear();
   });
 
   describe('Initial Content Display', () => {
@@ -283,6 +353,32 @@ describe('MyInfoScreen', () => {
 
       // Verify the button is pressable (no error thrown)
       expect(backButton).toBeTruthy();
+    });
+  });
+
+
+  describe('Profile Picture Display', () => {
+    it('should show profile picture area to user', () => {
+      render(<MyInfoScreen />);
+
+      // User should see the basic information section which includes profile picture
+      expect(screen.getByText('Basic Information')).toBeTruthy();
+    });
+  });
+
+  describe('When user selects a profile picture', () => {
+    it('user can select a photo and handleImageSelected is called', async () => {
+      const { getByTestId } = render(<MyInfoScreen />);
+
+      // User taps to select a photo
+      const mockProfilePicture = getByTestId('mock-profile-picture');
+
+      await act(async () => {
+        fireEvent.press(mockProfilePicture);
+      });
+
+      // The hook's handleImageSelected should be called with the image URI
+      expect(mockHandleImageSelected).toHaveBeenCalledWith('file:///path/to/image.jpg');
     });
   });
 });
