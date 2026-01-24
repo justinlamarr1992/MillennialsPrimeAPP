@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { logger } from '@/utils/logger';
@@ -48,7 +48,7 @@ export function useProfilePictureUpload() {
   }, [user]);
 
   // Handle profile picture upload when user selects a new image
-  const handleImageSelected = async (uri: string) => {
+  const handleImageSelected = useCallback(async (uri: string) => {
     try {
       setIsUploading(true);
       if (__DEV__) {
@@ -106,7 +106,7 @@ export function useProfilePictureUpload() {
     } finally {
       setIsUploading(false);
     }
-  };
+  }, []);
 
   return {
     profileImageUri,
