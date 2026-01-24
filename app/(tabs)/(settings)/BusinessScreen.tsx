@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -17,9 +17,12 @@ import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
 import { validateRequired } from "@/utils/validation";
 import useAuth from "@/hooks/useAuth";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { userProfileService } from "@/services/userProfileService";
 
 export default function BusinessScreen() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
+  const { profile, refetch } = useUserProfile();
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -69,6 +72,20 @@ export default function BusinessScreen() {
     setFactorsOfLocationPicker(!factorsOfLocationPicker);
   };
 
+  // Populate form fields when profile data is fetched
+  useEffect(() => {
+    if (profile?.business) {
+      if (__DEV__) {
+        logger.log('📝 Populating business form with profile data:', profile.business);
+      }
+      setEntrepreneur(profile.business.entrepreneur ? "Yes" : "No");
+      setIndustry(profile.business.industry || "");
+      setLengthOpen(profile.business.lengthOpen || "");
+      setFactorsOfLocation(profile.business.factorsOfLocation || "");
+      // Add other fields as needed
+    }
+  }, [profile]);
+
   const handleSubmit = async () => {
     logger.log('Business settings submit button pressed');
 
@@ -89,25 +106,39 @@ export default function BusinessScreen() {
     }
 
     try {
-      logger.log('Business settings submission started');
+      if (__DEV__) {
+        logger.log('📤 Business settings submission started');
+      }
 
       if (!user) {
-        logger.warn('No authenticated user found');
+        if (__DEV__) {
+          logger.warn('⚠️ No authenticated user found');
+        }
+        Alert.alert('Error', 'Please log in to save your business information.');
         return;
       }
 
-      // TODO: Add backend API call to save business settings
-      // await axiosPrivate.patch(`/users/${user.uid}/business-settings`, {
-      //   entrepreneur, industry, openOnMillPrime, lengthOpen, whyBusiness,
-      //   firstObjective, objectiveNow, howMany, productsAndServices,
-      //   primaryPromotion, factorsOfLocation
-      // });
+      // Save business data to MongoDB server
+      await userProfileService.updateBusiness({
+        entrepreneur,
+        industry,
+        businessSize: lengthOpen,
+        businessLocationReason: factorsOfLocation,
+      });
+
+      if (__DEV__) {
+        logger.log('✅ Business settings saved successfully');
+      }
+
+      // Refetch profile to get updated data
+      await refetch();
+
+      Alert.alert('Success', 'Your business information has been updated!');
 
       // Navigate to ArtScreen (next step in settings flow)
       router.push("/(tabs)/(settings)/ArtScreen");
-      logger.log('Business settings submitted successfully');
     } catch (err) {
-      logger.error('Business settings submission error:', err);
+      logger.error('❌ Business settings submission error:', err);
       Alert.alert('Error', 'Failed to save business settings. Please try again.');
     }
   };
