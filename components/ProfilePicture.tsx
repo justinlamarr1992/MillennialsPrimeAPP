@@ -9,6 +9,7 @@ export interface ProfilePictureProps {
   onImageSelected: (uri: string) => void;
   size?: number;
   editable?: boolean;
+  isUploading?: boolean;
 }
 
 const DEFAULT_SIZE = 120;
@@ -20,12 +21,13 @@ export default function ProfilePicture({
   onImageSelected,
   size = DEFAULT_SIZE,
   editable = true,
+  isUploading = false,
 }: ProfilePictureProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
   const handleImagePick = async (): Promise<void> => {
-    if (!editable) return;
+    if (!editable || isUploading) return;
 
     try {
       // Request media library permissions
@@ -100,7 +102,7 @@ export default function ProfilePicture({
       <Pressable
         testID="profile-picture-pressable"
         onPress={handleImagePick}
-        disabled={!editable}
+        disabled={!editable || isUploading}
         style={[
           styles.imageContainer,
           {
@@ -109,6 +111,7 @@ export default function ProfilePicture({
             borderRadius: size / 2,
             backgroundColor: colors["secC"],
             borderColor: colors["priC"],
+            opacity: isUploading ? 0.5 : 1,
           },
         ]}
       >

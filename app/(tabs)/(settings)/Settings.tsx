@@ -18,7 +18,7 @@ import ProfilePicture from "@/components/ProfilePicture";
 export default function Page() {
   const { user, loading } = useAuth();
   useAxiosPrivate(); // Set up axios interceptors for authenticated requests
-  const { profileImageUri, handleImageSelected } = useProfilePictureUpload();
+  const { profileImageUri, handleImageSelected, isUploading } = useProfilePictureUpload();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -50,6 +50,7 @@ export default function Page() {
           onImageSelected={handleImageSelected}
           size={120}
           editable={true}
+          isUploading={isUploading}
         />
         <Text style={[globalStyles.textTitle, { color: colors["text"], marginTop: 16 }]}>
           Settings

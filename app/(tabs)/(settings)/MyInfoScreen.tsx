@@ -26,7 +26,7 @@ import { userProfileService } from "@/services/userProfileService";
 export default function MyInfoScreen() {
   const { user } = useAuth();
   const { profile, refetch } = useUserProfile();
-  const { profileImageUri, handleImageSelected } = useProfilePictureUpload();
+  const { profileImageUri, handleImageSelected, isUploading } = useProfilePictureUpload();
   useAxiosPrivate(); // Set up axios interceptors for authenticated requests
 
   const colorScheme = useColorScheme();
@@ -219,6 +219,7 @@ export default function MyInfoScreen() {
               onImageSelected={handleImageSelected}
               size={120}
               editable={true}
+              isUploading={isUploading}
             />
             <Text style={[globalStyles.textTitle, { color: colors.text, marginTop: 16 }]}>
               Basic Information

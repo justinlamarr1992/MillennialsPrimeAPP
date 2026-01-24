@@ -136,13 +136,7 @@ export const userProfileService = {
         logger.log('✅ Server response data:', JSON.stringify(response.data));
       }
     } catch (error: unknown) {
-      logger.error('❌ Upload request failed');
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response?: { status?: number; data?: unknown }; message?: string };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-        logger.error('Error message:', axiosError.message);
-      }
+      logger.error('❌ Upload request failed', error);
       throw error;
     }
   },
