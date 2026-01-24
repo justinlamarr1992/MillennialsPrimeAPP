@@ -117,12 +117,28 @@ export const userProfileService = {
     const userId = await serverAuth.getUserId();
     if (!userId) throw new Error('User ID not found');
 
-    await axiosPrivate.post('/users/pic', {
-      _id: userId,
-      newImage: {
-        image: base64Image,
-      },
-    });
+    if (__DEV__) {
+      logger.log('🌐 Uploading to server - User ID:', userId);
+      logger.log('📊 Image data length:', base64Image.length);
+      logger.log('📊 Image data preview:', base64Image.substring(0, 100));
+    }
+
+    try {
+      const response = await axiosPrivate.post('/users/pic', {
+        _id: userId,
+        newImage: {
+          image: base64Image,
+        },
+      });
+
+      if (__DEV__) {
+        logger.log('✅ Server response status:', response.status);
+        logger.log('✅ Server response data:', JSON.stringify(response.data));
+      }
+    } catch (error: unknown) {
+      logger.error('❌ Upload request failed', error);
+      throw error;
+    }
   },
 
   /**

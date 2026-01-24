@@ -19,19 +19,20 @@ import { validateName, validateZip } from "@/utils/validation";
 import ProfilePicture from "@/components/ProfilePicture";
 import useAuth from "@/hooks/useAuth";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useProfilePictureUpload } from "@/hooks/useProfilePictureUpload";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { userProfileService } from "@/services/userProfileService";
 
 export default function MyInfoScreen() {
   const { user } = useAuth();
   const { profile, refetch } = useUserProfile();
+  const { profileImageUri, handleImageSelected, isUploading } = useProfilePictureUpload();
   useAxiosPrivate(); // Set up axios interceptors for authenticated requests
 
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
   // Use States
-  const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [username, setUsername] = useState<string>("");
   const [DOB, setDOB] = useState<string>("");
@@ -215,9 +216,10 @@ export default function MyInfoScreen() {
           <View style={globalStyles.formTitle}>
             <ProfilePicture
               imageUri={profileImageUri}
-              onImageSelected={setProfileImageUri}
+              onImageSelected={handleImageSelected}
               size={120}
               editable={true}
+              isUploading={isUploading}
             />
             <Text style={[globalStyles.textTitle, { color: colors.text, marginTop: 16 }]}>
               Basic Information

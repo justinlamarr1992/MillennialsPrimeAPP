@@ -6,18 +6,21 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { router } from "expo-router";
 import useAuth from "@/hooks/useAuth";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import { useProfilePictureUpload } from "@/hooks/useProfilePictureUpload";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import ProfilePicture from "@/components/ProfilePicture";
 
 export default function Page() {
   const { user, loading } = useAuth();
+  useAxiosPrivate(); // Set up axios interceptors for authenticated requests
+  const { profileImageUri, handleImageSelected, isUploading } = useProfilePictureUpload();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const [profileImageUri, setProfileImageUri] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -44,9 +47,10 @@ export default function Page() {
       <View style={globalStyles.formTitle}>
         <ProfilePicture
           imageUri={profileImageUri}
-          onImageSelected={setProfileImageUri}
+          onImageSelected={handleImageSelected}
           size={120}
           editable={true}
+          isUploading={isUploading}
         />
         <Text style={[globalStyles.textTitle, { color: colors["text"], marginTop: 16 }]}>
           Settings
