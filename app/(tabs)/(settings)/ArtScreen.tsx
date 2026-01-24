@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -15,9 +15,14 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { logger } from "@/utils/logger";
+import useAuth from "@/hooks/useAuth";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { userProfileService } from "@/services/userProfileService";
 
 export default function ArtScreen() {
   const router = useRouter();
+  const { user } = useAuth();
+  const { profile, refetch } = useUserProfile();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -52,21 +57,68 @@ export default function ArtScreen() {
     setSpecificIntegralPicker(!specificIntegralPicker);
   };
 
+  // Populate form fields when profile data is fetched
+  useEffect(() => {
+    if (profile?.art) {
+      if (__DEV__) {
+        logger.log('📝 Populating art form with profile data:', profile.art);
+      }
+      setArtist(profile.art.artist ? "Yes" : "No");
+      setProfessional(profile.art.professional ? "Yes" : "No");
+      setPurpose(profile.art.purpose || "");
+      setFavsOrNoneFavs(profile.art.favsOrNoneFavs || "");
+      setAffectIssues(profile.art.affectIssues || "");
+      setNavigateIndustry(profile.art.navigateIndustry || "");
+      setNetwork(profile.art.network ? "Yes" : "No");
+      setSpecificIntegral(profile.art.specificIntegral ? "Yes" : "No");
+    }
+  }, [profile]);
+
   const handleSubmit = async () => {
-    logger.log('Art settings submit button pressed');
+    if (__DEV__) {
+      logger.log('💾 Art settings submit button pressed');
+    }
 
     // Validation is optional for art settings since all fields are optional
     // Users can skip this section if they're not artists
 
     try {
-      logger.log('Art settings submission started');
-      // TODO: Add backend API call to save art settings
-      // await axiosPrivate.patch(`/users/${userId}/art-settings`, { ... });
+      if (__DEV__) {
+        logger.log('📤 Art settings submission started');
+      }
+
+      if (!user) {
+        if (__DEV__) {
+          logger.warn('⚠️ No authenticated user found');
+        }
+        Alert.alert('Error', 'Please log in to save your art information.');
+        return;
+      }
+
+      // Save art data to MongoDB server
+      await userProfileService.updateArt({
+        artist,
+        professionalArtist: professional,
+        purpose,
+        favorites: favsOrNoneFavs,
+        issues: affectIssues,
+        industryNavigation: navigateIndustry,
+        network,
+        integral: specificIntegral,
+      });
+
+      if (__DEV__) {
+        logger.log('✅ Art settings saved successfully');
+      }
+
+      // Refetch profile to get updated data
+      await refetch();
+
+      Alert.alert('Success', 'Your art information has been updated!');
 
       router.push("/(tabs)/(home)/HomePage");
-      logger.log('Art settings submitted successfully');
     } catch (err) {
-      logger.error('Art settings submission error:', err);
+      logger.error('❌ Art settings submission error:', err);
       Alert.alert('Error', 'Failed to save art settings. Please try again.');
     }
   };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
 import ArtScreen from '../ArtScreen';
 
 // Create mock functions
@@ -22,6 +22,36 @@ jest.mock('expo-router', () => ({
 jest.mock('@react-native-picker/picker', () => ({
   Picker: ({ children, onValueChange, selectedValue }: { children: React.ReactNode; onValueChange?: (value: string) => void; selectedValue?: string; }) => {
     return children;
+  },
+}));
+
+// Mock useAuth hook
+jest.mock('@/hooks/useAuth', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    user: {
+      uid: 'test-user-id',
+      email: 'testuser@example.com',
+      displayName: 'Test User',
+    },
+    loading: false,
+  })),
+}));
+
+// Mock useUserProfile hook
+jest.mock('@/hooks/useUserProfile', () => ({
+  useUserProfile: jest.fn(() => ({
+    profile: null,
+    loading: false,
+    error: null,
+    refetch: jest.fn(),
+  })),
+}));
+
+// Mock userProfileService
+jest.mock('@/services/userProfileService', () => ({
+  userProfileService: {
+    updateArt: jest.fn(),
   },
 }));
 
@@ -129,22 +159,27 @@ describe('ArtScreen', () => {
   });
 
   describe('Save Changes Behavior', () => {
-    it('should call handleSubmit when save button is pressed', () => {
+    it('should navigate to HomePage after user presses save button', async () => {
       const { getByText } = render(<ArtScreen />);
 
       const saveButton = getByText('Save Changes');
       fireEvent.press(saveButton);
 
-      expect(mockPush).toHaveBeenCalledWith('/(tabs)/(home)/HomePage');
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/(tabs)/(home)/HomePage');
+      });
     });
 
-    it('should navigate to HomePage after save', () => {
+    it('should allow user to submit their art information', async () => {
       const { getByText } = render(<ArtScreen />);
 
       const saveButton = getByText('Save Changes');
       fireEvent.press(saveButton);
 
-      expect(mockPush).toHaveBeenCalledTimes(1);
+      // User's action should result in navigation
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledTimes(1);
+      });
     });
   });
 

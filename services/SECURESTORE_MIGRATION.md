@@ -28,7 +28,7 @@ This document explains how the migration from AsyncStorage to SecureStore works 
 ┌─────────────────────────────────────────────────────────────┐
 │  Step 1: Check Migration Status                            │
 │  ─────────────────────────────────────────────────────────  │
-│  SecureStore.getItemAsync('@secure_store_migration_completed') │
+│  SecureStore.getItemAsync('secure_store_migration_completed') │
 │                                                               │
 │  Returns: null (not migrated yet)                            │
 └─────────────────────────────────────────────────────────────┘
@@ -37,10 +37,10 @@ This document explains how the migration from AsyncStorage to SecureStore works 
 ┌─────────────────────────────────────────────────────────────┐
 │  Step 2: Read Old Data from AsyncStorage                    │
 │  ─────────────────────────────────────────────────────────  │
-│  AsyncStorage.getItem('@server_access_token')              │
+│  AsyncStorage.getItem('server_access_token')              │
 │  → Returns: "jwt_token_abc123..."                           │
 │                                                               │
-│  AsyncStorage.getItem('@server_user_id')                   │
+│  AsyncStorage.getItem('server_user_id')                   │
 │  → Returns: "64f5a3b2c1e8d9..."                             │
 └─────────────────────────────────────────────────────────────┘
                           │
@@ -48,10 +48,10 @@ This document explains how the migration from AsyncStorage to SecureStore works 
 ┌─────────────────────────────────────────────────────────────┐
 │  Step 3: Write Data to SecureStore (ENCRYPTED)              │
 │  ─────────────────────────────────────────────────────────  │
-│  SecureStore.setItemAsync('@server_access_token', token)    │
+│  SecureStore.setItemAsync('server_access_token', token)    │
 │  → Stored in iOS Keychain / Android Keystore               │
 │                                                               │
-│  SecureStore.setItemAsync('@server_user_id', userId)        │
+│  SecureStore.setItemAsync('server_user_id', userId)        │
 │  → Stored in iOS Keychain / Android Keystore               │
 └─────────────────────────────────────────────────────────────┘
                           │
@@ -59,8 +59,8 @@ This document explains how the migration from AsyncStorage to SecureStore works 
 ┌─────────────────────────────────────────────────────────────┐
 │  Step 4: Clean Up Old Data                                  │
 │  ─────────────────────────────────────────────────────────  │
-│  AsyncStorage.removeItem('@server_access_token')            │
-│  AsyncStorage.removeItem('@server_user_id')                 │
+│  AsyncStorage.removeItem('server_access_token')            │
+│  AsyncStorage.removeItem('server_user_id')                 │
 │                                                               │
 │  ✓ Old unencrypted data deleted                             │
 └─────────────────────────────────────────────────────────────┘
@@ -70,7 +70,7 @@ This document explains how the migration from AsyncStorage to SecureStore works 
 │  Step 5: Mark Migration Complete                            │
 │  ─────────────────────────────────────────────────────────  │
 │  SecureStore.setItemAsync(                                  │
-│    '@secure_store_migration_completed',                     │
+│    'secure_store_migration_completed',                     │
 │    'true'                                                     │
 │  )                                                            │
 │                                                               │
@@ -95,7 +95,7 @@ USER OPENS APP AGAIN
         ▼
 Check Migration Status
         │
-SecureStore.getItemAsync('@secure_store_migration_completed')
+SecureStore.getItemAsync('secure_store_migration_completed')
         │
 Returns: 'true' ✓
         │
@@ -108,19 +108,19 @@ SKIP MIGRATION → Read directly from SecureStore
 ### Before Migration (AsyncStorage)
 ```typescript
 // OLD CODE - Unencrypted storage
-await AsyncStorage.setItem('@server_access_token', token);
-const token = await AsyncStorage.getItem('@server_access_token');
+await AsyncStorage.setItem('server_access_token', token);
+const token = await AsyncStorage.getItem('server_access_token');
 
 // ❌ Token stored as plain text:
 // /data/data/com.app/shared_prefs/RCTAsyncLocalStorage.xml
-// <string name="@server_access_token">eyJhbGciOiJIUzI1...</string>
+// <string name="server_access_token">eyJhbGciOiJIUzI1...</string>
 ```
 
 ### After Migration (SecureStore)
 ```typescript
 // NEW CODE - Encrypted storage
-await SecureStore.setItemAsync('@server_access_token', token);
-const token = await SecureStore.getItemAsync('@server_access_token');
+await SecureStore.setItemAsync('server_access_token', token);
+const token = await SecureStore.getItemAsync('server_access_token');
 
 // ✅ Token stored encrypted:
 // iOS: /var/mobile/Library/Keychains/keychain-2.db (encrypted)
