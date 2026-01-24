@@ -218,7 +218,6 @@ export default function RegisterScreen() {
           logger.error('⚠️ Failed to sign out/delete Firebase user after MongoDB failure:', cleanupError);
         }
         setErrMsg('Registration failed on the server. Your account was not created. Please try again.');
-        setLoading(false);
         return;
       }
 
