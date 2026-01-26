@@ -29,6 +29,13 @@ module.exports = {
     '**/?(*.)+(test|spec).[jt]s?(x)',
   ],
 
+  // Ignore patterns for tests
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/\\.history/',
+    'eslint\\.config\\.test\\.js',
+  ],
+
   // Coverage configuration
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
