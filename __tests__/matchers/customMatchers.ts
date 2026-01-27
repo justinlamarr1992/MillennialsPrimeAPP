@@ -9,7 +9,7 @@
  * expect(mockFn).toHaveBeenCalledOnceWith('arg');
  */
 
-import { expect } from '@jest/globals';
+import { expect } from "@jest/globals";
 
 declare global {
   namespace jest {
@@ -37,7 +37,7 @@ declare global {
       /**
        * Validates that a function was called exactly once with specific args
        */
-      toHaveBeenCalledOnceWith(...args: any[]): R;
+      toHaveBeenCalledOnceWith(...args: unknown[]): R;
 
       /**
        * Validates that a component renders without crashing
@@ -89,7 +89,7 @@ export const toBeValidEmail = (received: string) => {
 export const toBeValidPhone = (received: string) => {
   // Supports formats: 555-0100, (555) 555-0100, 555.555.0100, 5555550100
   const phoneRegex = /^[\d\s\-().]+$/;
-  const pass = phoneRegex.test(received) && received.replace(/\D/g, '').length >= 10;
+  const pass = phoneRegex.test(received) && received.replace(/\D/g, "").length >= 10;
 
   return {
     pass,
@@ -120,9 +120,10 @@ export const toBeValidZipCode = (received: string | number) => {
 /**
  * Auth tokens validation matcher
  */
-export const toHaveAuthTokens = (received: any) => {
-  const hasAccessToken = typeof received?.accessToken === 'string' && received.accessToken.length > 0;
-  const hasUserId = typeof received?._id === 'string' && received._id.length > 0;
+export const toHaveAuthTokens = (received: unknown) => {
+  const obj = received as Record<string, unknown>;
+  const hasAccessToken = typeof obj?.accessToken === "string" && obj.accessToken.length > 0;
+  const hasUserId = typeof obj?._id === "string" && obj._id.length > 0;
   const pass = hasAccessToken && hasUserId;
 
   return {
@@ -140,7 +141,7 @@ export const toHaveAuthTokens = (received: any) => {
 export const toHaveBeenCalledOnceWith = function (
   this: jest.MatcherContext,
   received: jest.Mock,
-  ...expectedArgs: any[]
+  ...expectedArgs: unknown[]
 ) {
   const { calls } = received.mock;
   const pass = calls.length === 1 && this.equals(calls[0], expectedArgs);
@@ -151,14 +152,14 @@ export const toHaveBeenCalledOnceWith = function (
       pass
         ? `expected function not to be called once with ${this.utils.printExpected(expectedArgs)}`
         : `expected function to be called once with ${this.utils.printExpected(expectedArgs)}\n` +
-          `  Received ${calls.length} call(s):\n${calls.map((call, i) => `    ${i + 1}. ${this.utils.printReceived(call)}`).join('\n')}`,
+          `  Received ${calls.length} call(s):\n${calls.map((call, i) => `    ${i + 1}. ${this.utils.printReceived(call)}`).join("\n")}`,
   };
 };
 
 /**
  * Render without errors matcher
  */
-export const toRenderWithoutErrors = (received: () => any) => {
+export const toRenderWithoutErrors = (received: () => unknown) => {
   let pass = true;
   let error: Error | null = null;
 
@@ -227,9 +228,10 @@ export const toBeISODateString = (received: string) => {
 /**
  * Valid profile matcher
  */
-export const toBeValidProfile = (received: any) => {
-  const requiredFields = ['firstName', 'lastName', 'email'];
-  const missingFields = requiredFields.filter((field) => !received?.[field]);
+export const toBeValidProfile = (received: unknown) => {
+  const obj = received as Record<string, unknown>;
+  const requiredFields = ["firstName", "lastName", "email"];
+  const missingFields = requiredFields.filter((field) => !obj?.[field]);
   const pass = missingFields.length === 0;
 
   return {
@@ -237,8 +239,8 @@ export const toBeValidProfile = (received: any) => {
     message: () =>
       pass
         ? `expected profile not to be valid`
-        : `expected profile to have required fields: ${requiredFields.join(', ')}\n` +
-          `  Missing: ${missingFields.join(', ')}\n` +
+        : `expected profile to have required fields: ${requiredFields.join(", ")}\n` +
+          `  Missing: ${missingFields.join(", ")}\n` +
           `  Received: ${JSON.stringify(received, null, 2)}`,
   };
 };
@@ -246,9 +248,10 @@ export const toBeValidProfile = (received: any) => {
 /**
  * Valid post matcher
  */
-export const toBeValidPost = (received: any) => {
-  const requiredFields = ['id', 'title', 'authorId', 'authorName', 'createdAt'];
-  const missingFields = requiredFields.filter((field) => !received?.[field]);
+export const toBeValidPost = (received: unknown) => {
+  const obj = received as Record<string, unknown>;
+  const requiredFields = ["id", "title", "authorId", "authorName", "createdAt"];
+  const missingFields = requiredFields.filter((field) => !obj?.[field]);
   const pass = missingFields.length === 0;
 
   return {
@@ -256,8 +259,8 @@ export const toBeValidPost = (received: any) => {
     message: () =>
       pass
         ? `expected post not to be valid`
-        : `expected post to have required fields: ${requiredFields.join(', ')}\n` +
-          `  Missing: ${missingFields.join(', ')}\n` +
+        : `expected post to have required fields: ${requiredFields.join(", ")}\n` +
+          `  Missing: ${missingFields.join(", ")}\n` +
           `  Received: ${JSON.stringify(received, null, 2)}`,
   };
 };

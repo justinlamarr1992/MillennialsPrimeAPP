@@ -27,11 +27,11 @@ export interface MockUser {
 }
 
 export const createMockUser = (overrides?: Partial<MockUser>): MockUser => ({
-  id: 'user-123',
-  email: 'test@example.com',
-  firstName: 'John',
-  lastName: 'Doe',
-  DOB: '1990-01-01',
+  id: "user-123",
+  email: "test@example.com",
+  firstName: "John",
+  lastName: "Doe",
+  DOB: "1990-01-01",
   roles: { User: 2001 },
   ...overrides,
 });
@@ -61,8 +61,8 @@ export interface MockAuthResponse {
 export const createMockAuthResponse = (
   overrides?: Partial<MockAuthResponse>
 ): MockAuthResponse => ({
-  accessToken: 'mock-access-token-123',
-  _id: 'user-mongodb-id-456',
+  accessToken: "mock-access-token-123",
+  _id: "user-mongodb-id-456",
   roles: { User: 2001 },
   ...overrides,
 });
@@ -87,16 +87,16 @@ export interface MockMyInfoProfile {
 export const createMockMyInfoProfile = (
   overrides?: Partial<MockMyInfoProfile>
 ): MockMyInfoProfile => ({
-  firstName: 'John',
-  lastName: 'Doe',
-  DOB: '1990-01-01',
-  email: 'john.doe@example.com',
-  phone: '555-0100',
-  address: '123 Main St',
-  city: 'New York',
-  state: 'NY',
-  zip: '10001',
-  country: 'USA',
+  firstName: "John",
+  lastName: "Doe",
+  DOB: "1990-01-01",
+  email: "john.doe@example.com",
+  phone: "555-0100",
+  address: "123 Main St",
+  city: "New York",
+  state: "NY",
+  zip: "10001",
+  country: "USA",
   ...overrides,
 });
 
@@ -111,11 +111,11 @@ export interface MockBusinessProfile {
 export const createMockBusinessProfile = (
   overrides?: Partial<MockBusinessProfile>
 ): MockBusinessProfile => ({
-  entrepreneur: 'Yes',
-  businessSize: 'Small',
-  businessLocationReason: 'Market access',
-  lengthOpen: '1-2 years',
-  factorsOfLocation: 'Demographics',
+  entrepreneur: "Yes",
+  businessSize: "Small",
+  businessLocationReason: "Market access",
+  lengthOpen: "1-2 years",
+  factorsOfLocation: "Demographics",
   ...overrides,
 });
 
@@ -128,15 +128,13 @@ export interface MockArtProfile {
   integral?: string;
 }
 
-export const createMockArtProfile = (
-  overrides?: Partial<MockArtProfile>
-): MockArtProfile => ({
-  artist: 'Yes',
-  professionalArtist: 'Full-time',
-  favorites: 'Painting',
-  issues: 'Funding',
-  industryNavigation: 'Networking',
-  integral: 'Community support',
+export const createMockArtProfile = (overrides?: Partial<MockArtProfile>): MockArtProfile => ({
+  artist: "Yes",
+  professionalArtist: "Full-time",
+  favorites: "Painting",
+  issues: "Funding",
+  industryNavigation: "Networking",
+  integral: "Community support",
   ...overrides,
 });
 
@@ -158,15 +156,13 @@ export interface MockTextPost {
   isPrime?: boolean;
 }
 
-export const createMockTextPost = (
-  overrides?: Partial<MockTextPost>
-): MockTextPost => ({
-  id: 'post-123',
-  title: 'Test Post Title',
-  description: 'This is a test post description',
-  authorId: 'user-123',
-  authorName: 'John Doe',
-  createdAt: '2026-01-26T12:00:00Z',
+export const createMockTextPost = (overrides?: Partial<MockTextPost>): MockTextPost => ({
+  id: "post-123",
+  title: "Test Post Title",
+  description: "This is a test post description",
+  authorId: "user-123",
+  authorName: "John Doe",
+  createdAt: "2026-01-26T12:00:00Z",
   likeCount: 10,
   commentCount: 5,
   dislikeCount: 2,
@@ -177,14 +173,14 @@ export const createMockTextPost = (
 
 export const createMockAdminPost = (overrides?: Partial<MockTextPost>): MockTextPost =>
   createMockTextPost({
-    authorName: 'Admin User',
+    authorName: "Admin User",
     isAdmin: true,
     ...overrides,
   });
 
 export const createMockPrimePost = (overrides?: Partial<MockTextPost>): MockTextPost =>
   createMockTextPost({
-    authorName: 'Prime User',
+    authorName: "Prime User",
     isPrime: true,
     ...overrides,
   });
@@ -195,12 +191,10 @@ export interface MockVideoPost extends MockTextPost {
   duration?: number;
 }
 
-export const createMockVideoPost = (
-  overrides?: Partial<MockVideoPost>
-): MockVideoPost => ({
+export const createMockVideoPost = (overrides?: Partial<MockVideoPost>): MockVideoPost => ({
   ...createMockTextPost(),
-  videoUrl: 'https://example.com/video.mp4',
-  thumbnailUrl: 'https://example.com/thumbnail.jpg',
+  videoUrl: "https://example.com/video.mp4",
+  thumbnailUrl: "https://example.com/thumbnail.jpg",
   duration: 120,
   ...overrides,
 });
@@ -211,11 +205,9 @@ export interface MockPicturePost extends MockTextPost {
   imageHeight?: number;
 }
 
-export const createMockPicturePost = (
-  overrides?: Partial<MockPicturePost>
-): MockPicturePost => ({
+export const createMockPicturePost = (overrides?: Partial<MockPicturePost>): MockPicturePost => ({
   ...createMockTextPost(),
-  imageUrl: 'https://example.com/image.jpg',
+  imageUrl: "https://example.com/image.jpg",
   imageWidth: 800,
   imageHeight: 600,
   ...overrides,
@@ -230,14 +222,12 @@ export interface MockComment {
   likeCount: number;
 }
 
-export const createMockComment = (
-  overrides?: Partial<MockComment>
-): MockComment => ({
-  id: 'comment-123',
-  text: 'This is a test comment',
-  authorId: 'user-123',
-  authorName: 'John Doe',
-  createdAt: '2026-01-26T12:00:00Z',
+export const createMockComment = (overrides?: Partial<MockComment>): MockComment => ({
+  id: "comment-123",
+  text: "This is a test comment",
+  authorId: "user-123",
+  authorName: "John Doe",
+  createdAt: "2026-01-26T12:00:00Z",
   likeCount: 3,
   ...overrides,
 });
@@ -251,26 +241,23 @@ export interface MockFirebaseError {
   message: string;
 }
 
-export const createMockFirebaseError = (
-  code: string,
-  message?: string
-): MockFirebaseError => ({
+export const createMockFirebaseError = (code: string, message?: string): MockFirebaseError => ({
   code,
   message: message || `Firebase error: ${code}`,
 });
 
 export const createMockAuthErrors = () => ({
-  userNotFound: createMockFirebaseError('auth/user-not-found', 'User not found'),
-  wrongPassword: createMockFirebaseError('auth/wrong-password', 'Wrong password'),
-  invalidCredential: createMockFirebaseError('auth/invalid-credential', 'Invalid credential'),
-  userDisabled: createMockFirebaseError('auth/user-disabled', 'User disabled'),
-  tooManyRequests: createMockFirebaseError('auth/too-many-requests', 'Too many requests'),
-  emailInUse: createMockFirebaseError('auth/email-already-in-use', 'Email in use'),
-  weakPassword: createMockFirebaseError('auth/weak-password', 'Weak password'),
-  invalidEmail: createMockFirebaseError('auth/invalid-email', 'Invalid email'),
-  networkError: createMockFirebaseError('auth/network-request-failed', 'Network failed'),
-  invalidToken: createMockFirebaseError('auth/invalid-user-token', 'Invalid token'),
-  tokenExpired: createMockFirebaseError('auth/user-token-expired', 'Token expired'),
+  userNotFound: createMockFirebaseError("auth/user-not-found", "User not found"),
+  wrongPassword: createMockFirebaseError("auth/wrong-password", "Wrong password"),
+  invalidCredential: createMockFirebaseError("auth/invalid-credential", "Invalid credential"),
+  userDisabled: createMockFirebaseError("auth/user-disabled", "User disabled"),
+  tooManyRequests: createMockFirebaseError("auth/too-many-requests", "Too many requests"),
+  emailInUse: createMockFirebaseError("auth/email-already-in-use", "Email in use"),
+  weakPassword: createMockFirebaseError("auth/weak-password", "Weak password"),
+  invalidEmail: createMockFirebaseError("auth/invalid-email", "Invalid email"),
+  networkError: createMockFirebaseError("auth/network-request-failed", "Network failed"),
+  invalidToken: createMockFirebaseError("auth/invalid-user-token", "Invalid token"),
+  tokenExpired: createMockFirebaseError("auth/user-token-expired", "Token expired"),
 });
 
 /**
@@ -282,11 +269,9 @@ export interface MockLoginForm {
   password: string;
 }
 
-export const createMockLoginForm = (
-  overrides?: Partial<MockLoginForm>
-): MockLoginForm => ({
-  email: 'test@example.com',
-  password: 'password123',
+export const createMockLoginForm = (overrides?: Partial<MockLoginForm>): MockLoginForm => ({
+  email: "test@example.com",
+  password: "password123",
   ...overrides,
 });
 
@@ -300,12 +285,12 @@ export interface MockRegisterForm extends MockLoginForm {
 export const createMockRegisterForm = (
   overrides?: Partial<MockRegisterForm>
 ): MockRegisterForm => ({
-  email: 'newuser@example.com',
-  password: 'SecurePass123!',
-  confirmPassword: 'SecurePass123!',
-  firstName: 'Jane',
-  lastName: 'Smith',
-  DOB: '1995-05-15',
+  email: "newuser@example.com",
+  password: "SecurePass123!",
+  confirmPassword: "SecurePass123!",
+  firstName: "Jane",
+  lastName: "Smith",
+  DOB: "1995-05-15",
   ...overrides,
 });
 
@@ -313,29 +298,29 @@ export const createMockRegisterForm = (
  * API Response Data
  */
 
-export interface MockApiResponse<T = any> {
+export interface MockApiResponse<T = unknown> {
   data: T;
   status?: number;
   statusText?: string;
 }
 
-export const createMockApiResponse = <T = any>(
+export const createMockApiResponse = <T = unknown>(
   data: T,
   overrides?: Partial<MockApiResponse<T>>
 ): MockApiResponse<T> => ({
   data,
   status: 200,
-  statusText: 'OK',
+  statusText: "OK",
   ...overrides,
 });
 
 export const createMockApiError = (
   status: number,
   message: string
-): MockApiResponse => ({
+): MockApiResponse<{ message: string }> => ({
   data: { message },
   status,
-  statusText: status === 401 ? 'Unauthorized' : 'Error',
+  statusText: status === 401 ? "Unauthorized" : "Error",
 });
 
 /**
@@ -343,13 +328,13 @@ export const createMockApiError = (
  */
 
 export const edgeCaseStrings = {
-  empty: '',
-  whitespace: '   ',
-  veryLong: 'A'.repeat(500),
+  empty: "",
+  whitespace: "   ",
+  veryLong: "A".repeat(500),
   withSpecialChars: 'Test & "special" <chars>',
-  withUnicode: 'José García Müller',
-  withNewlines: 'Line 1\nLine 2\nLine 3',
-  withEmojis: 'Hello 👋 World 🌍',
+  withUnicode: "José García Müller",
+  withNewlines: "Line 1\nLine 2\nLine 3",
+  withEmojis: "Hello 👋 World 🌍",
   withHtml: '<script>alert("xss")</script>',
   withSql: "'; DROP TABLE users; --",
 };
@@ -368,7 +353,7 @@ export const edgeCaseArrays = {
   empty: [],
   single: [1],
   duplicate: [1, 1, 1],
-  mixed: [1, 'two', true, null, undefined],
+  mixed: [1, "two", true, null, undefined],
 };
 
 /**
@@ -425,8 +410,8 @@ export const createMockUserWithProfile = (
  * Create mock data for post ownership scenarios
  */
 export const createPostOwnershipScenario = () => {
-  const owner = createMockUser({ id: 'owner-123' });
-  const nonOwner = createMockUser({ id: 'other-456' });
+  const owner = createMockUser({ id: "owner-123" });
+  const nonOwner = createMockUser({ id: "other-456" });
   const post = createMockTextPost({ authorId: owner.id });
 
   return { owner, nonOwner, post };
