@@ -140,7 +140,7 @@ export default function RegisterScreen() {
   const isFormValid = useMemo(() => {
     const errors = validateForm();
     return !errors.hasErrors;
-  }, [email, password, matchPassword, firstName, lastName, DOB]);
+  }, [validateForm]);
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);

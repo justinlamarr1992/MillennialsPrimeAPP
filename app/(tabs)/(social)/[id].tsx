@@ -4,7 +4,7 @@ import { useLocalSearchParams } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
-export default function id() {
+export default function Id() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];

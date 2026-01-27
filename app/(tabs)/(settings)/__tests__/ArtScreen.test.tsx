@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
 import ArtScreen from '../ArtScreen';
+import { useRouter } from 'expo-router';
 
 // Create mock functions
 const mockPush = jest.fn();
@@ -20,7 +21,7 @@ jest.mock('expo-router', () => ({
 
 // Mock @react-native-picker/picker
 jest.mock('@react-native-picker/picker', () => ({
-  Picker: ({ children, onValueChange, selectedValue }: { children: React.ReactNode; onValueChange?: (value: string) => void; selectedValue?: string; }) => {
+  Picker: ({ children }: { children: React.ReactNode }) => {
     return children;
   },
 }));
@@ -54,8 +55,6 @@ jest.mock('@/services/userProfileService', () => ({
     updateArt: jest.fn(),
   },
 }));
-
-import { useRouter } from 'expo-router';
 
 describe('ArtScreen', () => {
   beforeEach(() => {

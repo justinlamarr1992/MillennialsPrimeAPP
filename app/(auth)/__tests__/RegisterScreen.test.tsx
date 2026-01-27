@@ -4,6 +4,7 @@ import RegisterScreen from '../RegisterScreen';
 import { router } from 'expo-router';
 import { createUserWithEmailAndPassword } from '@/__tests__/__mocks__/firebase';
 import { serverAuth } from '@/services/serverAuth';
+import auth from '@react-native-firebase/auth';
 
 // @react-native-firebase/auth is already mocked in setup.ts
 
@@ -614,8 +615,8 @@ describe('RegisterScreen', () => {
       });
 
       // Verify Firebase user cleanup was attempted (delete automatically signs out)
-      const mockAuth = require('@react-native-firebase/auth').default;
-      expect(mockAuth().currentUser.delete).toHaveBeenCalled();
+      const mockAuth = auth as jest.Mocked<typeof auth>;
+      expect(mockAuth().currentUser!.delete).toHaveBeenCalled();
     });
 
     it('should not navigate when MongoDB registration fails', async () => {
@@ -644,8 +645,8 @@ describe('RegisterScreen', () => {
       });
 
       // Verify Firebase user cleanup was attempted (delete automatically signs out)
-      const mockAuth = require('@react-native-firebase/auth').default;
-      expect(mockAuth().currentUser.delete).toHaveBeenCalled();
+      const mockAuth = auth as jest.Mocked<typeof auth>;
+      expect(mockAuth().currentUser!.delete).toHaveBeenCalled();
 
       // Should not navigate
       expect(mockRouter.replace).not.toHaveBeenCalled();

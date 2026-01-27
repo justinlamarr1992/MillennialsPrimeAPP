@@ -172,7 +172,7 @@ export default function ArtScreen() {
                   <Picker.Item label="No" value="No" />
                 </Picker>
               )}
-              {artist == "Yes" && (
+              {artist === "Yes" && (
                 <View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
@@ -309,7 +309,7 @@ export default function ArtScreen() {
                         </Picker>
                       )}
                     </View>
-                    {network == "Yes" && (
+                    {network === "Yes" && (
                       <View style={globalStyles.labelInput}>
                         <Text style={[globalStyles.labelText, { color: colors.text }]}>
                           How do they Support you?
@@ -349,7 +349,7 @@ export default function ArtScreen() {
                         </Picker>
                       )}
                     </View>
-                    {specificIntegral == "Yes" && (
+                    {specificIntegral === "Yes" && (
                       <View style={globalStyles.labelInput}>
                         <Text style={[globalStyles.labelText, { color: colors.text }]}>What is it?</Text>
                         <TextInput
