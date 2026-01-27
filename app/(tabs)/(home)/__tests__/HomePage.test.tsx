@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import HomePage from '../HomePage';
+import { useBunnyCDNVideos } from '@/hooks/useBunnyCDNVideos';
 
 // Mock useBunnyCDNVideos hook
 jest.mock('@/hooks/useBunnyCDNVideos');
-import { useBunnyCDNVideos } from '@/hooks/useBunnyCDNVideos';
 
 const mockUseBunnyCDNVideos = useBunnyCDNVideos as jest.MockedFunction<typeof useBunnyCDNVideos>;
 

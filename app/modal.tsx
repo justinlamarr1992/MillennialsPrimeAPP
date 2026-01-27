@@ -3,7 +3,7 @@ import React from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
-export default function modal() {
+export default function Modal() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   return (

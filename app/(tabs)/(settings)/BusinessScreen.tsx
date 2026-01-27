@@ -204,7 +204,7 @@ export default function BusinessScreen() {
                   <Picker.Item label="No" value="No" />
                 </Picker>
               )}
-              {entrepreneur == "Yes" && (
+              {entrepreneur === "Yes" && (
                 <View>
                   <View style={globalStyles.groupPadding}>
                     {/* Company Logo and Change Logo stuff here */}

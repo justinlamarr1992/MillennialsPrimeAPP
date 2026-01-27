@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme } from "react-native";
+import { View, useColorScheme } from "react-native";
 import React from "react";
 import UploadBox from "@/shared/Upload/UploadBox";
 import { globalStyles } from "@/constants/global";

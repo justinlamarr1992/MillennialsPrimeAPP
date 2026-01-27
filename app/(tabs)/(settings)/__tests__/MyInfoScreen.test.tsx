@@ -26,9 +26,11 @@ jest.mock('expo-image-picker', () => ({
 
 // Mock ProfilePicture component
 jest.mock('@/components/ProfilePicture', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const React = require('react');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { Pressable, Text } = require('react-native');
   return jest.fn((props) => {
-    const React = require('react');
-    const { Pressable, Text } = require('react-native');
     return React.createElement(
       Pressable,
       {

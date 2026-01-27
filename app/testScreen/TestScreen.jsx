@@ -1,12 +1,8 @@
 import { View, Text } from "react-native";
-import React, { useEffect } from "react";
-
-import { Stack, useNavigation } from "expo-router";
-
-import { useTheme } from "@react-navigation/native";
+import { useEffect } from "react";
+import { useNavigation } from "expo-router";
 
 export default function TestScreen() {
-  const colors = useTheme().colors;
   // No Header
   const navigation = useNavigation();
 

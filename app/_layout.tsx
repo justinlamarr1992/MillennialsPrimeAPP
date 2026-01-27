@@ -46,7 +46,7 @@ function RootLayoutNav() {
       // No route set, redirect based on auth state
       router.replace(user ? "/(tabs)/(home)/HomePage" : "/(auth)/SignInScreen");
     }
-  }, [user, loading, segments]);
+  }, [user, loading, segments, router]);
 
   if (loading) {
     // Show loading indicator while checking auth state

@@ -4,7 +4,7 @@ import React, { useRef, useMemo, useCallback } from "react";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import Item from "@/shared/EComm/Item";
-import BottomSheet, { BottomSheetBackdrop, BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function EComm() {
@@ -26,7 +26,7 @@ export default function EComm() {
   const snapToIndex = (index: number) => bottomSheetRef.current?.snapToIndex(index);
 
   const renderBackdrop = useCallback(
-    (props: any) => <BottomSheetBackdrop appearsOnIndex={3} disappearsOnIndex={1} {...props} />,
+    (props: BottomSheetBackdropProps) => <BottomSheetBackdrop appearsOnIndex={3} disappearsOnIndex={1} {...props} />,
     []
   );
   // SLIDING MODAL CODE ITS WORKS

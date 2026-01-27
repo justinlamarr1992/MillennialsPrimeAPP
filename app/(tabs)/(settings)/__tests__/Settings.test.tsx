@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import Settings from '../Settings';
+import { router } from 'expo-router';
 
 // Mock expo-router
 jest.mock('expo-router', () => ({
@@ -39,14 +40,14 @@ jest.mock('@/hooks/useProfilePictureUpload', () => ({
 
 // Mock ProfilePicture component
 jest.mock('@/components/ProfilePicture', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const React = require('react');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { View } = require('react-native');
   return jest.fn(() => {
-    const React = require('react');
-    const { View } = require('react-native');
     return React.createElement(View, { testID: 'mock-profile-picture' });
   });
 });
-
-import { router } from 'expo-router';
 
 describe('Settings', () => {
   beforeEach(() => {
