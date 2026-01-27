@@ -244,7 +244,8 @@ describe('SignInScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Invalid email or password').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('Invalid email or password');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -266,7 +267,8 @@ describe('SignInScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('No account found with this email address').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('No account found with this email address');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -288,7 +290,8 @@ describe('SignInScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Network error. Please check your internet connection').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('Network error. Please check your internet connection');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -310,7 +313,8 @@ describe('SignInScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('An unexpected error occurred. Please try again').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('An unexpected error occurred. Please try again');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -333,7 +337,8 @@ describe('SignInScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Invalid email or password').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('Invalid email or password');
+        expect(errors[0]).toBeTruthy();
       });
 
       // Make a change - error should clear

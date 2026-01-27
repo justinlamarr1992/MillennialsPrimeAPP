@@ -1,6 +1,16 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import UserInfo from '../UserInfo';
+import { logger } from '@/utils/logger';
+
+jest.mock('@/utils/logger', () => ({
+  logger: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  },
+}));
 
 describe('UserInfo', () => {
   const defaultProps = {
@@ -8,6 +18,10 @@ describe('UserInfo', () => {
     admin: false,
     prime: false,
   };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   describe('User Name Display', () => {
     it('should display the user name when provided', () => {
@@ -41,12 +55,13 @@ describe('UserInfo', () => {
       expect(() => fireEvent.press(nameElement)).not.toThrow();
     });
 
-    it('should handle press on user name without errors', () => {
+    it('should log debug message when user name is pressed', () => {
       const { getByText } = render(<UserInfo {...defaultProps} />);
       const nameElement = getByText('John Doe');
 
       fireEvent.press(nameElement);
-      // Should execute without throwing - navigation logic is logged
+
+      expect(logger.debug).toHaveBeenCalledWith('Navigate to user: John Doe');
     });
   });
 

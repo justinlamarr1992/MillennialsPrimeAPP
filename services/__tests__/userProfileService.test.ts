@@ -32,15 +32,12 @@ import { serverAuth } from '../serverAuth';
 import { axiosPrivate } from '@/API/axios';
 import type { ServerUserProfile, MyInfoFormData, BusinessFormData, ArtFormData } from '@/types/UserProfile';
 
-const mockedServerAuth = serverAuth as jest.Mocked<typeof serverAuth>;
-const mockedAxiosPrivate = axiosPrivate as jest.Mocked<typeof axiosPrivate>;
-
 describe('userProfileService', () => {
   const mockUserId = 'user-123-abc';
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedServerAuth.getUserId = jest.fn().mockResolvedValue(mockUserId);
+    jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(mockUserId);
   });
 
   describe('fetchProfile', () => {
@@ -68,7 +65,7 @@ describe('userProfileService', () => {
     });
 
     it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+      jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
 
       await expect(userProfileService.fetchProfile()).rejects.toThrow('User ID not found');
     });
@@ -140,11 +137,11 @@ describe('userProfileService', () => {
         zip: 'invalid',
       };
 
-      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
+      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateMyInfo(formData);
 
-      expect(mockedAxiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
         values: {
           name: 'Test User',
           country: 'USA',
@@ -156,7 +153,7 @@ describe('userProfileService', () => {
     });
 
     it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+      jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
 
       const formData: MyInfoFormData = {
         name: 'Test',
@@ -215,7 +212,7 @@ describe('userProfileService', () => {
     });
 
     it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+      jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
 
       const formData: BusinessFormData = {
         entrepreneur: 'Yes',
@@ -284,7 +281,7 @@ describe('userProfileService', () => {
     });
 
     it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+      jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
 
       const formData: ArtFormData = {
         artist: 'Yes',
@@ -312,7 +309,7 @@ describe('userProfileService', () => {
     });
 
     it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+      jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
 
       await expect(userProfileService.uploadProfilePicture('base64-image')).rejects.toThrow('User ID not found');
     });
@@ -349,7 +346,7 @@ describe('userProfileService', () => {
     });
 
     it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+      jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
 
       await expect(userProfileService.getProfilePicture()).rejects.toThrow('User ID not found');
     });

@@ -39,7 +39,8 @@ describe('RegisterScreen', () => {
     it('should render all form fields', () => {
       render(<RegisterScreen />);
 
-      expect(screen.getAllByText('Create an Account').length).toBeGreaterThan(0);
+      const headers = screen.getAllByText('Create an Account');
+      expect(headers[0]).toBeTruthy();
       expect(screen.getByText('Sign Up to Continue')).toBeTruthy();
       expect(screen.getByPlaceholderText('Enter First Name')).toBeTruthy();
       expect(screen.getByPlaceholderText('Enter Last Name')).toBeTruthy();
@@ -433,7 +434,8 @@ describe('RegisterScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('An account with this email already exists').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('An account with this email already exists');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -459,7 +461,8 @@ describe('RegisterScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Password must be at least 6 characters').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('Password must be at least 6 characters');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -485,7 +488,8 @@ describe('RegisterScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('An unexpected error occurred. Please try again').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('An unexpected error occurred. Please try again');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -605,7 +609,8 @@ describe('RegisterScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.');
+        expect(errors[0]).toBeTruthy();
       });
 
       // Verify Firebase user cleanup was attempted (delete automatically signs out)
@@ -634,7 +639,8 @@ describe('RegisterScreen', () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.');
+        expect(errors[0]).toBeTruthy();
       });
 
       // Verify Firebase user cleanup was attempted (delete automatically signs out)
@@ -668,14 +674,14 @@ describe('RegisterScreen', () => {
 
       // User sees error message
       await waitFor(() => {
-        expect(screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('Registration failed on the server. Your account was not created. Please try again.');
+        expect(errors[0]).toBeTruthy();
       });
 
       // User should see the submit button is back (can retry)
       await waitFor(() => {
         const retryButtons = screen.getAllByText('Create an Account');
-        expect(retryButtons.length).toBeGreaterThan(0);
-        // User should be able to press it again
+        // User should be able to press it again (get the last button which is the submit button)
         expect(retryButtons[retryButtons.length - 1].parent).toBeTruthy();
       });
     });
