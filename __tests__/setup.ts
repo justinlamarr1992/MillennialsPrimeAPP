@@ -148,3 +148,7 @@ jest.mock('expo-secure-store', () => ({
   ALWAYS: 'ALWAYS',
   WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: 'WHEN_PASSCODE_SET_THIS_DEVICE_ONLY',
 }));
+
+// Register custom matchers
+import { registerCustomMatchers } from './matchers/customMatchers';
+registerCustomMatchers();

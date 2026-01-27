@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from '@/__tests__/test-utils';
+import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import MyInfoScreen from '../MyInfoScreen';
 
 // Mock expo-router
@@ -367,15 +367,12 @@ describe('MyInfoScreen', () => {
   });
 
   describe('When user selects a profile picture', () => {
-    it('user can select a photo and handleImageSelected is called', async () => {
+    it('user can select a photo and handleImageSelected is called', () => {
       const { getByTestId } = render(<MyInfoScreen />);
 
       // User taps to select a photo
       const mockProfilePicture = getByTestId('mock-profile-picture');
-
-      await act(async () => {
-        fireEvent.press(mockProfilePicture);
-      });
+      fireEvent.press(mockProfilePicture);
 
       // The hook's handleImageSelected should be called with the image URI
       expect(mockHandleImageSelected).toHaveBeenCalledWith('file:///path/to/image.jpg');

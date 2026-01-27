@@ -174,7 +174,8 @@ describe('PasswordRecoveryScreen', () => {
       fireEvent.press(screen.getByText('Send Email'));
 
       await waitFor(() => {
-        expect(screen.getAllByText('No account found with this email address').length).toBeGreaterThan(0);
+        const errorMessages = screen.getAllByText('No account found with this email address');
+        expect(errorMessages[0]).toBeTruthy();
       });
     });
 
@@ -190,7 +191,8 @@ describe('PasswordRecoveryScreen', () => {
       fireEvent.press(screen.getByText('Send Email'));
 
       await waitFor(() => {
-        expect(screen.getAllByText('Network error. Please check your internet connection').length).toBeGreaterThan(0);
+        const errorMessages = screen.getAllByText('Network error. Please check your internet connection');
+        expect(errorMessages[0]).toBeTruthy();
       });
     });
 
@@ -206,7 +208,8 @@ describe('PasswordRecoveryScreen', () => {
       fireEvent.press(screen.getByText('Send Email'));
 
       await waitFor(() => {
-        expect(screen.getAllByText('An unexpected error occurred. Please try again').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('An unexpected error occurred. Please try again');
+        expect(errors[0]).toBeTruthy();
       });
     });
 
@@ -225,7 +228,8 @@ describe('PasswordRecoveryScreen', () => {
       fireEvent.press(screen.getByText('Send Email'));
 
       await waitFor(() => {
-        expect(screen.getAllByText('No account found with this email address').length).toBeGreaterThan(0);
+        const errors = screen.getAllByText('No account found with this email address');
+        expect(errors[0]).toBeTruthy();
       });
 
       // Type something - error should clear

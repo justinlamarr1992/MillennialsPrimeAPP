@@ -6,7 +6,7 @@
  */
 
 // Mock dependencies BEFORE imports
-jest.mock('@react-native-async-storage/async-storage', () => ({
+jest.mock("@react-native-async-storage/async-storage", () => ({
   __esModule: true,
   default: {
     setItem: jest.fn(),
@@ -16,7 +16,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
     clear: jest.fn(),
   },
 }));
-jest.mock('@/API/axios', () => ({
+jest.mock("@/API/axios", () => ({
   axiosPrivate: {
     get: jest.fn(),
     post: jest.fn(),
@@ -24,41 +24,44 @@ jest.mock('@/API/axios', () => ({
     delete: jest.fn(),
   },
 }));
-jest.mock('@/services/serverAuth');
-jest.mock('@/utils/logger');
+jest.mock("@/services/serverAuth");
+jest.mock("@/utils/logger");
 
-import { userProfileService } from '../userProfileService';
-import { serverAuth } from '../serverAuth';
-import { axiosPrivate } from '@/API/axios';
-import type { ServerUserProfile, MyInfoFormData, BusinessFormData, ArtFormData } from '@/types/UserProfile';
+import { userProfileService } from "../userProfileService";
+import { serverAuth } from "../serverAuth";
+import { axiosPrivate } from "@/API/axios";
+import type {
+  ServerUserProfile,
+  MyInfoFormData,
+  BusinessFormData,
+  ArtFormData,
+} from "@/types/UserProfile";
 
-const mockedServerAuth = serverAuth as jest.Mocked<typeof serverAuth>;
-const mockedAxiosPrivate = axiosPrivate as jest.Mocked<typeof axiosPrivate>;
-
-describe('userProfileService', () => {
-  const mockUserId = 'user-123-abc';
+describe("userProfileService", () => {
+  const mockUserId = "user-123-abc";
+  const mockedAxiosPrivate = axiosPrivate as jest.Mocked<typeof axiosPrivate>;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedServerAuth.getUserId = jest.fn().mockResolvedValue(mockUserId);
+    jest.spyOn(serverAuth, "getUserId").mockResolvedValue(mockUserId);
   });
 
-  describe('fetchProfile', () => {
-    it('fetches complete user profile from server', async () => {
+  describe("fetchProfile", () => {
+    it("fetches complete user profile from server", async () => {
       const mockProfile: ServerUserProfile = {
         _id: mockUserId,
-        username: 'testuser',
-        name: 'John Doe',
-        email: 'john@example.com',
+        username: "testuser",
+        name: "John Doe",
+        email: "john@example.com",
         location: {
-          country: 'USA',
-          state: 'California',
-          city: 'San Francisco',
+          country: "USA",
+          state: "California",
+          city: "San Francisco",
           zip: 94102,
         },
       };
 
-      axiosPrivate.get.mockResolvedValueOnce({ data: mockProfile });
+      mockedAxiosPrivate.get.mockResolvedValueOnce({ data: mockProfile });
 
       const result = await userProfileService.fetchProfile();
 
@@ -67,119 +70,119 @@ describe('userProfileService', () => {
       expect(result).toEqual(mockProfile);
     });
 
-    it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+    it("throws error when user ID not found", async () => {
+      jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
 
-      await expect(userProfileService.fetchProfile()).rejects.toThrow('User ID not found');
+      await expect(userProfileService.fetchProfile()).rejects.toThrow("User ID not found");
     });
 
-    it('handles server errors', async () => {
-      const mockError = new Error('Server error');
-      axiosPrivate.get.mockRejectedValueOnce(mockError);
+    it("handles server errors", async () => {
+      const mockError = new Error("Server error");
+      mockedAxiosPrivate.get.mockRejectedValueOnce(mockError);
 
-      await expect(userProfileService.fetchProfile()).rejects.toThrow('Server error');
+      await expect(userProfileService.fetchProfile()).rejects.toThrow("Server error");
     });
   });
 
-  describe('updateMyInfo', () => {
-    it('updates basic profile info successfully with values wrapper', async () => {
+  describe("updateMyInfo", () => {
+    it("updates basic profile info successfully with values wrapper", async () => {
       const formData: MyInfoFormData = {
-        name: 'Jane Doe',
-        country: 'USA',
-        state: 'New York',
-        city: 'New York City',
-        zip: '10001',
-      };
-
-      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
-
-      await userProfileService.updateMyInfo(formData);
-
-      expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
-        values: {
-          name: 'Jane Doe',
-          country: 'USA',
-          state: 'New York',
-          city: 'New York City',
-          zip: 10001,
-        },
-      });
-    });
-
-    it('converts zip string to number', async () => {
-      const formData: MyInfoFormData = {
-        name: 'Test User',
-        country: 'USA',
-        state: 'CA',
-        city: 'LA',
-        zip: '90210',
-      };
-
-      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
-
-      await userProfileService.updateMyInfo(formData);
-
-      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
-        values: {
-          name: 'Test User',
-          country: 'USA',
-          state: 'CA',
-          city: 'LA',
-          zip: 90210,
-        },
-      });
-    });
-
-    it('handles invalid zip code gracefully', async () => {
-      const formData: MyInfoFormData = {
-        name: 'Test User',
-        country: 'USA',
-        state: 'CA',
-        city: 'LA',
-        zip: 'invalid',
+        name: "Jane Doe",
+        country: "USA",
+        state: "New York",
+        city: "New York City",
+        zip: "10001",
       };
 
       mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateMyInfo(formData);
 
-      expect(mockedAxiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
+      expect(serverAuth.getUserId).toHaveBeenCalled();
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
         values: {
-          name: 'Test User',
-          country: 'USA',
-          state: 'CA',
-          city: 'LA',
+          name: "Jane Doe",
+          country: "USA",
+          state: "New York",
+          city: "New York City",
+          zip: 10001,
+        },
+      });
+    });
+
+    it("converts zip string to number", async () => {
+      const formData: MyInfoFormData = {
+        name: "Test User",
+        country: "USA",
+        state: "CA",
+        city: "LA",
+        zip: "90210",
+      };
+
+      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
+
+      await userProfileService.updateMyInfo(formData);
+
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
+        values: {
+          name: "Test User",
+          country: "USA",
+          state: "CA",
+          city: "LA",
+          zip: 90210,
+        },
+      });
+    });
+
+    it("handles invalid zip code gracefully", async () => {
+      const formData: MyInfoFormData = {
+        name: "Test User",
+        country: "USA",
+        state: "CA",
+        city: "LA",
+        zip: "invalid",
+      };
+
+      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
+
+      await userProfileService.updateMyInfo(formData);
+
+      expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/${mockUserId}`, {
+        values: {
+          name: "Test User",
+          country: "USA",
+          state: "CA",
+          city: "LA",
           zip: undefined,
         },
       });
     });
 
-    it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+    it("throws error when user ID not found", async () => {
+      jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
 
       const formData: MyInfoFormData = {
-        name: 'Test',
-        country: 'USA',
-        state: 'CA',
-        city: 'LA',
-        zip: '90210',
+        name: "Test",
+        country: "USA",
+        state: "CA",
+        city: "LA",
+        zip: "90210",
       };
 
-      await expect(userProfileService.updateMyInfo(formData)).rejects.toThrow('User ID not found');
+      await expect(userProfileService.updateMyInfo(formData)).rejects.toThrow("User ID not found");
     });
   });
 
-  describe('updateBusiness', () => {
-    it('updates business profile successfully with values wrapper', async () => {
+  describe("updateBusiness", () => {
+    it("updates business profile successfully with values wrapper", async () => {
       const formData: BusinessFormData = {
-        entrepreneur: 'Yes',
-        industry: 'Technology',
-        businessSize: 'Medium',
-        businessLocationReason: 'Access to talent',
+        entrepreneur: "Yes",
+        industry: "Technology",
+        businessSize: "Medium",
+        businessLocationReason: "Access to talent",
       };
 
-      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
+      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateBusiness(formData);
 
@@ -187,58 +190,60 @@ describe('userProfileService', () => {
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
         values: {
           entrepreneur: true,
-          industry: 'Technology',
-          lengthOpen: 'Medium',
-          factorsOfLocation: 'Access to talent',
+          industry: "Technology",
+          lengthOpen: "Medium",
+          factorsOfLocation: "Access to talent",
         },
       });
     });
 
     it('converts "No" to false for entrepreneur field', async () => {
       const formData: BusinessFormData = {
-        entrepreneur: 'No',
-        industry: 'Retail',
+        entrepreneur: "No",
+        industry: "Retail",
       };
 
-      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
+      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateBusiness(formData);
 
       expect(axiosPrivate.patch).toHaveBeenCalledWith(`/users/business/${mockUserId}`, {
         values: {
           entrepreneur: false,
-          industry: 'Retail',
+          industry: "Retail",
           lengthOpen: undefined,
           factorsOfLocation: undefined,
         },
       });
     });
 
-    it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+    it("throws error when user ID not found", async () => {
+      jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
 
       const formData: BusinessFormData = {
-        entrepreneur: 'Yes',
+        entrepreneur: "Yes",
       };
 
-      await expect(userProfileService.updateBusiness(formData)).rejects.toThrow('User ID not found');
+      await expect(userProfileService.updateBusiness(formData)).rejects.toThrow(
+        "User ID not found"
+      );
     });
   });
 
-  describe('updateArt', () => {
-    it('updates artist profile successfully with values wrapper', async () => {
+  describe("updateArt", () => {
+    it("updates artist profile successfully with values wrapper", async () => {
       const formData: ArtFormData = {
-        artist: 'Yes',
-        professionalArtist: 'Yes',
-        purpose: 'Expression',
-        favorites: 'Abstract',
-        issues: 'Climate change',
-        industryNavigation: 'Networking',
-        network: 'Yes',
-        integral: 'Yes',
+        artist: "Yes",
+        professionalArtist: "Yes",
+        purpose: "Expression",
+        favorites: "Abstract",
+        issues: "Climate change",
+        industryNavigation: "Networking",
+        network: "Yes",
+        integral: "Yes",
       };
 
-      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
+      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateArt(formData);
 
@@ -247,10 +252,10 @@ describe('userProfileService', () => {
         values: {
           artist: true,
           professional: true,
-          purpose: 'Expression',
-          favsOrNoneFavs: 'Abstract',
-          affectIssues: 'Climate change',
-          navigateIndustry: 'Networking',
+          purpose: "Expression",
+          favsOrNoneFavs: "Abstract",
+          affectIssues: "Climate change",
+          navigateIndustry: "Networking",
           network: true,
           specificIntegral: true,
         },
@@ -259,13 +264,13 @@ describe('userProfileService', () => {
 
     it('converts "No" values to false', async () => {
       const formData: ArtFormData = {
-        artist: 'No',
-        professionalArtist: 'No',
-        network: 'No',
-        integral: 'No',
+        artist: "No",
+        professionalArtist: "No",
+        network: "No",
+        integral: "No",
       };
 
-      axiosPrivate.patch.mockResolvedValueOnce({ data: {} });
+      mockedAxiosPrivate.patch.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.updateArt(formData);
 
@@ -283,27 +288,27 @@ describe('userProfileService', () => {
       });
     });
 
-    it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+    it("throws error when user ID not found", async () => {
+      jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
 
       const formData: ArtFormData = {
-        artist: 'Yes',
+        artist: "Yes",
       };
 
-      await expect(userProfileService.updateArt(formData)).rejects.toThrow('User ID not found');
+      await expect(userProfileService.updateArt(formData)).rejects.toThrow("User ID not found");
     });
   });
 
-  describe('uploadProfilePicture', () => {
-    it('uploads profile picture with correct server format', async () => {
-      const base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANS...';
+  describe("uploadProfilePicture", () => {
+    it("uploads profile picture with correct server format", async () => {
+      const base64Image = "data:image/png;base64,iVBORw0KGgoAAAANS...";
 
-      axiosPrivate.post.mockResolvedValueOnce({ data: {} });
+      mockedAxiosPrivate.post.mockResolvedValueOnce({ data: {} });
 
       await userProfileService.uploadProfilePicture(base64Image);
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(axiosPrivate.post).toHaveBeenCalledWith('/users/pic', {
+      expect(axiosPrivate.post).toHaveBeenCalledWith("/users/pic", {
         _id: mockUserId,
         newImage: {
           image: base64Image,
@@ -311,47 +316,49 @@ describe('userProfileService', () => {
       });
     });
 
-    it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+    it("throws error when user ID not found", async () => {
+      jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
 
-      await expect(userProfileService.uploadProfilePicture('base64-image')).rejects.toThrow('User ID not found');
+      await expect(userProfileService.uploadProfilePicture("base64-image")).rejects.toThrow(
+        "User ID not found"
+      );
     });
   });
 
-  describe('getProfilePicture', () => {
-    it('retrieves profile picture with correct server format', async () => {
-      const mockImage = 'data:image/png;base64,iVBORw0KGgoAAAANS...';
-      axiosPrivate.post.mockResolvedValueOnce({ data: { getImageToClient: mockImage } });
+  describe("getProfilePicture", () => {
+    it("retrieves profile picture with correct server format", async () => {
+      const mockImage = "data:image/png;base64,iVBORw0KGgoAAAANS...";
+      mockedAxiosPrivate.post.mockResolvedValueOnce({ data: { getImageToClient: mockImage } });
 
       const result = await userProfileService.getProfilePicture();
 
       expect(serverAuth.getUserId).toHaveBeenCalled();
-      expect(axiosPrivate.post).toHaveBeenCalledWith('/users/getpic', {
+      expect(axiosPrivate.post).toHaveBeenCalledWith("/users/getpic", {
         _id: mockUserId,
       });
       expect(result).toBe(mockImage);
     });
 
-    it('returns null when no image exists', async () => {
-      axiosPrivate.post.mockResolvedValueOnce({ data: {} });
+    it("returns null when no image exists", async () => {
+      mockedAxiosPrivate.post.mockResolvedValueOnce({ data: {} });
 
       const result = await userProfileService.getProfilePicture();
 
       expect(result).toBeNull();
     });
 
-    it('returns null when getImageToClient is null', async () => {
-      axiosPrivate.post.mockResolvedValueOnce({ data: { getImageToClient: null } });
+    it("returns null when getImageToClient is null", async () => {
+      mockedAxiosPrivate.post.mockResolvedValueOnce({ data: { getImageToClient: null } });
 
       const result = await userProfileService.getProfilePicture();
 
       expect(result).toBeNull();
     });
 
-    it('throws error when user ID not found', async () => {
-      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
+    it("throws error when user ID not found", async () => {
+      jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
 
-      await expect(userProfileService.getProfilePicture()).rejects.toThrow('User ID not found');
+      await expect(userProfileService.getProfilePicture()).rejects.toThrow("User ID not found");
     });
   });
 });
