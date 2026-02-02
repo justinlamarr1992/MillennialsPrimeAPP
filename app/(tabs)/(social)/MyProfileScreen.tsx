@@ -54,7 +54,7 @@ export default function MyProfileScreen() {
   };
 
   // Mock posts data - will be replaced with real user posts from backend
-  // TODO: Replace with actual user posts from API (Phase 1.3 completion)
+  // TODO: Replace with actual user posts from API when backend is ready
   const mockTextPosts: MockTextPost[] = [
     {
       id: "1",

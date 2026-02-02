@@ -110,6 +110,8 @@ const TabsLayout = () => {
             <Pressable
               onPress={() => router.push("/(tabs)/(social)/MyProfileScreen")}
               style={{ marginRight: 16 }}
+              accessibilityRole="button"
+              accessibilityLabel="Open My Profile"
             >
               <Ionicons name="person-circle" size={32} color={colors["secT"]} />
             </Pressable>
