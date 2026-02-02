@@ -22,13 +22,13 @@ export default function SocialFeedScreen() {
         <Text style={[styles.title, { color: colors.priT }]}>
           Social Feed
         </Text>
-        <Text style={[styles.subtitle, { color: colors.triT }]}>
+        <Text style={[styles.subtitle, { color: colors.secT }]}>
           Coming Soon
         </Text>
         <Text style={[styles.description, { color: colors.text }]}>
           Your social feed will show posts from your connections, featured stories, and social activity.
         </Text>
-        <Text style={[styles.note, { color: colors.triT }]}>
+        <Text style={[styles.note, { color: colors.secT }]}>
           Phase 4: Discovery & Engagement
         </Text>
       </View>

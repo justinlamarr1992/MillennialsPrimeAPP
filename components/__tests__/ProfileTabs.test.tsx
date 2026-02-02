@@ -23,7 +23,7 @@ import {
 } from "../../__tests__/factories/mockDataFactory";
 
 // Mock post components to verify they render correctly
-jest.mock("../../shared/PostComponents/TextPost", () => {
+jest.mock("@/shared/PostComponents/TextPost", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return function MockTextPost({ title }: { title: string }) {
@@ -31,7 +31,7 @@ jest.mock("../../shared/PostComponents/TextPost", () => {
   };
 });
 
-jest.mock("../../shared/PostComponents/PicturePost", () => {
+jest.mock("@/shared/PostComponents/PicturePost", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return function MockPicturePost({ title }: { title: string }) {
@@ -39,7 +39,7 @@ jest.mock("../../shared/PostComponents/PicturePost", () => {
   };
 });
 
-jest.mock("../../shared/PostComponents/VideoPost", () => {
+jest.mock("@/shared/PostComponents/VideoPost", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return function MockVideoPost({ title }: { title: string }) {

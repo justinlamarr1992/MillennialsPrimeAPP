@@ -182,7 +182,6 @@ export default function ProfileTabs({
         description={post.description}
         prime={post.isPrime ?? false}
         admin={post.isAdmin ?? false}
-        libraryId={147838} // Default library ID
         videoId={post.videoUrl} // Using videoUrl as videoId for now
         authorId={post.authorId}
       />
