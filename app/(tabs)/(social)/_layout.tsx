@@ -33,13 +33,9 @@ export default function Layout() {
       <Stack.Screen
         name="index"
         options={{
+          title: "Social",
           headerStyle: {
             backgroundColor: colors["priC"],
-            // borderBottomLeftRadius: 32,
-            // borderBottomRightRadius: 32,
-            // shadowColor: colors["background"],
-            // height: 200,
-            // overflow: "hidden",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -86,14 +82,10 @@ export default function Layout() {
       <Stack.Screen
         name="MyProfileScreen"
         options={{
+          headerShown: true,
+          title: "My Profile",
           headerStyle: {
             backgroundColor: userColor,
-            // backgroundColor: colors["priC"],
-            // borderBottomLeftRadius: 32,
-            // borderBottomRightRadius: 32,
-            // shadowColor: colors["background"],
-            // height: 200,
-            // overflow: "hidden",
           },
           headerTintColor: userColorText,
           headerTitleStyle: {

@@ -1,112 +1,70 @@
-import {
-  Text,
-  ScrollView,
-  Pressable,
-  useColorScheme,
-} from "react-native";
+import { Text, View, StyleSheet, useColorScheme } from "react-native";
 import React from "react";
-import { Link, router } from "expo-router";
-import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 
-export default function Page() {
-  // NOTE: Intentional hardcoded values. AuthContext only contains { user, loading }.
-  // User id/roles will be derived from user data structure when available.
-  const id = "test-user-id";
-  const roles = "user";
-
+/**
+ * Social Feed Screen
+ *
+ * This will display the main social feed showing:
+ * - Featured stories carousel
+ * - Posts from connections
+ * - Social activity
+ *
+ * Currently showing placeholder until feed implementation (Phase 4)
+ */
+export default function SocialFeedScreen() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
-    >
-      <Text
-        style={[{ color: colors["priT"] }]}
-        // style={{ color: colors.priT }}
-      >
-        User: {id ? id : "No Id"}
-      </Text>
-      <Text
-        style={[{ color: colors["priT"] }]}
-        // style={{ color: colors.priT }}
-      >
-        Roles: {roles ? roles : "No Roles"}
-      </Text>
-
-      <Text
-        style={[{ color: colors["priT"] }]}
-        // style={{ color: colors.priT }}
-      >
-        Test User Profile Here
-      </Text>
-
-      <Pressable
-        style={[
-          globalStyles.button,
-          globalStyles.marginVertical,
-          { backgroundColor: colors["priC"] },
-        ]}
-      >
-        <Link push href="/EComm" asChild>
-          <Text style={globalStyles.buttonText}>E-Comm Test (Move later)</Text>
-        </Link>
-      </Pressable>
-      <Pressable
-        // onPress={() => navigation.navigate("Connected Users")}
-        // onPress={() => router.navigate("/ConnectedUsersScreen")}
-        style={[
-          globalStyles.button,
-          globalStyles.marginVertical,
-          { backgroundColor: colors["priC"] },
-        ]}
-      >
-        <Link push href="/ConnectedUsersScreen" asChild>
-          <Text style={globalStyles.buttonText}>Connected Users</Text>
-        </Link>
-      </Pressable>
-
-      <Pressable
-        onPress={() => router.push("/MyProfileScreen")}
-        style={[
-          globalStyles.button,
-          globalStyles.marginVertical,
-          { backgroundColor: colors["priC"] },
-        ]}
-      >
-        <Text style={globalStyles.buttonText}>My Profile</Text>
-      </Pressable>
-      <Pressable
-        // onPress={() => navigation.navigate("My Profile")}
-        onPress={() => router.push("/123456")}
-        style={[
-          globalStyles.button,
-          globalStyles.marginVertical,
-          { backgroundColor: colors["priC"] },
-        ]}
-      >
-        <Text style={globalStyles.buttonText}>To User 123456</Text>
-      </Pressable>
-      <Pressable
-        // onPress={() => navigation.navigate("My Profile")}
-        onPress={() => router.push("/123457")}
-        style={[
-          globalStyles.button,
-          globalStyles.marginVertical,
-          { backgroundColor: colors["priC"] },
-        ]}
-      >
-        <Text style={globalStyles.buttonText}>To User 123457</Text>
-      </Pressable>
-      {/* 
-        <TextPost />
-        <PrimeTextPost />
-        <PicturePost />
-        <PrimePicturePost />
-        <VideoPost />
-        <PrimeVideoPost /> */}
-    </ScrollView>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={styles.content}>
+        <Text style={[styles.title, { color: colors.priT }]}>
+          Social Feed
+        </Text>
+        <Text style={[styles.subtitle, { color: colors.triT }]}>
+          Coming Soon
+        </Text>
+        <Text style={[styles.description, { color: colors.text }]}>
+          Your social feed will show posts from your connections, featured stories, and social activity.
+        </Text>
+        <Text style={[styles.note, { color: colors.triT }]}>
+          Phase 4: Discovery & Engagement
+        </Text>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  content: {
+    alignItems: "center",
+    maxWidth: 400,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 24,
+    fontWeight: "600",
+    marginBottom: 24,
+  },
+  description: {
+    fontSize: 16,
+    textAlign: "center",
+    lineHeight: 24,
+    marginBottom: 16,
+  },
+  note: {
+    fontSize: 14,
+    fontStyle: "italic",
+  },
+});

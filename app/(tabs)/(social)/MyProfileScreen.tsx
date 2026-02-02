@@ -3,12 +3,15 @@ import React from "react";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import VideoPost from "@/shared/PostComponents/VideoPost";
-import PicturePost from "@/shared/PostComponents/PicturePost";
-import TextPost from "@/shared/PostComponents/TextPost";
 import ProfileHeader from "@/components/ProfileHeader";
+import ProfileTabs from "@/components/ProfileTabs";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useProfilePictureUpload } from "@/hooks/useProfilePictureUpload";
+import type {
+  MockTextPost,
+  MockPicturePost,
+  MockVideoPost,
+} from "@/__tests__/factories/mockDataFactory";
 
 export default function MyProfileScreen() {
   const colorScheme = useColorScheme();
@@ -44,17 +47,60 @@ export default function MyProfileScreen() {
     );
   }
 
-  // NOTE: Hardcoded values for post components
-  // These will be replaced with actual user posts in Phase 1.3 (ProfileTabs)
-  const admin = false;
-  const prime = profile.prime ?? false;
-  const id = profile._id;
-
   // Use profileImageUri from hook if available, otherwise use profile.profilePic
   const displayProfile = {
     ...profile,
     profilePic: profileImageUri || profile.profilePic,
   };
+
+  // Mock posts data - will be replaced with real user posts from backend
+  // TODO: Replace with actual user posts from API (Phase 1.3 completion)
+  const mockTextPosts: MockTextPost[] = [
+    {
+      id: "1",
+      title: "Testing the Title for the User Profile Post",
+      description: "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines",
+      authorName: profile.username,
+      authorId: profile._id,
+      isPrime: profile.prime ?? false,
+      isAdmin: false,
+      createdAt: new Date().toISOString(),
+      likeCount: 0,
+      commentCount: 0,
+    },
+  ];
+
+  const mockPicturePosts: MockPicturePost[] = [
+    {
+      id: "2",
+      title: "Test Picture Post",
+      description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
+      authorName: profile.username,
+      authorId: profile._id,
+      imageUrl: "",
+      isPrime: profile.prime ?? false,
+      isAdmin: false,
+      createdAt: new Date().toISOString(),
+      likeCount: 0,
+      commentCount: 0,
+    },
+  ];
+
+  const mockVideoPosts: MockVideoPost[] = [
+    {
+      id: "3",
+      title: "This is a Video Post Title",
+      description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
+      authorName: profile.username,
+      authorId: profile._id,
+      videoUrl: "ec4cbe34-8750-4695-b252-69f53e51627a",
+      isPrime: profile.prime ?? false,
+      isAdmin: false,
+      createdAt: new Date().toISOString(),
+      likeCount: 0,
+      commentCount: 0,
+    },
+  ];
 
   return (
     <ScrollView
@@ -70,42 +116,12 @@ export default function MyProfileScreen() {
         isUploading={isUploading}
       />
 
-      {/* Existing test posts - will be replaced with ProfileTabs in Phase 1.3 */}
-      <View style={globalStyles.padding}>
-        <TextPost
-        name={"Test User"}
-        title={"Testing the Title for the User Profile Post"}
-        description={
-          "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
-        }
-        prime={prime}
-        admin={admin}
-        authorId={id}
+      {/* ProfileTabs - Phase 1.3 */}
+      <ProfileTabs
+        textPosts={mockTextPosts}
+        picturePosts={mockPicturePosts}
+        videoPosts={mockVideoPosts}
       />
-      <PicturePost
-        name={"Test User"}
-        title={"Test"}
-        description={
-          "This is where the description of the post will go, but it will be shortened to only two lines max..."
-        }
-        picture=""
-        prime={prime}
-        admin={admin}
-        authorId={id}
-      />
-      <VideoPost
-        name={"Test User"}
-        title={"This is a Video Post Title"}
-        description={
-          "This is where the description of the post will go, but it will be shortened to only two lines max..."
-        }
-        prime={prime}
-        admin={admin}
-        libraryId={147838}
-        videoId={"ec4cbe34-8750-4695-b252-69f53e51627a"}
-        authorId={id}
-      />
-      </View>
     </ScrollView>
   );
 }
