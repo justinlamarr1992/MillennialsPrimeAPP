@@ -13,14 +13,41 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import ProfileTabs from "../ProfileTabs";
-import {
-  createMockTextPost,
-  createMockPicturePost,
-  createMockVideoPost,
-  MockTextPost,
-  MockPicturePost,
-  MockVideoPost,
-} from "../../__tests__/factories/mockDataFactory";
+import type {
+  TextPost,
+  PicturePost,
+  VideoPost,
+} from "@/types/posts";
+
+// Helper functions to create mock posts for testing
+const createMockTextPost = (overrides?: Partial<TextPost>): TextPost => ({
+  id: "post-123",
+  type: "text",
+  title: "Test Post Title",
+  description: "This is a test post description",
+  authorId: "user-123",
+  authorName: "John Doe",
+  createdAt: "2026-01-26T12:00:00Z",
+  likeCount: 10,
+  commentCount: 5,
+  isPrime: false,
+  isAdmin: false,
+  ...overrides,
+});
+
+const createMockPicturePost = (overrides?: Partial<PicturePost>): PicturePost => ({
+  ...createMockTextPost(),
+  type: "picture",
+  imageUrl: "https://example.com/image.jpg",
+  ...overrides,
+});
+
+const createMockVideoPost = (overrides?: Partial<VideoPost>): VideoPost => ({
+  ...createMockTextPost(),
+  type: "video",
+  videoId: "video-123",
+  ...overrides,
+});
 
 // Mock post components to verify they render correctly
 jest.mock("@/shared/PostComponents/TextPost", () => {
@@ -49,17 +76,17 @@ jest.mock("@/shared/PostComponents/VideoPost", () => {
 
 describe("ProfileTabs Component - Behavioral Tests", () => {
   // Sample data for tests
-  const mockTextPosts: MockTextPost[] = [
+  const mockTextPosts: TextPost[] = [
     createMockTextPost({ id: "text-1", title: "Text Post 1" }),
     createMockTextPost({ id: "text-2", title: "Text Post 2" }),
   ];
 
-  const mockPicturePosts: MockPicturePost[] = [
+  const mockPicturePosts: PicturePost[] = [
     createMockPicturePost({ id: "pic-1", title: "Picture Post 1" }),
     createMockPicturePost({ id: "pic-2", title: "Picture Post 2" }),
   ];
 
-  const mockVideoPosts: MockVideoPost[] = [
+  const mockVideoPosts: VideoPost[] = [
     createMockVideoPost({ id: "vid-1", title: "Video Post 1" }),
     createMockVideoPost({ id: "vid-2", title: "Video Post 2" }),
   ];

@@ -7,11 +7,7 @@ import ProfileHeader from "@/components/ProfileHeader";
 import ProfileTabs from "@/components/ProfileTabs";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useProfilePictureUpload } from "@/hooks/useProfilePictureUpload";
-import type {
-  MockTextPost,
-  MockPicturePost,
-  MockVideoPost,
-} from "@/__tests__/factories/mockDataFactory";
+import type { TextPost, PicturePost, VideoPost } from "@/types/posts";
 
 export default function MyProfileScreen() {
   const colorScheme = useColorScheme();
@@ -55,9 +51,10 @@ export default function MyProfileScreen() {
 
   // Mock posts data - will be replaced with real user posts from backend
   // TODO: Replace with actual user posts from API when backend is ready
-  const mockTextPosts: MockTextPost[] = [
+  const mockTextPosts: TextPost[] = [
     {
       id: "1",
+      type: "text",
       title: "Testing the Title for the User Profile Post",
       description: "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines",
       authorName: profile.username,
@@ -70,14 +67,15 @@ export default function MyProfileScreen() {
     },
   ];
 
-  const mockPicturePosts: MockPicturePost[] = [
+  const mockPicturePosts: PicturePost[] = [
     {
       id: "2",
+      type: "picture",
       title: "Test Picture Post",
       description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
       authorName: profile.username,
       authorId: profile._id,
-      imageUrl: "",
+      imageUrl: "https://via.placeholder.com/600x400.png?text=Picture+Post",
       isPrime: profile.prime ?? false,
       isAdmin: false,
       createdAt: new Date().toISOString(),
@@ -86,14 +84,15 @@ export default function MyProfileScreen() {
     },
   ];
 
-  const mockVideoPosts: MockVideoPost[] = [
+  const mockVideoPosts: VideoPost[] = [
     {
       id: "3",
+      type: "video",
       title: "This is a Video Post Title",
       description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
       authorName: profile.username,
       authorId: profile._id,
-      videoUrl: "ec4cbe34-8750-4695-b252-69f53e51627a",
+      videoId: "ec4cbe34-8750-4695-b252-69f53e51627a",
       isPrime: profile.prime ?? false,
       isAdmin: false,
       createdAt: new Date().toISOString(),

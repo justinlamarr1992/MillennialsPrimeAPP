@@ -19,18 +19,18 @@ import { COLORS } from "@/constants/Colors";
 import TextPost from "@/shared/PostComponents/TextPost";
 import PicturePost from "@/shared/PostComponents/PicturePost";
 import VideoPost from "@/shared/PostComponents/VideoPost";
-import {
-  MockTextPost,
-  MockPicturePost,
-  MockVideoPost,
-} from "../__tests__/factories/mockDataFactory";
+import type {
+  TextPost as TextPostType,
+  PicturePost as PicturePostType,
+  VideoPost as VideoPostType,
+} from "@/types/posts";
 
 type TabType = "posts" | "photos" | "videos";
 
 interface ProfileTabsProps {
-  textPosts: MockTextPost[];
-  picturePosts: MockPicturePost[];
-  videoPosts: MockVideoPost[];
+  textPosts: TextPostType[];
+  picturePosts: PicturePostType[];
+  videoPosts: VideoPostType[];
 }
 
 // Pure helper functions
@@ -182,7 +182,7 @@ export default function ProfileTabs({
         description={post.description}
         prime={post.isPrime ?? false}
         admin={post.isAdmin ?? false}
-        videoId={post.videoUrl} // Using videoUrl as videoId for now
+        videoId={post.videoId}
         authorId={post.authorId}
       />
     ));
