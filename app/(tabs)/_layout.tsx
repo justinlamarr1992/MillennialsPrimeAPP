@@ -91,7 +91,6 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="(social)"
         options={{
-          href: null,
           headerShown: true,
           headerTitle: "Social",
           headerStyle: {
@@ -105,10 +104,10 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          // title: "Social",
-          // tabBarIcon: ({ color }) => (
-          //   <Ionicons name="people-circle" size={28} color={color} />
-          // ),
+          title: "Social",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="people-circle" size={28} color={color} />
+          ),
         }}
       />
       <Tabs.Screen

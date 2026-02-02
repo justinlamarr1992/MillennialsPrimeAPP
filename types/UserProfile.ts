@@ -65,6 +65,37 @@ export interface ServerUserProfile {
   prime?: boolean;
   createdAt?: string;
   updatedAt?: string;
+
+  // ===== Phase 1: Core Profile Features =====
+  // Note: These fields require backend MongoDB model updates
+
+  // Profile Stats (currently placeholder values in frontend)
+  postsCount?: number;
+  friendsCount?: number;
+
+  // Profile Information
+  interests?: string[];
+  b2bOpportunityTags?: string[];
+
+  // Verification System
+  isVerified?: boolean;
+  verifiedSince?: string; // ISO date string
+
+  // Social Connections (Phase 2 will implement full connection system)
+  connectedUserIds?: string[];
+  pendingConnectionIds?: string[];
+
+  // ===== Phase 3: Analytics & Metrics =====
+  // Note: These are planned for Phase 3 implementation
+  // Uncomment when backend support is added
+  // profileViewsThisWeek?: number;
+  // pendingConnections?: number;
+  // interactionsThisMonth?: number;
+  // productsViewed?: number;
+  // industryConnections?: number;
+  // b2bOpportunities?: number;
+  // connectionsMade?: number;
+  // primeCoinRewarded?: number;
 }
 
 // Mobile form data structures (what we send to server on save)
