@@ -26,6 +26,9 @@ export default function MyProfileScreen() {
   // Mock posts data - memoized to prevent unnecessary re-renders of ProfileTabs
   // These hooks must be called before any conditional returns (React hooks rules)
   // TODO: Replace with actual user posts from API when backend is ready (tracked in issue #46)
+  // Fixed timestamp to ensure consistent mock data
+  const MOCK_TIMESTAMP = "2026-02-02T12:00:00.000Z";
+
   const mockTextPosts = useMemo<TextPost[]>(
     () =>
       profile
@@ -39,7 +42,7 @@ export default function MyProfileScreen() {
               authorId: profile._id,
               isPrime: profile.prime ?? false,
               isAdmin: false,
-              createdAt: new Date().toISOString(),
+              createdAt: MOCK_TIMESTAMP,
               likeCount: 0,
               commentCount: 0,
             },
@@ -62,7 +65,7 @@ export default function MyProfileScreen() {
               imageUrl: "https://via.placeholder.com/600x400.png?text=Picture+Post",
               isPrime: profile.prime ?? false,
               isAdmin: false,
-              createdAt: new Date().toISOString(),
+              createdAt: MOCK_TIMESTAMP,
               likeCount: 0,
               commentCount: 0,
             },
@@ -85,7 +88,7 @@ export default function MyProfileScreen() {
               videoId: "ec4cbe34-8750-4695-b252-69f53e51627a",
               isPrime: profile.prime ?? false,
               isAdmin: false,
-              createdAt: new Date().toISOString(),
+              createdAt: MOCK_TIMESTAMP,
               likeCount: 0,
               commentCount: 0,
             },
