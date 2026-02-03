@@ -82,6 +82,9 @@ export default function Layout() {
       <Stack.Screen
         name="MyProfileScreen"
         options={{
+          // Note: headerShown: true here creates a second header with back button
+          // This is intentional to enable navigation back to Social feed
+          // The Tabs navigator also shows a header for Social tab
           headerShown: true,
           title: "My Profile",
           headerStyle: {

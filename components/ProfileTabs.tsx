@@ -89,6 +89,7 @@ export default function ProfileTabs({
    */
   const renderTab = (tab: TabType) => {
     const isActive = activeTab === tab;
+    const label = getTabLabel(tab);
     return (
       <Pressable
         key={tab}
@@ -98,6 +99,8 @@ export default function ProfileTabs({
           isActive && { ...styles.activeTab, borderBottomColor: colors.priC },
         ]}
         accessibilityRole="tab"
+        accessibilityLabel={`${label} tab`}
+        accessibilityHint={`Show ${label.toLowerCase()}`}
         accessibilityState={{ selected: isActive }}
       >
         <Text
@@ -106,7 +109,7 @@ export default function ProfileTabs({
             { color: isActive ? colors.priC : colors.text },
           ]}
         >
-          {getTabLabel(tab)}
+          {label}
         </Text>
       </Pressable>
     );

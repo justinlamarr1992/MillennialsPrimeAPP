@@ -20,7 +20,7 @@ export default function MyProfileScreen() {
   // Handle Edit Profile navigation
   const handleEditProfile = (): void => {
     // TODO: Navigate to edit profile screen when created (Phase 1.4)
-    console.log("Edit Profile pressed - navigation to be implemented");
+    // Placeholder - navigation will be implemented in Phase 1.4
   };
 
   // Mock posts data - memoized to prevent unnecessary re-renders of ProfileTabs
