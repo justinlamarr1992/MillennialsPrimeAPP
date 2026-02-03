@@ -33,13 +33,9 @@ export default function Layout() {
       <Stack.Screen
         name="index"
         options={{
+          title: "Social",
           headerStyle: {
             backgroundColor: colors["priC"],
-            // borderBottomLeftRadius: 32,
-            // borderBottomRightRadius: 32,
-            // shadowColor: colors["background"],
-            // height: 200,
-            // overflow: "hidden",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -86,14 +82,13 @@ export default function Layout() {
       <Stack.Screen
         name="MyProfileScreen"
         options={{
+          // Note: headerShown: true here creates a second header with back button
+          // This is intentional to enable navigation back to Social feed
+          // The Tabs navigator also shows a header for Social tab
+          headerShown: true,
+          title: "My Profile",
           headerStyle: {
             backgroundColor: userColor,
-            // backgroundColor: colors["priC"],
-            // borderBottomLeftRadius: 32,
-            // borderBottomRightRadius: 32,
-            // shadowColor: colors["background"],
-            // height: 200,
-            // overflow: "hidden",
           },
           headerTintColor: userColorText,
           headerTitleStyle: {

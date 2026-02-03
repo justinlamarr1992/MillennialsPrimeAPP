@@ -1,11 +1,13 @@
-import { Tabs } from "expo-router";
-import { useColorScheme } from "react-native";
+import { Tabs, useRouter } from "expo-router";
+import { useColorScheme, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/Colors";
 
 const TabsLayout = () => {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
+  const router = useRouter();
+
   return (
     <Tabs
       screenOptions={{
@@ -104,6 +106,16 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          headerRight: () => (
+            <Pressable
+              onPress={() => router.push("/(tabs)/(social)/MyProfileScreen")}
+              style={{ marginRight: 16 }}
+              accessibilityRole="button"
+              accessibilityLabel="Open My Profile"
+            >
+              <Ionicons name="person-circle" size={32} color={colors["secT"]} />
+            </Pressable>
+          ),
           title: "Social",
           tabBarIcon: ({ color }) => (
             <Ionicons name="people-circle" size={28} color={color} />

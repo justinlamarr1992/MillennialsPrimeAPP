@@ -1,14 +1,13 @@
 import { ScrollView, useColorScheme, View, Text, ActivityIndicator } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import VideoPost from "@/shared/PostComponents/VideoPost";
-import PicturePost from "@/shared/PostComponents/PicturePost";
-import TextPost from "@/shared/PostComponents/TextPost";
 import ProfileHeader from "@/components/ProfileHeader";
+import ProfileTabs from "@/components/ProfileTabs";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useProfilePictureUpload } from "@/hooks/useProfilePictureUpload";
+import type { TextPost, PicturePost, VideoPost } from "@/types/posts";
 
 export default function MyProfileScreen() {
   const colorScheme = useColorScheme();
@@ -21,8 +20,82 @@ export default function MyProfileScreen() {
   // Handle Edit Profile navigation
   const handleEditProfile = (): void => {
     // TODO: Navigate to edit profile screen when created (Phase 1.4)
-    console.log("Edit Profile pressed - navigation to be implemented");
+    // Placeholder - navigation will be implemented in Phase 1.4
   };
+
+  // Mock posts data - memoized to prevent unnecessary re-renders of ProfileTabs
+  // These hooks must be called before any conditional returns (React hooks rules)
+  // TODO: Replace with actual user posts from API when backend is ready (tracked in issue #46)
+  // Fixed timestamp to ensure consistent mock data
+  const MOCK_TIMESTAMP = "2026-02-02T12:00:00.000Z";
+
+  const mockTextPosts = useMemo<TextPost[]>(
+    () =>
+      profile
+        ? [
+            {
+              id: "1",
+              type: "text",
+              title: "Testing the Title for the User Profile Post",
+              description: "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines",
+              authorName: profile.username,
+              authorId: profile._id,
+              isPrime: profile.prime ?? false,
+              isAdmin: false,
+              createdAt: MOCK_TIMESTAMP,
+              likeCount: 0,
+              commentCount: 0,
+            },
+          ]
+        : [],
+    [profile]
+  );
+
+  const mockPicturePosts = useMemo<PicturePost[]>(
+    () =>
+      profile
+        ? [
+            {
+              id: "2",
+              type: "picture",
+              title: "Test Picture Post",
+              description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
+              authorName: profile.username,
+              authorId: profile._id,
+              imageUrl: "https://via.placeholder.com/600x400.png?text=Picture+Post",
+              isPrime: profile.prime ?? false,
+              isAdmin: false,
+              createdAt: MOCK_TIMESTAMP,
+              likeCount: 0,
+              commentCount: 0,
+            },
+          ]
+        : [],
+    [profile]
+  );
+
+  const mockVideoPosts = useMemo<VideoPost[]>(
+    () =>
+      profile
+        ? [
+            {
+              id: "3",
+              type: "video",
+              title: "This is a Video Post Title",
+              description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
+              authorName: profile.username,
+              authorId: profile._id,
+              videoId: "ec4cbe34-8750-4695-b252-69f53e51627a",
+              isPrime: profile.prime ?? false,
+              isAdmin: false,
+              createdAt: MOCK_TIMESTAMP,
+              likeCount: 0,
+              commentCount: 0,
+            },
+          ]
+        : [],
+    [profile]
+  );
 
   // Show loading state
   if (loading) {
@@ -44,12 +117,6 @@ export default function MyProfileScreen() {
     );
   }
 
-  // NOTE: Hardcoded values for post components
-  // These will be replaced with actual user posts in Phase 1.3 (ProfileTabs)
-  const admin = false;
-  const prime = profile.prime ?? false;
-  const id = profile._id;
-
   // Use profileImageUri from hook if available, otherwise use profile.profilePic
   const displayProfile = {
     ...profile,
@@ -70,42 +137,12 @@ export default function MyProfileScreen() {
         isUploading={isUploading}
       />
 
-      {/* Existing test posts - will be replaced with ProfileTabs in Phase 1.3 */}
-      <View style={globalStyles.padding}>
-        <TextPost
-        name={"Test User"}
-        title={"Testing the Title for the User Profile Post"}
-        description={
-          "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines"
-        }
-        prime={prime}
-        admin={admin}
-        authorId={id}
+      {/* ProfileTabs - Phase 1.3 */}
+      <ProfileTabs
+        textPosts={mockTextPosts}
+        picturePosts={mockPicturePosts}
+        videoPosts={mockVideoPosts}
       />
-      <PicturePost
-        name={"Test User"}
-        title={"Test"}
-        description={
-          "This is where the description of the post will go, but it will be shortened to only two lines max..."
-        }
-        picture=""
-        prime={prime}
-        admin={admin}
-        authorId={id}
-      />
-      <VideoPost
-        name={"Test User"}
-        title={"This is a Video Post Title"}
-        description={
-          "This is where the description of the post will go, but it will be shortened to only two lines max..."
-        }
-        prime={prime}
-        admin={admin}
-        libraryId={147838}
-        videoId={"ec4cbe34-8750-4695-b252-69f53e51627a"}
-        authorId={id}
-      />
-      </View>
     </ScrollView>
   );
 }
