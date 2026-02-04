@@ -1,5 +1,6 @@
 import { ScrollView, useColorScheme, View, Text, ActivityIndicator } from "react-native";
 import React, { useMemo } from "react";
+import { router } from "expo-router";
 
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -19,8 +20,7 @@ export default function MyProfileScreen() {
 
   // Handle Edit Profile navigation
   const handleEditProfile = (): void => {
-    // TODO: Navigate to edit profile screen when created (Phase 1.4)
-    // Placeholder - navigation will be implemented in Phase 1.4
+    router.push("/(tabs)/(social)/EditProfileScreen");
   };
 
   // Mock posts data - memoized to prevent unnecessary re-renders of ProfileTabs

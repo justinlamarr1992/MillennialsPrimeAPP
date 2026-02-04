@@ -13,6 +13,7 @@ import type {
   MyInfoFormData,
   BusinessFormData,
   ArtFormData,
+  EditProfileFormData,
 } from '@/types/UserProfile';
 
 export const userProfileService = {
@@ -154,5 +155,48 @@ export const userProfileService = {
     });
 
     return response.data?.getImageToClient || null;
+  },
+
+  /**
+   * Update edit profile data (EditProfileScreen data)
+   * Server expects: req.body.values.{name, bio, city, state, country, interests, b2bOpportunities}
+   */
+  async updateEditProfile(data: EditProfileFormData): Promise<void> {
+    const userId = await serverAuth.getUserId();
+    if (!userId) throw new Error('User ID not found');
+
+    const payload = {
+      values: {
+        name: data.name,
+        bio: data.bio,
+        city: data.city,
+        state: data.state,
+        country: data.country,
+        interests: data.interests,
+        b2bOpportunities: data.b2bOpportunities,
+      },
+    };
+
+    if (__DEV__) {
+      logger.log('💾 Updating edit profile for user:', userId);
+      logger.log('📦 Update payload:', JSON.stringify(payload));
+    }
+
+    try {
+      const response = await axiosPrivate.patch(`/users/${userId}`, payload);
+      if (__DEV__) {
+        logger.log('✅ Edit profile updated successfully');
+        logger.log('📥 Response:', JSON.stringify(response.data));
+      }
+    } catch (error: unknown) {
+      logger.error('❌ Edit profile update failed');
+      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number; data?: unknown }; message?: string };
+        logger.error('Error status:', axiosError.response?.status);
+        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
+        logger.error('Error message:', axiosError.message);
+      }
+      throw error;
+    }
   },
 };
