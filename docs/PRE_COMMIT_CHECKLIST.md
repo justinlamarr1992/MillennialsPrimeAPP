@@ -140,6 +140,14 @@ git diff --cached
 - [ ] Proper async/await error handling
 - [ ] No deeply nested conditionals (>3 levels)
 
+**Accessibility:**
+- [ ] All interactive elements have `accessibilityLabel`
+- [ ] Proper `accessibilityRole` set (button, switch, etc.)
+- [ ] Complex interactions have `accessibilityHint`
+- [ ] Images have `accessible={true}` and descriptive labels
+- [ ] Forms have clear labels and error messages
+- [ ] Color is not the only indicator (use text/icons too)
+
 **Action:** Refactor if needed.
 
 ---

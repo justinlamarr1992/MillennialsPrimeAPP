@@ -44,11 +44,13 @@ grep -r "TODO\|FIXME\|console\\.log" [your-files]
 
 ---
 
-## ☑️ Phase 5: Security (60s)
+## ☑️ Phase 5: Security & Accessibility (60s)
 - [ ] Input validation
 - [ ] No XSS/injection vulnerabilities
 - [ ] No secrets in code
 - [ ] Proper error handling
+- [ ] Accessibility labels on interactive elements
+- [ ] Proper accessibilityRole set
 
 ---
 
