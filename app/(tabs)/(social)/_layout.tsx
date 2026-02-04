@@ -96,6 +96,13 @@ export default function Layout() {
           },
         }}
       />
+      <Stack.Screen
+        name="EditProfileScreen"
+        options={{
+          headerShown: false,
+          title: "Edit Profile",
+        }}
+      />
       {/* Add custom stuff for the pages here */}
       {/* cog on side for settings */}
     </Stack>

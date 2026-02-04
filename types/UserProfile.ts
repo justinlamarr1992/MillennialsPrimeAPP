@@ -74,8 +74,10 @@ export interface ServerUserProfile {
   friendsCount?: number;
 
   // Profile Information
+  bio?: string; // User bio/about text (max 200 chars)
   interests?: string[];
   b2bOpportunityTags?: string[];
+  b2bOpportunities?: boolean; // Simple toggle for B2B services (Phase 1.4)
 
   // Verification System
   isVerified?: boolean;
@@ -137,4 +139,15 @@ export interface ProfileSettingsFormData {
   B2B?: string;
   eComm?: string;
   upload?: string;
+}
+
+// Phase 1.4: Edit Profile Form Data
+export interface EditProfileFormData {
+  name?: string;
+  bio?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  interests?: string[];
+  b2bOpportunities?: boolean;
 }

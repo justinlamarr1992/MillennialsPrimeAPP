@@ -126,3 +126,37 @@ export const validateName = (name: string): string | null => {
   }
   return null;
 };
+
+/**
+ * Validates bio/about text (max 200 characters)
+ * @param bio - Bio text to validate
+ * @returns Error message if invalid, null if valid
+ */
+export const validateBio = (bio: string): string | null => {
+  if (!bio || !bio.trim()) {
+    return null; // Bio is optional
+  }
+  if (bio.trim().length > 200) {
+    return 'Bio must be no more than 200 characters';
+  }
+  return null;
+};
+
+/**
+ * Validates interests array (max 10 tags, each max 30 chars)
+ * @param interests - Array of interest tags
+ * @returns Error message if invalid, null if valid
+ */
+export const validateInterests = (interests: string[]): string | null => {
+  if (!interests || interests.length === 0) {
+    return null; // Interests are optional
+  }
+  if (interests.length > 10) {
+    return 'Maximum 10 interests allowed';
+  }
+  const invalidTag = interests.find((tag) => tag.trim().length > 30);
+  if (invalidTag) {
+    return 'Each interest must be no more than 30 characters';
+  }
+  return null;
+};
