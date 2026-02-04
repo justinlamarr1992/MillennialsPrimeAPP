@@ -263,13 +263,13 @@ export default function EditProfileScreen() {
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
               <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
+                style={[
+                  globalStyles.flexRow,
+                  globalStyles.flexJustifyContentSpaceBetween,
+                  globalStyles.flexAlignItemsCenter,
+                ]}
               >
-                <View style={{ flex: 1 }}>
+                <View style={globalStyles.flex1}>
                   <Text style={[globalStyles.labelText, { color: colors.text }]}>
                     B2B Opportunities
                   </Text>
