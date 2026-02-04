@@ -10,6 +10,8 @@ import {
   validateRequired,
   validateZip,
   validateName,
+  validateBio,
+  validateInterests,
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from '../validation';
@@ -547,6 +549,144 @@ describe('validation utilities', () => {
         expect(validateName('John 😀')).toBe(
           'Name can only contain letters, spaces, hyphens, and apostrophes'
         );
+      });
+    });
+  });
+
+  describe('validateBio', () => {
+    describe('valid bios', () => {
+      it('should return null for empty string (bio is optional)', () => {
+        expect(validateBio('')).toBeNull();
+      });
+
+      it('should return null for whitespace only (bio is optional)', () => {
+        expect(validateBio('   ')).toBeNull();
+      });
+
+      it('should return null for short bio', () => {
+        expect(validateBio('Hello, I am a developer.')).toBeNull();
+      });
+
+      it('should return null for bio with special characters', () => {
+        expect(validateBio('I love coding! JavaScript & React are my favorites.')).toBeNull();
+      });
+
+      it('should return null for bio with numbers', () => {
+        expect(validateBio('Software engineer with 10+ years of experience.')).toBeNull();
+      });
+
+      it('should return null for bio with newlines', () => {
+        expect(validateBio('First line\nSecond line\nThird line')).toBeNull();
+      });
+
+      it('should return null for 200 character bio (maximum)', () => {
+        const bio = 'a'.repeat(200);
+        expect(validateBio(bio)).toBeNull();
+      });
+
+      it('should trim and validate bio at exactly 200 chars after trim', () => {
+        const bio = '  ' + 'a'.repeat(200) + '  ';
+        expect(validateBio(bio)).toBeNull();
+      });
+    });
+
+    describe('invalid bios', () => {
+      it('should return error for bio over 200 characters', () => {
+        const bio = 'a'.repeat(201);
+        expect(validateBio(bio)).toBe('Bio must be no more than 200 characters');
+      });
+
+      it('should return error for 201 character bio', () => {
+        const bio = 'a'.repeat(201);
+        expect(validateBio(bio)).toBe('Bio must be no more than 200 characters');
+      });
+
+      it('should return error for bio over 200 chars after trimming', () => {
+        const bio = '  ' + 'a'.repeat(201) + '  ';
+        expect(validateBio(bio)).toBe('Bio must be no more than 200 characters');
+      });
+
+      it('should return error for very long bio', () => {
+        const bio = 'a'.repeat(500);
+        expect(validateBio(bio)).toBe('Bio must be no more than 200 characters');
+      });
+    });
+  });
+
+  describe('validateInterests', () => {
+    describe('valid interests', () => {
+      it('should return null for empty array (interests are optional)', () => {
+        expect(validateInterests([])).toBeNull();
+      });
+
+      it('should return null for single interest', () => {
+        expect(validateInterests(['JavaScript'])).toBeNull();
+      });
+
+      it('should return null for multiple interests', () => {
+        expect(validateInterests(['JavaScript', 'React', 'Node.js'])).toBeNull();
+      });
+
+      it('should return null for 10 interests (maximum)', () => {
+        const interests = Array.from({ length: 10 }, (_, i) => `Interest ${i + 1}`);
+        expect(validateInterests(interests)).toBeNull();
+      });
+
+      it('should return null for interests with 30 character tags', () => {
+        const interests = ['a'.repeat(30), 'b'.repeat(30)];
+        expect(validateInterests(interests)).toBeNull();
+      });
+
+      it('should return null for interests with spaces', () => {
+        expect(validateInterests(['Web Development', 'Machine Learning'])).toBeNull();
+      });
+
+      it('should return null for interests with special characters', () => {
+        expect(validateInterests(['C++', 'C#', 'F#'])).toBeNull();
+      });
+    });
+
+    describe('invalid interests', () => {
+      it('should return error for more than 10 interests', () => {
+        const interests = Array.from({ length: 11 }, (_, i) => `Interest ${i + 1}`);
+        expect(validateInterests(interests)).toBe('Maximum 10 interests allowed');
+      });
+
+      it('should return error for 11 interests', () => {
+        const interests = Array.from({ length: 11 }, (_, i) => `Tag${i}`);
+        expect(validateInterests(interests)).toBe('Maximum 10 interests allowed');
+      });
+
+      it('should return error for interest with over 30 characters', () => {
+        const interests = ['JavaScript', 'a'.repeat(31)];
+        expect(validateInterests(interests)).toBe('Each interest must be no more than 30 characters');
+      });
+
+      it('should return error for interest with exactly 31 characters', () => {
+        const interests = ['a'.repeat(31)];
+        expect(validateInterests(interests)).toBe('Each interest must be no more than 30 characters');
+      });
+
+      it('should return error for multiple interests where one exceeds limit', () => {
+        const interests = ['Valid Tag', 'Another Valid', 'a'.repeat(35), 'Also Valid'];
+        expect(validateInterests(interests)).toBe('Each interest must be no more than 30 characters');
+      });
+
+      it('should return error for very long interest tag', () => {
+        const interests = ['a'.repeat(100)];
+        expect(validateInterests(interests)).toBe('Each interest must be no more than 30 characters');
+      });
+    });
+
+    describe('edge cases', () => {
+      it('should handle interests with leading/trailing whitespace', () => {
+        const interests = ['  JavaScript  ', '  React  '];
+        expect(validateInterests(interests)).toBeNull();
+      });
+
+      it('should catch whitespace-padded tags that exceed 30 chars after trim', () => {
+        const interests = ['  ' + 'a'.repeat(31) + '  '];
+        expect(validateInterests(interests)).toBe('Each interest must be no more than 30 characters');
       });
     });
   });

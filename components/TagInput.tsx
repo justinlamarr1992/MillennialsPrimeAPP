@@ -39,7 +39,7 @@ const validateTag = (tag: string, existingTags: string[]): { valid: boolean; err
     return { valid: false, error: `Maximum ${MAX_TAG_LENGTH} characters per tag` };
   }
 
-  if (existingTags.includes(trimmedTag)) {
+  if (existingTags.map(tagItem => tagItem.toLowerCase()).includes(trimmedTag.toLowerCase())) {
     return { valid: false, error: "Tag already exists" };
   }
 

@@ -42,8 +42,8 @@ export default function EditProfileScreen() {
   const [interests, setInterests] = useState<string[]>([]);
   const [b2bOpportunities, setB2bOpportunities] = useState(false);
 
-  // Character count for bio
-  const bioCharCount = bio.length;
+  // Character count for bio (matches validateBio, which uses trim().length)
+  const bioCharCount = bio.trim().length;
   const bioMaxChars = 200;
 
   // Populate form fields when profile data is fetched
@@ -184,7 +184,7 @@ export default function EditProfileScreen() {
                 style={[
                   globalStyles.labelText,
                   {
-                    color: bioCharCount > bioMaxChars ? colors.triC : colors.text,
+                    color: colors.text,
                     fontSize: 12,
                     marginTop: 4,
                   },
