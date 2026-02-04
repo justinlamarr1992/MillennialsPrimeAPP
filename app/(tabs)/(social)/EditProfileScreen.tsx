@@ -287,6 +287,9 @@ export default function EditProfileScreen() {
                   onValueChange={setB2bOpportunities}
                   trackColor={{ false: colors.secC, true: colors.priC }}
                   thumbColor={b2bOpportunities ? colors.quaC : colors.text}
+                  accessibilityLabel="Toggle B2B opportunities"
+                  accessibilityRole="switch"
+                  accessibilityHint="Enable or disable business collaboration opportunities on your profile"
                 />
               </View>
             </View>
