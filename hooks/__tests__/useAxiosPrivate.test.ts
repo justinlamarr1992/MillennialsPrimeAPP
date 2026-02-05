@@ -275,5 +275,47 @@ describe('useAxiosPrivate hook', () => {
       expect(mockError2.config.headers['Authorization']).toBe('Bearer new-token');
       expect(mockError3.config.headers['Authorization']).toBe('Bearer new-token');
     });
+
+    it('should only trigger one logout for concurrent refresh failures', async () => {
+      const mockAuth = require('@react-native-firebase/auth');
+      const mockSignOut = jest.fn().mockResolvedValue(undefined);
+      mockAuth.mockReturnValue({ signOut: mockSignOut });
+
+      // Create 3 different mock errors simulating concurrent failed requests
+      const mockError1 = {
+        response: { status: 401 },
+        config: { headers: {} as Record<string, string> },
+      };
+      const mockError2 = {
+        response: { status: 401 },
+        config: { headers: {} as Record<string, string> },
+      };
+      const mockError3 = {
+        response: { status: 401 },
+        config: { headers: {} as Record<string, string> },
+      };
+
+      // Mock refresh to fail after a delay to simulate race condition window
+      mockedServerAuth.refreshToken = jest.fn().mockImplementation(() =>
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Refresh failed')), 50))
+      );
+      mockedServerAuth.logout = jest.fn().mockResolvedValue(undefined);
+
+      // Trigger all 3 errors concurrently and expect them all to fail
+      await expect(Promise.all([
+        errorHandler(mockError1),
+        errorHandler(mockError2),
+        errorHandler(mockError3),
+      ])).rejects.toBeTruthy();
+
+      // Verify refreshToken was called only ONCE
+      expect(mockedServerAuth.refreshToken).toHaveBeenCalledTimes(1);
+
+      // Verify Firebase signOut was called only ONCE (not 3 times) due to isLoggingOut flag
+      expect(mockSignOut).toHaveBeenCalledTimes(1);
+
+      // Verify server logout was called only ONCE
+      expect(mockedServerAuth.logout).toHaveBeenCalledTimes(1);
+    });
   });
 });

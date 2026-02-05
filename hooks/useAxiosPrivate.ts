@@ -4,14 +4,16 @@ import { serverAuth } from '@/services/serverAuth';
 import { logger } from '@/utils/logger';
 import auth from '@react-native-firebase/auth';
 
+// Module-level shared state across all hook instances
+// This ensures multiple components using this hook share the same refresh/logout state
+let refreshPromise: Promise<string> | null = null;
+let isLoggingOut = false;
+
 const useAxiosPrivate = () => {
   useEffect(() => {
     if (__DEV__) {
       logger.log('useAxiosPrivate: Setting up interceptors for server auth');
     }
-
-    // Shared promise to prevent concurrent token refresh calls
-    let refreshPromise: Promise<string> | null = null;
 
     const requestIntercept = axiosPrivate.interceptors.request.use(
       async (config) => {
@@ -82,11 +84,17 @@ const useAxiosPrivate = () => {
           } catch (refreshError) {
             logger.error('❌ Token refresh failed:', refreshError);
             // Clear invalid credentials and sign out completely
-            try {
-              await auth().signOut(); // Sign out from Firebase
-              await serverAuth.logout(); // Clear server credentials
-            } catch (logoutError) {
-              logger.error('Failed to clear credentials:', logoutError);
+            // Use flag to prevent duplicate logout when multiple requests fail
+            if (!isLoggingOut) {
+              isLoggingOut = true;
+              try {
+                await auth().signOut(); // Sign out from Firebase
+                await serverAuth.logout(); // Clear server credentials
+              } catch (logoutError) {
+                logger.error('Failed to clear credentials:', logoutError);
+              } finally {
+                isLoggingOut = false; // Reset flag after logout completes
+              }
             }
             return Promise.reject(refreshError);
           }
