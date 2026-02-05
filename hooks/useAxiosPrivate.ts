@@ -43,18 +43,29 @@ const useAxiosPrivate = () => {
       async (error) => {
         const prevRequest = error?.config;
 
-        // If 403 (Forbidden - token expired) and haven't retried yet
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
+        // If 401 (Unauthorized) or 403 (Forbidden) - token expired/invalid
+        // and we haven't retried yet
+        if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
           prevRequest.sent = true;
+
+          if (__DEV__) {
+            logger.log(`🔄 Attempting token refresh after ${error?.response?.status} error`);
+          }
 
           try {
             // Attempt token refresh
             const newAccessToken = await serverAuth.refreshToken();
             prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+            if (__DEV__) {
+              logger.log('✅ Token refreshed successfully, retrying request');
+            }
+
             return axiosPrivate(prevRequest);
           } catch (refreshError) {
-            logger.error('Token refresh failed:', refreshError);
-            // Could trigger logout here
+            logger.error('❌ Token refresh failed:', refreshError);
+            // Clear invalid credentials to force re-login
+            await serverAuth.logout();
             return Promise.reject(refreshError);
           }
         }

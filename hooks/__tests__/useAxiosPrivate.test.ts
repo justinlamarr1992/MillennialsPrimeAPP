@@ -117,23 +117,78 @@ describe('useAxiosPrivate hook', () => {
   });
 
   describe('response interceptor behavior', () => {
-    it('should call serverAuth.refreshToken on 403 error', () => {
+    let errorHandler: (error: unknown) => Promise<unknown>;
+
+    beforeEach(() => {
       renderHook(() => useAxiosPrivate());
-
-      // Response interceptor is set up with error handler
-      expect(axiosPrivate.interceptors.response.use).toHaveBeenCalled();
-
       const responseInterceptorCall = (axiosPrivate.interceptors.response.use as jest.Mock).mock.calls[0];
-      expect(responseInterceptorCall).toBeDefined();
-      expect(typeof responseInterceptorCall[1]).toBe('function'); // Error handler exists
+      errorHandler = responseInterceptorCall[1];
     });
 
-    it('should handle token refresh failure', () => {
+    it('should call serverAuth.refreshToken on 401 error', async () => {
+      const mockError = {
+        response: { status: 401 },
+        config: { headers: {} },
+      };
+
+      mockedServerAuth.refreshToken = jest.fn().mockResolvedValue('new-token');
+
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockedServerAuth.refreshToken).toHaveBeenCalled();
+    });
+
+    it('should call serverAuth.refreshToken on 403 error', async () => {
+      const mockError = {
+        response: { status: 403 },
+        config: { headers: {} },
+      };
+
+      mockedServerAuth.refreshToken = jest.fn().mockResolvedValue('new-token');
+
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockedServerAuth.refreshToken).toHaveBeenCalled();
+    });
+
+    it('should not refresh token if request already retried', async () => {
+      const mockError = {
+        response: { status: 401 },
+        config: { headers: {}, sent: true },
+      };
+
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockedServerAuth.refreshToken).not.toHaveBeenCalled();
+    });
+
+    it('should clear credentials on token refresh failure', async () => {
+      const mockError = {
+        response: { status: 401 },
+        config: { headers: {} },
+      };
+
       mockedServerAuth.refreshToken = jest.fn().mockRejectedValue(new Error('Refresh failed'));
+      mockedServerAuth.logout = jest.fn().mockResolvedValue(undefined);
 
-      renderHook(() => useAxiosPrivate());
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockedServerAuth.logout).toHaveBeenCalled();
+    });
 
-      expect(axiosPrivate.interceptors.response.use).toHaveBeenCalled();
+    it('should not attempt refresh for other error codes', async () => {
+      const mockError = {
+        response: { status: 500 },
+        config: { headers: {} },
+      };
+
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockedServerAuth.refreshToken).not.toHaveBeenCalled();
+    });
+
+    it('should reject error without response', async () => {
+      const mockError = {
+        message: 'Network error',
+      };
+
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockedServerAuth.refreshToken).not.toHaveBeenCalled();
     });
   });
 });
