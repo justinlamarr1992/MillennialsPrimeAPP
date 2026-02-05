@@ -7,6 +7,7 @@ import { COLORS } from "@/constants/Colors";
 import ProfileHeader from "@/components/ProfileHeader";
 import ProfileTabs from "@/components/ProfileTabs";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useUserPosts } from "@/hooks/useUserPosts";
 import { useProfilePictureUpload } from "@/hooks/useProfilePictureUpload";
 import type { TextPost, PicturePost, VideoPost } from "@/types/posts";
 
@@ -18,90 +19,38 @@ export default function MyProfileScreen() {
   const { profile, loading, error } = useUserProfile();
   const { profileImageUri, handleImageSelected, isUploading } = useProfilePictureUpload();
 
+  // Fetch user posts data (Phase 1.5)
+  // Backend API not yet implemented - will return empty until /posts endpoints are deployed
+  // Note: _postsLoading and _postsError prefixed with _ as they're reserved for future use
+  const { posts, loading: _postsLoading, error: _postsError } = useUserPosts();
+
   // Handle Edit Profile navigation
   const handleEditProfile = (): void => {
     router.push("/(tabs)/(social)/EditProfileScreen");
   };
 
-  // Mock posts data - memoized to prevent unnecessary re-renders of ProfileTabs
-  // These hooks must be called before any conditional returns (React hooks rules)
-  // TODO: Replace with actual user posts from API when backend is ready (tracked in issue #46)
-  // Fixed timestamp to ensure consistent mock data
-  const MOCK_TIMESTAMP = "2026-02-02T12:00:00.000Z";
-
-  const mockTextPosts = useMemo<TextPost[]>(
-    () =>
-      profile
-        ? [
-            {
-              id: "1",
-              type: "text",
-              title: "Testing the Title for the User Profile Post",
-              description: "This is where the description of the text Post will go, but it will be however long the user types... However we may need to restrict this by a maximum of 10 lines",
-              authorName: profile.username,
-              authorId: profile._id,
-              isPrime: profile.prime ?? false,
-              isAdmin: false,
-              createdAt: MOCK_TIMESTAMP,
-              likeCount: 0,
-              commentCount: 0,
-            },
-          ]
-        : [],
-    [profile]
+  // Filter posts by type for ProfileTabs component
+  // Memoized to prevent unnecessary re-renders
+  const textPosts = useMemo<TextPost[]>(
+    () => posts.filter((post) => post.type === "text") as TextPost[],
+    [posts]
   );
 
-  const mockPicturePosts = useMemo<PicturePost[]>(
-    () =>
-      profile
-        ? [
-            {
-              id: "2",
-              type: "picture",
-              title: "Test Picture Post",
-              description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
-              authorName: profile.username,
-              authorId: profile._id,
-              imageUrl: "https://via.placeholder.com/600x400.png?text=Picture+Post",
-              isPrime: profile.prime ?? false,
-              isAdmin: false,
-              createdAt: MOCK_TIMESTAMP,
-              likeCount: 0,
-              commentCount: 0,
-            },
-          ]
-        : [],
-    [profile]
+  const picturePosts = useMemo<PicturePost[]>(
+    () => posts.filter((post) => post.type === "picture") as PicturePost[],
+    [posts]
   );
 
-  const mockVideoPosts = useMemo<VideoPost[]>(
-    () =>
-      profile
-        ? [
-            {
-              id: "3",
-              type: "video",
-              title: "This is a Video Post Title",
-              description: "This is where the description of the post will go, but it will be shortened to only two lines max...",
-              authorName: profile.username,
-              authorId: profile._id,
-              videoId: "ec4cbe34-8750-4695-b252-69f53e51627a",
-              isPrime: profile.prime ?? false,
-              isAdmin: false,
-              createdAt: MOCK_TIMESTAMP,
-              likeCount: 0,
-              commentCount: 0,
-            },
-          ]
-        : [],
-    [profile]
+  const videoPosts = useMemo<VideoPost[]>(
+    () => posts.filter((post) => post.type === "video") as VideoPost[],
+    [posts]
   );
 
   // Show loading state
   if (loading) {
     return (
       <View style={[globalStyles.centerItem, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.priC} />
+        <ActivityIndicator testID="activity-indicator" size="large" color={colors.priC} />
       </View>
     );
   }
@@ -137,11 +86,11 @@ export default function MyProfileScreen() {
         isUploading={isUploading}
       />
 
-      {/* ProfileTabs - Phase 1.3 */}
+      {/* ProfileTabs - Phase 1.3 with Phase 1.5 real data integration */}
       <ProfileTabs
-        textPosts={mockTextPosts}
-        picturePosts={mockPicturePosts}
-        videoPosts={mockVideoPosts}
+        textPosts={textPosts}
+        picturePosts={picturePosts}
+        videoPosts={videoPosts}
       />
     </ScrollView>
   );

@@ -131,6 +131,8 @@ export default function EditProfileScreen() {
           <Pressable
             onPress={() => router.back()}
             style={globalStyles.backButton}
+            accessibilityLabel="Go back to profile"
+            accessibilityRole="button"
           >
             <Text style={[globalStyles.labelText, { color: colors.priC }]}>
               ← Back
@@ -164,6 +166,7 @@ export default function EditProfileScreen() {
                 placeholder="Enter your name"
                 value={name}
                 onChangeText={setName}
+                accessibilityLabel="Name input field"
               />
             </View>
 
@@ -179,6 +182,7 @@ export default function EditProfileScreen() {
                 onChangeText={setBio}
                 multiline={true}
                 maxLength={bioMaxChars}
+                accessibilityLabel="Bio input field"
               />
               <Text
                 style={[
@@ -207,6 +211,7 @@ export default function EditProfileScreen() {
                 placeholder="Enter city"
                 value={city}
                 onChangeText={setCity}
+                accessibilityLabel="City input field"
               />
             </View>
 
@@ -220,6 +225,7 @@ export default function EditProfileScreen() {
                 placeholder="Enter state"
                 value={state}
                 onChangeText={setState}
+                accessibilityLabel="State input field"
               />
             </View>
 
@@ -233,6 +239,7 @@ export default function EditProfileScreen() {
                 placeholder="Enter country"
                 value={country}
                 onChangeText={setCountry}
+                accessibilityLabel="Country input field"
               />
             </View>
           </View>
@@ -303,6 +310,9 @@ export default function EditProfileScreen() {
                 { backgroundColor: colors.triC, marginBottom: 25 },
               ]}
               onPress={handleSubmit}
+              accessibilityLabel="Save profile changes"
+              accessibilityRole="button"
+              accessibilityHint="Save your profile updates and return to profile screen"
             >
               <Text style={globalStyles.buttonText}>Save Changes</Text>
             </Pressable>
