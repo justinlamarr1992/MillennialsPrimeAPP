@@ -190,6 +190,9 @@ flowchart LR
 - **ContentCard**: Individual content item card with gradient background
 - **ContentCarousel**: Horizontal scrollable carousel for content
 - **ProfilePicture**: Profile image display and upload
+- **ProfileHeader**: Profile header with avatar, username, role badges **(NEW - Phase 1.4)**
+- **ProfileTabs**: Tab navigation for profile sections (posts, followers, following) **(NEW - Phase 1.4)**
+- **TagInput**: Chip-based input for interests with add/remove functionality **(NEW - Phase 1.4)**
 - **ThemedText, ThemedView**: Theme-aware components
 - **ErrorBoundary**: Error handling wrapper
 - **TabBarIcon**: Tab navigation icons
@@ -200,6 +203,7 @@ flowchart LR
 - **Modals**: CustomBottomSheet, CommentModal
 - **Upload**: UploadBox for file uploads
 - **Timer**: HMSTimer, DHMSTimer countdown components
+- **B2B Switch**: Enhanced toggle switch with accessibility labels **(Updated - Phase 1.4)**
 
 ### Design Patterns
 
@@ -360,11 +364,12 @@ flowchart LR
 
 ## Project Statistics
 
-- **Total Screens**: 21 screens
+- **Total Screens**: 22 screens
 - **Active Screens**: 10 screens (Auth: 4, Home: 1, Settings: 4, LogOut: 1)
-- **Hidden Screens**: 7 screens (Social: 5, Upload: 1, Shows: 2)
-- **Reusable Components**: ~26 components
-- **Shared Components**: ~11 component groups
+- **Hidden Screens**: 8 screens (Social: 6, Upload: 1, Shows: 2)
+- **Reusable Components**: ~30 components (includes Phase 1.4 additions)
+- **Shared Components**: ~12 component groups
+- **Test Coverage**: 910 tests across 46 test suites, 100% pass rate
 - **Lines of Code**: Extensive TypeScript codebase with proper error handling and testing
 
 ## Documentation Index
@@ -383,5 +388,11 @@ flowchart LR
 
 ---
 
-*Last Updated: 2026-01-30*
+*Last Updated: 2026-02-05*
 *This document is maintained as part of the app documentation suite and should be updated when architectural changes occur.*
+
+**Recent Updates:**
+- **February 5, 2026**: Added Phase 1.4 components (ProfileHeader, ProfileTabs, TagInput)
+  - EditProfileScreen added to Social Tab
+  - Test coverage metrics updated (910 tests)
+  - Component counts revised
