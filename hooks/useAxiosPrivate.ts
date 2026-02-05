@@ -10,6 +10,9 @@ const useAxiosPrivate = () => {
       logger.log('useAxiosPrivate: Setting up interceptors for server auth');
     }
 
+    // Shared promise to prevent concurrent token refresh calls
+    let refreshPromise: Promise<string> | null = null;
+
     const requestIntercept = axiosPrivate.interceptors.request.use(
       async (config) => {
         // Get server access token from AsyncStorage
@@ -54,8 +57,21 @@ const useAxiosPrivate = () => {
           }
 
           try {
-            // Attempt token refresh
-            const newAccessToken = await serverAuth.refreshToken();
+            // If refresh is already in progress, wait for it instead of creating a new one
+            // This prevents race conditions when multiple requests fail simultaneously
+            if (!refreshPromise) {
+              if (__DEV__) {
+                logger.log('🔐 Starting new token refresh operation');
+              }
+              refreshPromise = serverAuth.refreshToken()
+                .finally(() => {
+                  refreshPromise = null; // Clear the promise when done (success or failure)
+                });
+            } else if (__DEV__) {
+              logger.log('⏳ Waiting for existing token refresh operation');
+            }
+
+            const newAccessToken = await refreshPromise;
             prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
             if (__DEV__) {

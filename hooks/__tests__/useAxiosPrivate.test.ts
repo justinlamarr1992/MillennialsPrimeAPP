@@ -233,5 +233,47 @@ describe('useAxiosPrivate hook', () => {
       expect(mockSignOut).toHaveBeenCalled();
       expect(mockedServerAuth.logout).toHaveBeenCalled();
     });
+
+    it('should only trigger one token refresh for concurrent 401 errors (race condition fix)', async () => {
+      // Create 3 different mock errors simulating concurrent failed requests
+      const mockError1 = {
+        response: { status: 401 },
+        config: { headers: {} as Record<string, string> },
+      };
+      const mockError2 = {
+        response: { status: 401 },
+        config: { headers: {} as Record<string, string> },
+      };
+      const mockError3 = {
+        response: { status: 401 },
+        config: { headers: {} as Record<string, string> },
+      };
+
+      // Mock a slow token refresh (50ms delay) to simulate race condition window
+      mockedServerAuth.refreshToken = jest.fn().mockImplementation(() =>
+        new Promise(resolve => setTimeout(() => resolve('new-token'), 50))
+      );
+
+      // Trigger all 3 errors concurrently
+      const results = await Promise.all([
+        errorHandler(mockError1),
+        errorHandler(mockError2),
+        errorHandler(mockError3),
+      ]);
+
+      // Verify refreshToken was called only ONCE (not 3 times)
+      expect(mockedServerAuth.refreshToken).toHaveBeenCalledTimes(1);
+
+      // Verify all 3 requests succeeded with the retried response
+      expect(results).toHaveLength(3);
+      results.forEach(result => {
+        expect(result).toEqual({ data: 'mocked response' });
+      });
+
+      // Verify all 3 requests got the Authorization header updated
+      expect(mockError1.config.headers['Authorization']).toBe('Bearer new-token');
+      expect(mockError2.config.headers['Authorization']).toBe('Bearer new-token');
+      expect(mockError3.config.headers['Authorization']).toBe('Bearer new-token');
+    });
   });
 });
