@@ -129,7 +129,7 @@ Settings → My Info → Business → Art → HomePage
 ### 5. Social Tab 🔒
 
 **Status**: **Hidden** (`href: null`)
-**Screens**: 5
+**Screens**: 6
 **File Locations**: `app/(tabs)/(social)/`
 
 **Features**:
@@ -140,9 +140,20 @@ Settings → My Info → Business → Art → HomePage
   - Connection status
   - Matching indicators
 - **My Profile Screen**: User's own profile with posts:
+  - ProfileHeader component with avatar and role badges
+  - ProfileTabs for navigation (posts, followers, following)
   - TextPost components
   - PicturePost components
   - VideoPost components
+- **Edit Profile Screen** (`EditProfileScreen.tsx`) **NEW - Phase 1.4**:
+  - Comprehensive profile editing with real-time validation
+  - TagInput component for interests (add/remove chips)
+  - Birthday validation (age 18-120, no future dates)
+  - Social media link validation (Instagram, Facebook, Twitter/X)
+  - Profile picture upload with Base64 encoding
+  - Full MongoDB integration for profile updates
+  - 45 comprehensive tests covering all functionality
+  - Accessibility support with screen reader labels
 - **E-Commerce Screen**: Marketplace with bottom sheet modals
   - Item listings
   - Item details in bottom sheet
@@ -150,17 +161,17 @@ Settings → My Info → Business → Art → HomePage
 - **Dynamic User Profile** (`[id].tsx`): Individual user profile pages
 
 **Navigator**: Drawer + Stack (hybrid)
-**Implementation Status**: ✅ Fully implemented with mock data
-**API Status**: ⏳ Waiting for API integration (currently uses hardcoded data)
+**Implementation Status**: ✅ Profile management complete (Phase 1.4), social features use mock data
+**API Status**: ✅ Edit Profile fully integrated with MongoDB, social feed uses hardcoded data
 
 **To Enable**:
 1. Remove `href: null` from `app/(tabs)/_layout.tsx` line ~103
 2. Uncomment `tabBarIcon` and `title`
-3. Connect to production API endpoints
+3. Connect social feed to production API endpoints
 4. Test user connections and data flows
 5. Deploy
 
-**Readiness**: 85% - Code complete, needs API hookup and testing
+**Readiness**: 90% - Edit Profile fully functional, social feed needs API integration
 
 ---
 
@@ -234,7 +245,7 @@ Settings → My Info → Business → Art → HomePage
 | **Home Tab** | ✅ Active | 1 | ✅ Complete | ✅ Tested | ✅ Yes |
 | **Settings Tab** | ✅ Active | 4 | ✅ Complete | ✅ Tested | ✅ Yes |
 | **LogOut** | ✅ Active | 1 | ✅ Complete | ✅ Tested | ✅ Yes |
-| **Social Tab** | 🔒 Hidden | 5 | ⏳ Partial | ⚠️ Needs testing | ❌ No |
+| **Social Tab** | 🔒 Hidden | 6 | ✅ Profile / ⏳ Social | ✅ Profile / ⚠️ Social | ❌ No |
 | **Upload Tab** | 🔒 Hidden | 1 | ⏳ Partial | ⚠️ Needs testing | ❌ No |
 | **Shows Tab** | 🔒 Hidden | 2 | ⏳ Partial | ⚠️ Needs testing | ❌ No |
 
@@ -477,5 +488,12 @@ Hidden features will add:
 
 ---
 
-*Last Updated: 2026-01-30*
+*Last Updated: 2026-02-05*
 *Feature status should be reviewed quarterly or when planning releases.*
+
+**Recent Updates:**
+- **February 5, 2026**: Added EditProfileScreen to Social Tab (Phase 1.4 complete)
+  - Profile editing with validation, interests, social links
+  - MongoDB integration complete
+  - 45 tests added
+  - Accessibility enhancements
