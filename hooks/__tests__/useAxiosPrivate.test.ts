@@ -22,26 +22,35 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   },
 }));
 jest.mock('@/services/serverAuth');
-jest.mock('@/API/axios', () => ({
-  axiosPrivate: {
-    interceptors: {
-      request: {
-        use: jest.fn(() => 1),
-        eject: jest.fn(),
+jest.mock('@/API/axios', () => {
+  const mockAxiosFunction = jest.fn().mockResolvedValue({ data: 'mocked response' });
+  return {
+    axiosPrivate: Object.assign(mockAxiosFunction, {
+      interceptors: {
+        request: {
+          use: jest.fn(() => 1),
+          eject: jest.fn(),
+        },
+        response: {
+          use: jest.fn(() => 2),
+          eject: jest.fn(),
+        },
       },
-      response: {
-        use: jest.fn(() => 2),
-        eject: jest.fn(),
-      },
-    },
-  },
-}));
+    }),
+  };
+});
 jest.mock('@/utils/logger', () => ({
   logger: {
     log: jest.fn(),
     error: jest.fn(),
+    warn: jest.fn(),
   },
 }));
+jest.mock('@react-native-firebase/auth', () => {
+  return jest.fn(() => ({
+    signOut: jest.fn().mockResolvedValue(undefined),
+  }));
+});
 
 const mockedServerAuth = serverAuth as jest.Mocked<typeof serverAuth>;
 
@@ -125,28 +134,34 @@ describe('useAxiosPrivate hook', () => {
       errorHandler = responseInterceptorCall[1];
     });
 
-    it('should call serverAuth.refreshToken on 401 error', async () => {
+    it('should call serverAuth.refreshToken on 401 error and retry request', async () => {
       const mockError = {
         response: { status: 401 },
-        config: { headers: {} },
+        config: { headers: {} as Record<string, string> },
       };
 
       mockedServerAuth.refreshToken = jest.fn().mockResolvedValue('new-token');
 
-      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      const result = await errorHandler(mockError);
+
       expect(mockedServerAuth.refreshToken).toHaveBeenCalled();
+      expect(result).toEqual({ data: 'mocked response' });
+      expect(mockError.config.headers['Authorization']).toBe('Bearer new-token');
     });
 
-    it('should call serverAuth.refreshToken on 403 error', async () => {
+    it('should call serverAuth.refreshToken on 403 error and retry request', async () => {
       const mockError = {
         response: { status: 403 },
-        config: { headers: {} },
+        config: { headers: {} as Record<string, string> },
       };
 
       mockedServerAuth.refreshToken = jest.fn().mockResolvedValue('new-token');
 
-      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      const result = await errorHandler(mockError);
+
       expect(mockedServerAuth.refreshToken).toHaveBeenCalled();
+      expect(result).toEqual({ data: 'mocked response' });
+      expect(mockError.config.headers['Authorization']).toBe('Bearer new-token');
     });
 
     it('should not refresh token if request already retried', async () => {
@@ -189,6 +204,34 @@ describe('useAxiosPrivate hook', () => {
 
       await expect(errorHandler(mockError)).rejects.toBeTruthy();
       expect(mockedServerAuth.refreshToken).not.toHaveBeenCalled();
+    });
+
+    it('should not attempt refresh if prevRequest is null', async () => {
+      const mockError = {
+        response: { status: 401 },
+        config: null,
+      };
+
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockedServerAuth.refreshToken).not.toHaveBeenCalled();
+    });
+
+    it('should call Firebase signOut when token refresh fails', async () => {
+      const mockAuth = require('@react-native-firebase/auth');
+      const mockSignOut = jest.fn().mockResolvedValue(undefined);
+      mockAuth.mockReturnValue({ signOut: mockSignOut });
+
+      const mockError = {
+        response: { status: 401 },
+        config: { headers: {} as Record<string, string> },
+      };
+
+      mockedServerAuth.refreshToken = jest.fn().mockRejectedValue(new Error('Refresh failed'));
+      mockedServerAuth.logout = jest.fn().mockResolvedValue(undefined);
+
+      await expect(errorHandler(mockError)).rejects.toBeTruthy();
+      expect(mockSignOut).toHaveBeenCalled();
+      expect(mockedServerAuth.logout).toHaveBeenCalled();
     });
   });
 });

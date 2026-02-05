@@ -2,6 +2,7 @@ import { axiosPrivate } from '../API/axios';
 import { useEffect } from 'react';
 import { serverAuth } from '@/services/serverAuth';
 import { logger } from '@/utils/logger';
+import auth from '@react-native-firebase/auth';
 
 const useAxiosPrivate = () => {
   useEffect(() => {
@@ -45,7 +46,7 @@ const useAxiosPrivate = () => {
 
         // If 401 (Unauthorized) or 403 (Forbidden) - token expired/invalid
         // and we haven't retried yet
-        if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
+        if (prevRequest && (error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest.sent) {
           prevRequest.sent = true;
 
           if (__DEV__) {
@@ -64,8 +65,13 @@ const useAxiosPrivate = () => {
             return axiosPrivate(prevRequest);
           } catch (refreshError) {
             logger.error('❌ Token refresh failed:', refreshError);
-            // Clear invalid credentials to force re-login
-            await serverAuth.logout();
+            // Clear invalid credentials and sign out completely
+            try {
+              await auth().signOut(); // Sign out from Firebase
+              await serverAuth.logout(); // Clear server credentials
+            } catch (logoutError) {
+              logger.error('Failed to clear credentials:', logoutError);
+            }
             return Promise.reject(refreshError);
           }
         }
