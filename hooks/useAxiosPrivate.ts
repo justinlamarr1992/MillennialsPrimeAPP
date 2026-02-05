@@ -8,11 +8,14 @@ import auth from '@react-native-firebase/auth';
 // This ensures multiple components using this hook share the same refresh/logout state
 let refreshPromise: Promise<string> | null = null;
 let isLoggingOut = false;
+let activeInterceptors = 0; // Track number of active interceptors for proper cleanup
 
 const useAxiosPrivate = () => {
   useEffect(() => {
+    activeInterceptors++;
+
     if (__DEV__) {
-      logger.log('useAxiosPrivate: Setting up interceptors for server auth');
+      logger.log(`useAxiosPrivate: Setting up interceptors for server auth (active: ${activeInterceptors})`);
     }
 
     const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -90,6 +93,8 @@ const useAxiosPrivate = () => {
               try {
                 await auth().signOut(); // Sign out from Firebase
                 await serverAuth.logout(); // Clear server credentials
+                // Note: Navigation to login screen is handled automatically by
+                // Firebase auth state listener in app/_layout.tsx (lines 42-44)
               } catch (logoutError) {
                 logger.error('Failed to clear credentials:', logoutError);
               } finally {
@@ -107,10 +112,31 @@ const useAxiosPrivate = () => {
     return () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
+
+      activeInterceptors--;
+
+      // Reset module-level state when last interceptor is removed
+      // This prevents stale state when all components using this hook unmount
+      if (activeInterceptors === 0) {
+        refreshPromise = null;
+        isLoggingOut = false;
+
+        if (__DEV__) {
+          logger.log('useAxiosPrivate: Last interceptor removed, reset module state');
+        }
+      }
     };
   }, []); // Empty dependency array - set up once on mount
 
   return axiosPrivate;
+};
+
+// Test-only function to reset module-level state between test runs
+// This prevents test pollution from concurrent tests affecting each other
+export const __resetModuleState = () => {
+  refreshPromise = null;
+  isLoggingOut = false;
+  activeInterceptors = 0;
 };
 
 export default useAxiosPrivate;

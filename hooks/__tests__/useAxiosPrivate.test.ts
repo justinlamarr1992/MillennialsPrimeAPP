@@ -6,7 +6,7 @@
  */
 
 import { renderHook } from '@testing-library/react-native';
-import useAxiosPrivate from '../useAxiosPrivate';
+import useAxiosPrivate, { __resetModuleState } from '../useAxiosPrivate';
 import { axiosPrivate } from '@/API/axios';
 import { serverAuth } from '@/services/serverAuth';
 
@@ -57,6 +57,9 @@ const mockedServerAuth = serverAuth as jest.Mocked<typeof serverAuth>;
 describe('useAxiosPrivate hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Reset module-level state to prevent test pollution
+    __resetModuleState();
 
     // Default mock implementations
     mockedServerAuth.getAccessToken = jest.fn().mockResolvedValue('mock-access-token');
