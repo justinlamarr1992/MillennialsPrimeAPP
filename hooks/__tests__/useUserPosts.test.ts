@@ -24,7 +24,7 @@ const mockUseAxiosPrivate = useAxiosPrivate as jest.MockedFunction<typeof useAxi
 const mockPostsService = postsService as jest.Mocked<typeof postsService>;
 
 describe('useUserPosts', () => {
-  const mockAxiosPrivate = {} as any;
+  const mockAxiosPrivate = {} as ReturnType<typeof useAxiosPrivate>;
   const mockUserId = 'user-123';
 
   const mockTextPost: TextPost = {
