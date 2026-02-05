@@ -1,8 +1,8 @@
-import { axiosPrivate } from '../API/axios';
 import { useEffect } from 'react';
+import auth from '@react-native-firebase/auth';
+import { axiosPrivate } from '../API/axios';
 import { serverAuth } from '@/services/serverAuth';
 import { logger } from '@/utils/logger';
-import auth from '@react-native-firebase/auth';
 
 // Module-level shared state across all hook instances
 // This ensures multiple components using this hook share the same refresh/logout state
