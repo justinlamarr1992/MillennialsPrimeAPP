@@ -227,6 +227,105 @@ describe('useConnectionStatus', () => {
 
       expect(mockConnectionService.removeConnection).toHaveBeenCalledWith('conn-1');
     });
+
+    it('sets error state when sendRequest fails', async () => {
+      mockConnectionService.getConnectionStatus.mockResolvedValueOnce({
+        status: 'none',
+      });
+
+      const { result } = renderHook(() => useConnectionStatus(targetUserId));
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      mockConnectionService.sendConnectionRequest.mockRejectedValue(
+        new Error('Request failed')
+      );
+
+      await act(async () => {
+        await result.current.sendRequest();
+      });
+
+      expect(result.current.error).toBeInstanceOf(Error);
+      expect(result.current.error?.message).toBe('Request failed');
+      expect(result.current.loading).toBe(false);
+    });
+
+    it('sets error state when acceptRequest fails', async () => {
+      mockConnectionService.getConnectionStatus.mockResolvedValueOnce({
+        status: 'pending_received',
+        connectionId: 'conn-1',
+      });
+
+      const { result } = renderHook(() => useConnectionStatus(targetUserId));
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      mockConnectionService.acceptConnectionRequest.mockRejectedValue(
+        new Error('Accept failed')
+      );
+
+      await act(async () => {
+        await result.current.acceptRequest('conn-1');
+      });
+
+      expect(result.current.error).toBeInstanceOf(Error);
+      expect(result.current.error?.message).toBe('Accept failed');
+      expect(result.current.loading).toBe(false);
+    });
+
+    it('sets error state when declineRequest fails', async () => {
+      mockConnectionService.getConnectionStatus.mockResolvedValueOnce({
+        status: 'pending_received',
+        connectionId: 'conn-1',
+      });
+
+      const { result } = renderHook(() => useConnectionStatus(targetUserId));
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      mockConnectionService.declineConnectionRequest.mockRejectedValue(
+        new Error('Decline failed')
+      );
+
+      await act(async () => {
+        await result.current.declineRequest('conn-1');
+      });
+
+      expect(result.current.error).toBeInstanceOf(Error);
+      expect(result.current.error?.message).toBe('Decline failed');
+      expect(result.current.loading).toBe(false);
+    });
+
+    it('sets error state when removeConnection fails', async () => {
+      mockConnectionService.getConnectionStatus.mockResolvedValueOnce({
+        status: 'connected',
+        connectionId: 'conn-1',
+      });
+
+      const { result } = renderHook(() => useConnectionStatus(targetUserId));
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      mockConnectionService.removeConnection.mockRejectedValue(
+        new Error('Remove failed')
+      );
+
+      await act(async () => {
+        await result.current.removeConnection('conn-1');
+      });
+
+      expect(result.current.error).toBeInstanceOf(Error);
+      expect(result.current.error?.message).toBe('Remove failed');
+      expect(result.current.loading).toBe(false);
+    });
   });
 
   describe('when user is not authenticated', () => {

@@ -67,23 +67,63 @@ export const useConnectionStatus = (targetUserId: string): UseConnectionStatusRe
   }, [user, authLoading, fetchStatus]);
 
   const sendRequest = useCallback(async (): Promise<void> => {
-    await connectionService.sendConnectionRequest(targetUserId);
-    await fetchStatus();
+    setLoading(true);
+    setError(null);
+    try {
+      await connectionService.sendConnectionRequest(targetUserId);
+      await fetchStatus();
+    } catch (err) {
+      const actionError = err instanceof Error ? err : new Error('Failed to send connection request');
+      setError(actionError);
+      logger.error('❌ Failed to send connection request:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [targetUserId, fetchStatus]);
 
   const acceptRequest = useCallback(async (connId: string): Promise<void> => {
-    await connectionService.acceptConnectionRequest(connId);
-    await fetchStatus();
+    setLoading(true);
+    setError(null);
+    try {
+      await connectionService.acceptConnectionRequest(connId);
+      await fetchStatus();
+    } catch (err) {
+      const actionError = err instanceof Error ? err : new Error('Failed to accept connection request');
+      setError(actionError);
+      logger.error('❌ Failed to accept connection request:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [fetchStatus]);
 
   const declineRequest = useCallback(async (connId: string): Promise<void> => {
-    await connectionService.declineConnectionRequest(connId);
-    await fetchStatus();
+    setLoading(true);
+    setError(null);
+    try {
+      await connectionService.declineConnectionRequest(connId);
+      await fetchStatus();
+    } catch (err) {
+      const actionError = err instanceof Error ? err : new Error('Failed to decline connection request');
+      setError(actionError);
+      logger.error('❌ Failed to decline connection request:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [fetchStatus]);
 
   const removeConnectionAction = useCallback(async (connId: string): Promise<void> => {
-    await connectionService.removeConnection(connId);
-    await fetchStatus();
+    setLoading(true);
+    setError(null);
+    try {
+      await connectionService.removeConnection(connId);
+      await fetchStatus();
+    } catch (err) {
+      const actionError = err instanceof Error ? err : new Error('Failed to remove connection');
+      setError(actionError);
+      logger.error('❌ Failed to remove connection:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [fetchStatus]);
 
   return {
