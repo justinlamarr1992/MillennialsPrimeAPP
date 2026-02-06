@@ -158,6 +158,40 @@ export const userProfileService = {
   },
 
   /**
+   * Fetch another user's profile by their ID
+   * Used for viewing other users' profiles (Phase 2: Social Features)
+   *
+   * Expected endpoint: GET /users/:userId (Issue #54)
+   */
+  async fetchProfileById(userId: string): Promise<ServerUserProfile> {
+    if (!userId) throw new Error('User ID is required');
+
+    if (__DEV__) {
+      logger.log('📥 Fetching profile for user:', userId);
+    }
+
+    try {
+      const response = await axiosPrivate.get(`/users/${userId}`);
+
+      if (__DEV__) {
+        logger.log('✅ Profile fetched for user:', userId);
+      }
+
+      return response.data;
+    } catch (error: unknown) {
+      logger.error('❌ Failed to fetch profile for user:', userId);
+
+      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number; data?: unknown }; message?: string };
+        logger.error('Error status:', axiosError.response?.status);
+        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
+      }
+
+      throw error;
+    }
+  },
+
+  /**
    * Update edit profile data (EditProfileScreen data)
    * Server expects: req.body.values.{name, bio, city, state, country, interests, b2bOpportunities}
    */
