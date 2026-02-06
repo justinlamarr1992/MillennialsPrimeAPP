@@ -361,4 +361,63 @@ describe("userProfileService", () => {
       await expect(userProfileService.getProfilePicture()).rejects.toThrow("User ID not found");
     });
   });
+
+  describe("fetchProfileById", () => {
+    const otherUserId = "user-456-def";
+
+    it("fetches another user's profile by ID", async () => {
+      const mockProfile: ServerUserProfile = {
+        _id: otherUserId,
+        username: "janedoe",
+        firstName: "Jane",
+        lastName: "Doe",
+        name: "Jane Doe",
+        email: "jane@example.com",
+        prime: true,
+        roles: { User: 2001 },
+        interests: ["Tech", "Music"],
+        b2bOpportunities: true,
+        b2bOpportunityTags: ["Consulting"],
+      };
+
+      mockedAxiosPrivate.get.mockResolvedValueOnce({ data: mockProfile });
+
+      const result = await userProfileService.fetchProfileById(otherUserId);
+
+      expect(axiosPrivate.get).toHaveBeenCalledWith(`/users/${otherUserId}`);
+      expect(result).toEqual(mockProfile);
+      expect(result._id).toBe(otherUserId);
+    });
+
+    it("throws error when user ID is empty", async () => {
+      await expect(userProfileService.fetchProfileById("")).rejects.toThrow(
+        "User ID is required"
+      );
+      expect(axiosPrivate.get).not.toHaveBeenCalled();
+    });
+
+    it("handles 404 when user not found", async () => {
+      const mockError = {
+        response: {
+          status: 404,
+          data: { message: "User not found" },
+        },
+        message: "Request failed with status code 404",
+      };
+      mockedAxiosPrivate.get.mockRejectedValueOnce(mockError);
+
+      await expect(userProfileService.fetchProfileById(otherUserId)).rejects.toEqual(
+        mockError
+      );
+    });
+
+    it("handles server errors correctly", async () => {
+      const mockError = new Error("Server error");
+      mockedAxiosPrivate.get.mockRejectedValueOnce(mockError);
+
+      await expect(userProfileService.fetchProfileById(otherUserId)).rejects.toThrow(
+        "Server error"
+      );
+    });
+  });
 });
