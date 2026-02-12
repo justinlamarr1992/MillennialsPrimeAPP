@@ -8,11 +8,13 @@
  */
 
 import React from 'react';
-import { render, screen, waitFor } from '@/__tests__/test-utils';
+import { render, screen, waitFor, fireEvent } from '@/__tests__/test-utils';
 import MyProfileScreen from '../MyProfileScreen';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useUserPosts } from '@/hooks/useUserPosts';
 import { useProfilePictureUpload } from '@/hooks/useProfilePictureUpload';
+import { useConnections } from '@/hooks/useConnections';
+import { createMockConnectionUsers } from '@/__tests__/factories/mockDataFactory';
 import type { ServerUserProfile } from '@/types/UserProfile';
 import type { TextPost, PicturePost, VideoPost } from '@/types/posts';
 
@@ -23,10 +25,16 @@ jest.mock('expo-router', () => ({
   },
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { router: mockRouter } = require('expo-router') as {
+  router: { push: jest.MockedFunction<(href: string) => void> };
+};
+
 // Mock hooks
 jest.mock('@/hooks/useUserProfile');
 jest.mock('@/hooks/useUserPosts');
 jest.mock('@/hooks/useProfilePictureUpload');
+jest.mock('@/hooks/useConnections');
 
 // Mock ProfileHeader component
 jest.mock('@/components/ProfileHeader', () => {
@@ -59,6 +67,15 @@ jest.mock('@/components/ProfileTabs', () => {
 const mockUseUserProfile = useUserProfile as jest.MockedFunction<typeof useUserProfile>;
 const mockUseUserPosts = useUserPosts as jest.MockedFunction<typeof useUserPosts>;
 const mockUseProfilePictureUpload = useProfilePictureUpload as jest.MockedFunction<typeof useProfilePictureUpload>;
+const mockUseConnections = useConnections as jest.MockedFunction<typeof useConnections>;
+
+const connectionDefaults: ReturnType<typeof useConnections> = {
+  connections: [],
+  pendingRequests: [],
+  loading: false,
+  error: null,
+  refetch: jest.fn(),
+};
 
 describe('MyProfileScreen', () => {
   const mockProfile: ServerUserProfile = {
@@ -127,6 +144,8 @@ describe('MyProfileScreen', () => {
       handleImageSelected: jest.fn(),
       isUploading: false,
     });
+
+    mockUseConnections.mockReturnValue(connectionDefaults);
   });
 
   describe('Loading States', () => {
@@ -407,6 +426,80 @@ describe('MyProfileScreen', () => {
         expect(screen.getByTestId('mock-profile-header')).toBeTruthy();
         expect(screen.getByTestId('mock-profile-tabs')).toBeTruthy();
       });
+    });
+  });
+
+  describe('Connections Integration', () => {
+    beforeEach(() => {
+      mockUseUserProfile.mockReturnValue({
+        profile: mockProfile,
+        loading: false,
+        error: null,
+        refetch: jest.fn(),
+      });
+
+      mockUseUserPosts.mockReturnValue({
+        posts: [],
+        totalCount: 0,
+        loading: false,
+        error: null,
+        refetch: jest.fn(),
+      });
+    });
+
+    it('should display the connection count', () => {
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        connections: createMockConnectionUsers(5),
+      });
+
+      render(<MyProfileScreen />);
+
+      expect(screen.getByText('5 Connections')).toBeTruthy();
+    });
+
+    it('should display zero connections gracefully', () => {
+      render(<MyProfileScreen />);
+
+      expect(screen.getByText('0 Connections')).toBeTruthy();
+    });
+
+    it('should navigate to connections screen when tapped', () => {
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        connections: createMockConnectionUsers(3),
+      });
+
+      render(<MyProfileScreen />);
+
+      fireEvent.press(screen.getByLabelText('View connections'));
+
+      expect(mockRouter.push).toHaveBeenCalledWith(
+        '/(tabs)/(social)/ConnectedUsersScreen'
+      );
+    });
+
+    it('should display a metrics dashboard with connection and pending data', () => {
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        connections: createMockConnectionUsers(8),
+        pendingRequests: [
+          {
+            _id: 'req-1',
+            requester: 'other',
+            recipient: 'me',
+            status: 'pending',
+            createdAt: '2026-02-01T00:00:00Z',
+            updatedAt: '2026-02-01T00:00:00Z',
+          },
+        ],
+      });
+
+      render(<MyProfileScreen />);
+
+      expect(screen.getByLabelText('Profile metrics')).toBeTruthy();
+      expect(screen.getByText('8')).toBeTruthy();
+      expect(screen.getByText('1')).toBeTruthy();
     });
   });
 });
