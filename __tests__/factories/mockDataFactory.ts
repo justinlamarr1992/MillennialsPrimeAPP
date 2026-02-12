@@ -9,6 +9,8 @@
  * const post = createMockTextPost({ title: 'Custom Title' });
  */
 
+import type { Connection, ConnectionUser } from "@/types/connection";
+
 /**
  * User and Authentication Data
  */
@@ -416,3 +418,42 @@ export const createPostOwnershipScenario = () => {
 
   return { owner, nonOwner, post };
 };
+
+/**
+ * Connection Data (Phase 2)
+ */
+
+export const createMockConnectionUser = (
+  overrides?: Partial<ConnectionUser>
+): ConnectionUser => ({
+  _id: "conn-user-123",
+  name: "Jane Smith",
+  username: "janesmith",
+  profilePic: "https://example.com/jane.jpg",
+  prime: false,
+  roles: { User: 2001 },
+  business: { industry: "Graphic Design" },
+  ...overrides,
+});
+
+export const createMockConnectionUsers = (count: number): ConnectionUser[] =>
+  Array.from({ length: count }, (_, i) =>
+    createMockConnectionUser({
+      _id: `conn-user-${i + 1}`,
+      name: `User ${i + 1}`,
+      username: `user${i + 1}`,
+      profilePic: `https://example.com/user${i + 1}.jpg`,
+    })
+  );
+
+export const createMockConnection = (
+  overrides?: Partial<Connection>
+): Connection => ({
+  _id: "connection-123",
+  requester: "user-123",
+  recipient: "user-456",
+  status: "pending",
+  createdAt: "2026-02-01T12:00:00Z",
+  updatedAt: "2026-02-01T12:00:00Z",
+  ...overrides,
+});
