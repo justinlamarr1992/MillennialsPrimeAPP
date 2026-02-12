@@ -90,6 +90,7 @@ export default function MyProfileScreen() {
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{ backgroundColor: colors.background }}
+      contentContainerStyle={{ flexGrow: 1 }}
     >
       {/* ProfileHeader - Phase 1 */}
       <ProfileHeader

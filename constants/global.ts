@@ -511,6 +511,39 @@ export const globalStyles = StyleSheet.create({
   },
 
   // T
+  // Tabs
+  tabContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 16,
+    alignItems: "center",
+    borderBottomWidth: 2,
+    borderBottomColor: "transparent",
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  tabContent: {
+    flex: 1,
+  },
+  tabEmptyState: {
+    flex: 1,
+    padding: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 200,
+  },
+  tabEmptyText: {
+    fontSize: 16,
+    textAlign: "center",
+  },
   // Text Types
   textCenter: { textAlign: "center" },
   textHuge: {
