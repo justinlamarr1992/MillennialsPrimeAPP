@@ -10,7 +10,7 @@ jest.mock('@/utils/logger');
 
 import { serverAuth } from '../serverAuth';
 import * as SecureStore from 'expo-secure-store';
-import axios from '@/API/axios';
+import axios, { axiosPrivate } from '@/API/axios';
 
 describe('serverAuth', () => {
   beforeEach(() => {
@@ -220,7 +220,7 @@ describe('serverAuth', () => {
   });
 
   describe('refreshToken', () => {
-    it('refreshes token and stores new credentials in SecureStore', async () => {
+    it('uses axiosPrivate (withCredentials) so the refresh cookie is sent', async () => {
       const mockResponse = {
         data: {
           accessToken: 'new-refreshed-token-xyz',
@@ -228,11 +228,11 @@ describe('serverAuth', () => {
         }
       };
 
-      (axios.post as jest.Mock).mockResolvedValueOnce(mockResponse);
+      (axiosPrivate.post as jest.Mock).mockResolvedValueOnce(mockResponse);
 
       const newToken = await serverAuth.refreshToken();
 
-      expect(axios.post).toHaveBeenCalledWith('/refresh');
+      expect(axiosPrivate.post).toHaveBeenCalledWith('/refresh');
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
         'server_access_token',
         'new-refreshed-token-xyz'
@@ -244,9 +244,21 @@ describe('serverAuth', () => {
       expect(newToken).toBe('new-refreshed-token-xyz');
     });
 
+    it('does not use the default axios instance (which lacks credentials)', async () => {
+      const mockResponse = {
+        data: { accessToken: 'token', _id: 'id' }
+      };
+
+      (axiosPrivate.post as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+      await serverAuth.refreshToken();
+
+      expect(axios.post).not.toHaveBeenCalledWith('/refresh');
+    });
+
     it('throws error when refresh fails', async () => {
       const mockError = new Error('Refresh token expired');
-      (axios.post as jest.Mock).mockRejectedValueOnce(mockError);
+      (axiosPrivate.post as jest.Mock).mockRejectedValueOnce(mockError);
 
       await expect(serverAuth.refreshToken()).rejects.toThrow('Refresh token expired');
     });
