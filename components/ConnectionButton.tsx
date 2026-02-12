@@ -82,7 +82,7 @@ export default function ConnectionButton(props: ConnectionButtonProps): JSX.Elem
   if (status === "pending_received") {
     return (
       <View style={globalStyles.padding}>
-        <View style={[globalStyles.flexRow, { gap: 12 }]}>
+        <View style={[globalStyles.flexRow, globalStyles.gap12]}>
           <Pressable
             style={[globalStyles.button, globalStyles.flex1, { backgroundColor: colors.priC }]}
             onPress={() => connectionId && onAcceptRequest(connectionId)}

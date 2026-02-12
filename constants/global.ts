@@ -27,6 +27,7 @@ export const globalStyles = StyleSheet.create({
   alignEnd: { alignSelf: "flex-end" },
   alignStart: { alignSelf: "flex-start" },
   authModal: { backgroundColor: "#ffffff" },
+  avatarCircle: { width: 56, height: 56, borderRadius: 28 },
 
   // B
   backButton: {
@@ -136,6 +137,7 @@ export const globalStyles = StyleSheet.create({
   flexJustifyContentSpaceBetween: { justifyContent: "space-between" },
   flexJustifyContentSpaceEvenly: { justifyContent: "space-evenly" },
   flexRow: { flexDirection: "row" },
+  flexWrap: { flexWrap: "wrap" },
   formTitle: {
     // paddingTop: 30,
     // displayz: flex,
@@ -143,6 +145,8 @@ export const globalStyles = StyleSheet.create({
   },
 
   // G
+  gap8: { gap: 8 },
+  gap12: { gap: 12 },
 
   // H
   header: {
@@ -285,11 +289,23 @@ export const globalStyles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
+  marginB8: {
+    marginBottom: 8,
+  },
   marginB10: {
     marginBottom: 10,
   },
+  marginB12: {
+    marginBottom: 12,
+  },
   marginB100: {
     marginBottom: 100,
+  },
+  marginR16: {
+    marginRight: 16,
+  },
+  marginT4: {
+    marginTop: 4,
   },
   // Modal
   modalClose: {
