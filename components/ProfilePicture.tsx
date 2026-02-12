@@ -16,6 +16,10 @@ const DEFAULT_SIZE = 120;
 const EDIT_BUTTON_SIZE = 36;
 const BORDER_WIDTH = 3;
 
+/** Reject raw IDs / garbage strings that RN Image can't load */
+const isValidImageUri = (uri: string): boolean =>
+  uri.startsWith('http') || uri.startsWith('data:') || uri.startsWith('file://');
+
 export default function ProfilePicture({
   imageUri,
   onImageSelected,
@@ -115,7 +119,7 @@ export default function ProfilePicture({
           },
         ]}
       >
-        {imageUri ? renderImage() : renderPlaceholder()}
+        {imageUri && isValidImageUri(imageUri) ? renderImage() : renderPlaceholder()}
       </Pressable>
       {renderEditButton()}
     </View>
