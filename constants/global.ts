@@ -301,6 +301,9 @@ export const globalStyles = StyleSheet.create({
   marginB100: {
     marginBottom: 100,
   },
+  marginL12: {
+    marginLeft: 12,
+  },
   marginR16: {
     marginRight: 16,
   },
