@@ -253,7 +253,7 @@ describe('serverAuth', () => {
 
       await serverAuth.refreshToken();
 
-      expect(axios.post).not.toHaveBeenCalledWith('/refresh');
+      expect(axios.post).not.toHaveBeenCalled();
     });
 
     it('throws error when refresh fails', async () => {
