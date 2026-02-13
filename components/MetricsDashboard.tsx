@@ -7,7 +7,7 @@ import { COLORS } from "@/constants/Colors";
 export interface Metric {
   label: string;
   value: number;
-  icon: string;
+  icon: React.ComponentProps<typeof Ionicons>["name"];
 }
 
 interface MetricsDashboardProps {

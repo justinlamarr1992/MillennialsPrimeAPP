@@ -80,6 +80,14 @@ describe("ConnectionButton", () => {
           connectionId={connectionId}
         />
       );
+    const renderPendingReceivedWithoutId = () =>
+      render(
+        <ConnectionButton
+          {...defaultProps}
+          status="pending_received"
+          connectionId={undefined}
+        />
+      );
 
     it("should render Accept and Decline buttons", () => {
       renderPendingReceived();
@@ -108,6 +116,28 @@ describe("ConnectionButton", () => {
       expect(screen.getByLabelText("Accept connection request")).toBeTruthy();
       expect(screen.getByLabelText("Decline connection request")).toBeTruthy();
     });
+
+    it("when connectionId is missing, buttons appear disabled to assistive tech", () => {
+      renderPendingReceivedWithoutId();
+
+      const acceptButton = screen.getByLabelText("Accept connection request");
+      const declineButton = screen.getByLabelText("Decline connection request");
+
+      // Verify screen readers announce buttons as disabled
+      expect(acceptButton.props.accessibilityState).toEqual({ disabled: true });
+      expect(declineButton.props.accessibilityState).toEqual({ disabled: true });
+    });
+
+    it("when connectionId is missing, pressing buttons takes no action", () => {
+      renderPendingReceivedWithoutId();
+
+      fireEvent.press(screen.getByText("Accept"));
+      fireEvent.press(screen.getByText("Decline"));
+
+      // User sees no connection accepted or declined
+      expect(mockOnAcceptRequest).not.toHaveBeenCalled();
+      expect(mockOnDeclineRequest).not.toHaveBeenCalled();
+    });
   });
 
   describe("Given the connection status is 'connected'", () => {
@@ -118,6 +148,14 @@ describe("ConnectionButton", () => {
           {...defaultProps}
           status="connected"
           connectionId={connectionId}
+        />
+      );
+    const renderConnectedWithoutId = () =>
+      render(
+        <ConnectionButton
+          {...defaultProps}
+          status="connected"
+          connectionId={undefined}
         />
       );
 
@@ -138,6 +176,22 @@ describe("ConnectionButton", () => {
       renderConnected();
 
       expect(screen.getByLabelText("Remove connection")).toBeTruthy();
+    });
+
+    it("when connectionId is missing, Connected button appears disabled to assistive tech", () => {
+      renderConnectedWithoutId();
+
+      const button = screen.getByLabelText("Remove connection");
+      expect(button.props.accessibilityState).toEqual({ disabled: true });
+    });
+
+    it("when connectionId is missing, pressing Connected button takes no action", () => {
+      renderConnectedWithoutId();
+
+      fireEvent.press(screen.getByText("Connected"));
+
+      // User sees connection not removed
+      expect(mockOnRemoveConnection).not.toHaveBeenCalled();
     });
   });
 

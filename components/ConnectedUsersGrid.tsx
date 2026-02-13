@@ -12,6 +12,13 @@ interface ConnectedUsersGridProps {
 
 const DEFAULT_MAX_DISPLAY = 6;
 
+/**
+ * Validate if a URI is a valid image source
+ * Rejects raw ObjectIds and other invalid strings that cause Image warnings
+ */
+const isValidImageUri = (uri: string): boolean =>
+  uri.startsWith('http') || uri.startsWith('data:') || uri.startsWith('file://');
+
 export default function ConnectedUsersGrid({
   users,
   onUserPress,
@@ -46,10 +53,14 @@ export default function ConnectedUsersGrid({
             accessibilityLabel={`View ${item.name}'s profile`}
             style={[globalStyles.flexAlignItemsCenter, globalStyles.marginR16]}
           >
-            <Image
-              source={{ uri: item.profilePic }}
-              style={[globalStyles.avatarCircle, { backgroundColor: colors.regC }]}
-            />
+            {item.profilePic && isValidImageUri(item.profilePic) ? (
+              <Image
+                source={{ uri: item.profilePic }}
+                style={[globalStyles.avatarCircle, { backgroundColor: colors.regC }]}
+              />
+            ) : (
+              <View style={[globalStyles.avatarCircle, { backgroundColor: colors.regC }]} />
+            )}
             <Text
               style={[globalStyles.labelText, globalStyles.marginT4, globalStyles.textCenter, { color: colors.text }]}
               numberOfLines={1}

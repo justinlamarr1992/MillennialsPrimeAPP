@@ -28,14 +28,26 @@ export default function MyProfileScreen() {
   const { posts, loading: _postsLoading, error: _postsError } = useUserPosts();
 
   // Fetch connections data (Phase 2)
-  const { connections, pendingRequests } = useConnections();
+  const {
+    connections,
+    pendingRequests,
+    loading: connectionsLoading,
+    error: connectionsError,
+  } = useConnections();
 
   const metrics = useMemo<Metric[]>(
-    () => [
-      { label: "Connections", value: connections.length, icon: "people-outline" },
-      { label: "Pending", value: pendingRequests.length, icon: "time-outline" },
-    ],
-    [connections.length, pendingRequests.length]
+    () => {
+      // Avoid showing misleading "0" values while connections are loading or have failed
+      if (connectionsLoading || connectionsError) {
+        return [];
+      }
+
+      return [
+        { label: "Connections", value: connections.length, icon: "people-outline" },
+        { label: "Pending", value: pendingRequests.length, icon: "time-outline" },
+      ];
+    },
+    [connections.length, pendingRequests.length, connectionsLoading, connectionsError]
   );
 
   // Handle Edit Profile navigation

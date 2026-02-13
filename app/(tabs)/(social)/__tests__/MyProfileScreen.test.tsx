@@ -501,5 +501,29 @@ describe('MyProfileScreen', () => {
       expect(screen.getByText('8')).toBeTruthy();
       expect(screen.getByText('1')).toBeTruthy();
     });
+
+    it('when connections are loading, metrics dashboard is hidden to avoid showing misleading zeros', () => {
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        loading: true,
+      });
+
+      render(<MyProfileScreen />);
+
+      // User should not see metrics while loading (no misleading "0 Connections")
+      expect(screen.queryByLabelText('Profile metrics')).toBeNull();
+    });
+
+    it('when connections fetch fails, metrics dashboard is hidden to avoid showing misleading zeros', () => {
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        error: new Error('Network error'),
+      });
+
+      render(<MyProfileScreen />);
+
+      // User should not see metrics when error occurred (no misleading "0 Connections")
+      expect(screen.queryByLabelText('Profile metrics')).toBeNull();
+    });
   });
 });

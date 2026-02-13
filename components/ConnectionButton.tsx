@@ -86,8 +86,10 @@ export default function ConnectionButton(props: ConnectionButtonProps): JSX.Elem
           <Pressable
             style={[globalStyles.button, globalStyles.flex1, { backgroundColor: colors.priC }]}
             onPress={() => connectionId && onAcceptRequest(connectionId)}
+            disabled={!connectionId}
             accessibilityRole="button"
             accessibilityLabel="Accept connection request"
+            accessibilityState={!connectionId ? { disabled: true } : undefined}
           >
             <Text style={[globalStyles.buttonText, { color: colors.secT }]}>
               Accept
@@ -96,8 +98,10 @@ export default function ConnectionButton(props: ConnectionButtonProps): JSX.Elem
           <Pressable
             style={[globalStyles.button, globalStyles.flex1, { backgroundColor: colors.regC }]}
             onPress={() => connectionId && onDeclineRequest(connectionId)}
+            disabled={!connectionId}
             accessibilityRole="button"
             accessibilityLabel="Decline connection request"
+            accessibilityState={!connectionId ? { disabled: true } : undefined}
           >
             <Text style={[globalStyles.buttonText, { color: colors.priT }]}>
               Decline
@@ -110,16 +114,17 @@ export default function ConnectionButton(props: ConnectionButtonProps): JSX.Elem
 
   const config = BUTTON_CONFIG[status];
   const handler = getHandler(status, connectionId, props);
+  const isDisabled = config.disabled || !handler;
 
   return (
     <View style={globalStyles.padding}>
       <Pressable
         style={[globalStyles.button, { backgroundColor: colors[config.bgColor] }]}
         onPress={handler}
-        disabled={config.disabled}
+        disabled={isDisabled}
         accessibilityRole="button"
         accessibilityLabel={config.accessibilityLabel}
-        accessibilityState={config.disabled ? { disabled: true } : undefined}
+        accessibilityState={isDisabled ? { disabled: true } : undefined}
       >
         <Text style={[globalStyles.buttonText, { color: colors[config.textColor] }]}>
           {config.label}

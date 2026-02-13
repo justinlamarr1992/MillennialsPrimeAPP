@@ -107,5 +107,26 @@ describe("ConnectedUsersGrid", () => {
       expect(screen.getByText(user.name)).toBeTruthy();
       expect(screen.queryByText(/^\+\d+$/)).toBeNull();
     });
+
+    it("when users have invalid profilePic URIs, grid still displays all names correctly", () => {
+      const usersWithInvalidPics = [
+        { ...createMockConnectionUser(), _id: "user-1", name: "Alice", profilePic: "https://example.com/valid.jpg" },
+        { ...createMockConnectionUser(), _id: "user-2", name: "Bob", profilePic: "" }, // empty
+        { ...createMockConnectionUser(), _id: "user-3", name: "Charlie", profilePic: "6988bc396a977b0030ea7b9e" }, // raw MongoDB ObjectId
+      ];
+
+      render(
+        <ConnectedUsersGrid users={usersWithInvalidPics} onUserPress={mockOnUserPress} />
+      );
+
+      // Users see all connection names regardless of invalid profile pics
+      expect(screen.getByText("Alice")).toBeTruthy();
+      expect(screen.getByText("Bob")).toBeTruthy();
+      expect(screen.getByText("Charlie")).toBeTruthy();
+
+      // Users can still press on connections with invalid pics
+      fireEvent.press(screen.getByLabelText("View Bob's profile"));
+      expect(mockOnUserPress).toHaveBeenCalledWith("user-2");
+    });
   });
 });
