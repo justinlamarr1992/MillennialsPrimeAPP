@@ -1,4 +1,4 @@
-import { ScrollView, useColorScheme, View, Text, ActivityIndicator } from "react-native";
+import { ScrollView, Pressable, useColorScheme, View, Text, ActivityIndicator } from "react-native";
 import React, { useMemo } from "react";
 import { router } from "expo-router";
 
@@ -6,9 +6,12 @@ import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import ProfileHeader from "@/components/ProfileHeader";
 import ProfileTabs from "@/components/ProfileTabs";
+import MetricsDashboard from "@/components/MetricsDashboard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserPosts } from "@/hooks/useUserPosts";
 import { useProfilePictureUpload } from "@/hooks/useProfilePictureUpload";
+import { useConnections } from "@/hooks/useConnections";
+import type { Metric } from "@/components/MetricsDashboard";
 import type { TextPost, PicturePost, VideoPost } from "@/types/posts";
 
 export default function MyProfileScreen() {
@@ -23,6 +26,29 @@ export default function MyProfileScreen() {
   // Backend API not yet implemented - will return empty until /posts endpoints are deployed
   // Note: _postsLoading and _postsError prefixed with _ as they're reserved for future use
   const { posts, loading: _postsLoading, error: _postsError } = useUserPosts();
+
+  // Fetch connections data (Phase 2)
+  const {
+    connections,
+    pendingRequests,
+    loading: connectionsLoading,
+    error: connectionsError,
+  } = useConnections();
+
+  const metrics = useMemo<Metric[]>(
+    () => {
+      // Avoid showing misleading "0" values while connections are loading or have failed
+      if (connectionsLoading || connectionsError) {
+        return [];
+      }
+
+      return [
+        { label: "Connections", value: connections.length, icon: "people-outline" },
+        { label: "Pending", value: pendingRequests.length, icon: "time-outline" },
+      ];
+    },
+    [connections.length, pendingRequests.length, connectionsLoading, connectionsError]
+  );
 
   // Handle Edit Profile navigation
   const handleEditProfile = (): void => {
@@ -76,6 +102,7 @@ export default function MyProfileScreen() {
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{ backgroundColor: colors.background }}
+      contentContainerStyle={{ flexGrow: 1 }}
     >
       {/* ProfileHeader - Phase 1 */}
       <ProfileHeader
@@ -85,6 +112,24 @@ export default function MyProfileScreen() {
         onImageSelected={handleImageSelected}
         isUploading={isUploading}
       />
+
+      {/* Connections link - Phase 2 */}
+      {!connectionsLoading && !connectionsError && (
+        <Pressable
+          onPress={() => router.push("/(tabs)/(social)/ConnectedUsersScreen")}
+          accessibilityLabel="View connections"
+          accessibilityRole="button"
+          style={[globalStyles.padding, globalStyles.flexRow, { justifyContent: "space-between" }]}
+        >
+          <Text style={[globalStyles.textTitle, { color: colors.text }]}>
+            {connections.length} Connections
+          </Text>
+          <Text style={{ color: colors.triT }}>View all</Text>
+        </Pressable>
+      )}
+
+      {/* MetricsDashboard - Phase 2 */}
+      <MetricsDashboard metrics={metrics} />
 
       {/* ProfileTabs - Phase 1.3 with Phase 1.5 real data integration */}
       <ProfileTabs

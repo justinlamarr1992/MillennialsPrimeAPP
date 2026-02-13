@@ -48,6 +48,17 @@ describe('ProfilePicture', () => {
       expect(screen.queryByText('Tap to add photo')).toBeNull();
     });
 
+    it('shows placeholder when imageUri is a raw ID instead of a valid URI', () => {
+      render(
+        <ProfilePicture
+          imageUri="6988bc396a977b0030ea7b9e"
+          onImageSelected={mockOnImageSelected}
+        />
+      );
+
+      expect(screen.getByText('Tap to add photo')).toBeTruthy();
+    });
+
     it('shows edit button when editable', () => {
       render(
         <ProfilePicture

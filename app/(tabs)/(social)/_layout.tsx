@@ -97,6 +97,20 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
+        name="ConnectedUsersScreen"
+        options={{
+          headerShown: true,
+          title: "Connections",
+          headerStyle: {
+            backgroundColor: userColor,
+          },
+          headerTintColor: userColorText,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Stack.Screen
         name="EditProfileScreen"
         options={{
           headerShown: false,

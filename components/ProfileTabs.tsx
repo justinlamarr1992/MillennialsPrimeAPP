@@ -14,8 +14,9 @@
  */
 
 import React, { useState } from "react";
-import { View, Text, Pressable, StyleSheet, useColorScheme } from "react-native";
+import { View, Text, Pressable, useColorScheme } from "react-native";
 import { COLORS } from "@/constants/Colors";
+import { globalStyles } from "@/constants/global";
 import TextPost from "@/shared/PostComponents/TextPost";
 import PicturePost from "@/shared/PostComponents/PicturePost";
 import VideoPost from "@/shared/PostComponents/VideoPost";
@@ -95,8 +96,8 @@ export default function ProfileTabs({
         key={tab}
         onPress={() => setActiveTab(tab)}
         style={[
-          styles.tab,
-          isActive && { ...styles.activeTab, borderBottomColor: colors.priC },
+          globalStyles.tab,
+          isActive && { ...globalStyles.activeTab, borderBottomColor: colors.priC },
         ]}
         accessibilityRole="tab"
         accessibilityLabel={`${label} tab`}
@@ -105,7 +106,7 @@ export default function ProfileTabs({
       >
         <Text
           style={[
-            styles.tabText,
+            globalStyles.tabText,
             { color: isActive ? colors.priC : colors.text },
           ]}
         >
@@ -119,8 +120,8 @@ export default function ProfileTabs({
    * Render empty state message
    */
   const renderEmptyState = (tab: TabType) => (
-    <View style={styles.emptyState}>
-      <Text style={[styles.emptyText, { color: colors.text }]}>
+    <View style={globalStyles.tabEmptyState}>
+      <Text style={[globalStyles.tabEmptyText, { color: colors.text }]}>
         {getEmptyMessage(tab)}
       </Text>
     </View>
@@ -205,50 +206,14 @@ export default function ProfileTabs({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       {/* Tab Navigation */}
-      <View style={[styles.tabContainer, { borderBottomColor: colors.gray }]}>
+      <View style={[globalStyles.tabContainer, { borderBottomColor: colors.gray }]}>
         {tabs.map(renderTab)}
       </View>
 
       {/* Tab Content */}
-      <View style={styles.content}>{renderContent()}</View>
+      <View style={globalStyles.tabContent}>{renderContent()}</View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  tabContainer: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 16,
-    alignItems: "center",
-    borderBottomWidth: 2,
-    borderBottomColor: "transparent",
-  },
-  activeTab: {
-    borderBottomWidth: 2,
-  },
-  tabText: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  content: {
-    flex: 1,
-  },
-  emptyState: {
-    padding: 32,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  emptyText: {
-    fontSize: 16,
-    textAlign: "center",
-  },
-});

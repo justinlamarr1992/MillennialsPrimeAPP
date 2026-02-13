@@ -1,127 +1,107 @@
-import { useColorScheme, ScrollView } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  ActivityIndicator,
+  useColorScheme,
+} from "react-native";
+import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import User from "@/shared/ConnectedUser/User";
+import { useConnections } from "@/hooks/useConnections";
+import type { ConnectionUser } from "@/types/connection";
 
 export default function ConnectedUsersScreen() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  // const axiosPrivate = useAxiosPrivate();
-  // const { auth, id, accessToken, roles } = useContext(AuthContext);
+  const { connections, pendingRequests, loading, error, refetch } =
+    useConnections();
 
-  // const getUsers = async () => {
-  //   try {
-  //     const response = await axiosPrivate.get(
-  //       `https://us-central1-millennialsprime.cloudfunctions.net/api/users/`
-  //     );
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.log("ERROR: ", err);
-  //   }
-  // };
-  // getUsers();
+  const handleUserPress = useCallback((userId: string) => {
+    router.push(`/(tabs)/(social)/${userId}`);
+  }, []);
+
+  const renderItem = useCallback(
+    ({ item }: { item: ConnectionUser }) => (
+      <Pressable
+        onPress={() => handleUserPress(item._id)}
+        accessibilityLabel={`View ${item.name}'s profile`}
+        accessibilityRole="button"
+        style={[
+          globalStyles.flexRow,
+          globalStyles.padding,
+          { borderBottomWidth: 1, borderBottomColor: colors.triC },
+        ]}
+      >
+        <View style={[globalStyles.avatarCircle, { backgroundColor: colors.secC }]} />
+        <View style={globalStyles.marginL12}>
+          <Text style={[globalStyles.textTitle, { color: colors.text }]}>
+            {item.name}
+          </Text>
+          <Text style={[globalStyles.marginT4, { color: colors.triT }]}>
+            @{item.username}
+          </Text>
+          {item.business?.industry ? (
+            <Text style={[globalStyles.labelText, { color: colors.secT }]}>
+              {item.business.industry}
+            </Text>
+          ) : null}
+        </View>
+      </Pressable>
+    ),
+    [colors, handleUserPress]
+  );
+
+  // Show full-screen loading only on initial load (no connections yet)
+  // During pull-to-refresh, show the list with refreshing control instead
+  if (loading && connections.length === 0) {
+    return (
+      <View
+        style={[globalStyles.centerItem, { backgroundColor: colors.background }]}
+        accessibilityLabel="Loading connections"
+      >
+        <ActivityIndicator size="large" color={colors.priC} />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={[globalStyles.centerItem, { backgroundColor: colors.background }]}>
+        <Text style={{ color: colors.text }}>Failed to load connections</Text>
+      </View>
+    );
+  }
+
+  if (connections.length === 0) {
+    return (
+      <View style={[globalStyles.centerItem, { backgroundColor: colors.background }]}>
+        <Text style={{ color: colors.text }}>No connections yet</Text>
+      </View>
+    );
+  }
+
+  const pendingCount = pendingRequests.length;
+
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
-    >
-      <User
-        name={"Admin Dude1"}
-        industry={"Graphic Design"}
-        connected={true}
-        matching={true}
-        prime={true}
-        admin={true}
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      {pendingCount > 0 && (
+        <View style={[globalStyles.padding, { backgroundColor: colors.secC }]}>
+          <Text style={{ color: colors.secT }}>
+            {pendingCount} pending {pendingCount === 1 ? "request" : "requests"}
+          </Text>
+        </View>
+      )}
+      <FlatList
+        data={connections}
+        keyExtractor={(item) => item._id}
+        renderItem={renderItem}
+        accessibilityLabel="Connections list"
+        refreshing={loading}
+        onRefresh={refetch}
       />
-      <User
-        name={"Admin Dude3"}
-        industry={"Rubix Cuber"}
-        connected={true}
-        matching={false}
-        prime={true}
-        admin={true}
-      />
-      <User
-        name={"Admin Dude5"}
-        industry={"Backend Developer"}
-        connected={false}
-        matching={true}
-        prime={true}
-        admin={true}
-      />
-      <User
-        name={"Admin Dude7"}
-        industry={"Under Water "}
-        connected={false}
-        matching={false}
-        prime={true}
-        admin={true}
-      />
-      <User
-        name={"Prime Dude1"}
-        industry={"Graphic Design"}
-        connected={true}
-        matching={true}
-        prime={true}
-        admin={false}
-      />
-      <User
-        name={"Prime Dude3"}
-        industry={"Rubix Cuber"}
-        connected={true}
-        matching={false}
-        prime={true}
-        admin={false}
-      />
-      <User
-        name={"Prime Dude5"}
-        industry={"Backend Developer"}
-        connected={false}
-        matching={true}
-        admin={false}
-        prime={true}
-      />
-      <User
-        name={"Prime Dude7"}
-        industry={"Under Water "}
-        connected={false}
-        matching={false}
-        admin={false}
-        prime={true}
-      />
-      <User
-        name={"Normal Dude2"}
-        industry={"Webste Design"}
-        connected={true}
-        admin={false}
-        prime={false}
-        matching={true}
-      />
-      <User
-        name={"Normal Dude4"}
-        industry={"Stuff Animal Maker"}
-        connected={true}
-        matching={false}
-        admin={false}
-        prime={false}
-      />
-      <User
-        name={"Normal Dude6"}
-        industry={"App Design"}
-        connected={false}
-        matching={true}
-        admin={false}
-        prime={false}
-      />
-      <User
-        name={"Normal Dude8"}
-        industry={"Geek Stuff"}
-        connected={false}
-        matching={false}
-        admin={false}
-        prime={false}
-      />
-    </ScrollView>
+    </View>
   );
 }

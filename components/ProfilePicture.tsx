@@ -3,6 +3,7 @@ import { View, Pressable, Image, StyleSheet, useColorScheme, Text } from "react-
 import * as ImagePicker from "expo-image-picker";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
+import { isValidImageUri } from "@/utils/imageUri";
 
 export interface ProfilePictureProps {
   imageUri: string | null;
@@ -115,7 +116,7 @@ export default function ProfilePicture({
           },
         ]}
       >
-        {imageUri ? renderImage() : renderPlaceholder()}
+        {imageUri && isValidImageUri(imageUri) ? renderImage() : renderPlaceholder()}
       </Pressable>
       {renderEditButton()}
     </View>

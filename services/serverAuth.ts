@@ -7,7 +7,7 @@
  */
 
 import * as SecureStore from 'expo-secure-store';
-import axios from '@/API/axios';
+import axios, { axiosPrivate } from '@/API/axios';
 import { logger } from '@/utils/logger';
 
 interface ServerAuthResponse {
@@ -176,7 +176,7 @@ export const serverAuth = {
    */
   async refreshToken(): Promise<string> {
     try {
-      const response = await axios.post('/refresh');
+      const response = await axiosPrivate.post('/refresh');
       const { accessToken, _id } = response.data;
 
       await SecureStore.setItemAsync(SERVER_TOKEN_KEY, accessToken);

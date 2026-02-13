@@ -15,6 +15,6 @@ Avoid restating every file change — focus on intent and key decisions.
 ## Development Workflow
 
 1. Follow TDD at all layers (service → hook → component)
-2. Use pre-commit checklist (`docs/QUICK_CHECKLIST.md`)
+2. Use pre-commit checklist (`docs/PRE_COMMIT_CHECKLIST.md`)
 3. Maintain 100% Copilot review pass rate
 4. Target >80% test coverage for all new code

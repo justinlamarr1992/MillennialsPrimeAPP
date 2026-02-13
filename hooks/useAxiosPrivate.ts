@@ -54,7 +54,8 @@ const useAxiosPrivate = () => {
 
         // If 401 (Unauthorized) or 403 (Forbidden) - token expired/invalid
         // and we haven't retried yet
-        if (prevRequest && (error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest.sent) {
+        // Don't try to refresh if the failing request IS the refresh endpoint itself
+        if (prevRequest && prevRequest.url !== '/refresh' && (error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest.sent) {
           prevRequest.sent = true;
 
           if (__DEV__) {
