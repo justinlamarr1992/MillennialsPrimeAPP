@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, Pressable, FlatList, useColorScheme } from "react-native";
 import { COLORS } from "@/constants/Colors";
 import { globalStyles } from "@/constants/global";
+import { isValidImageUri } from "@/utils/imageUri";
 import type { ConnectionUser } from "@/types/connection";
 
 interface ConnectedUsersGridProps {
@@ -11,13 +12,6 @@ interface ConnectedUsersGridProps {
 }
 
 const DEFAULT_MAX_DISPLAY = 6;
-
-/**
- * Validate if a URI is a valid image source
- * Rejects raw ObjectIds and other invalid strings that cause Image warnings
- */
-const isValidImageUri = (uri: string): boolean =>
-  uri.startsWith('http') || uri.startsWith('data:') || uri.startsWith('file://');
 
 export default function ConnectedUsersGrid({
   users,

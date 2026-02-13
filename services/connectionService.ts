@@ -28,6 +28,20 @@ import type {
   ConnectionUser,
 } from '@/types/connection';
 
+/**
+ * Helper to log axios error details in development mode
+ */
+function logAxiosError(error: unknown): void {
+  if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+    const axiosError = error as {
+      response?: { status?: number; data?: unknown };
+      message?: string;
+    };
+    logger.error('Error status:', axiosError.response?.status);
+    logger.error('Error data:', JSON.stringify(axiosError.response?.data));
+  }
+}
+
 export const connectionService = {
   /**
    * Send a connection request to another user
@@ -57,16 +71,7 @@ export const connectionService = {
       return response.data;
     } catch (error: unknown) {
       logger.error('❌ Failed to send connection request');
-
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as {
-          response?: { status?: number; data?: unknown };
-          message?: string;
-        };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-      }
-
+      logAxiosError(error);
       throw error;
     }
   },
@@ -98,16 +103,7 @@ export const connectionService = {
       return response.data;
     } catch (error: unknown) {
       logger.error('❌ Failed to accept connection request');
-
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as {
-          response?: { status?: number; data?: unknown };
-          message?: string;
-        };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-      }
-
+      logAxiosError(error);
       throw error;
     }
   },
@@ -134,16 +130,7 @@ export const connectionService = {
       }
     } catch (error: unknown) {
       logger.error('❌ Failed to decline connection request');
-
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as {
-          response?: { status?: number; data?: unknown };
-          message?: string;
-        };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-      }
-
+      logAxiosError(error);
       throw error;
     }
   },
@@ -170,16 +157,7 @@ export const connectionService = {
       }
     } catch (error: unknown) {
       logger.error('❌ Failed to remove connection');
-
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as {
-          response?: { status?: number; data?: unknown };
-          message?: string;
-        };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-      }
-
+      logAxiosError(error);
       throw error;
     }
   },
@@ -205,16 +183,7 @@ export const connectionService = {
       return response.data;
     } catch (error: unknown) {
       logger.error('❌ Failed to fetch connections');
-
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as {
-          response?: { status?: number; data?: unknown };
-          message?: string;
-        };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-      }
-
+      logAxiosError(error);
       throw error;
     }
   },
@@ -240,16 +209,7 @@ export const connectionService = {
       return response.data;
     } catch (error: unknown) {
       logger.error('❌ Failed to fetch pending requests');
-
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as {
-          response?: { status?: number; data?: unknown };
-          message?: string;
-        };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-      }
-
+      logAxiosError(error);
       throw error;
     }
   },
@@ -281,16 +241,7 @@ export const connectionService = {
       return response.data;
     } catch (error: unknown) {
       logger.error('❌ Failed to check connection status');
-
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as {
-          response?: { status?: number; data?: unknown };
-          message?: string;
-        };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-      }
-
+      logAxiosError(error);
       throw error;
     }
   },

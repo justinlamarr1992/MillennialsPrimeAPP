@@ -114,17 +114,19 @@ export default function MyProfileScreen() {
       />
 
       {/* Connections link - Phase 2 */}
-      <Pressable
-        onPress={() => router.push("/(tabs)/(social)/ConnectedUsersScreen")}
-        accessibilityLabel="View connections"
-        accessibilityRole="button"
-        style={[globalStyles.padding, globalStyles.flexRow, { justifyContent: "space-between" }]}
-      >
-        <Text style={[globalStyles.textTitle, { color: colors.text }]}>
-          {connections.length} Connections
-        </Text>
-        <Text style={{ color: colors.triT }}>View all</Text>
-      </Pressable>
+      {!connectionsLoading && !connectionsError && (
+        <Pressable
+          onPress={() => router.push("/(tabs)/(social)/ConnectedUsersScreen")}
+          accessibilityLabel="View connections"
+          accessibilityRole="button"
+          style={[globalStyles.padding, globalStyles.flexRow, { justifyContent: "space-between" }]}
+        >
+          <Text style={[globalStyles.textTitle, { color: colors.text }]}>
+            {connections.length} Connections
+          </Text>
+          <Text style={{ color: colors.triT }}>View all</Text>
+        </Pressable>
+      )}
 
       {/* MetricsDashboard - Phase 2 */}
       <MetricsDashboard metrics={metrics} />

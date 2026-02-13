@@ -3,6 +3,7 @@ import { View, Pressable, Image, StyleSheet, useColorScheme, Text } from "react-
 import * as ImagePicker from "expo-image-picker";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
+import { isValidImageUri } from "@/utils/imageUri";
 
 export interface ProfilePictureProps {
   imageUri: string | null;
@@ -15,10 +16,6 @@ export interface ProfilePictureProps {
 const DEFAULT_SIZE = 120;
 const EDIT_BUTTON_SIZE = 36;
 const BORDER_WIDTH = 3;
-
-/** Reject raw IDs / garbage strings that RN Image can't load */
-const isValidImageUri = (uri: string): boolean =>
-  uri.startsWith('http') || uri.startsWith('data:') || uri.startsWith('file://');
 
 export default function ProfilePicture({
   imageUri,

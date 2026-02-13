@@ -525,5 +525,29 @@ describe('MyProfileScreen', () => {
       // User should not see metrics when error occurred (no misleading "0 Connections")
       expect(screen.queryByLabelText('Profile metrics')).toBeNull();
     });
+
+    it('when connections are loading, the connection count Pressable is hidden to avoid showing misleading "0 Connections"', () => {
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        loading: true,
+      });
+
+      render(<MyProfileScreen />);
+
+      // User should not see the "X Connections" link while loading
+      expect(screen.queryByLabelText('View connections')).toBeNull();
+    });
+
+    it('when connections fetch fails, the connection count Pressable is hidden to avoid showing misleading "0 Connections"', () => {
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        error: new Error('Network error'),
+      });
+
+      render(<MyProfileScreen />);
+
+      // User should not see the "X Connections" link when error occurred
+      expect(screen.queryByLabelText('View connections')).toBeNull();
+    });
   });
 });

@@ -182,5 +182,24 @@ describe("ConnectedUsersScreen", () => {
 
       expect(mockRefetch).toHaveBeenCalled();
     });
+
+    it("should show the FlatList with refresh control during refresh, not replace it with a full-screen spinner", () => {
+      const mockUsers = createMockConnectionUsers(2);
+      mockUseConnections.mockReturnValue({
+        ...connectionDefaults,
+        connections: mockUsers,
+        loading: true, // Simulating refresh in progress
+      });
+
+      render(<ConnectedUsersScreen />);
+
+      // User should still see the list (not full-screen spinner)
+      expect(screen.getByLabelText("Connections list")).toBeTruthy();
+      expect(screen.getByText("User 1")).toBeTruthy();
+      expect(screen.getByText("User 2")).toBeTruthy();
+
+      // Should NOT see the full-screen loading indicator
+      expect(screen.queryByLabelText("Loading connections")).toBeNull();
+    });
   });
 });

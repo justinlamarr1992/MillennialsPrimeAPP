@@ -50,6 +50,7 @@ export default function UserProfileScreen() {
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{ backgroundColor: colors.background }}
+      contentContainerStyle={{ flexGrow: 1 }}
     >
       <ProfileHeader user={profile} isOwnProfile={false} />
 

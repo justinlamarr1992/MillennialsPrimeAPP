@@ -54,7 +54,9 @@ export default function ConnectedUsersScreen() {
     [colors, handleUserPress]
   );
 
-  if (loading) {
+  // Show full-screen loading only on initial load (no connections yet)
+  // During pull-to-refresh, show the list with refreshing control instead
+  if (loading && connections.length === 0) {
     return (
       <View
         style={[globalStyles.centerItem, { backgroundColor: colors.background }]}
