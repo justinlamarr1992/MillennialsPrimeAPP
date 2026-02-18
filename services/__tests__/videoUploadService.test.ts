@@ -283,7 +283,7 @@ describe("videoUploadService", () => {
         return {
           findPreviousUploads: () =>
             Promise.resolve([]).then(() => {
-              (options.onSuccess as (() => void))?. ();
+              (options.onSuccess as (() => void))?.();
               return [];
             }),
           resumeFromPreviousUpload: jest.fn(),
@@ -303,7 +303,7 @@ describe("videoUploadService", () => {
           findPreviousUploads: () =>
             Promise.resolve([]).then(() => {
               options.onProgress?.(500000, 1000000);
-              (options.onSuccess as (() => void))?. ();
+              (options.onSuccess as (() => void))?.();
               return [];
             }),
           resumeFromPreviousUpload: jest.fn(),
@@ -344,7 +344,7 @@ describe("videoUploadService", () => {
           findPreviousUploads: () =>
             Promise.resolve([previousUpload]).then((prev) => {
               resumeFromPreviousUpload(prev[0]);
-              (options.onSuccess as (() => void))?. ();
+              (options.onSuccess as (() => void))?.();
               return prev;
             }),
           resumeFromPreviousUpload,

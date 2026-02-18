@@ -8,7 +8,7 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 const UploadContentScreen = () => {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const { profile, loading } = useUserProfile();
+  const { profile, loading, error } = useUserProfile();
 
   if (loading) {
     return (
@@ -27,6 +27,23 @@ const UploadContentScreen = () => {
           accessibilityRole="progressbar"
           accessibilityLabel="Loading profile"
         />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View
+        style={[
+          globalStyles.container,
+          globalStyles.centerItem,
+          globalStyles.flexAlignItemsCenter,
+          { backgroundColor: colors["background"] },
+        ]}
+      >
+        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
+          Something went wrong loading your profile.
+        </Text>
       </View>
     );
   }

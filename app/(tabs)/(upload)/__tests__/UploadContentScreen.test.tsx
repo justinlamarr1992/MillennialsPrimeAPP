@@ -62,6 +62,30 @@ describe("UploadContentScreen", () => {
     });
   });
 
+  // ─── Profile fetch error ─────────────────────────────────────────────────────
+
+  describe("when the profile fetch fails", () => {
+    it("shows an error message", () => {
+      mockUseUserProfile.mockReturnValue(
+        makeProfile({ error: new Error("Network request failed") })
+      );
+
+      render(<UploadContentScreen />);
+
+      expect(screen.getByText(/something went wrong/i)).toBeTruthy();
+    });
+
+    it("does not show the Content Creators Only message on a fetch error", () => {
+      mockUseUserProfile.mockReturnValue(
+        makeProfile({ error: new Error("Network request failed") })
+      );
+
+      render(<UploadContentScreen />);
+
+      expect(screen.queryByText(/content creators only/i)).toBeNull();
+    });
+  });
+
   // ─── Non-prime user ──────────────────────────────────────────────────────────
 
   describe("when user is not a prime content creator", () => {
