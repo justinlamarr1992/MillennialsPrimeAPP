@@ -6,17 +6,15 @@
 import { renderHook } from '@testing-library/react-native';
 import useAuth from '../useAuth';
 import { AuthContext } from '@/context/AuthContext';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import React from 'react';
 
 describe('useAuth hook', () => {
   describe('when used within AuthProvider', () => {
     it('should return auth context values', () => {
       const mockContextValue = {
-        user: { uid: 'test-123', email: 'test@example.com' },
+        user: { uid: 'test-123', email: 'test@example.com' } as unknown as FirebaseAuthTypes.User,
         loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
       };
 
       const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -34,9 +32,6 @@ describe('useAuth hook', () => {
       const mockContextValue = {
         user: null,
         loading: true,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
       };
 
       const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -53,9 +48,6 @@ describe('useAuth hook', () => {
       const mockContextValue = {
         user: null,
         loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
       };
 
       const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -66,66 +58,6 @@ describe('useAuth hook', () => {
 
       expect(result.current.user).toBeNull();
       expect(result.current.loading).toBe(false);
-    });
-
-    it('should provide signIn function', () => {
-      const mockSignIn = jest.fn();
-      const mockContextValue = {
-        user: null,
-        loading: false,
-        signIn: mockSignIn,
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      };
-
-      const wrapper = ({ children }: { children: React.ReactNode }) => {
-        return React.createElement(AuthContext.Provider, { value: mockContextValue }, children);
-      };
-
-      const { result } = renderHook(() => useAuth(), { wrapper });
-
-      expect(result.current.signIn).toBe(mockSignIn);
-      expect(typeof result.current.signIn).toBe('function');
-    });
-
-    it('should provide signOut function', () => {
-      const mockSignOut = jest.fn();
-      const mockContextValue = {
-        user: { uid: 'test-123', email: 'test@example.com' },
-        loading: false,
-        signIn: jest.fn(),
-        signOut: mockSignOut,
-        signUp: jest.fn(),
-      };
-
-      const wrapper = ({ children }: { children: React.ReactNode }) => {
-        return React.createElement(AuthContext.Provider, { value: mockContextValue }, children);
-      };
-
-      const { result } = renderHook(() => useAuth(), { wrapper });
-
-      expect(result.current.signOut).toBe(mockSignOut);
-      expect(typeof result.current.signOut).toBe('function');
-    });
-
-    it('should provide signUp function', () => {
-      const mockSignUp = jest.fn();
-      const mockContextValue = {
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: mockSignUp,
-      };
-
-      const wrapper = ({ children }: { children: React.ReactNode }) => {
-        return React.createElement(AuthContext.Provider, { value: mockContextValue }, children);
-      };
-
-      const { result } = renderHook(() => useAuth(), { wrapper });
-
-      expect(result.current.signUp).toBe(mockSignUp);
-      expect(typeof result.current.signUp).toBe('function');
     });
   });
 
@@ -163,20 +95,14 @@ describe('useAuth hook', () => {
       const initialContextValue = {
         user: null,
         loading: true,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
       };
 
       const updatedContextValue = {
-        user: { uid: 'new-user', email: 'new@example.com' },
+        user: { uid: 'new-user', email: 'new@example.com' } as unknown as FirebaseAuthTypes.User,
         loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
       };
 
-      let contextValue = initialContextValue;
+      let contextValue: typeof initialContextValue | typeof updatedContextValue = initialContextValue;
 
       const wrapper = ({ children }: { children: React.ReactNode }) => {
         return React.createElement(AuthContext.Provider, { value: contextValue }, children);
@@ -190,7 +116,7 @@ describe('useAuth hook', () => {
 
       // Update context
       contextValue = updatedContextValue;
-      rerender();
+      rerender({});
 
       // Updated state
       expect(result.current.user).toEqual({ uid: 'new-user', email: 'new@example.com' });

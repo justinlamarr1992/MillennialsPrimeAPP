@@ -233,7 +233,7 @@ describe('useThemeColor hook', () => {
 
       // Switch to dark theme
       mockedUseColorScheme.mockReturnValue('dark');
-      rerender();
+      rerender({});
 
       // Should now return dark theme color
       expect(result.current).toBe('#ffffff');
@@ -251,7 +251,7 @@ describe('useThemeColor hook', () => {
 
       // Switch to light theme
       mockedUseColorScheme.mockReturnValue('light');
-      rerender();
+      rerender({});
 
       // Should now return light theme color
       expect(result.current).toBe('gray');
@@ -269,7 +269,7 @@ describe('useThemeColor hook', () => {
 
       // Switch to dark theme
       mockedUseColorScheme.mockReturnValue('dark');
-      rerender();
+      rerender({});
 
       // Should use custom dark color
       expect(result.current).toBe('#custom-dark');

@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/provider/AuthProvider';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 // Create a test query client
 const createTestQueryClient = () =>
@@ -62,10 +63,11 @@ interface MockUserOverrides {
   displayName?: string;
 }
 
-export const createMockUser = (overrides: MockUserOverrides = {}) => ({
-  uid: 'test-user-123',
-  email: 'test@example.com',
-  emailVerified: true,
-  displayName: 'Test User',
-  ...overrides,
-});
+export const createMockUser = (overrides: MockUserOverrides = {}): FirebaseAuthTypes.User =>
+  ({
+    uid: 'test-user-123',
+    email: 'test@example.com',
+    emailVerified: true,
+    displayName: 'Test User',
+    ...overrides,
+  }) as unknown as FirebaseAuthTypes.User;

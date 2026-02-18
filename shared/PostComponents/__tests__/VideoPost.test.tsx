@@ -1,23 +1,13 @@
 import React from 'react';
-import { render, screen } from '@/__tests__/test-utils';
+import { render, screen, createMockUser } from '@/__tests__/test-utils';
 import VideoPost from '../VideoPost';
-import { mockUser } from '@/__tests__/__mocks__/firebase';
-import type { User } from 'firebase/auth';
+import useAuth from '@/hooks/useAuth';
 
 // Mock useAuth to control current user
 jest.mock('@/hooks/useAuth', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-
-import useAuth from '@/hooks/useAuth';
-
-// Helper to create mock user with custom uid
-const createMockUser = (uid: string, email: string): User => ({
-  ...mockUser,
-  uid,
-  email,
-}) as User;
 
 describe('VideoPost', () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -95,7 +85,7 @@ describe('VideoPost', () => {
   describe('Post Ownership', () => {
     it('should render post when current user is the author', () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser('author-123', 'author@test.com'),
+        user: createMockUser({ uid: 'author-123', email: 'author@test.com' }),
         loading: false,
       });
 
@@ -106,7 +96,7 @@ describe('VideoPost', () => {
 
     it('should render post when current user is not the author', () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser('different-user', 'other@test.com'),
+        user: createMockUser({ uid: 'different-user', email: 'other@test.com' }),
         loading: false,
       });
 

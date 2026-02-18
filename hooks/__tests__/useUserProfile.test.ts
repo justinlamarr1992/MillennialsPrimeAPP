@@ -11,6 +11,8 @@ import { userProfileService } from '@/services/userProfileService';
 import useAuth from '../useAuth';
 import useAxiosPrivate from '../useAxiosPrivate';
 import type { ServerUserProfile } from '@/types/UserProfile';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { createMockUser } from '@/__tests__/test-utils';
 
 // Mock dependencies
 jest.mock('../useAuth');
@@ -22,17 +24,25 @@ const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 const mockUseAxiosPrivate = useAxiosPrivate as jest.MockedFunction<typeof useAxiosPrivate>;
 const mockUserProfileService = userProfileService as jest.Mocked<typeof userProfileService>;
 
+type UseUserProfileResult = ReturnType<typeof useUserProfile>;
+type AuthProps = { user: FirebaseAuthTypes.User | null };
+
 describe('useUserProfile', () => {
-  const mockAxiosPrivate = {} as any;
+  const mockAxiosPrivate = {} as ReturnType<typeof useAxiosPrivate>;
   const mockProfile: ServerUserProfile = {
     _id: 'user-123',
+    username: 'testuser',
     email: 'test@example.com',
     name: 'Test User',
-    country: 'USA',
-    state: 'CA',
-    city: 'San Francisco',
-    zip: 94102,
+    location: {
+      country: 'USA',
+      state: 'CA',
+      city: 'San Francisco',
+      zip: 94102,
+    },
   };
+
+  const mockUser = createMockUser({ uid: 'user-123', email: 'test@example.com' });
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -44,12 +54,9 @@ describe('useUserProfile', () => {
       mockUseAuth.mockReturnValue({
         user: null,
         loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
       });
 
-      const { result } = renderHook(() => useUserProfile());
+      const { result } = renderHook<UseUserProfileResult, void>(() => useUserProfile());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -63,18 +70,15 @@ describe('useUserProfile', () => {
   describe('When user is logged in', () => {
     beforeEach(() => {
       mockUseAuth.mockReturnValue({
-        user: { uid: 'user-123', email: 'test@example.com' },
+        user: mockUser,
         loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
       });
     });
 
     it('should return profile data after loading', async () => {
       mockUserProfileService.fetchProfile.mockResolvedValue(mockProfile);
 
-      const { result } = renderHook(() => useUserProfile());
+      const { result } = renderHook<UseUserProfileResult, void>(() => useUserProfile());
 
       // Eventually the profile should be loaded
       await waitFor(() => {
@@ -89,7 +93,7 @@ describe('useUserProfile', () => {
       const fetchError = new Error('Network error');
       mockUserProfileService.fetchProfile.mockRejectedValue(fetchError);
 
-      const { result } = renderHook(() => useUserProfile());
+      const { result } = renderHook<UseUserProfileResult, void>(() => useUserProfile());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -105,7 +109,7 @@ describe('useUserProfile', () => {
         .mockResolvedValueOnce(mockProfile)
         .mockResolvedValueOnce(updatedProfile);
 
-      const { result } = renderHook(() => useUserProfile());
+      const { result } = renderHook<UseUserProfileResult, void>(() => useUserProfile());
 
       // Wait for initial load
       await waitFor(() => {
@@ -125,7 +129,7 @@ describe('useUserProfile', () => {
       // First fetch fails
       mockUserProfileService.fetchProfile.mockRejectedValueOnce(new Error('Network error'));
 
-      const { result } = renderHook(() => useUserProfile());
+      const { result } = renderHook<UseUserProfileResult, void>(() => useUserProfile());
 
       // Wait for error
       await waitFor(() => {
@@ -148,20 +152,12 @@ describe('useUserProfile', () => {
     it('should load profile when user logs in', async () => {
       mockUserProfileService.fetchProfile.mockResolvedValue(mockProfile);
 
-      const { result, rerender } = renderHook(
-        ({ user }) => {
-          mockUseAuth.mockReturnValue({
-            user,
-            loading: false,
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            signUp: jest.fn(),
-          });
+      const { result, rerender } = renderHook<UseUserProfileResult, AuthProps>(
+        ({ user }: AuthProps) => {
+          mockUseAuth.mockReturnValue({ user, loading: false });
           return useUserProfile();
         },
-        {
-          initialProps: { user: null as any },
-        }
+        { initialProps: { user: null } }
       );
 
       // Initially no profile
@@ -170,7 +166,7 @@ describe('useUserProfile', () => {
       });
 
       // User logs in
-      rerender({ user: { uid: 'user-123', email: 'test@example.com' } });
+      rerender({ user: mockUser });
 
       // Profile should load
       await waitFor(() => {
@@ -181,20 +177,12 @@ describe('useUserProfile', () => {
     it('should clear profile when user logs out', async () => {
       mockUserProfileService.fetchProfile.mockResolvedValue(mockProfile);
 
-      const { result, rerender } = renderHook(
-        ({ user }) => {
-          mockUseAuth.mockReturnValue({
-            user,
-            loading: false,
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            signUp: jest.fn(),
-          });
+      const { result, rerender } = renderHook<UseUserProfileResult, AuthProps>(
+        ({ user }: AuthProps) => {
+          mockUseAuth.mockReturnValue({ user, loading: false });
           return useUserProfile();
         },
-        {
-          initialProps: { user: { uid: 'user-123', email: 'test@example.com' } as any },
-        }
+        { initialProps: { user: mockUser } }
       );
 
       // Wait for profile to load

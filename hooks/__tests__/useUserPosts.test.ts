@@ -12,6 +12,8 @@ import type { UserPostsResponse } from '@/services/postsService';
 import useAuth from '../useAuth';
 import useAxiosPrivate from '../useAxiosPrivate';
 import type { TextPost, PicturePost, VideoPost } from '@/types/posts';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { createMockUser } from '@/__tests__/test-utils';
 
 // Mock dependencies
 jest.mock('../useAuth');
@@ -23,9 +25,13 @@ const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 const mockUseAxiosPrivate = useAxiosPrivate as jest.MockedFunction<typeof useAxiosPrivate>;
 const mockPostsService = postsService as jest.Mocked<typeof postsService>;
 
+type UseUserPostsResult = ReturnType<typeof useUserPosts>;
+type AuthProps = { user: FirebaseAuthTypes.User | null };
+
 describe('useUserPosts', () => {
   const mockAxiosPrivate = {} as ReturnType<typeof useAxiosPrivate>;
   const mockUserId = 'user-123';
+  const mockUser = createMockUser({ uid: mockUserId, email: 'test@example.com' });
 
   const mockTextPost: TextPost = {
     id: 'post-1',
@@ -83,15 +89,9 @@ describe('useUserPosts', () => {
 
   describe('When no user is logged in', () => {
     it('should return empty posts array and not be loading', async () => {
-      mockUseAuth.mockReturnValue({
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
+      mockUseAuth.mockReturnValue({ user: null, loading: false });
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -103,15 +103,9 @@ describe('useUserPosts', () => {
     });
 
     it('should not call postsService when user is null', async () => {
-      mockUseAuth.mockReturnValue({
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
+      mockUseAuth.mockReturnValue({ user: null, loading: false });
 
-      renderHook(() => useUserPosts());
+      renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(mockPostsService.fetchUserPosts).not.toHaveBeenCalled();
@@ -121,19 +115,13 @@ describe('useUserPosts', () => {
 
   describe('When user is logged in', () => {
     beforeEach(() => {
-      mockUseAuth.mockReturnValue({
-        user: { uid: mockUserId, email: 'test@example.com' },
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
+      mockUseAuth.mockReturnValue({ user: mockUser, loading: false });
     });
 
     it('should return posts data after loading', async () => {
       mockPostsService.fetchUserPosts.mockResolvedValue(mockPostsResponse);
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       // Eventually the posts should be loaded
       await waitFor(() => {
@@ -152,7 +140,7 @@ describe('useUserPosts', () => {
       };
       mockPostsService.fetchUserPosts.mockResolvedValue(emptyResponse);
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -167,7 +155,7 @@ describe('useUserPosts', () => {
       const fetchError = new Error('Network error');
       mockPostsService.fetchUserPosts.mockRejectedValue(fetchError);
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -193,7 +181,7 @@ describe('useUserPosts', () => {
         .mockResolvedValueOnce(mockPostsResponse)
         .mockResolvedValueOnce(updatedResponse);
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       // Wait for initial load
       await waitFor(() => {
@@ -215,7 +203,7 @@ describe('useUserPosts', () => {
       // First fetch fails
       mockPostsService.fetchUserPosts.mockRejectedValueOnce(new Error('Network error'));
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       // Wait for error
       await waitFor(() => {
@@ -237,7 +225,7 @@ describe('useUserPosts', () => {
       const notFoundError = new Error('Posts not found');
       mockPostsService.fetchUserPosts.mockRejectedValue(notFoundError);
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -251,7 +239,7 @@ describe('useUserPosts', () => {
       const serverError = new Error('Internal server error');
       mockPostsService.fetchUserPosts.mockRejectedValue(serverError);
 
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -266,20 +254,12 @@ describe('useUserPosts', () => {
     it('should load posts when user logs in', async () => {
       mockPostsService.fetchUserPosts.mockResolvedValue(mockPostsResponse);
 
-      const { result, rerender } = renderHook(
-        ({ user }) => {
-          mockUseAuth.mockReturnValue({
-            user,
-            loading: false,
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            signUp: jest.fn(),
-          });
+      const { result, rerender } = renderHook<UseUserPostsResult, AuthProps>(
+        ({ user }: AuthProps) => {
+          mockUseAuth.mockReturnValue({ user, loading: false });
           return useUserPosts();
         },
-        {
-          initialProps: { user: null as any },
-        }
+        { initialProps: { user: null } }
       );
 
       // Initially no posts
@@ -288,7 +268,7 @@ describe('useUserPosts', () => {
       });
 
       // User logs in
-      rerender({ user: { uid: mockUserId, email: 'test@example.com' } });
+      rerender({ user: mockUser });
 
       // Posts should load
       await waitFor(() => {
@@ -300,20 +280,12 @@ describe('useUserPosts', () => {
     it('should clear posts when user logs out', async () => {
       mockPostsService.fetchUserPosts.mockResolvedValue(mockPostsResponse);
 
-      const { result, rerender } = renderHook(
-        ({ user }) => {
-          mockUseAuth.mockReturnValue({
-            user,
-            loading: false,
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            signUp: jest.fn(),
-          });
+      const { result, rerender } = renderHook<UseUserPostsResult, AuthProps>(
+        ({ user }: AuthProps) => {
+          mockUseAuth.mockReturnValue({ user, loading: false });
           return useUserPosts();
         },
-        {
-          initialProps: { user: { uid: mockUserId, email: 'test@example.com' } as any },
-        }
+        { initialProps: { user: mockUser } }
       );
 
       // Wait for posts to load
@@ -339,16 +311,9 @@ describe('useUserPosts', () => {
         totalCount: 1,
       };
       mockPostsService.fetchUserPosts.mockResolvedValue(textPostResponse);
+      mockUseAuth.mockReturnValue({ user: mockUser, loading: false });
 
-      mockUseAuth.mockReturnValue({
-        user: { uid: mockUserId, email: 'test@example.com' },
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
-
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.posts).toHaveLength(1);
@@ -362,16 +327,9 @@ describe('useUserPosts', () => {
         totalCount: 1,
       };
       mockPostsService.fetchUserPosts.mockResolvedValue(picturePostResponse);
+      mockUseAuth.mockReturnValue({ user: mockUser, loading: false });
 
-      mockUseAuth.mockReturnValue({
-        user: { uid: mockUserId, email: 'test@example.com' },
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
-
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.posts).toHaveLength(1);
@@ -388,16 +346,9 @@ describe('useUserPosts', () => {
         totalCount: 1,
       };
       mockPostsService.fetchUserPosts.mockResolvedValue(videoPostResponse);
+      mockUseAuth.mockReturnValue({ user: mockUser, loading: false });
 
-      mockUseAuth.mockReturnValue({
-        user: { uid: mockUserId, email: 'test@example.com' },
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
-
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.posts).toHaveLength(1);
@@ -410,16 +361,9 @@ describe('useUserPosts', () => {
 
     it('should correctly handle mixed post types', async () => {
       mockPostsService.fetchUserPosts.mockResolvedValue(mockPostsResponse);
+      mockUseAuth.mockReturnValue({ user: mockUser, loading: false });
 
-      mockUseAuth.mockReturnValue({
-        user: { uid: mockUserId, email: 'test@example.com' },
-        loading: false,
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        signUp: jest.fn(),
-      });
-
-      const { result } = renderHook(() => useUserPosts());
+      const { result } = renderHook<UseUserPostsResult, void>(() => useUserPosts());
 
       await waitFor(() => {
         expect(result.current.posts).toHaveLength(3);
