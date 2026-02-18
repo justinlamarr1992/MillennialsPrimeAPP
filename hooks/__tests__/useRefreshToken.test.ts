@@ -8,11 +8,9 @@ import useRefreshToken from '../useRefreshToken';
 import { auth } from '@/firebase/firebaseConfig';
 import { logger } from '@/utils/logger';
 
-// Mock Firebase auth
+// Mock Firebase auth as callable (auth().currentUser pattern)
 jest.mock('@/firebase/firebaseConfig', () => ({
-  auth: {
-    currentUser: null,
-  },
+  auth: jest.fn(),
 }));
 
 // Mock logger
@@ -22,9 +20,12 @@ jest.mock('@/utils/logger', () => ({
   },
 }));
 
+const mockAuth = auth as unknown as jest.Mock;
+
 describe('useRefreshToken hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockAuth.mockReturnValue({ currentUser: null });
   });
 
   describe('successful token refresh', () => {
@@ -33,7 +34,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: jest.fn().mockResolvedValue('new-token-123'),
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -46,7 +47,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: mockGetIdToken,
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -66,7 +67,7 @@ describe('useRefreshToken hook', () => {
         email: 'test@example.com',
         getIdToken: mockGetIdToken,
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -85,7 +86,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: jest.fn().mockResolvedValue(expectedToken),
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -100,7 +101,7 @@ describe('useRefreshToken hook', () => {
 
   describe('error handling', () => {
     it('should throw error when no user is authenticated', async () => {
-      (auth as any).currentUser = null;
+      mockAuth.mockReturnValue({ currentUser: null });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -117,7 +118,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: jest.fn().mockRejectedValue(mockError),
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -136,7 +137,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: jest.fn().mockRejectedValue(networkError),
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -155,7 +156,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: jest.fn().mockRejectedValue(authError),
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -178,7 +179,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: mockGetIdToken,
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -203,7 +204,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: mockGetIdToken,
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -224,7 +225,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: jest.fn().mockResolvedValue(''),
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
@@ -241,12 +242,12 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: jest.fn().mockResolvedValue('token'),
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 
       // User signs out
-      (auth as any).currentUser = null;
+      mockAuth.mockReturnValue({ currentUser: null });
 
       await expect(async () => {
         await act(async () => {
@@ -264,7 +265,7 @@ describe('useRefreshToken hook', () => {
         uid: 'test-123',
         getIdToken: mockGetIdToken,
       };
-      (auth as any).currentUser = mockUser;
+      mockAuth.mockReturnValue({ currentUser: mockUser });
 
       const { result } = renderHook(() => useRefreshToken());
 

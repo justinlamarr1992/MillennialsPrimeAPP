@@ -146,6 +146,7 @@ describe('PicturePost', () => {
           picture="https://example.com/test.jpg"
           prime={false}
           admin={false}
+          authorId="test-user-123"
         />
       );
       expect(screen.getByText('Test Title')).toBeTruthy();
@@ -161,6 +162,7 @@ describe('PicturePost', () => {
           picture="https://example.com/test.jpg"
           prime={false}
           admin={false}
+          authorId="test-user-123"
         />
       );
       expect(screen.getByText('Only Title')).toBeTruthy();

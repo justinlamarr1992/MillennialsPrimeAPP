@@ -8,7 +8,7 @@ import { logger } from "@/utils/logger";
  */
 const useRefreshToken = () => {
   const refresh = async () => {
-    const currentUser = auth.currentUser;
+    const currentUser = auth().currentUser;
 
     if (!currentUser) {
       throw new Error("No authenticated user found");

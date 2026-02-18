@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor, fireEvent } from "@/__tests__/test-utils";
+import { render, screen, fireEvent } from "@/__tests__/test-utils";
 import UserProfileScreen from "../[id]";
 import { useUserProfileById } from "@/hooks/useUserProfileById";
 import { useConnectionStatus } from "@/hooks/useConnectionStatus";

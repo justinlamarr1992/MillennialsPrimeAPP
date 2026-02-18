@@ -2,7 +2,8 @@ import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
 import VideoPost from '../VideoPost';
 import { mockUser } from '@/__tests__/__mocks__/firebase';
-import type { User } from 'firebase/auth';
+import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import useAuth from '@/hooks/useAuth';
 
 // Mock useAuth to control current user
 jest.mock('@/hooks/useAuth', () => ({
@@ -10,14 +11,12 @@ jest.mock('@/hooks/useAuth', () => ({
   default: jest.fn(),
 }));
 
-import useAuth from '@/hooks/useAuth';
-
 // Helper to create mock user with custom uid
-const createMockUser = (uid: string, email: string): User => ({
+const createMockUser = (uid: string, email: string): FirebaseAuthTypes.User => ({
   ...mockUser,
   uid,
   email,
-}) as User;
+}) as unknown as FirebaseAuthTypes.User;
 
 describe('VideoPost', () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
