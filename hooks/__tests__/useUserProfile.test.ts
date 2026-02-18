@@ -12,6 +12,7 @@ import useAuth from '../useAuth';
 import useAxiosPrivate from '../useAxiosPrivate';
 import type { ServerUserProfile } from '@/types/UserProfile';
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { createMockUser } from '@/__tests__/test-utils';
 
 // Mock dependencies
 jest.mock('../useAuth');
@@ -41,7 +42,7 @@ describe('useUserProfile', () => {
     },
   };
 
-  const mockUser = { uid: 'user-123', email: 'test@example.com' } as unknown as FirebaseAuthTypes.User;
+  const mockUser = createMockUser({ uid: 'user-123', email: 'test@example.com' });
 
   beforeEach(() => {
     jest.clearAllMocks();

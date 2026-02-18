@@ -13,6 +13,7 @@ import useAuth from '../useAuth';
 import useAxiosPrivate from '../useAxiosPrivate';
 import type { TextPost, PicturePost, VideoPost } from '@/types/posts';
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { createMockUser } from '@/__tests__/test-utils';
 
 // Mock dependencies
 jest.mock('../useAuth');
@@ -30,7 +31,7 @@ type AuthProps = { user: FirebaseAuthTypes.User | null };
 describe('useUserPosts', () => {
   const mockAxiosPrivate = {} as ReturnType<typeof useAxiosPrivate>;
   const mockUserId = 'user-123';
-  const mockUser = { uid: mockUserId, email: 'test@example.com' } as unknown as FirebaseAuthTypes.User;
+  const mockUser = createMockUser({ uid: mockUserId, email: 'test@example.com' });
 
   const mockTextPost: TextPost = {
     id: 'post-1',

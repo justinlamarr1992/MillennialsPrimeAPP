@@ -1,8 +1,6 @@
 import React from 'react';
-import { render, screen } from '@/__tests__/test-utils';
+import { render, screen, createMockUser } from '@/__tests__/test-utils';
 import TextPost from '../TextPost';
-import { mockUser } from '@/__tests__/__mocks__/firebase';
-import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import useAuth from '@/hooks/useAuth';
 
 // Mock useAuth to control current user
@@ -10,13 +8,6 @@ jest.mock('@/hooks/useAuth', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-
-// Helper to create mock user with custom uid - we only need uid for ownership checks
-const createMockUser = (uid: string, email: string): FirebaseAuthTypes.User => ({
-  ...mockUser,
-  uid,
-  email,
-}) as unknown as FirebaseAuthTypes.User;
 
 describe('TextPost', () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -92,7 +83,7 @@ describe('TextPost', () => {
   describe('Post Ownership and Delete Functionality', () => {
     it('should render post successfully when current user is the post author', () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser('author-123', 'author@test.com'),
+        user: createMockUser({ uid: 'author-123', email: 'author@test.com' }),
         loading: false,
       });
 
@@ -105,7 +96,7 @@ describe('TextPost', () => {
 
     it('should render post successfully when current user is not the post author', () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser('different-user', 'other@test.com'),
+        user: createMockUser({ uid: 'different-user', email: 'other@test.com' }),
         loading: false,
       });
 
@@ -175,7 +166,7 @@ describe('TextPost', () => {
   describe('Author ID Validation', () => {
     it('should render correctly when post author matches current user', () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser('test-user-123', 'test@example.com'),
+        user: createMockUser({ uid: 'test-user-123', email: 'test@example.com' }),
         loading: false,
       });
 
@@ -188,7 +179,7 @@ describe('TextPost', () => {
 
     it('should handle missing authorId gracefully', () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser('test-user-123', 'test@example.com'),
+        user: createMockUser({ uid: 'test-user-123', email: 'test@example.com' }),
         loading: false,
       });
 
