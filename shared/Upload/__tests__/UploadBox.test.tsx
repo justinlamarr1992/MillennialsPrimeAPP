@@ -233,5 +233,23 @@ describe("UploadBox", () => {
       render(<UploadBox />);
       expect(screen.getByRole("button", { name: /try again/i })).toBeTruthy();
     });
+
+    it("clears the video form and resets to initial state when Try Again is pressed", () => {
+      // In error phase the full form is still rendered beneath the error banner
+      mockUseVideoUpload.mockReturnValue(
+        makeHookReturn({ phase: "error", error: "Something failed." })
+      );
+
+      render(<UploadBox />);
+
+      // Navigate into video form
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      expect(screen.getByPlaceholderText(/enter title/i)).toBeTruthy();
+
+      // Pressing Try Again should reset uploadType → null, hiding the video form
+      fireEvent.press(screen.getByRole("button", { name: /try again/i }));
+      expect(screen.queryByPlaceholderText(/enter title/i)).toBeNull();
+    });
   });
 });

@@ -1,6 +1,5 @@
 export type UploadPhase =
   | "idle"
-  | "selecting"
   | "authorizing"
   | "uploading"
   | "complete"

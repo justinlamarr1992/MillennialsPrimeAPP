@@ -39,8 +39,9 @@ function getBunnyCDNConfig(): BunnyCDNEnvConfig {
   if (!apiUrl?.trim()) missing.push("EXPO_PUBLIC_BUNNYCDN_API_URL");
 
   if (missing.length > 0) {
+    logger.error("BunnyCDN configuration incomplete", missing.join(", "));
     throw new Error(
-      `Missing BunnyCDN environment variables: ${missing.join(", ")}`
+      "Video upload is currently unavailable. Please try again later."
     );
   }
 
@@ -170,7 +171,9 @@ export const videoUploadService = {
   ): Promise<void> {
     const config = getBunnyCDNConfig();
     return new Promise((resolve, reject) => {
-      const upload = new Upload(file as never, {
+      // tus-js-client types don't include the React Native URI-based file format;
+      // this cast is required until tus provides official RN typings.
+      const upload = new Upload(file as unknown as Blob, {
         endpoint: `${config.apiUrl}/tusupload`,
         retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
         headers: {
@@ -189,12 +192,18 @@ export const videoUploadService = {
         onSuccess: () => resolve(),
       });
 
-      upload.findPreviousUploads().then((previousUploads) => {
-        if (previousUploads.length) {
-          upload.resumeFromPreviousUpload(previousUploads[0]);
-        }
-        upload.start();
-      });
+      upload
+        .findPreviousUploads()
+        .then((previousUploads) => {
+          if (previousUploads.length) {
+            upload.resumeFromPreviousUpload(previousUploads[0]);
+          }
+          upload.start();
+        })
+        .catch((err: unknown) => {
+          logger.error("performTusUpload: findPreviousUploads failed", err);
+          reject(err);
+        });
     });
   },
 

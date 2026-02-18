@@ -46,7 +46,11 @@ export default function UploadBox() {
     setTitle("");
     setDescription("");
     setCategory("");
+    setAudience("millennials");
     setUploadType(null);
+    setUploadTypePicker(false);
+    setAudiencePicker(false);
+    setCategoryPicker(false);
   };
 
   if (phase === "complete") {

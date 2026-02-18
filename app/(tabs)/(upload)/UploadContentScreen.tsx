@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme } from "react-native";
+import { View, Text, ActivityIndicator, useColorScheme } from "react-native";
 import React from "react";
 import UploadBox from "@/shared/Upload/UploadBox";
 import { globalStyles } from "@/constants/global";
@@ -19,7 +19,15 @@ const UploadContentScreen = () => {
           globalStyles.flexAlignItemsCenter,
           { backgroundColor: colors["background"] },
         ]}
-      />
+      >
+        <ActivityIndicator
+          testID="loading-indicator"
+          size="large"
+          color={colors["priC"]}
+          accessibilityRole="progressbar"
+          accessibilityLabel="Loading profile"
+        />
+      </View>
     );
   }
 
