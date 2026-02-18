@@ -27,6 +27,13 @@ export default [
   },
   ...compat.extends('expo', 'prettier'),
   {
+    // jest.mock() factories require() modules — this is unavoidable in test files
+    files: ['**/__tests__/**/*.ts', '**/__tests__/**/*.tsx', '**/*.test.ts', '**/*.test.tsx'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: typescriptParser,

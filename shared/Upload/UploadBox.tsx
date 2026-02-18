@@ -6,229 +6,87 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-import * as ImagePicker from "expo-image-picker";
 import ImagePickerComponent from "./ImagePickerComponent";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { logger } from "@/utils/logger";
-
-// Using ImagePicker.ImagePickerAsset directly instead of custom interface
+import { useVideoUpload } from "@/hooks/useVideoUpload";
 
 export default function UploadBox() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const axiosPrivate = useAxiosPrivate();
 
-  let videoFile: ImagePicker.ImagePickerAsset | undefined;
+  const { phase, progress, error, handleVideoSelect, submitUpload, reset } =
+    useVideoUpload();
 
-  // formData starts as FormData but is reassigned to a plain object in handleSubmit (line 150)
-  let formData: FormData | Record<string, unknown> = new FormData();
-
-  var tus = require("tus-js-client");
-
-  // Use States
-  const [upload, setUpload] = useState<string | null>(null);
-  const [uploadPicker, setUploadPicker] = useState(false);
+  const [uploadType, setUploadType] = useState<string | null>(null);
+  const [uploadTypePicker, setUploadTypePicker] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [prime, setPrime] = useState(0);
-  const [primePicker, setPrimePicker] = useState(false);
+  const [audience, setAudience] = useState<"millennials" | "primes">(
+    "millennials"
+  );
+  const [audiencePicker, setAudiencePicker] = useState(false);
   const [category, setCategory] = useState("");
   const [categoryPicker, setCategoryPicker] = useState(false);
-  const [duration] = useState("");
-  const [thumbnail] = useState("");
-  const [videoID, setVideoID] = useState("");
 
-  //   Use Refs
-  const uploadRef = useRef(null);
-
-  const toggleUploadPicker = () => {
-    setUploadPicker(!uploadPicker);
-  };
-  const togglePrimePicker = () => {
-    setPrimePicker(!primePicker);
-  };
-  const toggleCategoryPicker = () => {
-    setCategoryPicker(!categoryPicker);
+  const handleUploadTypeChange = (value: string) => {
+    setUploadTypePicker(false);
+    setUploadType(value);
   };
 
-  const uploadCheck = (e: string) => {
-    setUploadPicker(false);
-    logger.log('Upload type selected:', e);
-    if (e == "Text") {
-      setUpload("Text");
-    } else if (e == "Images") {
-      setUpload("Images");
-    } else if (e == "Video") {
-      setUpload("Video");
-      try {
-        const options = {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/*+json",
-            // Test
-            AccessKey: "8ad268ac-6b0a-46fb-92d9b1a6d918-c4e1-4edf",
-            // Live
-            // AccessKey: "a80779d4-9931-4345-80c1ca2315d2-fc09-4143",
-          },
-          // body: `{"title":"(Pre upload) Creating Video ${title} ${new Date()}"}`,
-          body: `{"title":"${title} ${new Date()}"}`,
-        };
+  const handleSubmit = () => {
+    if (uploadType !== "Video") return;
+    void submitUpload({ title, description, category, audience });
+  };
 
-        fetch("https://video.bunnycdn.com/library/181057/videos", options)
-          .then((response) => response.json())
-          .then((response) => {
-            logger.log('BunnyCDN video created:', response);
-            setVideoID(response.guid);
-            logger.log('Video ID set:', videoID, new Date());
-          });
-      } catch (err) {
-        logger.error('Error creating video:', err);
-      }
+  const handleReset = () => {
+    reset();
+    setTitle("");
+    setDescription("");
+    setCategory("");
+    setUploadType(null);
+  };
 
-      // console.log(upload);
-    } else if (e == "Music") {
-      setUpload("Music");
-    } else if (e == "Episode") {
-      setUpload("Episode");
-    } else if (e == "E-Commerce") {
-      setUpload("E-Commerce");
-    }
-  };
-  const handleWhoChange = (e: number) => {
-    setPrime(e);
-    setPrimePicker(false);
-  };
-  const handleCategoryChange = (e: string) => {
-    setCategory(e);
-    setCategoryPicker(false);
-  };
-  //   stuff == videoValue
-  function handleVideoSelect(videoValue: ImagePicker.ImagePickerResult) {
-    if (!videoValue.canceled && videoValue.assets && videoValue.assets[0]) {
-      videoFile = videoValue.assets?.[0];
-      logger.log('Video file selected:', videoFile);
-    }
+  if (phase === "complete") {
+    return (
+      <View style={[globalStyles.container, globalStyles.centerItem]}>
+        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
+          Video Uploaded!
+        </Text>
+        <Text
+          style={[globalStyles.labelText, { color: colors["priT"] }]}
+        >
+          Your video has been uploaded and will be available shortly.
+        </Text>
+        <Pressable
+          style={[
+            globalStyles.button,
+            globalStyles.marginVertical,
+            { backgroundColor: colors.triC },
+          ]}
+          onPress={handleReset}
+          accessibilityRole="button"
+          accessibilityLabel="Upload Another"
+        >
+          <Text style={globalStyles.buttonText}>Upload Another</Text>
+        </Pressable>
+      </View>
+    );
   }
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
 
-    if (
-      title === "" ||
-      description === "" ||
-      category === ""
-      // file === []
-      // file === ""
-      // duration === "" ||
-      // thumbnail === ""
-    )
-      return alert("Fill all of the fileds");
-
-    formData = {
-      // userPosting: _id,
-      title: title,
-      description: description,
-      prime: prime,
-      // file: file,
-      category: category,
-      duration: duration,
-      thumbnail: thumbnail,
-      videoID: videoID,
-      // later library ID if a Prime Submitter
-    };
-
-    const sendToBackEnd = async () => {
-      try {
-        logger.log('Upload step 1: Starting backend submission');
-        logger.log('Video file before backend:', videoFile);
-
-        const response = await axiosPrivate.post(`/videos/bunnyInfo`, formData);
-        logger.log('Backend response:', response.data);
-        if (response.data.success === true && videoFile) {
-          try {
-            logger.log('Upload step 2: Initiating TUS upload');
-            // Create a new tus upload
-            var upload = new tus.Upload(videoFile, {
-              // var upload = new tus.Upload(file, {
-              endpoint: "https://video.bunnycdn.com/tusupload",
-              retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
-              headers: {
-                AuthorizationSignature: response.data.shaAttempt, // SHA256 signature (library_id + api_key + expiration_time + video_id)
-                AuthorizationExpire: response.data.authorizationExpire, // Expiration time as in the signature,
-                VideoId: response.data.video_id,
-                // "video-guid", // The guid of a previously created video object through the Create Video API call
-                LibraryId: response.data.libraryId,
-              },
-              metadata: {
-                filetype: videoFile.type,
-                title: "Is this where the title is changed",
-                collection: "collectionID",
-              },
-              onError: function (error: Error) {
-                logger.error('TUS upload error:', error);
-              },
-              onProgress: function (bytesUploaded: number, bytesTotal: number) {
-                logger.log('Upload progress:', { bytesUploaded, bytesTotal, percentage: ((bytesUploaded / bytesTotal) * 100).toFixed(2) + '%' });
-              },
-              onSuccess: function () {
-                logger.log('Upload step 4: Video uploaded successfully');
-              },
-            });
-            // Check if there are any previous uploads to continue.
-            upload.findPreviousUploads().then(function (previousUploads: unknown[]) {
-              // Found previous uploads so we select the first one.
-              if (previousUploads.length) {
-                logger.log('Upload step 5: Resuming from previous upload');
-                upload.resumeFromPreviousUpload(previousUploads[0]);
-              }
-              // Start the upload
-              logger.log('Upload step 6: Starting upload');
-              upload.start();
-            });
-            logger.log('Upload step 7: Upload initiated');
-          } catch (err) {
-            logger.error('TUS upload error:', err);
-          }
-        }
-      } catch (err) {
-        const baseMessage = "Failed to upload video. Possible causes:\n- Network connectivity issues\n- Unsupported file format\n- File size exceeds limits\n\nPlease check your connection and file, then try again.";
-        alert(baseMessage);
-        logger.error("Upload error:", err);
-      } finally {
-        logger.log('Upload step 8: Finalizing');
-        // EDIT VIDEO may need to move this to the backend
-        const options = {
-          method: "POST",
-          headers: {
-            accept: "application/json",
-            "content-type": "application/*+json",
-            // Test
-            AccessKey: "8ad268ac-6b0a-46fb-92d9b1a6d918-c4e1-4edf",
-            // Live
-            // AccessKey: "a80779d4-9931-4345-80c1ca2315d2-fc09-4143",
-          },
-          body: `{"title":"${title}"}`,
-        };
-
-        fetch(
-          `https://video.bunnycdn.com/library/181057/videos/${videoID}`,
-          // `https://video.bunnycdn.com/library/181057/videos/${video.guid}`,
-          options
-        )
-          .then((response) => response.json())
-          .then((response) => {
-            logger.log('Video metadata updated:', response);
-          })
-          .catch((err) => logger.error('Error updating video metadata:', err));
-      }
-    };
-    sendToBackEnd();
-    logger.log('Upload step 9: Process complete');
-  };
+  if (phase === "authorizing" || phase === "uploading") {
+    const label =
+      phase === "authorizing" ? "Authorizing…" : `Uploading… ${progress}%`;
+    return (
+      <View style={[globalStyles.container, globalStyles.centerItem]}>
+        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
+          {label}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView
@@ -238,135 +96,161 @@ export default function UploadBox() {
       <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
         Millennial's Prime News Upload
       </Text>
+
+      {phase === "error" && error && (
+        <View style={globalStyles.groupPadding}>
+          <Text style={globalStyles.errorText}>{error}</Text>
+          <Pressable
+            style={[
+              globalStyles.button,
+              globalStyles.marginVertical,
+              { backgroundColor: colors.triC },
+            ]}
+            onPress={handleReset}
+            accessibilityRole="button"
+            accessibilityLabel="Try Again"
+          >
+            <Text style={globalStyles.buttonText}>Try Again</Text>
+          </Pressable>
+        </View>
+      )}
+
       <View style={globalStyles.groupPadding}>
+        {/* Upload type selector */}
         <View style={globalStyles.labelInput}>
           <Text style={globalStyles.labelText}>
             What type of Upload is this?
           </Text>
-          <Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Select upload type"
+            onPress={() => setUploadTypePicker(!uploadTypePicker)}
+          >
             <TextInput
               style={globalStyles.input}
-              placeholder="Can Users Like your Post?"
-              value={upload || ""}
-              //   onChangeText={setUpload}
-              //   onChange={handleChange}
+              placeholder="What type of upload?"
+              value={uploadType ?? ""}
               editable={false}
-              onPressIn={toggleUploadPicker}
-            ></TextInput>
+              pointerEvents="none"
+            />
           </Pressable>
 
-          {uploadPicker && (
+          {uploadTypePicker && (
             <Picker
-              style={{}}
-              ref={uploadRef}
-              selectedValue={upload}
-              onValueChange={(itemValue) => uploadCheck(itemValue as string)}
+              testID="upload-type-picker"
+              selectedValue={uploadType}
+              onValueChange={(value) => handleUploadTypeChange(value as string)}
             >
               <Picker.Item
                 label="Select your Option"
                 value=""
                 enabled={false}
               />
-              <Picker.Item label="Text" value="Text" />
-              {/* Later change TEXT to post or something like  words idk */}
-              <Picker.Item label="Images" value="Images" />
               <Picker.Item label="Video" value="Video" />
-              <Picker.Item label="Music" value="Music" />
-              <Picker.Item label="Episode" value="Episode" />
-              <Picker.Item label="E-Commerce" value="E-Commerce" />
+              <Picker.Item label="Text (Coming Soon)" value="Text" enabled={false} />
+              <Picker.Item label="Images (Coming Soon)" value="Images" enabled={false} />
+              <Picker.Item label="Music (Coming Soon)" value="Music" enabled={false} />
             </Picker>
           )}
         </View>
-        {upload == "Text" && (
-          <Text style={[{ color: colors["priT"] }]}>Text stuff goes here</Text>
-        )}
-        {upload == "Images" && (
-          <Text style={[{ color: colors["priT"] }]}>
-            Images stuff goes here
-          </Text>
-        )}
-        {upload == "Video" && (
+
+        {uploadType === "Video" && (
           <View>
+            {/* Title */}
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
+              <Text
+                style={[globalStyles.labelText, { color: colors["priT"] }]}
+              >
                 Title of Video
               </Text>
               <TextInput
                 style={globalStyles.settingsInput}
                 placeholder="Enter Title Here"
                 value={title}
-                onChangeText={(text) => setTitle(text)}
-              ></TextInput>
+                onChangeText={setTitle}
+                accessibilityLabel="Video title"
+              />
             </View>
+
+            {/* Description */}
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
+              <Text
+                style={[globalStyles.labelText, { color: colors["priT"] }]}
+              >
                 Description of the Video
               </Text>
               <TextInput
                 style={globalStyles.settingsInput}
                 placeholder="Enter A Brief Description Here"
                 value={description}
-                onChangeText={(text) => setDescription(text)}
-              ></TextInput>
+                onChangeText={setDescription}
+                accessibilityLabel="Video description"
+              />
             </View>
+
+            {/* Audience */}
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
+              <Text
+                style={[globalStyles.labelText, { color: colors["priT"] }]}
+              >
                 Who is the Video For?
               </Text>
-              <Pressable>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Select audience"
+                onPress={() => setAudiencePicker(!audiencePicker)}
+              >
                 <TextInput
                   style={globalStyles.input}
                   placeholder="Select Your Option"
-                  value={String(prime)}
-                  //   onChangeText={setUpload}
-                  //   onChange={handleChange}
+                  value={audience}
                   editable={false}
-                  onPressIn={togglePrimePicker}
-                ></TextInput>
+                  pointerEvents="none"
+                />
               </Pressable>
-
-              {primePicker && (
+              {audiencePicker && (
                 <Picker
-                  style={{}}
-                  selectedValue={prime}
-                  onValueChange={(itemValue) =>
-                    handleWhoChange(itemValue)
-                  }
+                  testID="audience-picker"
+                  selectedValue={audience}
+                  onValueChange={(value) => {
+                    setAudience(value as "millennials" | "primes");
+                    setAudiencePicker(false);
+                  }}
                 >
-                  <Picker.Item
-                    label="Select your Option"
-                    value=""
-                    enabled={false}
-                  />
-                  <Picker.Item label="Millennial's" value="Millennial's" />
-                  <Picker.Item label="Primes" value="Primes" />
+                  <Picker.Item label="Millennial's" value="millennials" />
+                  <Picker.Item label="Primes" value="primes" />
                 </Picker>
               )}
             </View>
+
+            {/* Category */}
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
-                What the Category of this Video?
+              <Text
+                style={[globalStyles.labelText, { color: colors["priT"] }]}
+              >
+                Category
               </Text>
-              <Pressable>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Select category"
+                onPress={() => setCategoryPicker(!categoryPicker)}
+              >
                 <TextInput
                   style={globalStyles.input}
                   placeholder="Select your option"
                   value={category}
-                  //   onChangeText={setUpload}
-                  //   onChange={handleChange}
                   editable={false}
-                  onPressIn={toggleCategoryPicker}
-                ></TextInput>
+                  pointerEvents="none"
+                />
               </Pressable>
-
               {categoryPicker && (
                 <Picker
-                  style={{}}
+                  testID="category-picker"
                   selectedValue={category}
-                  onValueChange={
-                    (itemValue) => handleCategoryChange(itemValue)
-                    // console.log("Category picker working")
-                  }
+                  onValueChange={(value) => {
+                    setCategory(value as string);
+                    setCategoryPicker(false);
+                  }}
                 >
                   <Picker.Item
                     label="Select your Option"
@@ -382,27 +266,14 @@ export default function UploadBox() {
                 </Picker>
               )}
             </View>
-            <ImagePickerComponent
-              handleVideoSelect={handleVideoSelect}
-              //   handleVideoSelect={(value) => handleVideoSelect(value)}
-            />
+
+            {/* Video file picker */}
+            <ImagePickerComponent handleVideoSelect={handleVideoSelect} />
           </View>
         )}
-        {upload == "Music" && (
-          <Text style={[{ color: colors["priT"] }]}>Music stuff goes here</Text>
-        )}
-        {upload == "Episode" && (
-          <Text style={[{ color: colors["priT"] }]}>
-            Episode stuff goes here
-          </Text>
-        )}
-        {upload == "E-Commerce" && (
-          <Text style={[{ color: colors["priT"] }]}>
-            E-Commerce stuff goes here
-          </Text>
-        )}
       </View>
-      {/* Button */}
+
+      {/* Upload button */}
       <View style={globalStyles.groupPadding}>
         <Pressable
           style={[
@@ -410,10 +281,11 @@ export default function UploadBox() {
             globalStyles.marginVertical,
             { backgroundColor: colors.triC, marginBottom: 25 },
           ]}
+          onPress={handleSubmit}
+          accessibilityRole="button"
+          accessibilityLabel="Upload"
         >
-          <Text style={globalStyles.buttonText} onPress={handleSubmit}>
-            Upload
-          </Text>
+          <Text style={globalStyles.buttonText}>Upload</Text>
         </Pressable>
       </View>
     </ScrollView>
