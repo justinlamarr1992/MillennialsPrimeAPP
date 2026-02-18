@@ -125,7 +125,6 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="(upload)"
         options={{
-          href: null,
           headerShown: true,
           headerTitle: "Upload",
           headerStyle: {
@@ -139,10 +138,10 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          // title: "Upload",
-          // tabBarIcon: ({ color }) => (
-          //   <Ionicons name="cloud-upload" size={28} color={color} />
-          // ),
+          title: "Upload",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="cloud-upload" size={28} color={color} />
+          ),
         }}
       />
       <Tabs.Screen

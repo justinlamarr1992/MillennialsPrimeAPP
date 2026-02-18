@@ -9,6 +9,7 @@ export default function Layout() {
   return (
     <Stack
       screenOptions={{
+        headerShown: false,
         headerStyle: {
           backgroundColor: colors["priC"],
         },
