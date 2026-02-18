@@ -51,7 +51,18 @@ grep -r "function [utilityName]" utils/
 - [ ] Using existing utilities (not recreating functions)
 - [ ] Consistent naming conventions with codebase
 
-**Action:** If you wrote inline styles or recreated existing patterns, refactor NOW.
+**Test helper audit** — for every helper created in a test file:
+- [ ] Does a shared version already exist in `__tests__/test-utils.tsx` or `__tests__/__mocks__/`?
+  ```bash
+  grep -r "createMock\|mockFactory\|buildMock" __tests__/
+  ```
+- [ ] If yes, delete the local version and use the shared one
+
+**Type cast audit** — for every `as T` or `as unknown as T` introduced:
+- [ ] Is there a type-level fix instead? (conditional types, narrowing, restricted generics)
+- [ ] If a cast is truly unavoidable, add a comment explaining why
+
+**Action:** If you wrote inline styles, recreated existing patterns, or used avoidable casts, refactor NOW.
 
 ---
 
