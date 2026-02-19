@@ -29,6 +29,7 @@ const ROUTE_TITLES: Record<string, string> = {
   MyInfoScreen: "My Info",
   BusinessScreen: "Business",
   ArtScreen: "Art",
+  EComm: "E-Commerce",
 };
 
 const TAB_ROOT_TITLES: Record<string, string> = {
