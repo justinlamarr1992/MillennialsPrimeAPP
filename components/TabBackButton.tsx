@@ -40,21 +40,24 @@ const TAB_ROOT_TITLES: Record<string, string> = {
 export function getScreenTitle(state: TabState | null, defaultTitle: string): string {
   if (!state) return defaultTitle;
   const focusedRoute = state.routes[state.index];
-  const nestedState = focusedRoute?.state as NestedState | undefined;
+  if (!focusedRoute) return defaultTitle;
+  const nestedState = focusedRoute.state as NestedState | undefined;
   const nestedIndex = nestedState?.index ?? 0;
-  if (!nestedState?.routes || nestedIndex === 0) return defaultTitle;
+  if (!nestedState?.routes || nestedIndex === 0 || nestedIndex >= nestedState.routes.length) return defaultTitle;
   const currentRoute = nestedState.routes[nestedIndex];
-  if (currentRoute.name === "index") return defaultTitle;
+  if (!currentRoute || currentRoute.name === "index") return defaultTitle;
   return ROUTE_TITLES[currentRoute.name] ?? currentRoute.name;
 }
 
 export function getBackLabel(state: TabState | null): string | null {
   if (!state) return null;
   const focusedRoute = state.routes[state.index];
-  const nestedState = focusedRoute?.state as NestedState | undefined;
+  if (!focusedRoute) return null;
+  const nestedState = focusedRoute.state as NestedState | undefined;
   const nestedIndex = nestedState?.index ?? 0;
-  if (!nestedState?.routes || nestedIndex === 0) return null;
+  if (!nestedState?.routes || nestedIndex === 0 || nestedIndex - 1 >= nestedState.routes.length) return null;
   const previousRoute = nestedState.routes[nestedIndex - 1];
+  if (!previousRoute) return null;
   if (previousRoute.name === "index") {
     return TAB_ROOT_TITLES[focusedRoute.name] ?? focusedRoute.name;
   }
