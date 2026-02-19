@@ -2,6 +2,7 @@ import { Tabs, useRouter } from "expo-router";
 import { useColorScheme, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/Colors";
+import { TabBackButton } from "@/components/TabBackButton";
 
 const TabsLayout = () => {
   const colorScheme = useColorScheme();
@@ -74,6 +75,7 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          headerLeft: () => <TabBackButton />,
           title: "Settings (Next Update)",
           tabBarIcon: ({ color }) => (
             <Ionicons size={28} name="cog" color={color} />
@@ -106,6 +108,7 @@ const TabsLayout = () => {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          headerLeft: () => <TabBackButton />,
           headerRight: () => (
             <Pressable
               onPress={() => router.push("/(tabs)/(social)/MyProfileScreen")}

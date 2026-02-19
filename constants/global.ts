@@ -512,6 +512,16 @@ export const globalStyles = StyleSheet.create({
 
   // T
   // Tabs
+  tabBackButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 16,
+    gap: 4,
+  },
+  tabBackButtonLabel: {
+    fontWeight: "bold",
+    fontSize: 15,
+  },
   tabContainer: {
     flexDirection: "row",
     borderBottomWidth: 1,
