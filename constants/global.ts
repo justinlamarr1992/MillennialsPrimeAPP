@@ -522,6 +522,10 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 15,
   },
+  tabHeaderTitleText: {
+    fontWeight: "bold",
+    fontSize: 17,
+  },
   tabContainer: {
     flexDirection: "row",
     borderBottomWidth: 1,

@@ -6,6 +6,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/Colors";
 import { globalStyles } from "@/constants/global";
 
+interface TabHeaderTitleProps {
+  defaultTitle: string;
+}
+
 type NestedState = {
   index?: number;
   routes?: { name: string }[];
@@ -32,6 +36,17 @@ const TAB_ROOT_TITLES: Record<string, string> = {
   "(settings)": "Settings",
 };
 
+export function getScreenTitle(state: TabState | null, defaultTitle: string): string {
+  if (!state) return defaultTitle;
+  const focusedRoute = state.routes[state.index];
+  const nestedState = focusedRoute?.state as NestedState | undefined;
+  const nestedIndex = nestedState?.index ?? 0;
+  if (!nestedState?.routes || nestedIndex === 0) return defaultTitle;
+  const currentRoute = nestedState.routes[nestedIndex];
+  if (currentRoute.name === "index") return defaultTitle;
+  return ROUTE_TITLES[currentRoute.name] ?? currentRoute.name;
+}
+
 export function getBackLabel(state: TabState | null): string | null {
   if (!state) return null;
   const focusedRoute = state.routes[state.index];
@@ -43,6 +58,19 @@ export function getBackLabel(state: TabState | null): string | null {
     return TAB_ROOT_TITLES[focusedRoute.name] ?? focusedRoute.name;
   }
   return ROUTE_TITLES[previousRoute.name] ?? previousRoute.name;
+}
+
+export function TabHeaderTitle({ defaultTitle }: TabHeaderTitleProps) {
+  const colorScheme = useColorScheme();
+  const colors = COLORS[colorScheme ?? "dark"];
+  const title = useNavigationState(
+    (state): string => getScreenTitle(state as TabState | null, defaultTitle)
+  );
+  return (
+    <Text style={[globalStyles.tabHeaderTitleText, { color: colors.secT }]}>
+      {title}
+    </Text>
+  );
 }
 
 export function TabBackButton() {

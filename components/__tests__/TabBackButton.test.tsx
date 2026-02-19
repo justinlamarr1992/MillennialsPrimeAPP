@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@/__tests__/test-utils";
-import { TabBackButton } from "../TabBackButton";
+import { TabBackButton, TabHeaderTitle } from "../TabBackButton";
 import { router } from "expo-router";
 import { useNavigationState } from "@react-navigation/native";
 
@@ -100,7 +100,7 @@ describe("TabBackButton", () => {
     });
   });
 
-  describe("Given real navigation state", () => {
+  describe("Given real navigation state (TabBackButton)", () => {
     it("shows nothing when user is on the root Social screen", () => {
       mockUseNavigationState.mockImplementation((selector) =>
         selector({
@@ -161,5 +161,76 @@ describe("TabBackButton", () => {
       const { toJSON } = render(<TabBackButton />);
       expect(toJSON()).toBeNull();
     });
+  });
+});
+
+describe("TabHeaderTitle", () => {
+  const mockUseNavigationState = useNavigationState as jest.MockedFunction<
+    typeof useNavigationState
+  >;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("shows 'Social' when user is at the Social feed root", () => {
+    mockUseNavigationState.mockImplementation((selector) =>
+      selector({
+        index: 0,
+        routes: [{ name: "(social)", state: { index: 0, routes: [{ name: "index" }] } }],
+      } as never)
+    );
+    render(<TabHeaderTitle defaultTitle="Social" />);
+    expect(screen.getByText("Social")).toBeTruthy();
+  });
+
+  it("shows 'My Profile' when user navigated from Social to My Profile", () => {
+    mockUseNavigationState.mockImplementation((selector) =>
+      selector({
+        index: 0,
+        routes: [
+          {
+            name: "(social)",
+            state: {
+              index: 1,
+              routes: [{ name: "index" }, { name: "MyProfileScreen" }],
+            },
+          },
+        ],
+      } as never)
+    );
+    render(<TabHeaderTitle defaultTitle="Social" />);
+    expect(screen.getByText("My Profile")).toBeTruthy();
+  });
+
+  it("shows 'Connections' when user navigated from My Profile to Connections", () => {
+    mockUseNavigationState.mockImplementation((selector) =>
+      selector({
+        index: 0,
+        routes: [
+          {
+            name: "(social)",
+            state: {
+              index: 2,
+              routes: [
+                { name: "index" },
+                { name: "MyProfileScreen" },
+                { name: "ConnectedUsersScreen" },
+              ],
+            },
+          },
+        ],
+      } as never)
+    );
+    render(<TabHeaderTitle defaultTitle="Social" />);
+    expect(screen.getByText("Connections")).toBeTruthy();
+  });
+
+  it("shows 'Social' when navigation state is unavailable", () => {
+    mockUseNavigationState.mockImplementation((selector) =>
+      selector(null as never)
+    );
+    render(<TabHeaderTitle defaultTitle="Social" />);
+    expect(screen.getByText("Social")).toBeTruthy();
   });
 });
