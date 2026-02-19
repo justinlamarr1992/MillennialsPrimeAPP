@@ -7,16 +7,6 @@ export default function Layout() {
   // const { auth, id, accessToken, roles } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  // NOTE: Intentional hardcoded values. AuthContext only contains { user, loading }.
-  // Admin/prime status will be derived from user data structure when available.
-  const admin = false;
-  const prime = false;
-  const userColor = admin
-    ? colors["quaC"]
-    : prime
-    ? colors["secC"]
-    : colors["regC"];
-  const userColorText = admin ? "#020101" : prime ? "#ffffff" : "#020101";
   return (
     <Stack
       screenOptions={{
@@ -56,7 +46,7 @@ export default function Layout() {
             // height: 200,
             // overflow: "hidden",
           },
-          headerTintColor: userColorText,
+          headerTintColor: colors["text"],
           headerTitleStyle: {
             fontWeight: "bold",
           },
@@ -82,32 +72,15 @@ export default function Layout() {
       <Stack.Screen
         name="MyProfileScreen"
         options={{
-          // Note: headerShown: true here creates a second header with back button
-          // This is intentional to enable navigation back to Social feed
-          // The Tabs navigator also shows a header for Social tab
-          headerShown: true,
+          headerShown: false,
           title: "My Profile",
-          headerStyle: {
-            backgroundColor: userColor,
-          },
-          headerTintColor: userColorText,
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
         }}
       />
       <Stack.Screen
         name="ConnectedUsersScreen"
         options={{
-          headerShown: true,
+          headerShown: false,
           title: "Connections",
-          headerStyle: {
-            backgroundColor: userColor,
-          },
-          headerTintColor: userColorText,
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
         }}
       />
       <Stack.Screen

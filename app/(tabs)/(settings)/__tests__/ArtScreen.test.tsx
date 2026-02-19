@@ -182,20 +182,5 @@ describe('ArtScreen', () => {
     });
   });
 
-  describe('User can navigate back', () => {
-    it('shows back button at top of screen', () => {
-      render(<ArtScreen />);
-      expect(screen.getByText('← Back')).toBeTruthy();
-    });
-
-    it('allows user to press back button', () => {
-      render(<ArtScreen />);
-
-      const backButton = screen.getByText('← Back');
-      fireEvent.press(backButton);
-
-      // Verify the button is pressable (no error thrown)
-      expect(backButton).toBeTruthy();
-    });
-  });
 });
+

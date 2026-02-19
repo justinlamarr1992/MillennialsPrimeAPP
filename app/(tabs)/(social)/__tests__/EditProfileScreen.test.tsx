@@ -151,10 +151,6 @@ describe('EditProfileScreen', () => {
       expect(screen.getByText('Save Changes')).toBeTruthy();
     });
 
-    it('should display back button', () => {
-      render(<EditProfileScreen />);
-      expect(screen.getByText('← Back')).toBeTruthy();
-    });
   });
 
   describe('Basic Information Fields', () => {
@@ -390,16 +386,6 @@ describe('EditProfileScreen', () => {
     });
   });
 
-  describe('Navigation', () => {
-    it('should navigate back when back button is pressed', () => {
-      render(<EditProfileScreen />);
-
-      const backButton = screen.getByText('← Back');
-      fireEvent.press(backButton);
-
-      expect(mockBack).toHaveBeenCalled();
-    });
-  });
 
   describe('Profile Picture Integration', () => {
     it('should render ProfilePicture component', () => {

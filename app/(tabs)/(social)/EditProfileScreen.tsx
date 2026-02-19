@@ -128,16 +128,6 @@ export default function EditProfileScreen() {
           style={[globalStyles.padding, globalStyles.marginB100]}
           showsVerticalScrollIndicator={false}
         >
-          <Pressable
-            onPress={() => router.back()}
-            style={globalStyles.backButton}
-            accessibilityLabel="Go back to profile"
-            accessibilityRole="button"
-          >
-            <Text style={[globalStyles.labelText, { color: colors.priC }]}>
-              ← Back
-            </Text>
-          </Pressable>
           <View style={globalStyles.formTitle}>
             <ProfilePicture
               imageUri={profileImageUri}

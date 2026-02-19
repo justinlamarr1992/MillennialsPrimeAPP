@@ -341,22 +341,6 @@ describe('MyInfoScreen', () => {
     });
   });
 
-  describe('User can navigate back', () => {
-    it('shows back button at top of screen', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('← Back')).toBeTruthy();
-    });
-
-    it('allows user to press back button', () => {
-      render(<MyInfoScreen />);
-
-      const backButton = screen.getByText('← Back');
-      fireEvent.press(backButton);
-
-      // Verify the button is pressable (no error thrown)
-      expect(backButton).toBeTruthy();
-    });
-  });
 
 
   describe('Profile Picture Display', () => {

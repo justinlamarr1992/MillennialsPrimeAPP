@@ -139,23 +139,6 @@ describe('BusinessScreen', () => {
     });
   });
 
-  describe('User can navigate back', () => {
-    it('shows back button at top of screen', () => {
-      render(<BusinessScreen />);
-      expect(screen.getByText('← Back')).toBeTruthy();
-    });
-
-    it('allows user to press back button', () => {
-      render(<BusinessScreen />);
-
-      const backButton = screen.getByText('← Back');
-      fireEvent.press(backButton);
-
-      // Verify the button is pressable (no error thrown)
-      expect(backButton).toBeTruthy();
-    });
-  });
-
   describe('Business Data Display', () => {
     it('should populate business fields when profile data exists', async () => {
       render(<BusinessScreen />);

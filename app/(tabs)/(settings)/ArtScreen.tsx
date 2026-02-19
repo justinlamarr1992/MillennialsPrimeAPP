@@ -134,14 +134,6 @@ export default function ArtScreen() {
           style={[globalStyles.padding, globalStyles.marginB100, {}]}
           showsVerticalScrollIndicator={false}
         >
-          <Pressable
-            onPress={() => router.back()}
-            style={globalStyles.backButton}
-          >
-            <Text style={[globalStyles.labelText, { color: colors.priC }]}>
-              ← Back
-            </Text>
-          </Pressable>
           <View style={globalStyles.formTitle}>
             <Text style={[globalStyles.textTitle, { color: colors.text }]}>
               Art Information
