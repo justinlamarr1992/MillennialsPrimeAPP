@@ -18,6 +18,7 @@ interface ServerAuthResponse {
     Editor?: number;
     Admin?: number;
   };
+  refreshToken?: string;
 }
 
 interface RegisterUserData {
@@ -31,6 +32,7 @@ interface RegisterUserData {
 // SecureStore keys (without @ symbol - SecureStore only allows alphanumeric, ".", "-", and "_")
 const SERVER_TOKEN_KEY = 'server_access_token';
 const SERVER_USER_ID_KEY = 'server_user_id';
+const SERVER_REFRESH_TOKEN_KEY = 'server_refresh_token';
 
 export const serverAuth = {
   /**
@@ -41,7 +43,7 @@ export const serverAuth = {
     try {
       const payload = {
         user: email,
-        pwd: password
+        password: password
       };
 
       if (__DEV__) {
@@ -64,14 +66,17 @@ export const serverAuth = {
         logger.log('📥 Server response data:', JSON.stringify(response.data));
       }
 
-      const { accessToken, _id, roles } = response.data;
+      const { accessToken, _id, roles, refreshToken } = response.data;
 
       // Store in SecureStore (encrypted)
       await SecureStore.setItemAsync(SERVER_TOKEN_KEY, accessToken);
       await SecureStore.setItemAsync(SERVER_USER_ID_KEY, _id);
+      if (refreshToken) {
+        await SecureStore.setItemAsync(SERVER_REFRESH_TOKEN_KEY, refreshToken);
+      }
 
       logger.log('✅ Server authentication successful, tokens stored securely');
-      return { accessToken, _id, roles };
+      return { accessToken, _id, roles, refreshToken };
     } catch (error: unknown) {
       logger.error('❌ Server authentication failed');
       if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
@@ -91,7 +96,7 @@ export const serverAuth = {
     try {
       const payload = {
         user: userData.email,
-        pwd: userData.password,
+        password: userData.password,
         firstName: userData.firstName,
         lastName: userData.lastName,
         DOB: userData.DOB
@@ -163,7 +168,8 @@ export const serverAuth = {
     try {
       await Promise.all([
         SecureStore.deleteItemAsync(SERVER_TOKEN_KEY),
-        SecureStore.deleteItemAsync(SERVER_USER_ID_KEY)
+        SecureStore.deleteItemAsync(SERVER_USER_ID_KEY),
+        SecureStore.deleteItemAsync(SERVER_REFRESH_TOKEN_KEY)
       ]);
       logger.log('Server credentials cleared from SecureStore');
     } catch (error) {
@@ -172,15 +178,28 @@ export const serverAuth = {
   },
 
   /**
-   * Refresh access token
+   * Refresh access token using stored refresh token sent in request body
+   * (React Native does not persist httpOnly cookies, so cookie-based refresh is not viable)
    */
   async refreshToken(): Promise<string> {
     try {
-      const response = await axiosPrivate.post('/refresh');
-      const { accessToken, _id } = response.data;
+      const storedRefreshToken = await SecureStore.getItemAsync(SERVER_REFRESH_TOKEN_KEY);
+
+      if (!storedRefreshToken) {
+        logger.error(
+          'Token refresh failed: no refresh token found in SecureStore. User may need to re-authenticate.'
+        );
+        throw new Error('No refresh token available. Please sign in again.');
+      }
+
+      const response = await axiosPrivate.post('/refresh', { refreshToken: storedRefreshToken });
+      const { accessToken, _id, refreshToken } = response.data;
 
       await SecureStore.setItemAsync(SERVER_TOKEN_KEY, accessToken);
       await SecureStore.setItemAsync(SERVER_USER_ID_KEY, _id);
+      if (refreshToken) {
+        await SecureStore.setItemAsync(SERVER_REFRESH_TOKEN_KEY, refreshToken);
+      }
 
       logger.log('Token refresh successful');
       return accessToken;

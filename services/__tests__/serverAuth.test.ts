@@ -18,73 +18,67 @@ describe('serverAuth', () => {
   });
 
   describe('loginToServer', () => {
-    it('stores access token and user ID on successful login', async () => {
-      const mockResponse = {
-        data: {
-          accessToken: 'mock-access-token-123',
-          _id: 'user-mongodb-id-456',
-          roles: { User: 2001 }
-        }
-      };
+    it('sends password field (not pwd) to match backend contract', async () => {
+      (axios.post as jest.Mock).mockResolvedValueOnce({
+        data: { accessToken: 'token', _id: 'id', roles: { User: 2001 } }
+      });
 
-      (axios.post as jest.Mock).mockResolvedValueOnce(mockResponse);
+      await serverAuth.loginToServer('test@example.com', 'password123');
+
+      expect(axios.post).toHaveBeenCalledWith('/auth', {
+        user: 'test@example.com',
+        password: 'password123',
+      }, { headers: { 'Content-Type': 'application/json' } });
+    });
+
+    it('stores access token and user ID on successful login', async () => {
+      (axios.post as jest.Mock).mockResolvedValueOnce({
+        data: { accessToken: 'mock-access-token-123', _id: 'user-mongodb-id-456', roles: { User: 2001 } }
+      });
 
       const result = await serverAuth.loginToServer('test@example.com', 'password123');
 
-      // Verify axios called with correct params
-      expect(axios.post).toHaveBeenCalledWith('/auth', {
-        user: 'test@example.com',
-        pwd: 'password123'
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('server_access_token', 'mock-access-token-123');
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('server_user_id', 'user-mongodb-id-456');
+      expect(result).toEqual({ accessToken: 'mock-access-token-123', _id: 'user-mongodb-id-456', roles: { User: 2001 } });
+    });
+
+    it('stores refresh token in SecureStore when provided in response', async () => {
+      (axios.post as jest.Mock).mockResolvedValueOnce({
+        data: { accessToken: 'token', _id: 'id', roles: { User: 2001 }, refreshToken: 'mock-refresh-token-abc' }
       });
 
-      // Verify tokens stored in SecureStore (encrypted storage)
-      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-        'server_access_token',
-        'mock-access-token-123'
-      );
-      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-        'server_user_id',
-        'user-mongodb-id-456'
-      );
+      await serverAuth.loginToServer('test@example.com', 'password123');
 
-      // Verify return value
-      expect(result).toEqual({
-        accessToken: 'mock-access-token-123',
-        _id: 'user-mongodb-id-456',
-        roles: { User: 2001 }
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('server_refresh_token', 'mock-refresh-token-abc');
+    });
+
+    it('does not store refresh token when not in response', async () => {
+      (axios.post as jest.Mock).mockResolvedValueOnce({
+        data: { accessToken: 'token', _id: 'id', roles: { User: 2001 } }
       });
+
+      await serverAuth.loginToServer('test@example.com', 'password123');
+
+      const calls = (SecureStore.setItemAsync as jest.Mock).mock.calls;
+      const refreshCalls = calls.filter(([key]: [string]) => key === 'server_refresh_token');
+      expect(refreshCalls).toHaveLength(0);
     });
 
     it('throws error on failed login', async () => {
-      const mockError = new Error('Unauthorized');
-      (axios.post as jest.Mock).mockRejectedValueOnce(mockError);
-
-      await expect(
-        serverAuth.loginToServer('test@example.com', 'wrongpassword')
-      ).rejects.toThrow('Unauthorized');
+      (axios.post as jest.Mock).mockRejectedValueOnce(new Error('Unauthorized'));
+      await expect(serverAuth.loginToServer('test@example.com', 'wrongpassword')).rejects.toThrow('Unauthorized');
     });
 
     it('handles server error responses', async () => {
-      const mockError = {
-        response: {
-          status: 401,
-          data: { message: 'Invalid credentials' }
-        }
-      };
+      const mockError = { response: { status: 401, data: { message: 'Invalid credentials' } } };
       (axios.post as jest.Mock).mockRejectedValueOnce(mockError);
-
-      await expect(
-        serverAuth.loginToServer('test@example.com', 'wrongpassword')
-      ).rejects.toMatchObject(mockError);
+      await expect(serverAuth.loginToServer('test@example.com', 'wrongpassword')).rejects.toMatchObject(mockError);
     });
   });
 
   describe('registerOnServer', () => {
-    it('successfully registers new user with all fields', async () => {
+    it('sends password field (not pwd) to match backend contract', async () => {
       (axios.post as jest.Mock).mockResolvedValueOnce({ data: {} });
 
       await serverAuth.registerOnServer({
@@ -97,159 +91,117 @@ describe('serverAuth', () => {
 
       expect(axios.post).toHaveBeenCalledWith('/register', {
         user: 'newuser@example.com',
-        pwd: 'SecurePass123!',
+        password: 'SecurePass123!',
         firstName: 'John',
         lastName: 'Doe',
         DOB: '1990-01-01'
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      }, { headers: { 'Content-Type': 'application/json' } });
     });
 
     it('successfully registers with minimal required fields', async () => {
       (axios.post as jest.Mock).mockResolvedValueOnce({ data: {} });
 
-      await serverAuth.registerOnServer({
-        email: 'newuser@example.com',
-        password: 'SecurePass123!'
-      });
+      await serverAuth.registerOnServer({ email: 'newuser@example.com', password: 'SecurePass123!' });
 
       expect(axios.post).toHaveBeenCalledWith('/register', {
         user: 'newuser@example.com',
-        pwd: 'SecurePass123!',
+        password: 'SecurePass123!',
         firstName: undefined,
         lastName: undefined,
         DOB: undefined
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      }, { headers: { 'Content-Type': 'application/json' } });
     });
 
     it('throws error when registration fails', async () => {
-      const mockError = new Error('Email already exists');
-      (axios.post as jest.Mock).mockRejectedValueOnce(mockError);
-
-      await expect(
-        serverAuth.registerOnServer({
-          email: 'existing@example.com',
-          password: 'password123'
-        })
-      ).rejects.toThrow('Email already exists');
+      (axios.post as jest.Mock).mockRejectedValueOnce(new Error('Email already exists'));
+      await expect(serverAuth.registerOnServer({ email: 'existing@example.com', password: 'password123' })).rejects.toThrow('Email already exists');
     });
   });
 
   describe('getAccessToken', () => {
     it('retrieves stored access token from SecureStore', async () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('stored-token-abc');
-
-      const token = await serverAuth.getAccessToken();
-
-      expect(token).toBe('stored-token-abc');
+      expect(await serverAuth.getAccessToken()).toBe('stored-token-abc');
     });
 
     it('returns null when no token stored', async () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce(null);
-
-      const token = await serverAuth.getAccessToken();
-
-      expect(token).toBeNull();
+      expect(await serverAuth.getAccessToken()).toBeNull();
     });
 
     it('returns null on SecureStore error', async () => {
-      (SecureStore.getItemAsync as jest.Mock).mockRejectedValueOnce(
-        new Error('Storage error')
-      );
-
-      const token = await serverAuth.getAccessToken();
-
-      expect(token).toBeNull();
+      (SecureStore.getItemAsync as jest.Mock).mockRejectedValueOnce(new Error('Storage error'));
+      expect(await serverAuth.getAccessToken()).toBeNull();
     });
   });
 
   describe('getUserId', () => {
     it('retrieves stored user ID from SecureStore', async () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('user-id-789');
-
-      const userId = await serverAuth.getUserId();
-
-      expect(userId).toBe('user-id-789');
+      expect(await serverAuth.getUserId()).toBe('user-id-789');
     });
 
     it('returns null when no user ID stored', async () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce(null);
-
-      const userId = await serverAuth.getUserId();
-
-      expect(userId).toBeNull();
+      expect(await serverAuth.getUserId()).toBeNull();
     });
 
     it('returns null on SecureStore error', async () => {
-      (SecureStore.getItemAsync as jest.Mock).mockRejectedValueOnce(
-        new Error('Storage error')
-      );
-
-      const userId = await serverAuth.getUserId();
-
-      expect(userId).toBeNull();
+      (SecureStore.getItemAsync as jest.Mock).mockRejectedValueOnce(new Error('Storage error'));
+      expect(await serverAuth.getUserId()).toBeNull();
     });
   });
 
   describe('logout', () => {
-    it('clears both token and user ID from SecureStore', async () => {
+    it('clears access token, user ID, and refresh token from SecureStore', async () => {
       (SecureStore.deleteItemAsync as jest.Mock).mockResolvedValue(undefined);
 
       await serverAuth.logout();
 
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith('server_access_token');
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith('server_user_id');
-      expect(SecureStore.deleteItemAsync).toHaveBeenCalledTimes(2);
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith('server_refresh_token');
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledTimes(3);
     });
 
     it('does not throw on SecureStore error', async () => {
-      (SecureStore.deleteItemAsync as jest.Mock).mockRejectedValue(
-        new Error('Storage error')
-      );
-
-      // Should not throw
+      (SecureStore.deleteItemAsync as jest.Mock).mockRejectedValue(new Error('Storage error'));
       await expect(serverAuth.logout()).resolves.toBeUndefined();
     });
   });
 
   describe('refreshToken', () => {
-    it('uses axiosPrivate (withCredentials) so the refresh cookie is sent', async () => {
-      const mockResponse = {
-        data: {
-          accessToken: 'new-refreshed-token-xyz',
-          _id: 'user-id-789'
-        }
-      };
+    it('reads stored refresh token and sends it in request body', async () => {
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('stored-refresh-token');
+      (axiosPrivate.post as jest.Mock).mockResolvedValueOnce({
+        data: { accessToken: 'new-token', _id: 'id', refreshToken: 'new-rt' }
+      });
 
-      (axiosPrivate.post as jest.Mock).mockResolvedValueOnce(mockResponse);
+      await serverAuth.refreshToken();
+
+      expect(SecureStore.getItemAsync).toHaveBeenCalledWith('server_refresh_token');
+      expect(axiosPrivate.post).toHaveBeenCalledWith('/refresh', { refreshToken: 'stored-refresh-token' });
+    });
+
+    it('stores new access token, user ID, and refresh token after successful refresh', async () => {
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('stored-refresh-token');
+      (axiosPrivate.post as jest.Mock).mockResolvedValueOnce({
+        data: { accessToken: 'new-refreshed-token-xyz', _id: 'user-id-789', refreshToken: 'new-refresh-token-abc' }
+      });
 
       const newToken = await serverAuth.refreshToken();
 
-      expect(axiosPrivate.post).toHaveBeenCalledWith('/refresh');
-      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-        'server_access_token',
-        'new-refreshed-token-xyz'
-      );
-      expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-        'server_user_id',
-        'user-id-789'
-      );
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('server_access_token', 'new-refreshed-token-xyz');
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('server_user_id', 'user-id-789');
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('server_refresh_token', 'new-refresh-token-abc');
       expect(newToken).toBe('new-refreshed-token-xyz');
     });
 
-    it('does not use the default axios instance (which lacks credentials)', async () => {
-      const mockResponse = {
-        data: { accessToken: 'token', _id: 'id' }
-      };
-
-      (axiosPrivate.post as jest.Mock).mockResolvedValueOnce(mockResponse);
+    it('uses axiosPrivate (not the default axios instance)', async () => {
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('stored-refresh-token');
+      (axiosPrivate.post as jest.Mock).mockResolvedValueOnce({
+        data: { accessToken: 'token', _id: 'id', refreshToken: 'rt' }
+      });
 
       await serverAuth.refreshToken();
 
@@ -257,52 +209,38 @@ describe('serverAuth', () => {
     });
 
     it('throws error when refresh fails', async () => {
-      const mockError = new Error('Refresh token expired');
-      (axiosPrivate.post as jest.Mock).mockRejectedValueOnce(mockError);
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('stored-refresh-token');
+      (axiosPrivate.post as jest.Mock).mockRejectedValueOnce(new Error('Refresh token expired'));
 
       await expect(serverAuth.refreshToken()).rejects.toThrow('Refresh token expired');
+    });
+
+    it('throws descriptive error when no refresh token is stored in SecureStore', async () => {
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce(null);
+
+      await expect(serverAuth.refreshToken()).rejects.toThrow('No refresh token available. Please sign in again.');
     });
   });
 
   describe('hasValidCredentials', () => {
     it('returns true when both token and user ID exist', async () => {
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce('token-123') // getAccessToken call
-        .mockResolvedValueOnce('user-456'); // getUserId call
-
-      const hasCredentials = await serverAuth.hasValidCredentials();
-
-      expect(hasCredentials).toBe(true);
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('token-123').mockResolvedValueOnce('user-456');
+      expect(await serverAuth.hasValidCredentials()).toBe(true);
     });
 
     it('returns false when token is missing', async () => {
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(null) // no token
-        .mockResolvedValueOnce('user-456'); // has user ID
-
-      const hasCredentials = await serverAuth.hasValidCredentials();
-
-      expect(hasCredentials).toBe(false);
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce(null).mockResolvedValueOnce('user-456');
+      expect(await serverAuth.hasValidCredentials()).toBe(false);
     });
 
     it('returns false when user ID is missing', async () => {
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce('token-123') // has token
-        .mockResolvedValueOnce(null); // no user ID
-
-      const hasCredentials = await serverAuth.hasValidCredentials();
-
-      expect(hasCredentials).toBe(false);
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce('token-123').mockResolvedValueOnce(null);
+      expect(await serverAuth.hasValidCredentials()).toBe(false);
     });
 
     it('returns false when both are missing', async () => {
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(null) // no token
-        .mockResolvedValueOnce(null); // no user ID
-
-      const hasCredentials = await serverAuth.hasValidCredentials();
-
-      expect(hasCredentials).toBe(false);
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+      expect(await serverAuth.hasValidCredentials()).toBe(false);
     });
   });
 });
