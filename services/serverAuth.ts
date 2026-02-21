@@ -184,6 +184,14 @@ export const serverAuth = {
   async refreshToken(): Promise<string> {
     try {
       const storedRefreshToken = await SecureStore.getItemAsync(SERVER_REFRESH_TOKEN_KEY);
+
+      if (!storedRefreshToken) {
+        logger.error(
+          'Token refresh failed: no refresh token found in SecureStore. User may need to re-authenticate.'
+        );
+        throw new Error('No refresh token available. Please sign in again.');
+      }
+
       const response = await axiosPrivate.post('/refresh', { refreshToken: storedRefreshToken });
       const { accessToken, _id, refreshToken } = response.data;
 

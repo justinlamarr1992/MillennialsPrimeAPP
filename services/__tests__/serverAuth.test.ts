@@ -214,6 +214,12 @@ describe('serverAuth', () => {
 
       await expect(serverAuth.refreshToken()).rejects.toThrow('Refresh token expired');
     });
+
+    it('throws descriptive error when no refresh token is stored in SecureStore', async () => {
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValueOnce(null);
+
+      await expect(serverAuth.refreshToken()).rejects.toThrow('No refresh token available. Please sign in again.');
+    });
   });
 
   describe('hasValidCredentials', () => {
