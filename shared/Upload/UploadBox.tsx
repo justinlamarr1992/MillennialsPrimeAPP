@@ -6,7 +6,7 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { Picker } from "@react-native-picker/picker";
 import ImagePickerComponent from "./ImagePickerComponent";
 import { globalStyles } from "@/constants/global";
@@ -30,14 +30,46 @@ export default function UploadBox() {
   const [audiencePicker, setAudiencePicker] = useState(false);
   const [category, setCategory] = useState("");
   const [categoryPicker, setCategoryPicker] = useState(false);
+  const [videoSelected, setVideoSelected] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const scrollToBottom = useCallback(() => {
+    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 50);
+  }, []);
+
+  const isFormValid =
+    uploadType === "Video" &&
+    title.trim() !== "" &&
+    category !== "" &&
+    videoSelected;
 
   const handleUploadTypeChange = (value: string) => {
     setUploadTypePicker(false);
     setUploadType(value);
   };
 
+  const handleAudiencePickerToggle = useCallback(() => {
+    const opening = !audiencePicker;
+    setAudiencePicker(opening);
+    if (opening) scrollToBottom();
+  }, [audiencePicker, scrollToBottom]);
+
+  const handleCategoryPickerToggle = useCallback(() => {
+    const opening = !categoryPicker;
+    setCategoryPicker(opening);
+    if (opening) scrollToBottom();
+  }, [categoryPicker, scrollToBottom]);
+
+  const handleVideoSelectWithTracking = useCallback(
+    (result: Parameters<typeof handleVideoSelect>[0]) => {
+      if (!result.canceled) setVideoSelected(true);
+      handleVideoSelect(result);
+    },
+    [handleVideoSelect]
+  );
+
   const handleSubmit = () => {
-    if (uploadType !== "Video") return;
+    if (!isFormValid) return;
     void submitUpload({ title, description, category, audience });
   };
 
@@ -51,6 +83,7 @@ export default function UploadBox() {
     setUploadTypePicker(false);
     setAudiencePicker(false);
     setCategoryPicker(false);
+    setVideoSelected(false);
   };
 
   if (phase === "complete") {
@@ -93,10 +126,11 @@ export default function UploadBox() {
   }
 
   return (
-    <View style={[globalStyles.flex1, globalStyles.flexAlignSelfStretch]}>
+    <View style={globalStyles.flex1}>
       <ScrollView
+        ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
-        style={[globalStyles.borderDefault, globalStyles.flex1]}
+        style={[globalStyles.flex1, globalStyles.borderDefault]}
       >
         <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
           Millennial's Prime News Upload
@@ -124,7 +158,7 @@ export default function UploadBox() {
           {/* Upload type selector */}
           <View style={globalStyles.labelInput}>
             <Text style={globalStyles.labelText}>
-              What type of Upload is this?
+              What type of Upload is this? *
             </Text>
             <Pressable
               accessibilityRole="button"
@@ -166,7 +200,7 @@ export default function UploadBox() {
                 <Text
                   style={[globalStyles.labelText, { color: colors["priT"] }]}
                 >
-                  Title of Video
+                  Title of Video *
                 </Text>
                 <TextInput
                   style={[globalStyles.settingsInput, { color: colors["priT"] }]}
@@ -203,7 +237,7 @@ export default function UploadBox() {
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel="Select audience"
-                  onPress={() => setAudiencePicker(!audiencePicker)}
+                  onPress={handleAudiencePickerToggle}
                 >
                   <TextInput
                     style={globalStyles.input}
@@ -233,12 +267,12 @@ export default function UploadBox() {
                 <Text
                   style={[globalStyles.labelText, { color: colors["priT"] }]}
                 >
-                  Category
+                  Category *
                 </Text>
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel="Select category"
-                  onPress={() => setCategoryPicker(!categoryPicker)}
+                  onPress={handleCategoryPickerToggle}
                 >
                   <TextInput
                     style={globalStyles.input}
@@ -273,25 +307,27 @@ export default function UploadBox() {
               </View>
 
               {/* Video file picker */}
-              <ImagePickerComponent handleVideoSelect={handleVideoSelect} />
+              <ImagePickerComponent handleVideoSelect={handleVideoSelectWithTracking} />
             </View>
           )}
         </View>
       </ScrollView>
 
-      {/* Upload button — sticky footer, always visible */}
+      {/* Upload button — flex sibling below the ScrollView */}
       <View style={globalStyles.groupPadding}>
         <Pressable
           style={[
             globalStyles.button,
             globalStyles.marginVertical,
-            { backgroundColor: colors.triC, marginBottom: 25 },
+            { backgroundColor: isFormValid ? colors.triC : colors.disabledButton },
           ]}
           onPress={handleSubmit}
+          disabled={!isFormValid}
           accessibilityRole="button"
           accessibilityLabel="Upload"
+          accessibilityState={{ disabled: !isFormValid }}
         >
-          <Text style={globalStyles.buttonText}>Upload</Text>
+          <Text style={[globalStyles.buttonText, { color: "#ffffff" }]}>Upload</Text>
         </Pressable>
       </View>
     </View>

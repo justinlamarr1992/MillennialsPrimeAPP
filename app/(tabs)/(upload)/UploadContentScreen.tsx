@@ -70,7 +70,7 @@ const UploadContentScreen = () => {
 
   return (
     <View
-      style={[globalStyles.flex1, { backgroundColor: colors["background"] }]}
+      style={[globalStyles.flex1, globalStyles.bottomPadding80, { backgroundColor: colors["background"] }]}
     >
       <UploadBox />
     </View>
