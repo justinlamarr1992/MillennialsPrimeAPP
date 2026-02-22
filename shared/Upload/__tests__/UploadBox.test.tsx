@@ -165,11 +165,15 @@ describe("UploadBox", () => {
       expect(button.props.accessibilityState?.disabled).toBe(true);
     });
 
-    it("becomes enabled when upload type, title, category, and video are all provided", () => {
+    it("becomes enabled when all required fields including description are filled", () => {
       render(<UploadBox />);
       fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
       fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
       fireEvent.changeText(screen.getByPlaceholderText(/enter title/i), "My Video");
+      fireEvent.changeText(
+        screen.getByPlaceholderText(/description/i),
+        "A brief description"
+      );
       fireEvent.press(screen.getByRole("button", { name: "Select category" }));
       fireEvent(screen.getByTestId("category-picker"), "valueChange", "Music");
       fireEvent.press(screen.getByTestId("mock-video-select"));
@@ -177,7 +181,7 @@ describe("UploadBox", () => {
       expect(button.props.accessibilityState?.disabled).toBe(false);
     });
 
-    it("description is not required — button enabled without it", () => {
+    it("is disabled when description is missing", () => {
       render(<UploadBox />);
       fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
       fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
@@ -187,7 +191,7 @@ describe("UploadBox", () => {
       fireEvent(screen.getByTestId("category-picker"), "valueChange", "Music");
       fireEvent.press(screen.getByTestId("mock-video-select"));
       const button = screen.getByRole("button", { name: "Upload" });
-      expect(button.props.accessibilityState?.disabled).toBe(false);
+      expect(button.props.accessibilityState?.disabled).toBe(true);
     });
   });
 
@@ -213,13 +217,11 @@ describe("UploadBox", () => {
       expect(screen.getByText(/Category \*/)).toBeTruthy();
     });
 
-    it("does not show asterisk on description label", () => {
+    it("shows asterisk on description label when video form is visible", () => {
       render(<UploadBox />);
       fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
       fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
-      expect(
-        screen.getByText(/Description of the Video/)
-      ).not.toHaveTextContent("*");
+      expect(screen.getByText(/Description of the Video \*/)).toBeTruthy();
     });
   });
 

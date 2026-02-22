@@ -477,7 +477,6 @@ export const globalStyles = StyleSheet.create({
 
   // S
   scrollView: { marginBottom: 20 },
-  stickyFooter: { position: "absolute", bottom: 0, left: 0, right: 0 },
   showView: {
     borderWidth: 1,
     borderColor: "#b9a054",

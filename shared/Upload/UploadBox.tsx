@@ -6,7 +6,7 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
 import ImagePickerComponent from "./ImagePickerComponent";
 import { globalStyles } from "@/constants/global";
@@ -31,15 +31,27 @@ export default function UploadBox() {
   const [category, setCategory] = useState("");
   const [categoryPicker, setCategoryPicker] = useState(false);
   const [videoSelected, setVideoSelected] = useState(false);
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<ScrollView | null>(null);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (scrollTimeoutRef.current !== null) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
 
   const scrollToBottom = useCallback(() => {
-    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 50);
+    if (scrollTimeoutRef.current !== null) clearTimeout(scrollTimeoutRef.current);
+    scrollTimeoutRef.current = setTimeout(
+      () => scrollViewRef.current?.scrollToEnd({ animated: true }),
+      50
+    );
   }, []);
 
   const isFormValid =
     uploadType === "Video" &&
     title.trim() !== "" &&
+    description.trim() !== "" &&
     category !== "" &&
     videoSelected;
 
@@ -62,7 +74,7 @@ export default function UploadBox() {
 
   const handleVideoSelectWithTracking = useCallback(
     (result: Parameters<typeof handleVideoSelect>[0]) => {
-      if (!result.canceled) setVideoSelected(true);
+      if (!result.canceled && result.assets?.[0]) setVideoSelected(true);
       handleVideoSelect(result);
     },
     [handleVideoSelect]
@@ -157,7 +169,7 @@ export default function UploadBox() {
         <View style={globalStyles.groupPadding}>
           {/* Upload type selector */}
           <View style={globalStyles.labelInput}>
-            <Text style={globalStyles.labelText}>
+            <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
               What type of Upload is this? *
             </Text>
             <Pressable
@@ -216,7 +228,7 @@ export default function UploadBox() {
                 <Text
                   style={[globalStyles.labelText, { color: colors["priT"] }]}
                 >
-                  Description of the Video
+                  Description of the Video *
                 </Text>
                 <TextInput
                   style={[globalStyles.settingsInput, { color: colors["priT"] }]}
@@ -327,7 +339,7 @@ export default function UploadBox() {
           accessibilityLabel="Upload"
           accessibilityState={{ disabled: !isFormValid }}
         >
-          <Text style={[globalStyles.buttonText, { color: "#ffffff" }]}>Upload</Text>
+          <Text style={[globalStyles.buttonText, { color: colors.secT }]}>Upload</Text>
         </Pressable>
       </View>
     </View>
