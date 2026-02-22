@@ -20,10 +20,30 @@ jest.mock("@/hooks/useAxiosPrivate", () => ({
   default: jest.fn(() => ({})),
 }));
 jest.mock("@/shared/Upload/ImagePickerComponent", () => {
-  const { View } = require("react-native");
+  const { View, Button } = require("react-native");
   return {
     __esModule: true,
-    default: () => <View testID="image-picker" />,
+    default: ({
+      handleVideoSelect,
+    }: {
+      handleVideoSelect: (result: {
+        canceled: false;
+        assets: { uri: string }[];
+      }) => void;
+    }) => (
+      <View testID="image-picker">
+        <Button
+          testID="mock-video-select"
+          title="Select Video"
+          onPress={() =>
+            handleVideoSelect({
+              canceled: false,
+              assets: [{ uri: "test://video.mp4" }],
+            })
+          }
+        />
+      </View>
+    ),
   };
 });
 jest.mock("@/utils/logger");
@@ -114,6 +134,94 @@ describe("UploadBox", () => {
       // Form remains visible; no error banner appeared
       expect(screen.getByRole("button", { name: "Upload" })).toBeTruthy();
       expect(screen.queryByText(/network error/i)).toBeNull();
+    });
+  });
+
+  // ─── Disabled state / required-field validation ─────────────────────────────
+
+  describe("Upload button disabled state", () => {
+    it("is disabled before any fields are filled", () => {
+      render(<UploadBox />);
+      const button = screen.getByRole("button", { name: "Upload" });
+      expect(button.props.accessibilityState?.disabled).toBe(true);
+    });
+
+    it("is disabled after selecting Video type but before filling title and category", () => {
+      render(<UploadBox />);
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      const button = screen.getByRole("button", { name: "Upload" });
+      expect(button.props.accessibilityState?.disabled).toBe(true);
+    });
+
+    it("is disabled when title and category are filled but no video selected", () => {
+      render(<UploadBox />);
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      fireEvent.changeText(screen.getByPlaceholderText(/enter title/i), "My Video");
+      fireEvent.press(screen.getByRole("button", { name: "Select category" }));
+      fireEvent(screen.getByTestId("category-picker"), "valueChange", "Music");
+      const button = screen.getByRole("button", { name: "Upload" });
+      expect(button.props.accessibilityState?.disabled).toBe(true);
+    });
+
+    it("becomes enabled when all required fields including description are filled", () => {
+      render(<UploadBox />);
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      fireEvent.changeText(screen.getByPlaceholderText(/enter title/i), "My Video");
+      fireEvent.changeText(
+        screen.getByPlaceholderText(/description/i),
+        "A brief description"
+      );
+      fireEvent.press(screen.getByRole("button", { name: "Select category" }));
+      fireEvent(screen.getByTestId("category-picker"), "valueChange", "Music");
+      fireEvent.press(screen.getByTestId("mock-video-select"));
+      const button = screen.getByRole("button", { name: "Upload" });
+      expect(button.props.accessibilityState?.disabled).toBe(false);
+    });
+
+    it("is disabled when description is missing", () => {
+      render(<UploadBox />);
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      fireEvent.changeText(screen.getByPlaceholderText(/enter title/i), "My Video");
+      // description intentionally left blank
+      fireEvent.press(screen.getByRole("button", { name: "Select category" }));
+      fireEvent(screen.getByTestId("category-picker"), "valueChange", "Music");
+      fireEvent.press(screen.getByTestId("mock-video-select"));
+      const button = screen.getByRole("button", { name: "Upload" });
+      expect(button.props.accessibilityState?.disabled).toBe(true);
+    });
+  });
+
+  // ─── Required field indicators ───────────────────────────────────────────────
+
+  describe("Required field indicators", () => {
+    it("shows asterisk on upload type label", () => {
+      render(<UploadBox />);
+      expect(screen.getByText(/What type of Upload is this\? \*/)).toBeTruthy();
+    });
+
+    it("shows asterisk on title label when video form is visible", () => {
+      render(<UploadBox />);
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      expect(screen.getByText(/Title of Video \*/)).toBeTruthy();
+    });
+
+    it("shows asterisk on category label when video form is visible", () => {
+      render(<UploadBox />);
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      expect(screen.getByText(/Category \*/)).toBeTruthy();
+    });
+
+    it("shows asterisk on description label when video form is visible", () => {
+      render(<UploadBox />);
+      fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
+      fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
+      expect(screen.getByText(/Description of the Video \*/)).toBeTruthy();
     });
   });
 

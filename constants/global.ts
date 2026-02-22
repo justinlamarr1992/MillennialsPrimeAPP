@@ -44,6 +44,7 @@ export const globalStyles = StyleSheet.create({
   bottomPadding: { paddingBottom: 40 },
   bottomPadding10: { paddingBottom: 10 },
   bottomPadding20: { paddingBottom: 20 },
+  bottomPadding80: { paddingBottom: 80 },
   bottomSheet: {},
   bottomCommentSheet: {},
   button: {
