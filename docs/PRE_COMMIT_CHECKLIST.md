@@ -58,6 +58,17 @@ grep -r "function [utilityName]" utils/
   ```
 - [ ] If yes, delete the local version and use the shared one
 
+**Test mock audit** — for every `jest.mock()` added:
+- [ ] Is the mock actually required? Verify the module can't be loaded without it:
+  ```bash
+  node -e "require('./path/to/module'); console.log('ok')"
+  ```
+- [ ] Remove mocks that load cleanly without them — unnecessary mocks add noise and maintenance cost
+
+**Quote style audit** — for every new string literal added to an existing file:
+- [ ] Check the dominant quote style in the file (`grep "'" vs `grep '"'`)
+- [ ] Match it exactly — mixed quotes cause noisy diffs and style violations
+
 **Type cast audit** — for every `as T` or `as unknown as T` introduced:
 - [ ] Is there a type-level fix instead? (conditional types, narrowing, restricted generics)
 - [ ] If a cast is truly unavoidable, add a comment explaining why
@@ -138,10 +149,14 @@ git diff --cached
 **Security Checks:**
 - [ ] No SQL injection vulnerabilities
 - [ ] No XSS vulnerabilities (properly escaped user input)
-- [ ] No sensitive data in logs
+- [ ] No sensitive data in logs — log minimal non-sensitive fields only (e.g. IDs, not full request bodies)
 - [ ] No secrets/API keys in code
 - [ ] Proper input validation on all user inputs
 - [ ] Proper error handling (no stack traces to user)
+- [ ] HTTP middleware limits are explicit and intentional:
+  - JSON bodies: `1mb` (prevents DoS; most API payloads are small)
+  - URL-encoded/form bodies: set to match actual use case
+  - Never leave default unlimited or copy an arbitrary large limit without justification
 
 **Best Practices:**
 - [ ] No over-engineering (YAGNI principle)
@@ -186,6 +201,33 @@ npm run test -- --listTests | grep [YourFeature]
 - [ ] Integration tests pass (if applicable)
 
 **Action:** Fix integration issues.
+
+---
+
+### Phase 6b: Web Client Impact Check (server PRs only)
+
+**Run when any server controller or route file is modified:**
+
+```bash
+# Find every API call the web client makes
+grep -rn "\.post\|\.get\|\.patch\|\.put\|\.delete" \
+  millennials_prime/client/src/ \
+  --include="*.js" --include="*.jsx" | grep -v "import\|\/\/"
+```
+
+**For each changed endpoint, verify:**
+- [ ] Request shape unchanged — web client sends the same fields the server now expects
+- [ ] Response shape unchanged — web client reads only fields that still exist in the response
+- [ ] Auth contract unchanged — if a route's role/JWT requirement changed, web client can satisfy it
+- [ ] No endpoint removed that the web client calls
+
+**Key web client files to cross-reference:**
+- Auth: `client/src/Pages/auth/SignIn.jsx`, `client/src/Hooks/useRefreshToken.js`
+- User: `client/src/Pages/Settings/MyInfo.jsx`, `client/src/Pages/ShowView/PrimeShow.jsx`
+- Video: `client/src/Pages/Uploads/UploadContent.jsx`, `client/src/Pages/ShowView/`
+- Hooks: `client/src/Hooks/useAxiosPrivate.js`, `client/src/API/axios.js`
+
+**Action:** If any contract changed, update the web client in the same PR or open a blocking issue before merging.
 
 ---
 
