@@ -93,191 +93,193 @@ export default function UploadBox() {
   }
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={[globalStyles.borderDefault]}
-    >
-      <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
-        Millennial's Prime News Upload
-      </Text>
+    <View style={[globalStyles.flex1, globalStyles.flexAlignSelfStretch]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={[globalStyles.borderDefault, globalStyles.flex1]}
+      >
+        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
+          Millennial's Prime News Upload
+        </Text>
 
-      {phase === "error" && error && (
-        <View style={globalStyles.groupPadding}>
-          <Text style={globalStyles.errorText}>{error}</Text>
-          <Pressable
-            style={[
-              globalStyles.button,
-              globalStyles.marginVertical,
-              { backgroundColor: colors.triC },
-            ]}
-            onPress={handleReset}
-            accessibilityRole="button"
-            accessibilityLabel="Try Again"
-          >
-            <Text style={globalStyles.buttonText}>Try Again</Text>
-          </Pressable>
-        </View>
-      )}
-
-      <View style={globalStyles.groupPadding}>
-        {/* Upload type selector */}
-        <View style={globalStyles.labelInput}>
-          <Text style={globalStyles.labelText}>
-            What type of Upload is this?
-          </Text>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Select upload type"
-            onPress={() => setUploadTypePicker(!uploadTypePicker)}
-          >
-            <TextInput
-              style={globalStyles.input}
-              placeholder="What type of upload?"
-              value={uploadType ?? ""}
-              editable={false}
-              pointerEvents="none"
-            />
-          </Pressable>
-
-          {uploadTypePicker && (
-            <Picker
-              testID="upload-type-picker"
-              selectedValue={uploadType}
-              onValueChange={(value) => handleUploadTypeChange(value as string)}
+        {phase === "error" && error && (
+          <View style={globalStyles.groupPadding}>
+            <Text style={globalStyles.errorText}>{error}</Text>
+            <Pressable
+              style={[
+                globalStyles.button,
+                globalStyles.marginVertical,
+                { backgroundColor: colors.triC },
+              ]}
+              onPress={handleReset}
+              accessibilityRole="button"
+              accessibilityLabel="Try Again"
             >
-              <Picker.Item
-                label="Select your Option"
-                value=""
-                enabled={false}
-              />
-              <Picker.Item label="Video" value="Video" />
-              <Picker.Item label="Text (Coming Soon)" value="Text" enabled={false} />
-              <Picker.Item label="Images (Coming Soon)" value="Images" enabled={false} />
-              <Picker.Item label="Music (Coming Soon)" value="Music" enabled={false} />
-            </Picker>
-          )}
-        </View>
-
-        {uploadType === "Video" && (
-          <View>
-            {/* Title */}
-            <View style={globalStyles.labelInput}>
-              <Text
-                style={[globalStyles.labelText, { color: colors["priT"] }]}
-              >
-                Title of Video
-              </Text>
-              <TextInput
-                style={globalStyles.settingsInput}
-                placeholder="Enter Title Here"
-                value={title}
-                onChangeText={setTitle}
-                accessibilityLabel="Video title"
-              />
-            </View>
-
-            {/* Description */}
-            <View style={globalStyles.labelInput}>
-              <Text
-                style={[globalStyles.labelText, { color: colors["priT"] }]}
-              >
-                Description of the Video
-              </Text>
-              <TextInput
-                style={globalStyles.settingsInput}
-                placeholder="Enter A Brief Description Here"
-                value={description}
-                onChangeText={setDescription}
-                accessibilityLabel="Video description"
-              />
-            </View>
-
-            {/* Audience */}
-            <View style={globalStyles.labelInput}>
-              <Text
-                style={[globalStyles.labelText, { color: colors["priT"] }]}
-              >
-                Who is the Video For?
-              </Text>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Select audience"
-                onPress={() => setAudiencePicker(!audiencePicker)}
-              >
-                <TextInput
-                  style={globalStyles.input}
-                  placeholder="Select Your Option"
-                  value={audience}
-                  editable={false}
-                  pointerEvents="none"
-                />
-              </Pressable>
-              {audiencePicker && (
-                <Picker
-                  testID="audience-picker"
-                  selectedValue={audience}
-                  onValueChange={(value) => {
-                    setAudience(value as "millennials" | "primes");
-                    setAudiencePicker(false);
-                  }}
-                >
-                  <Picker.Item label="Millennial's" value="millennials" />
-                  <Picker.Item label="Primes" value="primes" />
-                </Picker>
-              )}
-            </View>
-
-            {/* Category */}
-            <View style={globalStyles.labelInput}>
-              <Text
-                style={[globalStyles.labelText, { color: colors["priT"] }]}
-              >
-                Category
-              </Text>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Select category"
-                onPress={() => setCategoryPicker(!categoryPicker)}
-              >
-                <TextInput
-                  style={globalStyles.input}
-                  placeholder="Select your option"
-                  value={category}
-                  editable={false}
-                  pointerEvents="none"
-                />
-              </Pressable>
-              {categoryPicker && (
-                <Picker
-                  testID="category-picker"
-                  selectedValue={category}
-                  onValueChange={(value) => {
-                    setCategory(value as string);
-                    setCategoryPicker(false);
-                  }}
-                >
-                  <Picker.Item
-                    label="Select your Option"
-                    value=""
-                    enabled={false}
-                  />
-                  <Picker.Item label="All News" value="All News" />
-                  <Picker.Item label="Music" value="Music" />
-                  <Picker.Item label="Movie's" value="Movie's" />
-                  <Picker.Item label="Politics" value="Politics" />
-                  <Picker.Item label="Good Stuff" value="Good Stuff" />
-                  <Picker.Item label="Prime Stuff" value="Prime Stuff" />
-                </Picker>
-              )}
-            </View>
-
-            {/* Video file picker */}
-            <ImagePickerComponent handleVideoSelect={handleVideoSelect} />
+              <Text style={globalStyles.buttonText}>Try Again</Text>
+            </Pressable>
           </View>
         )}
-      </View>
 
-      {/* Upload button */}
+        <View style={globalStyles.groupPadding}>
+          {/* Upload type selector */}
+          <View style={globalStyles.labelInput}>
+            <Text style={globalStyles.labelText}>
+              What type of Upload is this?
+            </Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Select upload type"
+              onPress={() => setUploadTypePicker(!uploadTypePicker)}
+            >
+              <TextInput
+                style={globalStyles.input}
+                placeholder="What type of upload?"
+                value={uploadType ?? ""}
+                editable={false}
+                pointerEvents="none"
+              />
+            </Pressable>
+
+            {uploadTypePicker && (
+              <Picker
+                testID="upload-type-picker"
+                selectedValue={uploadType}
+                onValueChange={(value) => handleUploadTypeChange(value as string)}
+              >
+                <Picker.Item
+                  label="Select your Option"
+                  value=""
+                  enabled={false}
+                />
+                <Picker.Item label="Video" value="Video" />
+                <Picker.Item label="Text (Coming Soon)" value="Text" enabled={false} />
+                <Picker.Item label="Images (Coming Soon)" value="Images" enabled={false} />
+                <Picker.Item label="Music (Coming Soon)" value="Music" enabled={false} />
+              </Picker>
+            )}
+          </View>
+
+          {uploadType === "Video" && (
+            <View>
+              {/* Title */}
+              <View style={globalStyles.labelInput}>
+                <Text
+                  style={[globalStyles.labelText, { color: colors["priT"] }]}
+                >
+                  Title of Video
+                </Text>
+                <TextInput
+                  style={[globalStyles.settingsInput, { color: colors["priT"] }]}
+                  placeholder="Enter Title Here"
+                  value={title}
+                  onChangeText={setTitle}
+                  accessibilityLabel="Video title"
+                />
+              </View>
+
+              {/* Description */}
+              <View style={globalStyles.labelInput}>
+                <Text
+                  style={[globalStyles.labelText, { color: colors["priT"] }]}
+                >
+                  Description of the Video
+                </Text>
+                <TextInput
+                  style={[globalStyles.settingsInput, { color: colors["priT"] }]}
+                  placeholder="Enter A Brief Description Here"
+                  value={description}
+                  onChangeText={setDescription}
+                  accessibilityLabel="Video description"
+                />
+              </View>
+
+              {/* Audience */}
+              <View style={globalStyles.labelInput}>
+                <Text
+                  style={[globalStyles.labelText, { color: colors["priT"] }]}
+                >
+                  Who is the Video For?
+                </Text>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Select audience"
+                  onPress={() => setAudiencePicker(!audiencePicker)}
+                >
+                  <TextInput
+                    style={globalStyles.input}
+                    placeholder="Select Your Option"
+                    value={audience}
+                    editable={false}
+                    pointerEvents="none"
+                  />
+                </Pressable>
+                {audiencePicker && (
+                  <Picker
+                    testID="audience-picker"
+                    selectedValue={audience}
+                    onValueChange={(value) => {
+                      setAudience(value as "millennials" | "primes");
+                      setAudiencePicker(false);
+                    }}
+                  >
+                    <Picker.Item label="Millennial's" value="millennials" />
+                    <Picker.Item label="Primes" value="primes" />
+                  </Picker>
+                )}
+              </View>
+
+              {/* Category */}
+              <View style={globalStyles.labelInput}>
+                <Text
+                  style={[globalStyles.labelText, { color: colors["priT"] }]}
+                >
+                  Category
+                </Text>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Select category"
+                  onPress={() => setCategoryPicker(!categoryPicker)}
+                >
+                  <TextInput
+                    style={globalStyles.input}
+                    placeholder="Select your option"
+                    value={category}
+                    editable={false}
+                    pointerEvents="none"
+                  />
+                </Pressable>
+                {categoryPicker && (
+                  <Picker
+                    testID="category-picker"
+                    selectedValue={category}
+                    onValueChange={(value) => {
+                      setCategory(value as string);
+                      setCategoryPicker(false);
+                    }}
+                  >
+                    <Picker.Item
+                      label="Select your Option"
+                      value=""
+                      enabled={false}
+                    />
+                    <Picker.Item label="All News" value="All News" />
+                    <Picker.Item label="Music" value="Music" />
+                    <Picker.Item label="Movie's" value="Movie's" />
+                    <Picker.Item label="Politics" value="Politics" />
+                    <Picker.Item label="Good Stuff" value="Good Stuff" />
+                    <Picker.Item label="Prime Stuff" value="Prime Stuff" />
+                  </Picker>
+                )}
+              </View>
+
+              {/* Video file picker */}
+              <ImagePickerComponent handleVideoSelect={handleVideoSelect} />
+            </View>
+          )}
+        </View>
+      </ScrollView>
+
+      {/* Upload button — sticky footer, always visible */}
       <View style={globalStyles.groupPadding}>
         <Pressable
           style={[
@@ -292,6 +294,6 @@ export default function UploadBox() {
           <Text style={globalStyles.buttonText}>Upload</Text>
         </Pressable>
       </View>
-    </ScrollView>
+    </View>
   );
 }
