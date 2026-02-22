@@ -119,7 +119,7 @@ export default function UploadBox() {
           accessibilityRole="button"
           accessibilityLabel="Upload Another"
         >
-          <Text style={globalStyles.buttonText}>Upload Another</Text>
+          <Text style={[globalStyles.buttonText, { color: colors.secT }]}>Upload Another</Text>
         </Pressable>
       </View>
     );
@@ -161,7 +161,7 @@ export default function UploadBox() {
               accessibilityRole="button"
               accessibilityLabel="Try Again"
             >
-              <Text style={globalStyles.buttonText}>Try Again</Text>
+              <Text style={[globalStyles.buttonText, { color: colors.secT }]}>Try Again</Text>
             </Pressable>
           </View>
         )}
