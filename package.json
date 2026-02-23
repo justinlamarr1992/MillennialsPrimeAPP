@@ -27,7 +27,10 @@
     "type-check": "tsc --noEmit",
     "validate:checks": "npm run type-check && npm run lint && npm run format:check",
     "validate": "npm run validate:checks && npm test",
-    "version:bump": "bash ./scripts/bump-version.sh"
+    "version:bump": "bash ./scripts/bump-version.sh",
+    "test:e2e": "maestro test .maestro/flows/",
+    "test:e2e:ios": "maestro test .maestro/flows/ --platform ios",
+    "test:e2e:android": "maestro test .maestro/flows/ --platform android"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
