@@ -7,7 +7,7 @@ import useAuth from '../useAuth';
 // Mock dependencies
 jest.mock('../useAuth');
 jest.mock('@/services/userProfileService');
-jest.mock('expo-file-system', () => ({
+jest.mock('expo-file-system/legacy', () => ({
   readAsStringAsync: jest.fn(),
   EncodingType: {
     Base64: 'base64',
@@ -27,7 +27,7 @@ describe('useProfilePictureUpload', () => {
       user: mockUser,
       loading: false,
     });
-    const FileSystem = require('expo-file-system');
+    const FileSystem = require('expo-file-system/legacy');
     (FileSystem.readAsStringAsync as jest.Mock).mockResolvedValue('mockBase64Data');
   });
 
@@ -75,7 +75,7 @@ describe('useProfilePictureUpload', () => {
       (userProfileService.getProfilePicture as jest.Mock).mockResolvedValue(null);
 
       // Ensure FileSystem mock is properly set up for base64 conversion
-      const FileSystem = require('expo-file-system');
+      const FileSystem = require('expo-file-system/legacy');
       (FileSystem.readAsStringAsync as jest.Mock).mockResolvedValue('mockBase64Data');
     });
 
@@ -165,7 +165,7 @@ describe('useProfilePictureUpload', () => {
 
     it('user should see an error message when selected photo cannot be processed', async () => {
       const alertSpy = jest.spyOn(Alert, 'alert');
-      const FileSystem = require('expo-file-system');
+      const FileSystem = require('expo-file-system/legacy');
       (FileSystem.readAsStringAsync as jest.Mock).mockRejectedValue(new Error('Cannot read file'));
 
       const { result } = renderHook(() => useProfilePictureUpload());

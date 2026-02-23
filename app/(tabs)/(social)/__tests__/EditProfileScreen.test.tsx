@@ -16,7 +16,7 @@ const { router } = require('expo-router');
 const mockBack = router.back as jest.Mock;
 
 // Mock expo-file-system
-jest.mock('expo-file-system', () => ({
+jest.mock('expo-file-system/legacy', () => ({
   readAsStringAsync: jest.fn(),
   EncodingType: {
     Base64: 'base64',

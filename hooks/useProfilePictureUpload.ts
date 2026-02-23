@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Alert } from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { logger } from '@/utils/logger';
 import { userProfileService } from '@/services/userProfileService';
 import useAuth from './useAuth';
