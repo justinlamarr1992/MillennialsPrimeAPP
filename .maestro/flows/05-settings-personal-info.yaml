@@ -1,0 +1,34 @@
+appId: com.justappin.millennials-prime-app
+# Android: com.justappin.MillennialsPrime_APP
+---
+# Flow: Navigate to Settings → Personal Information screen.
+# Verifies the settings navigation stack is working.
+
+- launchApp:
+    clearState: true
+
+# Sign in
+- assertVisible: "Enter Email"
+- tapOn:
+    hint: "Enter Email"
+- inputText: ${MAESTRO_TEST_EMAIL}
+- tapOn:
+    hint: "Enter Password"
+- inputText: ${MAESTRO_TEST_PASSWORD}
+- tapOn: "Login"
+- assertVisible:
+    text: "Home"
+    enabled: true
+
+# Navigate to Settings tab
+- tapOn:
+    text: "Settings"
+
+# Assert settings hub is visible
+- assertVisible: "Personal Information"
+
+# Navigate into Personal Information
+- tapOn: "Personal Information"
+
+# Assert the profile form loaded
+- assertVisible: "Enter First Name"

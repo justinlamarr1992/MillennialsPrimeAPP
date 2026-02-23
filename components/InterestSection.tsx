@@ -26,12 +26,13 @@ export default function InterestSection({ interests }: InterestSectionProps): JS
         {interests.map((interest) => (
           <View
             key={interest}
-            style={[globalStyles.borderDefault, { backgroundColor: colors.secC, borderColor: colors.secC }]}
+            style={[
+              globalStyles.borderDefault,
+              { backgroundColor: colors.secC, borderColor: colors.secC },
+            ]}
             accessibilityLabel={`Interest: ${interest}`}
           >
-            <Text style={[globalStyles.labelText, { color: colors.secT }]}>
-              {interest}
-            </Text>
+            <Text style={[globalStyles.labelText, { color: colors.secT }]}>{interest}</Text>
           </View>
         ))}
       </View>

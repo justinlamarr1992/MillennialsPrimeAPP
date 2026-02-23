@@ -1,9 +1,4 @@
-export type UploadPhase =
-  | "idle"
-  | "authorizing"
-  | "uploading"
-  | "complete"
-  | "error";
+export type UploadPhase = "idle" | "authorizing" | "uploading" | "complete" | "error";
 
 export interface VideoUploadFormData {
   title: string;

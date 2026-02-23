@@ -5,12 +5,12 @@
  * Follows useUserProfile pattern but fetches an arbitrary user, not just current user.
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { userProfileService } from '@/services/userProfileService';
-import { logger } from '@/utils/logger';
-import useAuth from './useAuth';
-import useAxiosPrivate from './useAxiosPrivate';
-import type { ServerUserProfile } from '@/types/UserProfile';
+import { useState, useEffect, useCallback } from "react";
+import { userProfileService } from "@/services/userProfileService";
+import { logger } from "@/utils/logger";
+import useAuth from "./useAuth";
+import useAxiosPrivate from "./useAxiosPrivate";
+import type { ServerUserProfile } from "@/types/UserProfile";
 
 interface UseUserProfileByIdResult {
   profile: ServerUserProfile | null;
@@ -42,18 +42,18 @@ export const useUserProfileById = (userId: string): UseUserProfileByIdResult => 
       setError(null);
 
       if (__DEV__) {
-        logger.log('📥 Fetching profile for user:', userId);
+        logger.log("📥 Fetching profile for user:", userId);
       }
       const profileData = await userProfileService.fetchProfileById(userId);
       if (__DEV__) {
-        logger.log('✅ Profile fetched for user:', userId);
+        logger.log("✅ Profile fetched for user:", userId);
       }
       setProfile(profileData);
     } catch (err) {
-      const fetchError = err instanceof Error ? err : new Error('Failed to fetch profile');
+      const fetchError = err instanceof Error ? err : new Error("Failed to fetch profile");
       setError(fetchError);
       setProfile(null);
-      logger.error('❌ Failed to fetch profile for user:', userId, err);
+      logger.error("❌ Failed to fetch profile for user:", userId, err);
     } finally {
       setLoading(false);
     }

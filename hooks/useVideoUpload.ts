@@ -34,9 +34,7 @@ export const useVideoUpload = (): UseVideoUploadResult => {
   const [phase, setPhase] = useState<UploadPhase>("idle");
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<ImagePickerAsset | null>(
-    null
-  );
+  const [selectedFile, setSelectedFile] = useState<ImagePickerAsset | null>(null);
 
   const handleVideoSelect = useCallback((result: ImagePickerResult) => {
     if (!result.canceled && result.assets && result.assets[0]) {
@@ -81,18 +79,12 @@ export const useVideoUpload = (): UseVideoUploadResult => {
 
         logger.log("📹 Starting video upload for:", form.title);
 
-        const { guid } = await videoUploadService.createBunnyCDNVideo(
-          form.title
-        );
+        const { guid } = await videoUploadService.createBunnyCDNVideo(form.title);
         const auth = await videoUploadService.getUploadAuth(guid, form.title);
 
         setPhase("uploading");
 
-        await videoUploadService.performTusUpload(
-          selectedFile,
-          auth,
-          setProgress
-        );
+        await videoUploadService.performTusUpload(selectedFile, auth, setProgress);
 
         await videoUploadService.updateBunnyCDNMetadata(guid, form.title);
         await videoUploadService.saveVideoRecord({ ...form, videoId: guid });

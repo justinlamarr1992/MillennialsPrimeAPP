@@ -102,25 +102,19 @@ describe("videoUploadService", () => {
     it("throws when EXPO_PUBLIC_BUNNYCDN_ACCESS_KEY is missing", async () => {
       delete process.env.EXPO_PUBLIC_BUNNYCDN_ACCESS_KEY;
 
-      await expect(
-        videoUploadService.createBunnyCDNVideo("Title")
-      ).rejects.toThrow();
+      await expect(videoUploadService.createBunnyCDNVideo("Title")).rejects.toThrow();
     });
 
     it("throws when EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID is missing", async () => {
       delete process.env.EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID;
 
-      await expect(
-        videoUploadService.createBunnyCDNVideo("Title")
-      ).rejects.toThrow();
+      await expect(videoUploadService.createBunnyCDNVideo("Title")).rejects.toThrow();
     });
 
     it("throws when EXPO_PUBLIC_BUNNYCDN_API_URL is missing", async () => {
       delete process.env.EXPO_PUBLIC_BUNNYCDN_API_URL;
 
-      await expect(
-        videoUploadService.createBunnyCDNVideo("Title")
-      ).rejects.toThrow();
+      await expect(videoUploadService.createBunnyCDNVideo("Title")).rejects.toThrow();
     });
 
     it("throws when BunnyCDN returns a non-2xx status", async () => {
@@ -130,19 +124,15 @@ describe("videoUploadService", () => {
         statusText: "Forbidden",
       } as Response);
 
-      await expect(
-        videoUploadService.createBunnyCDNVideo("Title")
-      ).rejects.toThrow();
+      await expect(videoUploadService.createBunnyCDNVideo("Title")).rejects.toThrow();
     });
 
     it("throws on network failure", async () => {
-      global.fetch = jest
-        .fn()
-        .mockRejectedValueOnce(new Error("Network request failed"));
+      global.fetch = jest.fn().mockRejectedValueOnce(new Error("Network request failed"));
 
-      await expect(
-        videoUploadService.createBunnyCDNVideo("Title")
-      ).rejects.toThrow("Network request failed");
+      await expect(videoUploadService.createBunnyCDNVideo("Title")).rejects.toThrow(
+        "Network request failed"
+      );
     });
   });
 
@@ -178,9 +168,9 @@ describe("videoUploadService", () => {
     });
 
     it("throws when videoId is empty", async () => {
-      await expect(
-        videoUploadService.getUploadAuth("", "Title")
-      ).rejects.toThrow("Video ID is required");
+      await expect(videoUploadService.getUploadAuth("", "Title")).rejects.toThrow(
+        "Video ID is required"
+      );
 
       expect(axiosPrivate.post).not.toHaveBeenCalled();
     });
@@ -189,9 +179,9 @@ describe("videoUploadService", () => {
       const backendError = new Error("Backend error");
       mockedAxiosPrivate.post.mockRejectedValueOnce(backendError);
 
-      await expect(
-        videoUploadService.getUploadAuth("video-id", "Title")
-      ).rejects.toThrow("Backend error");
+      await expect(videoUploadService.getUploadAuth("video-id", "Title")).rejects.toThrow(
+        "Backend error"
+      );
     });
 
     it("throws when backend success is false", async () => {
@@ -199,9 +189,7 @@ describe("videoUploadService", () => {
         data: { success: false, message: "Invalid video ID" },
       });
 
-      await expect(
-        videoUploadService.getUploadAuth("video-id", "Title")
-      ).rejects.toThrow();
+      await expect(videoUploadService.getUploadAuth("video-id", "Title")).rejects.toThrow();
     });
   });
 
@@ -244,9 +232,7 @@ describe("videoUploadService", () => {
     });
 
     it("throws on network failure", async () => {
-      global.fetch = jest
-        .fn()
-        .mockRejectedValueOnce(new Error("Network request failed"));
+      global.fetch = jest.fn().mockRejectedValueOnce(new Error("Network request failed"));
 
       await expect(
         videoUploadService.updateBunnyCDNMetadata("video-id-123", "Title")
@@ -283,7 +269,7 @@ describe("videoUploadService", () => {
         return {
           findPreviousUploads: () =>
             Promise.resolve([]).then(() => {
-              (options.onSuccess as (() => void))?.();
+              (options.onSuccess as () => void)?.();
               return [];
             }),
           resumeFromPreviousUpload: jest.fn(),
@@ -303,7 +289,7 @@ describe("videoUploadService", () => {
           findPreviousUploads: () =>
             Promise.resolve([]).then(() => {
               options.onProgress?.(500000, 1000000);
-              (options.onSuccess as (() => void))?.();
+              (options.onSuccess as () => void)?.();
               return [];
             }),
           resumeFromPreviousUpload: jest.fn(),
@@ -344,7 +330,7 @@ describe("videoUploadService", () => {
           findPreviousUploads: () =>
             Promise.resolve([previousUpload]).then((prev) => {
               resumeFromPreviousUpload(prev[0]);
-              (options.onSuccess as (() => void))?.();
+              (options.onSuccess as () => void)?.();
               return prev;
             }),
           resumeFromPreviousUpload,
@@ -370,9 +356,7 @@ describe("videoUploadService", () => {
     };
 
     it("resolves without throwing (stub behavior)", async () => {
-      await expect(
-        videoUploadService.saveVideoRecord(mockFormData)
-      ).resolves.toBeUndefined();
+      await expect(videoUploadService.saveVideoRecord(mockFormData)).resolves.toBeUndefined();
     });
 
     it("does not call axiosPrivate (backend endpoint pending)", async () => {

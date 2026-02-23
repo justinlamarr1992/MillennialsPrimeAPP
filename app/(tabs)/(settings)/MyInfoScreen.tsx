@@ -60,7 +60,7 @@ export default function MyInfoScreen() {
   useEffect(() => {
     if (profile) {
       if (__DEV__) {
-        logger.log('📝 Populating form with profile data:', profile);
+        logger.log("📝 Populating form with profile data:", profile);
       }
       setName(profile.name || "");
       setCountry(profile.location?.country || "");
@@ -143,7 +143,7 @@ export default function MyInfoScreen() {
   };
 
   const handleSubmit = async () => {
-    logger.log('💾 MyInfo submit button pressed');
+    logger.log("💾 MyInfo submit button pressed");
 
     // Validate form fields
     const nameError = validateName(name);
@@ -156,16 +156,16 @@ export default function MyInfoScreen() {
 
     // Show validation errors if any
     if (errors.length > 0) {
-      Alert.alert('Validation Error', errors.join('\n'));
-      logger.warn('⚠️ MyInfo validation failed:', errors);
+      Alert.alert("Validation Error", errors.join("\n"));
+      logger.warn("⚠️ MyInfo validation failed:", errors);
       return;
     }
 
     try {
-      logger.log('📤 MyInfo form submission started');
+      logger.log("📤 MyInfo form submission started");
 
       if (!user) {
-        logger.warn('⚠️ No authenticated user found');
+        logger.warn("⚠️ No authenticated user found");
         return;
       }
 
@@ -178,21 +178,20 @@ export default function MyInfoScreen() {
         zip,
       });
 
-      logger.log('✅ MyInfo settings saved successfully');
+      logger.log("✅ MyInfo settings saved successfully");
 
       // Refetch profile to get updated data
       await refetch();
 
-      Alert.alert('Success', 'Your profile has been updated!');
+      Alert.alert("Success", "Your profile has been updated!");
 
       // Navigate to BusinessScreen (next step in settings flow)
       router.push("/(tabs)/(settings)/BusinessScreen");
     } catch (err) {
-      logger.error('❌ MyInfo submission error:', err);
-      Alert.alert('Error', 'Failed to save settings. Please try again.');
+      logger.error("❌ MyInfo submission error:", err);
+      Alert.alert("Error", "Failed to save settings. Please try again.");
     }
   };
-
 
   return (
     <KeyboardAvoidingView
@@ -227,9 +226,7 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Name
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Name</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -239,9 +236,7 @@ export default function MyInfoScreen() {
               />
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Username
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Username</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -251,9 +246,7 @@ export default function MyInfoScreen() {
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Email
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Email</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -263,9 +256,7 @@ export default function MyInfoScreen() {
               ></TextInput>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Birthday
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Birthday</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -277,9 +268,7 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Country
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Country</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -289,9 +278,7 @@ export default function MyInfoScreen() {
               />
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                State
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>State</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -301,9 +288,7 @@ export default function MyInfoScreen() {
               />
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                City
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>City</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -313,9 +298,7 @@ export default function MyInfoScreen() {
               />
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Zip
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Zip</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -328,9 +311,7 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Viewers Can Like
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Viewers Can Like</Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -346,9 +327,7 @@ export default function MyInfoScreen() {
                 <Picker
                   style={{}}
                   selectedValue={canLike}
-                  onValueChange={(itemValue) =>
-                    setCanLike(itemValue)
-                  }
+                  onValueChange={(itemValue) => setCanLike(itemValue)}
                 >
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
@@ -372,9 +351,7 @@ export default function MyInfoScreen() {
               {canDislikePicker && (
                 <Picker
                   selectedValue={canDislike}
-                  onValueChange={(itemValue) =>
-                    setCanDislike(itemValue)
-                  }
+                  onValueChange={(itemValue) => setCanDislike(itemValue)}
                 >
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
@@ -398,9 +375,7 @@ export default function MyInfoScreen() {
               {canCommentPicker && (
                 <Picker
                   selectedValue={canComment}
-                  onValueChange={(itemValue) =>
-                    setCanComment(itemValue)
-                  }
+                  onValueChange={(itemValue) => setCanComment(itemValue)}
                 >
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
@@ -424,9 +399,7 @@ export default function MyInfoScreen() {
               {canSharePicker && (
                 <Picker
                   selectedValue={canShare}
-                  onValueChange={(itemValue) =>
-                    setCanShare(itemValue)
-                  }
+                  onValueChange={(itemValue) => setCanShare(itemValue)}
                 >
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
@@ -436,9 +409,7 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Your Industry
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Your Industry</Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -452,44 +423,24 @@ export default function MyInfoScreen() {
               {industryPicker && (
                 <Picker
                   selectedValue={industry}
-                  onValueChange={(itemValue) =>
-                    setIndustry(itemValue)
-                  }
+                  onValueChange={(itemValue) => setIndustry(itemValue)}
                 >
                   <Picker.Item label="Architecture" value="architecture" />
                   <Picker.Item label="Education" value="education" />
                   <Picker.Item label="Engineering" value="engineer" />
-                  <Picker.Item
-                    label="Financial Services & Insurance"
-                    value="financial"
-                  />
+                  <Picker.Item label="Financial Services & Insurance" value="financial" />
                   <Picker.Item label="Government" value="government" />
-                  <Picker.Item
-                    label="Healthcare & Pharmaceutical"
-                    value="healthcare"
-                  />
+                  <Picker.Item label="Healthcare & Pharmaceutical" value="healthcare" />
                   <Picker.Item label="Hospitality" value="hospitality" />
-                  <Picker.Item
-                    label="Manufacturing/ Industrial"
-                    value="manufacturing"
-                  />
+                  <Picker.Item label="Manufacturing/ Industrial" value="manufacturing" />
                   <Picker.Item label="Marketing" value="marketing" />
                   <Picker.Item label="Media & Entertainment" value="media" />
                   <Picker.Item label="Non-Profit" value="nonprofit" />
-                  <Picker.Item
-                    label="Professional Services"
-                    value="professional"
-                  />
-                  <Picker.Item
-                    label="Retail & Consumer Products"
-                    value="retail"
-                  />
+                  <Picker.Item label="Professional Services" value="professional" />
+                  <Picker.Item label="Retail & Consumer Products" value="retail" />
                   <Picker.Item label="Sports" value="sports" />
                   <Picker.Item label="Tech" value="tech" />
-                  <Picker.Item
-                    label="Telecommunications"
-                    value="telecommunications"
-                  />
+                  <Picker.Item label="Telecommunications" value="telecommunications" />
                   <Picker.Item label="Transportation" value="transportation" />
                   <Picker.Item label="Other" value="other" />
                 </Picker>
@@ -510,19 +461,14 @@ export default function MyInfoScreen() {
                 ></TextInput>
               </Pressable>
               {B2BPicker && (
-                <Picker
-                  selectedValue={B2B}
-                  onValueChange={(itemValue) => setB2B(itemValue)}
-                >
+                <Picker selectedValue={B2B} onValueChange={(itemValue) => setB2B(itemValue)}>
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
                 </Picker>
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                E-Commerce
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>E-Commerce</Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -534,19 +480,14 @@ export default function MyInfoScreen() {
                 ></TextInput>
               </Pressable>
               {eCommPicker && (
-                <Picker
-                  selectedValue={eComm}
-                  onValueChange={(itemValue) => setEComm(itemValue)}
-                >
+                <Picker selectedValue={eComm} onValueChange={(itemValue) => setEComm(itemValue)}>
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
                 </Picker>
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Upload Content
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Upload Content</Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.input}
@@ -558,10 +499,7 @@ export default function MyInfoScreen() {
                 ></TextInput>
               </Pressable>
               {uploadPicker && (
-                <Picker
-                  selectedValue={upload}
-                  onValueChange={(itemValue) => setUpload(itemValue)}
-                >
+                <Picker selectedValue={upload} onValueChange={(itemValue) => setUpload(itemValue)}>
                   <Picker.Item label="Yes" value="yes" />
                   <Picker.Item label="No" value="no" />
                 </Picker>
@@ -570,10 +508,7 @@ export default function MyInfoScreen() {
           </View>
           <View style={globalStyles.groupPadding}>
             <Pressable
-              style={[
-                globalStyles.button,
-                { backgroundColor: colors.triC, marginBottom: 25 },
-              ]}
+              style={[globalStyles.button, { backgroundColor: colors.triC, marginBottom: 25 }]}
             >
               <Text style={globalStyles.buttonText} onPress={handleSubmit}>
                 Save Changes

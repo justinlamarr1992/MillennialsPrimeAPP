@@ -7,6 +7,7 @@ When creating PRs, keep descriptions concise. Follow the PR template in `docs/pu
 Avoid restating every file change — focus on intent and key decisions.
 
 **Template Structure:**
+
 - **What**: One-sentence summary
 - **Why**: Brief context or issue link
 - **How**: Key implementation details (only if non-obvious)

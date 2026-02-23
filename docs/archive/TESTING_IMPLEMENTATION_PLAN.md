@@ -1,4 +1,5 @@
 # Jest Testing Implementation Plan
+
 **Millennials Prime App - Unit Testing Strategy**
 
 **Created:** November 5, 2025
@@ -14,12 +15,14 @@
 This document outlines a comprehensive 6-phase plan to implement unit and integration testing for the Millennials Prime App using Jest. The app currently has 0% test coverage (Critical Issue 1.6). This plan will establish a robust testing infrastructure and incrementally build test coverage across all critical components.
 
 ### Current State
+
 - **Test Coverage:** 0%
 - **Existing Tests:** 1 snapshot test (ThemedText component)
 - **Testing Framework:** Jest + jest-expo (already configured)
 - **Missing:** Testing utilities, mocks, test patterns, comprehensive tests
 
 ### Goals
+
 - **Day 1:** ✅ Testing infrastructure setup (Phase 1) - COMPLETE (1 hour actual)
 - **Day 1-2:** Utils, hooks, and auth screen tests (Phases 2-4)
 - **Day 2-3:** Component and integration tests (Phases 5-6)
@@ -42,10 +45,12 @@ npm install --save-dev @testing-library/react-native @testing-library/jest-nativ
 ```
 
 **Dependencies Added:**
+
 - `@testing-library/react-native` - React Native specific testing utilities
 - `@testing-library/jest-native` - Custom matchers (toBeVisible, toHaveTextContent, etc.)
 
 **Already Installed:**
+
 - `jest` (v29.2.1)
 - `jest-expo` (v53.0.9)
 - `@types/jest` (v29.5.12)
@@ -57,52 +62,49 @@ npm install --save-dev @testing-library/react-native @testing-library/jest-nativ
 
 ```javascript
 module.exports = {
-  preset: 'jest-expo',
+  preset: "jest-expo",
 
   // Setup files
   setupFilesAfterEnv: [
-    '@testing-library/jest-native/extend-expect',
-    '<rootDir>/__tests__/setup.ts'
+    "@testing-library/jest-native/extend-expect",
+    "<rootDir>/__tests__/setup.ts",
   ],
 
   // Transform files
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@gorhom/bottom-sheet)'
+    "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@gorhom/bottom-sheet)",
   ],
 
   // Module name mapper for @ imports
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
-    '^@/components/(.*)$': '<rootDir>/components/$1',
-    '^@/hooks/(.*)$': '<rootDir>/hooks/$1',
-    '^@/utils/(.*)$': '<rootDir>/utils/$1',
-    '^@/shared/(.*)$': '<rootDir>/shared/$1',
-    '^@/context/(.*)$': '<rootDir>/context/$1',
-    '^@/provider/(.*)$': '<rootDir>/provider/$1',
-    '^@/firebase/(.*)$': '<rootDir>/firebase/$1',
-    '^@/API/(.*)$': '<rootDir>/API/$1',
+    "^@/(.*)$": "<rootDir>/$1",
+    "^@/components/(.*)$": "<rootDir>/components/$1",
+    "^@/hooks/(.*)$": "<rootDir>/hooks/$1",
+    "^@/utils/(.*)$": "<rootDir>/utils/$1",
+    "^@/shared/(.*)$": "<rootDir>/shared/$1",
+    "^@/context/(.*)$": "<rootDir>/context/$1",
+    "^@/provider/(.*)$": "<rootDir>/provider/$1",
+    "^@/firebase/(.*)$": "<rootDir>/firebase/$1",
+    "^@/API/(.*)$": "<rootDir>/API/$1",
   },
 
   // Test match patterns
-  testMatch: [
-    '**/__tests__/**/*.(test|spec).[jt]s?(x)',
-    '**/?(*.)+(test|spec).[jt]s?(x)'
-  ],
+  testMatch: ["**/__tests__/**/*.(test|spec).[jt]s?(x)", "**/?(*.)+(test|spec).[jt]s?(x)"],
 
   // Coverage configuration
   collectCoverageFrom: [
-    'app/**/*.{js,jsx,ts,tsx}',
-    'components/**/*.{js,jsx,ts,tsx}',
-    'hooks/**/*.{js,jsx,ts,tsx}',
-    'utils/**/*.{js,jsx,ts,tsx}',
-    'shared/**/*.{js,jsx,ts,tsx}',
-    'context/**/*.{js,jsx,ts,tsx}',
-    'provider/**/*.{js,jsx,ts,tsx}',
-    '!**/__tests__/**',
-    '!**/*.test.{js,jsx,ts,tsx}',
-    '!**/*.spec.{js,jsx,ts,tsx}',
-    '!**/node_modules/**',
-    '!**/TabsLater/**', // Deprecated code
+    "app/**/*.{js,jsx,ts,tsx}",
+    "components/**/*.{js,jsx,ts,tsx}",
+    "hooks/**/*.{js,jsx,ts,tsx}",
+    "utils/**/*.{js,jsx,ts,tsx}",
+    "shared/**/*.{js,jsx,ts,tsx}",
+    "context/**/*.{js,jsx,ts,tsx}",
+    "provider/**/*.{js,jsx,ts,tsx}",
+    "!**/__tests__/**",
+    "!**/*.test.{js,jsx,ts,tsx}",
+    "!**/*.spec.{js,jsx,ts,tsx}",
+    "!**/node_modules/**",
+    "!**/TabsLater/**", // Deprecated code
   ],
 
   // Coverage thresholds (start low, increase over time)
@@ -116,7 +118,7 @@ module.exports = {
   },
 
   // Test environment
-  testEnvironment: 'node',
+  testEnvironment: "node",
 
   // Globals
   globals: {
@@ -132,7 +134,7 @@ module.exports = {
 **File:** `__tests__/setup.ts`
 
 ```typescript
-import '@testing-library/jest-native/extend-expect';
+import "@testing-library/jest-native/extend-expect";
 
 // Mock console methods to reduce noise in tests
 global.console = {
@@ -145,39 +147,39 @@ global.console = {
 };
 
 // Mock Expo modules
-jest.mock('expo-constants', () => ({
+jest.mock("expo-constants", () => ({
   expoConfig: {
     extra: {
-      firebaseApiKey: 'test-api-key',
-      firebaseAuthDomain: 'test.firebaseapp.com',
-      firebaseProjectId: 'test-project',
+      firebaseApiKey: "test-api-key",
+      firebaseAuthDomain: "test.firebaseapp.com",
+      firebaseProjectId: "test-project",
     },
   },
 }));
 
 // Mock React Native Reanimated
-jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
+jest.mock("react-native-reanimated", () => {
+  const Reanimated = require("react-native-reanimated/mock");
   Reanimated.default.call = () => {};
   return Reanimated;
 });
 
 // Mock @gorhom/bottom-sheet
-jest.mock('@gorhom/bottom-sheet', () => ({
+jest.mock("@gorhom/bottom-sheet", () => ({
   __esModule: true,
-  default: 'BottomSheet',
-  BottomSheetModal: 'BottomSheetModal',
+  default: "BottomSheet",
+  BottomSheetModal: "BottomSheetModal",
   BottomSheetModalProvider: ({ children }: any) => children,
 }));
 
 // Mock expo-router
-jest.mock('expo-router', () => require('./__mocks__/expo-router'));
+jest.mock("expo-router", () => require("./__mocks__/expo-router"));
 
 // Mock Firebase
-jest.mock('../firebase/firebaseConfig', () => require('./__mocks__/firebase'));
+jest.mock("../firebase/firebaseConfig", () => require("./__mocks__/firebase"));
 
 // Mock React Query
-jest.mock('@tanstack/react-query', () => require('./__mocks__/react-query'));
+jest.mock("@tanstack/react-query", () => require("./__mocks__/react-query"));
 ```
 
 #### 1.3.2 Firebase Mocks
@@ -193,10 +195,10 @@ export const mockAuth = {
 export const auth = mockAuth;
 
 export const mockUser = {
-  uid: 'test-user-123',
-  email: 'test@example.com',
+  uid: "test-user-123",
+  email: "test@example.com",
   emailVerified: true,
-  displayName: 'Test User',
+  displayName: "Test User",
 };
 
 // Mock Firebase Auth functions
@@ -231,20 +233,20 @@ export const mockRouter = {
 };
 
 export const useRouter = jest.fn(() => mockRouter);
-export const usePathname = jest.fn(() => '/');
+export const usePathname = jest.fn(() => "/");
 export const useSegments = jest.fn(() => []);
 export const useLocalSearchParams = jest.fn(() => ({}));
 
 export const Stack = {
-  Screen: 'StackScreen',
+  Screen: "StackScreen",
 };
 
 export const Tabs = {
-  Screen: 'TabsScreen',
+  Screen: "TabsScreen",
 };
 
-export const Link = 'Link';
-export const Redirect = 'Redirect';
+export const Link = "Link";
+export const Redirect = "Redirect";
 
 // Reset router mocks helper
 export const resetRouterMocks = () => {
@@ -410,42 +412,48 @@ jest-results.json
 ## Running Tests
 
 # Run all tests
+
 npm test
 
 # Run tests in watch mode
+
 npm run test:watch
 
 # Generate coverage report
+
 npm run test:coverage
 
 # Run tests for CI
+
 npm run test:ci
 
 ## Writing Tests
 
 ### File Naming Convention
+
 - Test files: `ComponentName.test.tsx` or `functionName.test.ts`
 - Location: `__tests__/` folder next to the file being tested
 
 ### Example Test Structure
 
 ...javascript
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
+import { render, screen, fireEvent } from '@/**tests**/test-utils';
 import MyComponent from '../MyComponent';
 
 describe('MyComponent', () => {
-  it('should render correctly', () => {
-    render(<MyComponent />);
-    expect(screen.getByText('Hello')).toBeTruthy();
-  });
+it('should render correctly', () => {
+render(<MyComponent />);
+expect(screen.getByText('Hello')).toBeTruthy();
+});
 
-  it('should handle user interaction', () => {
-    const mockFn = jest.fn();
-    render(<MyComponent onPress={mockFn} />);
+it('should handle user interaction', () => {
+const mockFn = jest.fn();
+render(<MyComponent onPress={mockFn} />);
 
     fireEvent.press(screen.getByText('Click me'));
     expect(mockFn).toHaveBeenCalledTimes(1);
-  });
+
+});
 });
 ...
 
@@ -460,17 +468,19 @@ describe('MyComponent', () => {
 ## Common Patterns
 
 ### Testing Components with Auth
+
 ...typescript
-import { render } from '@/__tests__/test-utils';
-import { mockUser } from '@/__tests__/__mocks__/firebase';
+import { render } from '@/**tests**/test-utils';
+import { mockUser } from '@/**tests**/**mocks**/firebase';
 
 // Component will have access to mocked auth
 render(<MyProtectedComponent />);
 ...
 
 ### Testing Navigation
+
 ...typescript
-import { mockRouter } from '@/__tests__/__mocks__/expo-router';
+import { mockRouter } from '@/**tests**/**mocks**/expo-router';
 
 // Test navigation calls
 fireEvent.press(screen.getByText('Go Back'));
@@ -487,6 +497,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **Goal:** Test all utility functions (validation, error handling, logging)
 
 ### Files to Test
+
 1. `utils/validation.ts`
 2. `utils/errorHandler.ts`
 3. `utils/logger.ts`
@@ -496,6 +507,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `utils/__tests__/validation.test.ts`
 
 **Test Cases:**
+
 - ✅ `validateEmail` with valid emails
 - ✅ `validateEmail` with invalid emails
 - ✅ `validateEmail` with empty string
@@ -514,6 +526,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `utils/__tests__/errorHandler.test.ts`
 
 **Test Cases:**
+
 - ✅ `handleAuthError` with all Firebase error codes
 - ✅ `handleAuthError` with unknown error codes
 - ✅ User-friendly message format
@@ -526,6 +539,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `utils/__tests__/logger.test.ts`
 
 **Test Cases:**
+
 - ✅ `logger.log` only logs in DEV mode
 - ✅ `logger.error` only logs in DEV mode
 - ✅ `logger.warn` only logs in DEV mode
@@ -543,6 +557,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **Goal:** Test all custom hooks
 
 ### Files to Test
+
 1. `hooks/useAuth.ts`
 2. `hooks/useBunnyCDNVideos.ts`
 3. `hooks/useRefreshToken.ts`
@@ -555,6 +570,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `hooks/__tests__/useAuth.test.ts`
 
 **Test Cases:**
+
 - ✅ Returns auth context values
 - ✅ Throws error when used outside AuthProvider
 - ✅ Provides current user
@@ -568,6 +584,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `hooks/__tests__/useBunnyCDNVideos.test.ts`
 
 **Test Cases:**
+
 - ✅ Fetches video data successfully
 - ✅ Returns loading state during fetch
 - ✅ Returns error state on fetch failure
@@ -581,6 +598,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `hooks/__tests__/useRefreshToken.test.ts`
 
 **Test Cases:**
+
 - ✅ Refreshes Firebase token
 - ✅ Updates auth context with new token
 - ✅ Handles refresh failure
@@ -593,6 +611,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `hooks/__tests__/useAxiosPrivate.test.ts`
 
 **Test Cases:**
+
 - ✅ Adds auth token to requests
 - ✅ Refreshes token on 401 error
 - ✅ Retries request with new token
@@ -606,6 +625,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `hooks/__tests__/useThemeColor.test.ts`
 
 **Test Cases:**
+
 - ✅ Returns correct color scheme
 - ✅ Returns correct theme colors
 - ✅ Handles light/dark mode switching
@@ -621,6 +641,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **Goal:** Test authentication flow screens
 
 ### Files to Test
+
 1. `app/(auth)/RegisterScreen.tsx`
 2. `app/(auth)/SignInScreen.tsx`
 3. `app/(auth)/PasswordRecoveryScreen.tsx`
@@ -631,6 +652,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `app/(auth)/__tests__/RegisterScreen.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders all form fields
 - ✅ Shows validation errors on blur
 - ✅ Disables submit button when form invalid
@@ -651,6 +673,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `app/(auth)/__tests__/SignInScreen.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders email and password fields
 - ✅ Shows validation errors
 - ✅ Disables submit when invalid
@@ -669,6 +692,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `app/(auth)/__tests__/PasswordRecoveryScreen.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders email input
 - ✅ Validates email format
 - ✅ Calls Firebase sendPasswordResetEmail on submit
@@ -684,6 +708,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `app/(tabs)/__tests__/LogOutScreen.test.tsx`
 
 **Test Cases:**
+
 - ✅ Calls Firebase signOut
 - ✅ Navigates to SignIn screen after logout
 - ✅ Handles logout errors
@@ -700,6 +725,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **Goal:** Test shared and post components
 
 ### Files to Test
+
 1. `shared/PostComponents/TextPost.tsx`
 2. `shared/PostComponents/VideoPost.tsx`
 3. `shared/PostComponents/PicturePost.tsx`
@@ -715,6 +741,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `shared/PostComponents/__tests__/TextPost.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders post content correctly
 - ✅ Shows author information
 - ✅ Shows delete button only for author
@@ -731,6 +758,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `shared/PostComponents/__tests__/VideoPost.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders video player
 - ✅ Shows video thumbnail
 - ✅ Shows author information
@@ -746,6 +774,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `shared/PostComponents/__tests__/PicturePost.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders image correctly
 - ✅ Shows image caption
 - ✅ Shows author information
@@ -760,6 +789,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `shared/PostComponents/__tests__/UserInfo.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders user avatar
 - ✅ Renders username
 - ✅ Renders timestamp
@@ -774,6 +804,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `shared/__tests__/LikeComment.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders like button
 - ✅ Renders comment button
 - ✅ Shows like count
@@ -789,6 +820,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `components/__tests__/ErrorBoundary.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders children when no error
 - ✅ Catches errors from children
 - ✅ Shows fallback UI on error
@@ -806,6 +838,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `shared/Timer/__tests__/HMSTimer.test.tsx`
 
 **Test Cases:**
+
 - ✅ Renders countdown correctly
 - ✅ Updates countdown over time
 - ✅ Formats time correctly
@@ -829,6 +862,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `__tests__/integration/auth-flow.test.tsx`
 
 **Test Cases:**
+
 - ✅ User registers → signs in → accesses protected route → logs out
 - ✅ User enters invalid credentials → sees error
 - ✅ User resets password → receives email confirmation
@@ -842,6 +876,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `app/(tabs)/(home)/__tests__/HomePage.integration.test.tsx`
 
 **Test Cases:**
+
 - ✅ Fetches and displays video data
 - ✅ Shows loading state while fetching
 - ✅ Shows error state on fetch failure
@@ -857,6 +892,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 **File:** `__tests__/integration/navigation.test.tsx`
 
 **Test Cases:**
+
 - ✅ Bottom tabs navigation works
 - ✅ Nested stack navigation works
 - ✅ Protected routes require auth
@@ -871,19 +907,20 @@ expect(mockRouter.back).toHaveBeenCalled();
 
 ### Coverage Goals
 
-| Phase | Target Coverage | Original Est. | Revised Est. | Actual |
-|-------|----------------|---------------|--------------|--------|
-| Phase 1 | Infrastructure Setup | 4-6 hours | 1 hour | ✅ 1 hour |
-| Phase 2 | Utils: 100% | 3-4 hours | 1-1.5 hours | - |
-| Phase 3 | Hooks: 80% | 4-6 hours | 1.5-2 hours | - |
-| Phase 4 | Auth Screens: 75% | 6-8 hours | 2-3 hours | - |
-| Phase 5 | Components: 70% | 8-10 hours | 2-3 hours | - |
-| Phase 6 | Integration: 55% | 4-6 hours | 1-2 hours | - |
-| **TOTAL** | **Overall: 70%** | **30-40 hours** | **8-12 hours** | **~3-5 days** |
+| Phase     | Target Coverage      | Original Est.   | Revised Est.   | Actual        |
+| --------- | -------------------- | --------------- | -------------- | ------------- |
+| Phase 1   | Infrastructure Setup | 4-6 hours       | 1 hour         | ✅ 1 hour     |
+| Phase 2   | Utils: 100%          | 3-4 hours       | 1-1.5 hours    | -             |
+| Phase 3   | Hooks: 80%           | 4-6 hours       | 1.5-2 hours    | -             |
+| Phase 4   | Auth Screens: 75%    | 6-8 hours       | 2-3 hours      | -             |
+| Phase 5   | Components: 70%      | 8-10 hours      | 2-3 hours      | -             |
+| Phase 6   | Integration: 55%     | 4-6 hours       | 1-2 hours      | -             |
+| **TOTAL** | **Overall: 70%**     | **30-40 hours** | **8-12 hours** | **~3-5 days** |
 
 ### Success Criteria
 
 ✅ **Day 1 Complete (ACTUAL):**
+
 - ✅ All dependencies installed
 - ✅ Jest configuration complete
 - ✅ All mock files created
@@ -892,17 +929,20 @@ expect(mockRouter.back).toHaveBeenCalled();
 - ✅ PR #17 created and ready for review
 
 🎯 **Day 1-2 Target:**
+
 - 100% utils test coverage
 - 80% hooks test coverage
 - All auth screens tested
 - Test suite runs in < 30 seconds
 
 🎯 **Day 2-3 Target:**
+
 - 70% component test coverage
 - Integration tests passing
 - Overall coverage > 60%
 
 🎯 **Day 3-5 Target:**
+
 - Overall coverage ≥ 70%
 - CI/CD integration complete
 - Documentation finalized
@@ -913,6 +953,7 @@ expect(mockRouter.back).toHaveBeenCalled();
 ## Best Practices & Conventions
 
 ### File Structure
+
 ```
 app/
   (auth)/
@@ -939,12 +980,14 @@ __tests__/
 ```
 
 ### Naming Conventions
+
 - Test files: `ComponentName.test.tsx` or `functionName.test.ts`
 - Test suites: `describe('ComponentName', () => {...})`
 - Test cases: `it('should do something specific', () => {...})`
 - Integration tests: `feature-name.integration.test.tsx`
 
 ### Test Structure (AAA Pattern)
+
 ```typescript
 it('should handle form submission', async () => {
   // Arrange - Setup
@@ -963,7 +1006,9 @@ it('should handle form submission', async () => {
 ```
 
 ### What to Test
+
 ✅ **DO Test:**
+
 - User interactions (button clicks, form inputs)
 - Conditional rendering
 - Error states and error handling
@@ -974,6 +1019,7 @@ it('should handle form submission', async () => {
 - Business logic
 
 ❌ **DON'T Test:**
+
 - Implementation details
 - Third-party library internals
 - Styles (unless critical to functionality)
@@ -981,6 +1027,7 @@ it('should handle form submission', async () => {
 - TypeScript types
 
 ### Mocking Strategy
+
 1. **Mock External Dependencies:** Firebase, APIs, navigation
 2. **Mock Heavy Components:** Video players, image pickers
 3. **Use Real Code:** Utils, validation, simple components
@@ -1013,8 +1060,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -1071,6 +1118,7 @@ npm run test:ci
 ### Debug Mode
 
 Run tests in debug mode:
+
 ```bash
 npm run test:debug
 ```
@@ -1082,16 +1130,19 @@ Then open `chrome://inspect` in Chrome and click "inspect" on the Node process.
 ## Maintenance Plan
 
 ### Weekly
+
 - Review test failures in CI/CD
 - Update snapshots as needed
 - Monitor coverage reports
 
 ### Monthly
+
 - Review and update test coverage thresholds
 - Refactor flaky tests
 - Update testing documentation
 
 ### Quarterly
+
 - Update testing dependencies
 - Review testing best practices
 - Team testing retrospective
@@ -1101,12 +1152,14 @@ Then open `chrome://inspect` in Chrome and click "inspect" on the Node process.
 ## Resources
 
 ### Documentation
+
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [React Native Testing Library](https://callstack.github.io/react-native-testing-library/)
 - [Testing Library Best Practices](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 - [jest-expo Documentation](https://docs.expo.dev/develop/unit-testing/)
 
 ### Training Materials
+
 - Internal: `docs/TESTING_GUIDE.md`
 - Examples: `__tests__/examples/` (to be created)
 - Team workshops: Scheduled after Phase 1 completion
@@ -1116,6 +1169,7 @@ Then open `chrome://inspect` in Chrome and click "inspect" on the Node process.
 ## Appendix: Quick Reference
 
 ### Run Tests
+
 ```bash
 npm test                      # Run all tests
 npm run test:watch           # Watch mode
@@ -1124,6 +1178,7 @@ npm run test:ci              # CI mode
 ```
 
 ### Common Test Patterns
+
 ```typescript
 // Basic component test
 import { render, screen } from '@/__tests__/test-utils';

@@ -18,10 +18,10 @@ export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{
  */
 export const validateEmail = (email: string): string | null => {
   if (!email || !email.trim()) {
-    return 'Email is required';
+    return "Email is required";
   }
   if (!EMAIL_REGEX.test(email.trim())) {
-    return 'Invalid email format (e.g., user@example.com)';
+    return "Invalid email format (e.g., user@example.com)";
   }
   return null;
 };
@@ -33,26 +33,26 @@ export const validateEmail = (email: string): string | null => {
  */
 export const validatePassword = (password: string): string | null => {
   if (!password) {
-    return 'Password is required';
+    return "Password is required";
   }
   // Use raw password value for all checks (do not trim)
   if (password.length < 8) {
-    return 'Password must be at least 8 characters';
+    return "Password must be at least 8 characters";
   }
   if (password.length > 24) {
-    return 'Password must be no more than 24 characters';
+    return "Password must be no more than 24 characters";
   }
   if (!/[a-z]/.test(password)) {
-    return 'Password must contain a lowercase letter';
+    return "Password must contain a lowercase letter";
   }
   if (!/[A-Z]/.test(password)) {
-    return 'Password must contain an uppercase letter';
+    return "Password must contain an uppercase letter";
   }
   if (!/[0-9]/.test(password)) {
-    return 'Password must contain a number';
+    return "Password must contain a number";
   }
   if (!/[!@#$%]/.test(password)) {
-    return 'Password must contain at least one special character (!@#$%)';
+    return "Password must contain at least one special character (!@#$%)";
   }
   return null;
 };
@@ -63,15 +63,12 @@ export const validatePassword = (password: string): string | null => {
  * @param confirmPassword - Confirmation password
  * @returns Error message if invalid, null if valid
  */
-export const validatePasswordMatch = (
-  password: string,
-  confirmPassword: string
-): string | null => {
+export const validatePasswordMatch = (password: string, confirmPassword: string): string | null => {
   if (!confirmPassword) {
-    return 'Please confirm your password';
+    return "Please confirm your password";
   }
   if (password !== confirmPassword) {
-    return 'Passwords do not match';
+    return "Passwords do not match";
   }
   return null;
 };
@@ -100,7 +97,7 @@ export const validateZip = (zip: string): string | null => {
   }
   const zipRegex = /^\d{5}(-\d{4})?$/;
   if (!zipRegex.test(zip.trim())) {
-    return 'Invalid ZIP code format (e.g., 12345 or 12345-6789)';
+    return "Invalid ZIP code format (e.g., 12345 or 12345-6789)";
   }
   return null;
 };
@@ -112,17 +109,17 @@ export const validateZip = (zip: string): string | null => {
  */
 export const validateName = (name: string): string | null => {
   if (!name || !name.trim()) {
-    return 'Name is required';
+    return "Name is required";
   }
   const nameRegex = /^[a-zA-Z\s'-]+$/;
   if (!nameRegex.test(name.trim())) {
-    return 'Name can only contain letters, spaces, hyphens, and apostrophes';
+    return "Name can only contain letters, spaces, hyphens, and apostrophes";
   }
   if (name.trim().length < 2) {
-    return 'Name must be at least 2 characters';
+    return "Name must be at least 2 characters";
   }
   if (name.trim().length > 100) {
-    return 'Name must be no more than 100 characters';
+    return "Name must be no more than 100 characters";
   }
   return null;
 };
@@ -137,7 +134,7 @@ export const validateBio = (bio: string): string | null => {
     return null; // Bio is optional
   }
   if (bio.trim().length > 200) {
-    return 'Bio must be no more than 200 characters';
+    return "Bio must be no more than 200 characters";
   }
   return null;
 };
@@ -152,11 +149,11 @@ export const validateInterests = (interests: string[]): string | null => {
     return null; // Interests are optional
   }
   if (interests.length > 10) {
-    return 'Maximum 10 interests allowed';
+    return "Maximum 10 interests allowed";
   }
   const invalidTag = interests.find((tag) => tag.trim().length > 30);
   if (invalidTag) {
-    return 'Each interest must be no more than 30 characters';
+    return "Each interest must be no more than 30 characters";
   }
   return null;
 };

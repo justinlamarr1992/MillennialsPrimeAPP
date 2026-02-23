@@ -6,11 +6,7 @@ describe("B2BOpportunitySection", () => {
   describe("When a user has B2B disabled", () => {
     it("should not display the B2B section", () => {
       const { toJSON } = render(
-        <B2BOpportunitySection
-          b2bEnabled={false}
-          industry="Tech"
-          b2bTags={["Consulting"]}
-        />
+        <B2BOpportunitySection b2bEnabled={false} industry="Tech" b2bTags={["Consulting"]} />
       );
 
       expect(toJSON()).toBeNull();
@@ -19,9 +15,7 @@ describe("B2BOpportunitySection", () => {
 
   describe("When a user has B2B enabled but no details", () => {
     it("should not display the B2B section", () => {
-      const { toJSON } = render(
-        <B2BOpportunitySection b2bEnabled={true} />
-      );
+      const { toJSON } = render(<B2BOpportunitySection b2bEnabled={true} />);
 
       expect(toJSON()).toBeNull();
     });
@@ -53,13 +47,7 @@ describe("B2BOpportunitySection", () => {
   describe("When a user has B2B enabled with service tags", () => {
     const b2bTags = ["Consulting", "Web Design", "Marketing"];
     const renderWithTags = () =>
-      render(
-        <B2BOpportunitySection
-          b2bEnabled={true}
-          industry="Tech"
-          b2bTags={b2bTags}
-        />
-      );
+      render(<B2BOpportunitySection b2bEnabled={true} industry="Tech" b2bTags={b2bTags} />);
 
     it("should display all of their B2B services", () => {
       renderWithTags();
@@ -80,9 +68,7 @@ describe("B2BOpportunitySection", () => {
 
   describe("When b2bEnabled is not specified", () => {
     it("should not display the B2B section", () => {
-      const { toJSON } = render(
-        <B2BOpportunitySection industry="Tech" b2bTags={["Consulting"]} />
-      );
+      const { toJSON } = render(<B2BOpportunitySection industry="Tech" b2bTags={["Consulting"]} />);
 
       expect(toJSON()).toBeNull();
     });

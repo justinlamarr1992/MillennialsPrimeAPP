@@ -33,18 +33,12 @@ export default function Ad({ title, startDate }: AdProps) {
     // </View>
 
     <LinearGradient
-      style={[
-        globalStyles.adPost,
-        globalStyles.flexColumn,
-        globalStyles.flexAlignItemsCenter,
-      ]}
+      style={[globalStyles.adPost, globalStyles.flexColumn, globalStyles.flexAlignItemsCenter]}
       colors={["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]}
     >
-      <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>
-        {title}
-      </Text>
+      <Text style={{ ...globalStyles.adTitle, ...globalStyles.postContent }}>{title}</Text>
       <DHMSTimer
-        startDate={typeof startDate === 'string' ? startDate : startDate.toISOString()}
+        startDate={typeof startDate === "string" ? startDate : startDate.toISOString()}
         // onTimerFinished={onTimerFinished}
       />
     </LinearGradient>

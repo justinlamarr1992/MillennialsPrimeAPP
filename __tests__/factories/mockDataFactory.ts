@@ -423,9 +423,7 @@ export const createPostOwnershipScenario = () => {
  * Connection Data (Phase 2)
  */
 
-export const createMockConnectionUser = (
-  overrides?: Partial<ConnectionUser>
-): ConnectionUser => ({
+export const createMockConnectionUser = (overrides?: Partial<ConnectionUser>): ConnectionUser => ({
   _id: "conn-user-123",
   name: "Jane Smith",
   username: "janesmith",
@@ -446,9 +444,7 @@ export const createMockConnectionUsers = (count: number): ConnectionUser[] =>
     })
   );
 
-export const createMockConnection = (
-  overrides?: Partial<Connection>
-): Connection => ({
+export const createMockConnection = (overrides?: Partial<Connection>): Connection => ({
   _id: "connection-123",
   requester: "user-123",
   recipient: "user-456",

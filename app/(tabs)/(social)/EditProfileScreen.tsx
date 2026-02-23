@@ -147,9 +147,7 @@ export default function EditProfileScreen() {
           {/* Basic Information */}
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Name
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Name</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors.plcHoldText}
@@ -161,9 +159,7 @@ export default function EditProfileScreen() {
             </View>
 
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Bio
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Bio</Text>
               <TextInput
                 style={[globalStyles.input, { height: 100, textAlignVertical: "top" }]}
                 placeholderTextColor={colors.plcHoldText}
@@ -192,9 +188,7 @@ export default function EditProfileScreen() {
           {/* Location */}
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                City
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>City</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors.plcHoldText}
@@ -206,9 +200,7 @@ export default function EditProfileScreen() {
             </View>
 
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                State
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>State</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors.plcHoldText}
@@ -220,9 +212,7 @@ export default function EditProfileScreen() {
             </View>
 
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Country
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Country</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors.plcHoldText}
@@ -237,9 +227,7 @@ export default function EditProfileScreen() {
           {/* Interests */}
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>
-                Interests
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>Interests</Text>
               <Text
                 style={[
                   globalStyles.labelText,
@@ -248,11 +236,7 @@ export default function EditProfileScreen() {
               >
                 Add topics you're interested in (max 10)
               </Text>
-              <TagInput
-                tags={interests}
-                onTagsChange={setInterests}
-                placeholder="Add interest"
-              />
+              <TagInput tags={interests} onTagsChange={setInterests} placeholder="Add interest" />
             </View>
           </View>
 
@@ -295,10 +279,7 @@ export default function EditProfileScreen() {
           {/* Submit Button */}
           <View style={globalStyles.groupPadding}>
             <Pressable
-              style={[
-                globalStyles.button,
-                { backgroundColor: colors.triC, marginBottom: 25 },
-              ]}
+              style={[globalStyles.button, { backgroundColor: colors.triC, marginBottom: 25 }]}
               onPress={handleSubmit}
               accessibilityLabel="Save profile changes"
               accessibilityRole="button"

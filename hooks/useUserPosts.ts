@@ -11,12 +11,12 @@
  * This hook is ready for when backend /posts endpoints are deployed.
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { postsService } from '@/services/postsService';
-import { logger } from '@/utils/logger';
-import useAuth from './useAuth';
-import useAxiosPrivate from './useAxiosPrivate';
-import type { Post } from '@/types/posts';
+import { useState, useEffect, useCallback } from "react";
+import { postsService } from "@/services/postsService";
+import { logger } from "@/utils/logger";
+import useAuth from "./useAuth";
+import useAxiosPrivate from "./useAxiosPrivate";
+import type { Post } from "@/types/posts";
 
 interface UseUserPostsResult {
   posts: Post[];
@@ -53,21 +53,21 @@ export const useUserPosts = (): UseUserPostsResult => {
       setError(null);
 
       if (__DEV__) {
-        logger.log('📥 Fetching user posts from server...');
+        logger.log("📥 Fetching user posts from server...");
       }
       const postsData = await postsService.fetchUserPosts();
       if (__DEV__) {
-        logger.log('✅ Posts data fetched:', JSON.stringify(postsData));
+        logger.log("✅ Posts data fetched:", JSON.stringify(postsData));
       }
       setPosts(postsData.posts);
       setTotalCount(postsData.totalCount);
     } catch (err) {
       // Preserve the original error object (includes axios response details)
-      const error = err instanceof Error ? err : new Error('Failed to fetch posts');
+      const error = err instanceof Error ? err : new Error("Failed to fetch posts");
       setError(error as Error);
       setPosts([]);
       setTotalCount(0);
-      logger.error('❌ Failed to fetch user posts:', err);
+      logger.error("❌ Failed to fetch user posts:", err);
     } finally {
       setLoading(false);
     }

@@ -1,0 +1,46 @@
+appId: com.justappin.millennials-prime-app
+# Android: com.justappin.MillennialsPrime_APP
+---
+# Flow: Register a new account.
+# Uses a unique timestamped email to avoid duplicate account errors.
+# Requires MAESTRO_TEST_PASSWORD environment variable.
+
+- launchApp:
+    clearState: true
+
+# Navigate to registration screen
+- assertVisible: "Enter Email"
+- tapOn: "Create an Account"
+
+# Wait for registration form
+- assertVisible: "Enter First Name"
+
+# Fill in required fields
+- tapOn:
+    hint: "Enter First Name"
+- inputText: "Test"
+
+- tapOn:
+    hint: "Enter Last Name"
+- inputText: "User"
+
+- tapOn:
+    hint: "Enter Email"
+- inputText: "testuser+${MAESTRO_RUN_ID}@example.com"
+
+- tapOn:
+    hint: "Enter Password"
+- inputText: ${MAESTRO_TEST_PASSWORD}
+
+- tapOn:
+    hint: "Confirm Password"
+- inputText: ${MAESTRO_TEST_PASSWORD}
+
+# Submit registration
+- tapOn:
+    id: "register-submit-button"
+
+# Assert redirect to home after successful registration
+- assertVisible:
+    text: "Home"
+    enabled: true

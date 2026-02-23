@@ -40,9 +40,7 @@ function getBunnyCDNConfig(): BunnyCDNEnvConfig {
 
   if (missing.length > 0) {
     logger.error("BunnyCDN configuration incomplete", missing.join(", "));
-    throw new Error(
-      "Video upload is currently unavailable. Please try again later."
-    );
+    throw new Error("Video upload is currently unavailable. Please try again later.");
   }
 
   return {
@@ -76,12 +74,8 @@ export const videoUploadService = {
     });
 
     if (!response.ok) {
-      logger.error(
-        `❌ BunnyCDN video creation failed: ${response.status} ${response.statusText}`
-      );
-      throw new Error(
-        `Failed to create video in BunnyCDN (${response.status})`
-      );
+      logger.error(`❌ BunnyCDN video creation failed: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to create video in BunnyCDN (${response.status})`);
     }
 
     const data = (await response.json()) as BunnyCreateResponse;
@@ -96,20 +90,17 @@ export const videoUploadService = {
    * @param title — video title for backend reference
    * @returns TUS auth tokens (shaAttempt, authorizationExpire, libraryId, etc.)
    */
-  async getUploadAuth(
-    videoId: string,
-    title: string
-  ): Promise<UploadAuthResponse> {
+  async getUploadAuth(videoId: string, title: string): Promise<UploadAuthResponse> {
     if (!videoId) {
       throw new Error("Video ID is required");
     }
 
     logger.api("POST", "/videos/bunnyInfo", { videoId });
 
-    const response = await axiosPrivate.post<UploadAuthResponse>(
-      "/videos/bunnyInfo",
-      { videoID: videoId, title }
-    );
+    const response = await axiosPrivate.post<UploadAuthResponse>("/videos/bunnyInfo", {
+      videoID: videoId,
+      title,
+    });
 
     if (!response.data.success) {
       logger.error("❌ Backend returned success=false for TUS auth");
@@ -131,26 +122,19 @@ export const videoUploadService = {
 
     logger.api("POST", `${apiUrl}/library/${libraryId}/videos/${videoId}`);
 
-    const response = await fetch(
-      `${apiUrl}/library/${libraryId}/videos/${videoId}`,
-      {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-          AccessKey: accessKey,
-        },
-        body: JSON.stringify({ title }),
-      }
-    );
+    const response = await fetch(`${apiUrl}/library/${libraryId}/videos/${videoId}`, {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        AccessKey: accessKey,
+      },
+      body: JSON.stringify({ title }),
+    });
 
     if (!response.ok) {
-      logger.error(
-        `❌ BunnyCDN metadata update failed: ${response.status} ${response.statusText}`
-      );
-      throw new Error(
-        `Failed to update video metadata in BunnyCDN (${response.status})`
-      );
+      logger.error(`❌ BunnyCDN metadata update failed: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to update video metadata in BunnyCDN (${response.status})`);
     }
 
     logger.log("✅ BunnyCDN metadata updated for video:", videoId);
@@ -213,9 +197,7 @@ export const videoUploadService = {
    * STUB — backend endpoint POST /videos/save not yet implemented.
    * This will be wired up when the backend deploys that endpoint.
    */
-  async saveVideoRecord(
-    data: VideoUploadFormData & { videoId: string }
-  ): Promise<void> {
+  async saveVideoRecord(data: VideoUploadFormData & { videoId: string }): Promise<void> {
     logger.warn(
       "⚠️ saveVideoRecord: backend endpoint not yet available. Video metadata not persisted.",
       data.videoId

@@ -15,7 +15,7 @@ function ImagePickerComponent({ handleVideoSelect }: ImagePickerComponentProps) 
     // No Permission request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       // THIS IS ONLY VIDOES FOR THE PURPOSE BUT CAN BE ALL
-      mediaTypes: 'videos',
+      mediaTypes: "videos",
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -33,9 +33,7 @@ function ImagePickerComponent({ handleVideoSelect }: ImagePickerComponentProps) 
   return (
     <View>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && (
-        <Image source={{ uri: image }} style={globalStyles.videoUpload} />
-      )}
+      {image && <Image source={{ uri: image }} style={globalStyles.videoUpload} />}
     </View>
   );
 }

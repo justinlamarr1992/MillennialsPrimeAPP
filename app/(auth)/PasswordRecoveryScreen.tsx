@@ -64,7 +64,7 @@ const PasswordRecoveryScreen = () => {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
-      logger.error('Password reset error:', firebaseError.code, firebaseError.message);
+      logger.error("Password reset error:", firebaseError.code, firebaseError.message);
     } finally {
       setLoading(false);
     }
@@ -78,15 +78,9 @@ const PasswordRecoveryScreen = () => {
     >
       <View style={[globalStyles.signInScreen]}>
         <View
-          style={[
-            globalStyles.passwordRecoveryBox,
-            globalStyles.padding,
-            globalStyles.centerItem,
-          ]}
+          style={[globalStyles.passwordRecoveryBox, globalStyles.padding, globalStyles.centerItem]}
         >
-          <Text style={[globalStyles.errorText, { color: colors.secC }]}>
-            {errMsg}
-          </Text>
+          <Text style={[globalStyles.errorText, { color: colors.secC }]}>{errMsg}</Text>
         </View>
         <View
           style={[
@@ -99,10 +93,7 @@ const PasswordRecoveryScreen = () => {
             },
           ]}
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={globalStyles.scrollView}
-          >
+          <ScrollView showsVerticalScrollIndicator={false} style={globalStyles.scrollView}>
             <View style={globalStyles.formTitle}>
               <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
                 Password Recovery
@@ -112,9 +103,7 @@ const PasswordRecoveryScreen = () => {
               </Text>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
-                Email
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>Email</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
@@ -125,7 +114,12 @@ const PasswordRecoveryScreen = () => {
                 onChangeText={(text) => setEmail(text)}
               />
               {emailError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {emailError}
                 </Text>
               )}
@@ -139,7 +133,7 @@ const PasswordRecoveryScreen = () => {
                   globalStyles.marginVertical,
                   {
                     backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
-                    opacity: !isFormValid ? 0.5 : 1
+                    opacity: !isFormValid ? 0.5 : 1,
                   },
                 ]}
                 disabled={!isFormValid}
@@ -149,9 +143,7 @@ const PasswordRecoveryScreen = () => {
               </Pressable>
             )}
 
-            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>
-              {errMsg}
-            </Text>
+            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>{errMsg}</Text>
           </ScrollView>
         </View>
       </View>

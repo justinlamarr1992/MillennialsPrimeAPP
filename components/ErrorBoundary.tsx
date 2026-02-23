@@ -1,6 +1,6 @@
-import React, { Component, ReactNode } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { logger } from '../utils/logger';
+import React, { Component, ReactNode } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { logger } from "../utils/logger";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -102,9 +102,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                 <Text style={styles.errorTitle}>Error Details (Dev Only):</Text>
                 <Text style={styles.errorText}>{this.state.error.toString()}</Text>
                 {this.state.errorInfo && (
-                  <Text style={styles.stackTrace}>
-                    {this.state.errorInfo.componentStack}
-                  </Text>
+                  <Text style={styles.stackTrace}>{this.state.errorInfo.componentStack}</Text>
                 )}
               </View>
             )}
@@ -124,19 +122,19 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   content: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderRadius: 12,
     padding: 24,
     maxWidth: 400,
-    width: '100%',
-    alignItems: 'center',
-    shadowColor: '#000',
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -148,55 +146,55 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 12,
-    textAlign: 'center',
+    textAlign: "center",
   },
   message: {
     fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
     marginBottom: 24,
     lineHeight: 24,
   },
   errorDetails: {
-    backgroundColor: '#f8f8f8',
+    backgroundColor: "#f8f8f8",
     borderRadius: 8,
     padding: 12,
     marginBottom: 24,
-    width: '100%',
+    width: "100%",
     maxHeight: 300,
   },
   errorTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#d32f2f',
+    fontWeight: "bold",
+    color: "#d32f2f",
     marginBottom: 8,
   },
   errorText: {
     fontSize: 12,
-    color: '#d32f2f',
-    fontFamily: 'monospace',
+    color: "#d32f2f",
+    fontFamily: "monospace",
     marginBottom: 8,
   },
   stackTrace: {
     fontSize: 10,
-    color: '#666',
-    fontFamily: 'monospace',
+    color: "#666",
+    fontFamily: "monospace",
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#007AFF",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 8,
     minWidth: 120,
   },
   buttonText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: "600",
+    textAlign: "center",
   },
 });
 

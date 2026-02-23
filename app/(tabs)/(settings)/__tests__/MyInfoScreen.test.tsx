@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
-import MyInfoScreen from '../MyInfoScreen';
+import React from "react";
+import { render, screen, fireEvent } from "@/__tests__/test-utils";
+import MyInfoScreen from "../MyInfoScreen";
 
 // Mock expo-router
-jest.mock('expo-router', () => ({
+jest.mock("expo-router", () => ({
   router: {
     back: jest.fn(),
     push: jest.fn(),
@@ -11,57 +11,57 @@ jest.mock('expo-router', () => ({
 }));
 
 // Mock expo-file-system
-jest.mock('expo-file-system/legacy', () => ({
+jest.mock("expo-file-system/legacy", () => ({
   readAsStringAsync: jest.fn(),
   EncodingType: {
-    Base64: 'base64',
+    Base64: "base64",
   },
 }));
 
 // Mock expo-image-picker
-jest.mock('expo-image-picker', () => ({
-  requestMediaLibraryPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
+jest.mock("expo-image-picker", () => ({
+  requestMediaLibraryPermissionsAsync: jest.fn().mockResolvedValue({ status: "granted" }),
   launchImageLibraryAsync: jest.fn(),
 }));
 
 // Mock ProfilePicture component
-jest.mock('@/components/ProfilePicture', () => {
+jest.mock("@/components/ProfilePicture", () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const React = require('react');
+  const React = require("react");
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { Pressable, Text } = require('react-native');
+  const { Pressable, Text } = require("react-native");
   return jest.fn((props) => {
     return React.createElement(
       Pressable,
       {
-        testID: 'mock-profile-picture',
-        onPress: () => props.onImageSelected('file:///path/to/image.jpg'),
+        testID: "mock-profile-picture",
+        onPress: () => props.onImageSelected("file:///path/to/image.jpg"),
       },
-      React.createElement(Text, {}, 'Mock Profile Picture')
+      React.createElement(Text, {}, "Mock Profile Picture")
     );
   });
 });
 
 // Mock @react-native-picker/picker
-jest.mock('@react-native-picker/picker', () => ({
+jest.mock("@react-native-picker/picker", () => ({
   Picker: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock useAuth hook
-jest.mock('@/hooks/useAuth', () => ({
+jest.mock("@/hooks/useAuth", () => ({
   __esModule: true,
   default: jest.fn(() => ({
     user: {
-      uid: 'test-user-id',
-      email: 'testuser@example.com',
-      displayName: 'Test User',
+      uid: "test-user-id",
+      email: "testuser@example.com",
+      displayName: "Test User",
     },
     loading: false,
   })),
 }));
 
 // Mock useUserProfile hook
-jest.mock('@/hooks/useUserProfile', () => ({
+jest.mock("@/hooks/useUserProfile", () => ({
   useUserProfile: jest.fn(() => ({
     profile: null,
     loading: false,
@@ -71,14 +71,14 @@ jest.mock('@/hooks/useUserProfile', () => ({
 }));
 
 // Mock useAxiosPrivate hook
-jest.mock('@/hooks/useAxiosPrivate', () => ({
+jest.mock("@/hooks/useAxiosPrivate", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
 // Mock useProfilePictureUpload hook
 const mockHandleImageSelected = jest.fn();
-jest.mock('@/hooks/useProfilePictureUpload', () => ({
+jest.mock("@/hooks/useProfilePictureUpload", () => ({
   useProfilePictureUpload: jest.fn(() => ({
     profileImageUri: null,
     handleImageSelected: mockHandleImageSelected,
@@ -86,282 +86,280 @@ jest.mock('@/hooks/useProfilePictureUpload', () => ({
   })),
 }));
 
-describe('MyInfoScreen', () => {
+describe("MyInfoScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockHandleImageSelected.mockClear();
   });
 
-  describe('Initial Content Display', () => {
-    it('should display screen title', () => {
+  describe("Initial Content Display", () => {
+    it("should display screen title", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Basic Information')).toBeTruthy();
+      expect(screen.getByText("Basic Information")).toBeTruthy();
     });
 
-    it('should display subtitle', () => {
+    it("should display subtitle", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Edit your Profile information')).toBeTruthy();
+      expect(screen.getByText("Edit your Profile information")).toBeTruthy();
     });
 
-    it('should display save changes button', () => {
+    it("should display save changes button", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Save Changes')).toBeTruthy();
-    });
-  });
-
-  describe('Basic Information Fields', () => {
-    it('should display name label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Name')).toBeTruthy();
-    });
-
-    it('should display name input placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter Name')).toBeTruthy();
-    });
-
-    it('should display username label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Username')).toBeTruthy();
-    });
-
-    it('should display username input placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter Username')).toBeTruthy();
-    });
-
-    it('should display email label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Email')).toBeTruthy();
-    });
-
-    it('should display email input placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter Email')).toBeTruthy();
-    });
-
-    it('should display birthday label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Birthday')).toBeTruthy();
-    });
-
-    it('should display birthday input placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter Birthday')).toBeTruthy();
+      expect(screen.getByText("Save Changes")).toBeTruthy();
     });
   });
 
-  describe('Location Fields', () => {
-    it('should display country label', () => {
+  describe("Basic Information Fields", () => {
+    it("should display name label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Country')).toBeTruthy();
+      expect(screen.getByText("Name")).toBeTruthy();
     });
 
-    it('should display country input placeholder', () => {
+    it("should display name input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter Country')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter Name")).toBeTruthy();
     });
 
-    it('should display state label', () => {
+    it("should display username label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('State')).toBeTruthy();
+      expect(screen.getByText("Username")).toBeTruthy();
     });
 
-    it('should display state input placeholder', () => {
+    it("should display username input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter State')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter Username")).toBeTruthy();
     });
 
-    it('should display city label', () => {
+    it("should display email label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('City')).toBeTruthy();
+      expect(screen.getByText("Email")).toBeTruthy();
     });
 
-    it('should display city input placeholder', () => {
+    it("should display email input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter City')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter Email")).toBeTruthy();
     });
 
-    it('should display zip label', () => {
+    it("should display birthday label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Zip')).toBeTruthy();
+      expect(screen.getByText("Birthday")).toBeTruthy();
     });
 
-    it('should display zip input placeholder', () => {
+    it("should display birthday input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Enter Zip')).toBeTruthy();
-    });
-  });
-
-  describe('Privacy Settings Fields', () => {
-    it('should display viewers can like label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Viewers Can Like')).toBeTruthy();
-    });
-
-    it('should display viewers can like placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Can Users Like your Post?')).toBeTruthy();
-    });
-
-    it('should display viewers can dislike label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Viewers Can Dislike')).toBeTruthy();
-    });
-
-    it('should display viewers can dislike placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Can Users Dislike your Post')).toBeTruthy();
-    });
-
-    it('should display viewers can comment label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Viewers Can Comment')).toBeTruthy();
-    });
-
-    it('should display viewers can comment placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Can Users Comment on Your Post')).toBeTruthy();
-    });
-
-    it('should display viewers can share label', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByText('Viewers Can Share')).toBeTruthy();
-    });
-
-    it('should display viewers can share placeholder', () => {
-      render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Can Users Share your Post')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter Birthday")).toBeTruthy();
     });
   });
 
-  describe('Business Settings Fields', () => {
-    it('should display industry label', () => {
+  describe("Location Fields", () => {
+    it("should display country label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Your Industry')).toBeTruthy();
+      expect(screen.getByText("Country")).toBeTruthy();
     });
 
-    it('should display industry placeholder', () => {
+    it("should display country input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('What is the Industry you Operate in')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter Country")).toBeTruthy();
     });
 
-    it('should display B2B label', () => {
+    it("should display state label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Looking for B2B Relationships')).toBeTruthy();
+      expect(screen.getByText("State")).toBeTruthy();
     });
 
-    it('should display B2B placeholder', () => {
+    it("should display state input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Business to Business?')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter State")).toBeTruthy();
     });
 
-    it('should display e-commerce label', () => {
+    it("should display city label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('E-Commerce')).toBeTruthy();
+      expect(screen.getByText("City")).toBeTruthy();
     });
 
-    it('should display e-commerce placeholder', () => {
+    it("should display city input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Would you like to Sell Items')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter City")).toBeTruthy();
     });
 
-    it('should display upload content label', () => {
+    it("should display zip label", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByText('Upload Content')).toBeTruthy();
+      expect(screen.getByText("Zip")).toBeTruthy();
     });
 
-    it('should display upload content placeholder', () => {
+    it("should display zip input placeholder", () => {
       render(<MyInfoScreen />);
-      expect(screen.getByPlaceholderText('Do you have Content to Upload')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Enter Zip")).toBeTruthy();
     });
   });
 
-  describe('Form Input Behavior', () => {
-    it('should handle name input changes', () => {
+  describe("Privacy Settings Fields", () => {
+    it("should display viewers can like label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("Viewers Can Like")).toBeTruthy();
+    });
+
+    it("should display viewers can like placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("Can Users Like your Post?")).toBeTruthy();
+    });
+
+    it("should display viewers can dislike label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("Viewers Can Dislike")).toBeTruthy();
+    });
+
+    it("should display viewers can dislike placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("Can Users Dislike your Post")).toBeTruthy();
+    });
+
+    it("should display viewers can comment label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("Viewers Can Comment")).toBeTruthy();
+    });
+
+    it("should display viewers can comment placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("Can Users Comment on Your Post")).toBeTruthy();
+    });
+
+    it("should display viewers can share label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("Viewers Can Share")).toBeTruthy();
+    });
+
+    it("should display viewers can share placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("Can Users Share your Post")).toBeTruthy();
+    });
+  });
+
+  describe("Business Settings Fields", () => {
+    it("should display industry label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("Your Industry")).toBeTruthy();
+    });
+
+    it("should display industry placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("What is the Industry you Operate in")).toBeTruthy();
+    });
+
+    it("should display B2B label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("Looking for B2B Relationships")).toBeTruthy();
+    });
+
+    it("should display B2B placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("Business to Business?")).toBeTruthy();
+    });
+
+    it("should display e-commerce label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("E-Commerce")).toBeTruthy();
+    });
+
+    it("should display e-commerce placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("Would you like to Sell Items")).toBeTruthy();
+    });
+
+    it("should display upload content label", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByText("Upload Content")).toBeTruthy();
+    });
+
+    it("should display upload content placeholder", () => {
+      render(<MyInfoScreen />);
+      expect(screen.getByPlaceholderText("Do you have Content to Upload")).toBeTruthy();
+    });
+  });
+
+  describe("Form Input Behavior", () => {
+    it("should handle name input changes", () => {
       const { getByPlaceholderText } = render(<MyInfoScreen />);
 
-      const nameInput = getByPlaceholderText('Enter Name');
-      fireEvent.changeText(nameInput, 'John Doe');
+      const nameInput = getByPlaceholderText("Enter Name");
+      fireEvent.changeText(nameInput, "John Doe");
 
-      expect(nameInput.props.value).toBe('John Doe');
+      expect(nameInput.props.value).toBe("John Doe");
     });
 
-    it('should handle country input changes', () => {
+    it("should handle country input changes", () => {
       const { getByPlaceholderText } = render(<MyInfoScreen />);
 
-      const countryInput = getByPlaceholderText('Enter Country');
-      fireEvent.changeText(countryInput, 'United States');
+      const countryInput = getByPlaceholderText("Enter Country");
+      fireEvent.changeText(countryInput, "United States");
 
-      expect(countryInput.props.value).toBe('United States');
+      expect(countryInput.props.value).toBe("United States");
     });
 
-    it('should handle state input changes', () => {
+    it("should handle state input changes", () => {
       const { getByPlaceholderText } = render(<MyInfoScreen />);
 
-      const stateInput = getByPlaceholderText('Enter State');
-      fireEvent.changeText(stateInput, 'California');
+      const stateInput = getByPlaceholderText("Enter State");
+      fireEvent.changeText(stateInput, "California");
 
-      expect(stateInput.props.value).toBe('California');
+      expect(stateInput.props.value).toBe("California");
     });
 
-    it('should handle city input changes', () => {
+    it("should handle city input changes", () => {
       const { getByPlaceholderText } = render(<MyInfoScreen />);
 
-      const cityInput = getByPlaceholderText('Enter City');
-      fireEvent.changeText(cityInput, 'Los Angeles');
+      const cityInput = getByPlaceholderText("Enter City");
+      fireEvent.changeText(cityInput, "Los Angeles");
 
-      expect(cityInput.props.value).toBe('Los Angeles');
+      expect(cityInput.props.value).toBe("Los Angeles");
     });
 
-    it('should handle zip input changes', () => {
+    it("should handle zip input changes", () => {
       const { getByPlaceholderText } = render(<MyInfoScreen />);
 
-      const zipInput = getByPlaceholderText('Enter Zip');
-      fireEvent.changeText(zipInput, '90210');
+      const zipInput = getByPlaceholderText("Enter Zip");
+      fireEvent.changeText(zipInput, "90210");
 
-      expect(zipInput.props.value).toBe('90210');
+      expect(zipInput.props.value).toBe("90210");
     });
   });
 
-  describe('Save Button Behavior', () => {
-    it('should display save button', () => {
+  describe("Save Button Behavior", () => {
+    it("should display save button", () => {
       const { getByText } = render(<MyInfoScreen />);
 
-      expect(getByText('Save Changes')).toBeTruthy();
+      expect(getByText("Save Changes")).toBeTruthy();
     });
 
-    it('should allow pressing save button', () => {
+    it("should allow pressing save button", () => {
       const { getByText } = render(<MyInfoScreen />);
 
-      const saveButton = getByText('Save Changes');
+      const saveButton = getByText("Save Changes");
       fireEvent.press(saveButton);
 
       expect(saveButton).toBeTruthy();
     });
   });
 
-
-
-  describe('Profile Picture Display', () => {
-    it('should show profile picture area to user', () => {
+  describe("Profile Picture Display", () => {
+    it("should show profile picture area to user", () => {
       render(<MyInfoScreen />);
 
       // User should see the basic information section which includes profile picture
-      expect(screen.getByText('Basic Information')).toBeTruthy();
+      expect(screen.getByText("Basic Information")).toBeTruthy();
     });
   });
 
-  describe('When user selects a profile picture', () => {
-    it('user can select a photo and handleImageSelected is called', () => {
+  describe("When user selects a profile picture", () => {
+    it("user can select a photo and handleImageSelected is called", () => {
       const { getByTestId } = render(<MyInfoScreen />);
 
       // User taps to select a photo
-      const mockProfilePicture = getByTestId('mock-profile-picture');
+      const mockProfilePicture = getByTestId("mock-profile-picture");
       fireEvent.press(mockProfilePicture);
 
       // The hook's handleImageSelected should be called with the image URI
-      expect(mockHandleImageSelected).toHaveBeenCalledWith('file:///path/to/image.jpg');
+      expect(mockHandleImageSelected).toHaveBeenCalledWith("file:///path/to/image.jpg");
     });
   });
 });

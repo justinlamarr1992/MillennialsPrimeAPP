@@ -7,6 +7,7 @@ This project uses **ESLint** for code quality checks and **Prettier** for code f
 ## What's Installed
 
 ### Core Tools
+
 - **ESLint 9** - JavaScript/TypeScript linting
 - **Prettier 3** - Code formatting
 - **eslint-config-expo** - Expo's recommended ESLint rules
@@ -16,7 +17,9 @@ This project uses **ESLint** for code quality checks and **Prettier** for code f
 ## Configuration Files
 
 ### `.prettierrc.json`
+
 Prettier formatting rules:
+
 - Single quotes for strings
 - Semicolons required
 - 100 character line width
@@ -24,7 +27,9 @@ Prettier formatting rules:
 - Trailing commas (ES5)
 
 ### `eslint.config.js`
+
 ESLint rules:
+
 - Expo base configuration
 - TypeScript unused variable warnings (allows `_` prefix for intentionally unused vars)
 - Console.log warnings (allows `console.warn` and `console.error`)
@@ -32,28 +37,33 @@ ESLint rules:
 - No `var` keyword (use `const`/`let`)
 
 ### `.prettierignore`
+
 Excludes build artifacts, dependencies, and generated files from formatting.
 
 ## Available Scripts
 
 ### Linting
+
 ```bash
 npm run lint           # Check for code quality issues
 npm run lint:fix       # Auto-fix linting issues where possible
 ```
 
 ### Formatting
+
 ```bash
 npm run format         # Format all code files
 npm run format:check   # Check if files are formatted (CI/CD)
 ```
 
 ### Type Checking
+
 ```bash
 npm run type-check     # Run TypeScript compiler checks
 ```
 
 ### Complete Validation
+
 ```bash
 npm run validate       # Run all checks: types + lint + format + tests
 ```
@@ -61,11 +71,14 @@ npm run validate       # Run all checks: types + lint + format + tests
 ## IDE Integration
 
 ### VS Code
+
 Install these extensions for the best experience:
+
 1. **ESLint** (`dbaeumer.vscode-eslint`)
 2. **Prettier** (`esbenp.prettier-vscode`)
 
 Add to `.vscode/settings.json`:
+
 ```json
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -92,16 +105,12 @@ npx husky init
 ```
 
 Add to `package.json`:
+
 ```json
 {
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
+    "*.{js,jsx,ts,tsx}": ["prettier --write", "eslint --fix"],
+    "*.{json,md}": ["prettier --write"]
   }
 }
 ```
@@ -109,16 +118,20 @@ Add to `package.json`:
 ## Common Issues
 
 ### ESLint Module Warning
+
 If you see: `Warning: Module type of eslint.config.js is not specified`
 
 This is harmless. The config uses ES modules (`import`) which is standard for ESLint 9.
 
 ### Prettier vs ESLint Conflicts
+
 All conflicts are resolved by `eslint-config-prettier`. If you see conflicts:
+
 1. Run `npm run format` first (Prettier)
 2. Then run `npm run lint:fix` (ESLint)
 
 ### Files Not Being Linted
+
 Check if the file is in `eslint.config.js` ignores or `.prettierignore`.
 
 ## CI/CD Integration
@@ -132,6 +145,7 @@ The `npm run validate` command runs all checks and is suitable for CI/CD pipelin
 ```
 
 This ensures:
+
 - ✅ TypeScript compiles without errors
 - ✅ ESLint rules pass
 - ✅ Code is properly formatted

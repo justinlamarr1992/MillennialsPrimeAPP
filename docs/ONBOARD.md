@@ -5,6 +5,7 @@
 ## **What This App Is**
 
 **Millennials Prime** is a React Native/Expo social media app (v1.1.6+) for iOS/Android featuring:
+
 - User-generated content (text, photos, videos)
 - Admin "Prime News" posts
 - Video streaming via Bunny CDN
@@ -18,17 +19,17 @@
 
 ## **Tech Stack at a Glance**
 
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | React Native 19.0.0 + Expo SDK ~52.0.14 |
-| **Routing** | Expo Router ~5.1.7 (file-based) |
-| **Auth** | Dual: Firebase Auth + MongoDB JWT |
-| **Video** | Bunny CDN + WebView |
-| **State** | React Query + AuthContext + SecureStore |
-| **Database** | MongoDB (server-side profiles) |
-| **API** | Axios with JWT interceptors |
-| **UI** | LinearGradient, Bottom Sheets, Native components |
-| **Navigation** | React Navigation 19.0.0 (Stack + Tabs + Drawer) |
+| Layer          | Technology                                       |
+| -------------- | ------------------------------------------------ |
+| **Framework**  | React Native 19.0.0 + Expo SDK ~52.0.14          |
+| **Routing**    | Expo Router ~5.1.7 (file-based)                  |
+| **Auth**       | Dual: Firebase Auth + MongoDB JWT                |
+| **Video**      | Bunny CDN + WebView                              |
+| **State**      | React Query + AuthContext + SecureStore          |
+| **Database**   | MongoDB (server-side profiles)                   |
+| **API**        | Axios with JWT interceptors                      |
+| **UI**         | LinearGradient, Bottom Sheets, Native components |
+| **Navigation** | React Navigation 19.0.0 (Stack + Tabs + Drawer)  |
 
 ---
 
@@ -42,6 +43,7 @@ Landing (index.tsx) → Sign In/Register → Home Feed (tabs) → Settings
 ```
 
 **Key Patterns:**
+
 - **File-based routing** with grouped layouts: `(auth)`, `(tabs)`, `(aux)`
 - **Component composition** for posts with gradient styling by user role
 - **Centralized auth** via AuthProvider context with dual authentication
@@ -53,21 +55,22 @@ Landing (index.tsx) → Sign In/Register → Home Feed (tabs) → Settings
 
 ## **Critical Files to Know**
 
-| Priority | File | Why It Matters |
-|----------|------|----------------|
-| 🔴 | app/(tabs)/(home)/HomePage.tsx | Main feed logic, Bunny CDN integration |
-| 🔴 | firebase/firebaseConfig.ts | Auth setup, API keys |
-| 🔴 | app/(auth)/SignInScreen.tsx | Login flow |
-| 🟡 | constants/global.ts | All global styles |
-| 🟡 | shared/PostComponents/ | Post rendering system |
-| 🟡 | app/(tabs)/_layout.tsx | Tab navigation config |
-| 🟢 | API/axios.tsx | HTTP client setup |
+| Priority | File                           | Why It Matters                         |
+| -------- | ------------------------------ | -------------------------------------- |
+| 🔴       | app/(tabs)/(home)/HomePage.tsx | Main feed logic, Bunny CDN integration |
+| 🔴       | firebase/firebaseConfig.ts     | Auth setup, API keys                   |
+| 🔴       | app/(auth)/SignInScreen.tsx    | Login flow                             |
+| 🟡       | constants/global.ts            | All global styles                      |
+| 🟡       | shared/PostComponents/         | Post rendering system                  |
+| 🟡       | app/(tabs)/\_layout.tsx        | Tab navigation config                  |
+| 🟢       | API/axios.tsx                  | HTTP client setup                      |
 
 ---
 
 ## **Recent Development Activity**
 
 Looking at commit history, recent work focused on:
+
 - **"prebuild works"** (latest) - Native build configuration
 - **Firebase sift delegate config** - Auth optimization
 - **Expo linking debugging** - Deep linking setup
@@ -81,6 +84,7 @@ Looking at commit history, recent work focused on:
 ## **What's Working vs. Planned**
 
 ### ✅ **Active Features** (Production)
+
 - **Dual Authentication**: Firebase + MongoDB with secure token storage
 - **Home Feed**: Video content from Bunny CDN with HBO-style carousels
 - **Settings Workflow**: 3-step profile forms (Personal → Business → Art)
@@ -90,7 +94,9 @@ Looking at commit history, recent work focused on:
 - **Test Suite**: 717 tests passing (100% pass rate)
 
 ### 🔒 **Hidden Features** (Ready for Progressive Rollout)
+
 **Toggled via `href: null` in tab config - remove to enable:**
+
 - **Social Tab** (5 screens, 85% ready): User profiles, connections, e-commerce
 - **Upload Tab** (1 screen, 60% ready): User-generated content upload
 - **Shows Tab** (2 screens, 65% ready): Premium show streaming
@@ -167,6 +173,7 @@ axiosPrivate → JWT from SecureStore → Cloud Functions
 As a senior engineer joining, I'd prioritize:
 
 1. **Set up local environment**
+
    ```bash
    npm install
    npx expo start
@@ -185,7 +192,7 @@ As a senior engineer joining, I'd prioritize:
    - [docs/wireframes/README.md](./wireframes/README.md) - Screen wireframes
 
 4. **Read critical code files:**
-   - app/_layout.tsx (root layout + auth gating)
+   - app/\_layout.tsx (root layout + auth gating)
    - provider/AuthProvider.tsx (auth context)
    - services/serverAuth.ts (MongoDB JWT auth)
    - app/(tabs)/(home)/HomePage.tsx (main feature)
@@ -207,17 +214,20 @@ As a senior engineer joining, I'd prioritize:
 ## **Business Logic Notes**
 
 **User Roles:**
+
 - `5150` = Admin (gold gradient posts)
 - `1984` = Prime member (red gradient posts)
 - Default = Regular user (gray gradient posts)
 
 **Content Types:**
+
 - **PrimeNewsPost** - Official announcements (admin only)
 - **VideoPost** - User videos (Bunny CDN hosted)
 - **PicturePost** - Photo posts
 - **TextPost** - Text-only updates
 
 **Monetization Hints:**
+
 - E-commerce components exist (shared/EComm/)
 - Ad component with countdown timer
 - "Bonuses" mentioned in commits
@@ -315,6 +325,7 @@ As a senior engineer joining, I'd prioritize:
 **Technology: Dual Authentication System**
 
 **Setup Locations:**
+
 - Firebase: `/firebase/firebaseConfig.ts`
 - MongoDB: `/services/serverAuth.ts`
 - Context: `/provider/AuthProvider.tsx`
@@ -322,6 +333,7 @@ As a senior engineer joining, I'd prioritize:
 **Dual Authentication Architecture:**
 
 1. **Firebase Authentication** (User Identity)
+
    ```typescript
    - Project ID: millennialsprime
    - Handles: User credentials, session persistence
@@ -361,6 +373,7 @@ As a senior engineer joining, I'd prioritize:
    - Success: Navigate to SignInScreen
 
 **Key Details:**
+
 - AuthProvider wraps entire app, manages global auth state
 - Root layout implements auth gating (redirect based on user state)
 - Tokens encrypted and hardware-backed via expo-secure-store
@@ -371,6 +384,7 @@ As a senior engineer joining, I'd prioritize:
 ## **Additional Resources**
 
 **📚 Comprehensive Documentation (NEW - Jan 30, 2026):**
+
 - [Documentation Index](./README.md) - Start here
 - [Architecture Overview](./architecture/APP_OVERVIEW.md) - Tech stack, patterns, security
 - [Navigation Structure](./architecture/NAVIGATION_STRUCTURE.md) - Routing, navigation hierarchy
@@ -380,6 +394,7 @@ As a senior engineer joining, I'd prioritize:
 - [Component Library](./components/COMPONENT_LIBRARY.md) - Reusable components
 
 **📊 Recent Reports:**
+
 - [Executive Status Report](./EXECUTIVE_STATUS_REPORT.md) - Jan 24, 2026
 - [Authentication Audit](./authentication-audit-report.md) - Jan 18, 2026
 - [Test Review Findings](./review-findings/) - Jan 27, 2026

@@ -76,9 +76,7 @@ describe("TabBackButton", () => {
       mockUseNavigationState.mockReturnValue("Social");
       render(<TabBackButton />);
       const button = screen.getByRole("button");
-      expect(button.props.accessibilityHint).toBe(
-        "Navigate to the previous screen"
-      );
+      expect(button.props.accessibilityHint).toBe("Navigate to the previous screen");
     });
   });
 
@@ -155,9 +153,7 @@ describe("TabBackButton", () => {
     });
 
     it("shows nothing when navigation state is null", () => {
-      mockUseNavigationState.mockImplementation((selector) =>
-        selector(null as never)
-      );
+      mockUseNavigationState.mockImplementation((selector) => selector(null as never));
       const { toJSON } = render(<TabBackButton />);
       expect(toJSON()).toBeNull();
     });
@@ -227,9 +223,7 @@ describe("TabHeaderTitle", () => {
   });
 
   it("shows 'Social' when navigation state is unavailable", () => {
-    mockUseNavigationState.mockImplementation((selector) =>
-      selector(null as never)
-    );
+    mockUseNavigationState.mockImplementation((selector) => selector(null as never));
     render(<TabHeaderTitle defaultTitle="Social" />);
     expect(screen.getByText("Social")).toBeTruthy();
   });

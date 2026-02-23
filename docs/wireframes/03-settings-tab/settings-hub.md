@@ -68,6 +68,7 @@ flowchart TD
 ## Components Used
 
 **React Native Core:**
+
 - `KeyboardAvoidingView` - Layout adjustment
 - `ScrollView` - Scrollable content
 - `View` - Container components
@@ -77,16 +78,20 @@ flowchart TD
 - `useColorScheme` - Theme detection
 
 **Custom Components:**
+
 - **ProfilePicture** (`/components/ProfilePicture`) - Profile image with upload
 
 **Expo Router:**
+
 - `useRouter` - Imperative navigation to sub-screens
 
 **Hooks:**
+
 - **useAuth** - Access user data from auth context
 - **useUserProfile** - Fetch user profile from MongoDB
 
 **Styling:**
+
 - `globalStyles` - Global style constants
 - `COLORS` - Theme colors
 
@@ -106,23 +111,25 @@ flowchart TD
 
 ## User Interactions
 
-| Element | Action | Navigation Target | Method |
-|---------|--------|-------------------|--------|
-| Back Button | onPress → router.back() | Previous screen | Imperative |
-| Profile Picture | Tap upload area | Image picker | ProfilePicture component |
-| Personal Info Button | onPress | `/(tabs)/(settings)/MyInfoScreen` | router.push() |
-| Business Info Button | onPress | `/(tabs)/(settings)/BusinessScreen` | router.push() |
-| Artistry Info Button | onPress | `/(tabs)/(settings)/ArtScreen` | router.push() |
+| Element              | Action                  | Navigation Target                   | Method                   |
+| -------------------- | ----------------------- | ----------------------------------- | ------------------------ |
+| Back Button          | onPress → router.back() | Previous screen                     | Imperative               |
+| Profile Picture      | Tap upload area         | Image picker                        | ProfilePicture component |
+| Personal Info Button | onPress                 | `/(tabs)/(settings)/MyInfoScreen`   | router.push()            |
+| Business Info Button | onPress                 | `/(tabs)/(settings)/BusinessScreen` | router.push()            |
+| Artistry Info Button | onPress                 | `/(tabs)/(settings)/ArtScreen`      | router.push()            |
 
 ## State Management
 
 **Global State:**
+
 ```typescript
-const { user } = useAuth();           // Firebase user object
+const { user } = useAuth(); // Firebase user object
 const { profile } = useUserProfile(); // MongoDB user profile
 ```
 
 **Derived Display Data:**
+
 ```typescript
 - displayName: profile?.displayName || user?.displayName || 'User'
 - email: user?.email || 'No email'
@@ -154,6 +161,7 @@ sequenceDiagram
 ## Profile Picture Component
 
 ### Features
+
 - **Display Mode**: Shows current profile picture or default avatar
 - **Upload Mode**: Tap to select new photo
 - **Image Picker Integration**: Uses `expo-image-picker`
@@ -188,11 +196,13 @@ sequenceDiagram
 ### Personal Information Button
 
 **Appearance**:
+
 - Primary green color
 - Icon: Person or profile icon (optional)
 - Label: "Personal Information"
 
 **Action**: Navigate to MyInfoScreen
+
 ```typescript
 router.push("/(tabs)/(settings)/MyInfoScreen");
 ```
@@ -200,11 +210,13 @@ router.push("/(tabs)/(settings)/MyInfoScreen");
 ### Business Information Button
 
 **Appearance**:
+
 - Secondary blue color
 - Icon: Briefcase or business icon (optional)
 - Label: "Business Information"
 
 **Action**: Navigate to BusinessScreen
+
 ```typescript
 router.push("/(tabs)/(settings)/BusinessScreen");
 ```
@@ -212,11 +224,13 @@ router.push("/(tabs)/(settings)/BusinessScreen");
 ### Artistry Information Button
 
 **Appearance**:
+
 - Tertiary purple color
 - Icon: Palette or art icon (optional)
 - Label: "Artistry Information"
 
 **Action**: Navigate to ArtScreen
+
 ```typescript
 router.push("/(tabs)/(settings)/ArtScreen");
 ```
@@ -224,6 +238,7 @@ router.push("/(tabs)/(settings)/ArtScreen");
 ## Visual Design
 
 ### Layout Structure
+
 ```
 ┌─────────────────────────┐
 │    ← Back    Settings   │ Header
@@ -248,12 +263,14 @@ router.push("/(tabs)/(settings)/ArtScreen");
 ```
 
 ### Typography
+
 - **Title**: "Settings" - Large, bold
 - **Display Name**: Large, bold
 - **Email**: Small, regular, gray/muted color
 - **Button Labels**: Medium, semi-bold
 
 ### Colors (Theme-aware)
+
 - **Background**: `colors.background`
 - **Text**: `colors.text`
 - **Personal Button**: Primary color (green) - `colors.priC`
@@ -262,6 +279,7 @@ router.push("/(tabs)/(settings)/ArtScreen");
 - **Email Text**: Muted/gray - `colors.text` with opacity
 
 ### Spacing
+
 - **Profile Section**: Centered, generous top padding
 - **Button Spacing**: Consistent gaps between buttons
 - **Section Padding**: Overall padding around content
@@ -269,18 +287,21 @@ router.push("/(tabs)/(settings)/ArtScreen");
 ## Profile Picture Specifications
 
 ### Image Display
+
 - **Shape**: Circular (borderRadius: 50%)
 - **Size**: 120x120 pixels (or responsive)
 - **Border**: Optional border in theme color
 - **Default**: Generic avatar icon or initials
 
 ### Upload Button
+
 - **Position**: Below profile picture
 - **Style**: Text button or small icon button
 - **Label**: "Upload Photo" or camera icon
 - **Action**: Opens image picker
 
 ### Image Requirements
+
 - **Format**: JPEG, PNG
 - **Max Size**: 5MB (recommended)
 - **Aspect Ratio**: 1:1 (square, cropped if needed)
@@ -289,16 +310,19 @@ router.push("/(tabs)/(settings)/ArtScreen");
 ## Screen States
 
 ### Default State
+
 - Profile picture loaded (or default avatar)
 - User name and email displayed
 - All three navigation buttons visible and enabled
 
 ### Loading State (Profile Picture Upload)
+
 - ActivityIndicator over profile picture
 - Upload button disabled
 - Navigation buttons still accessible
 
 ### Error State (Upload Failed)
+
 - Alert/toast message: "Failed to upload photo"
 - Original picture remains
 - Retry option available
@@ -306,10 +330,12 @@ router.push("/(tabs)/(settings)/ArtScreen");
 ## Accessibility
 
 **Current Implementation:**
+
 - Pressable buttons with touch feedback
 - Clear button labels
 
 **Potential Improvements:**
+
 - `accessibilityLabel` for profile picture ("Profile picture. Tap to upload new photo.")
 - `accessibilityHint` for navigation buttons ("Opens personal information form")
 - Screen reader support for user info
@@ -318,9 +344,11 @@ router.push("/(tabs)/(settings)/ArtScreen");
 ## Implementation Notes
 
 ### File Reference
-[app/(tabs)/(settings)/Settings.tsx](../../../app/(tabs)/(settings)/Settings.tsx)
+
+[app/(tabs)/(settings)/Settings.tsx](<../../../app/(tabs)/(settings)/Settings.tsx>)
 
 ### Key Dependencies
+
 - ProfilePicture component
 - useAuth hook
 - useUserProfile hook
@@ -328,6 +356,7 @@ router.push("/(tabs)/(settings)/ArtScreen");
 - userProfileService (for API calls)
 
 ### Data Sources
+
 ```typescript
 // Firebase user (auth state)
 const { user } = useAuth();
@@ -336,22 +365,25 @@ const { user } = useAuth();
 const { profile, isLoading, refetch } = useUserProfile();
 
 // Display values
-const displayName = profile?.displayName || user?.displayName || 'User';
-const email = user?.email || '';
+const displayName = profile?.displayName || user?.displayName || "User";
+const email = user?.email || "";
 const profilePicUrl = profile?.profilePicture || null;
 ```
 
 ## Related Screens
 
 **Previous Screens:**
+
 - Any screen in the app (Settings tab accessible from tab bar)
 
 **Next Screens:**
+
 - [My Info Screen](./my-info-screen.md) - Personal information form
 - [Business Screen](./business-screen.md) - Business questionnaire
 - [Art Screen](./art-screen.md) - Artist questionnaire
 
 **Parent Layout:**
+
 - Settings Tab Stack Layout (`app/(tabs)/(settings)/_layout.tsx`)
 
 ## Settings Workflow
@@ -370,6 +402,7 @@ flowchart LR
 ```
 
 **User Journey**:
+
 1. User taps Settings tab
 2. Arrives at Settings Hub
 3. Can navigate to any of the three forms
@@ -379,6 +412,7 @@ flowchart LR
 ## Future Enhancements
 
 ### Planned Features
+
 1. **Additional Settings**:
    - Notification preferences
    - Privacy settings
@@ -402,10 +436,11 @@ flowchart LR
    - Delete account
 
 ### Analytics
+
 - Track which settings screens users visit most
 - Monitor profile picture upload success rate
 - Measure settings completion rate
 
 ---
 
-*This wireframe documents the current implementation as of 2026-01-30.*
+_This wireframe documents the current implementation as of 2026-01-30._

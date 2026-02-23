@@ -21,17 +21,19 @@ export default function UserInfo({ name, admin, prime }: UserInfoProps) {
       </View>
       <View style={globalStyles.postUserInfoTextContainer}>
         {/* TODO: Change this to the user id of the user name so pressing can go to users page */}
-        <Pressable onPress={() => {
-          // TODO: Implement navigation to user profile
-          logger.debug(`Navigate to user: ${name}`);
-        }}>
+        <Pressable
+          onPress={() => {
+            // TODO: Implement navigation to user profile
+            logger.debug(`Navigate to user: ${name}`);
+          }}
+        >
           <Text
             style={
               admin
                 ? globalStyles.adminPostUserInfoName
                 : prime
-                ? globalStyles.primePostUserInfoName
-                : globalStyles.postUserInfoName
+                  ? globalStyles.primePostUserInfoName
+                  : globalStyles.postUserInfoName
             }
           >
             {/* TODO: Pressing this takes to their Profile */}

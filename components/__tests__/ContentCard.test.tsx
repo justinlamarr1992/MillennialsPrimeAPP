@@ -104,13 +104,7 @@ describe("ContentCard", () => {
     it("should call onMenuPress when menu button is pressed", () => {
       const mockOnMenuPress = jest.fn();
 
-      render(
-        <ContentCard
-          {...createBaseProps()}
-          showMenu={true}
-          onMenuPress={mockOnMenuPress}
-        />
-      );
+      render(<ContentCard {...createBaseProps()} showMenu={true} onMenuPress={mockOnMenuPress} />);
 
       // Find menu button by testID
       const menuButtons = screen.getAllByA11yHint("Menu");

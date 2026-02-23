@@ -19,9 +19,7 @@ export default function NumberCard({ number = 0, unit }: NumberCardProps) {
       return "00";
     }
   }
-  const renderNumber = () => (
-    <Text style={globalStyles.timerNumber}>{numberText()}</Text>
-  );
+  const renderNumber = () => <Text style={globalStyles.timerNumber}>{numberText()}</Text>;
   return (
     <View style={globalStyles.timerBlock}>
       {renderNumber()}

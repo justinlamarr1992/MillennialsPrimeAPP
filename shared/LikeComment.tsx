@@ -4,9 +4,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { COLORS } from "@/constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { globalStyles } from "@/constants/global";
-import {
-  BottomSheetModal,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function LikeComment() {
   const colorScheme = useColorScheme();
@@ -88,30 +86,16 @@ export default function LikeComment() {
             {/* Likes */}
             <Pressable
               onPress={likePressed}
-              style={[
-                globalStyles.flexRow,
-                globalStyles.flexJustifyContentSpaceBetween,
-              ]}
+              style={[globalStyles.flexRow, globalStyles.flexJustifyContentSpaceBetween]}
             >
-              <Ionicons
-                name="heart-outline"
-                size={size}
-                color={colors["secC"]}
-              />
+              <Ionicons name="heart-outline" size={size} color={colors["secC"]} />
               <Text>13</Text>
             </Pressable>
             <Pressable
               onPress={dislikePressed}
-              style={[
-                globalStyles.flexRow,
-                globalStyles.flexJustifyContentSpaceBetween,
-              ]}
+              style={[globalStyles.flexRow, globalStyles.flexJustifyContentSpaceBetween]}
             >
-              <Ionicons
-                name="skull-outline"
-                size={size}
-                color={colors["hexC"]}
-              />
+              <Ionicons name="skull-outline" size={size} color={colors["hexC"]} />
               <Text>13</Text>
             </Pressable>
           </View>
@@ -127,10 +111,7 @@ export default function LikeComment() {
             {/* Likes only */}
             <Pressable
               onPress={unlikePressed}
-              style={[
-                globalStyles.flexRow,
-                globalStyles.flexJustifyContentSpaceBetween,
-              ]}
+              style={[globalStyles.flexRow, globalStyles.flexJustifyContentSpaceBetween]}
             >
               <Ionicons name="heart" size={size} color={colors["secC"]} />
               <Text>13</Text>
@@ -149,10 +130,7 @@ export default function LikeComment() {
             {/* Dislikes only */}
             <Pressable
               onPress={undislikePressed}
-              style={[
-                globalStyles.flexRow,
-                globalStyles.flexJustifyContentSpaceBetween,
-              ]}
+              style={[globalStyles.flexRow, globalStyles.flexJustifyContentSpaceBetween]}
             >
               <Ionicons name="skull" size={size} color={colors["hexC"]} />
               <Text>13</Text>
@@ -169,11 +147,7 @@ export default function LikeComment() {
             globalStyles.flexAlignSelfFlexEnd,
           ]}
         >
-          <Ionicons
-            name="chatbox-outline"
-            size={size}
-            color={colors["defaultText"]}
-          />
+          <Ionicons name="chatbox-outline" size={size} color={colors["defaultText"]} />
           <Text>13</Text>
         </Pressable>
       </View>

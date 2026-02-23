@@ -45,8 +45,8 @@ function VideoPost({
         admin
           ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]
           : prime
-          ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
-          : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
+            ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
+            : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
       }
     >
       {/* User info here */}
@@ -68,8 +68,8 @@ function VideoPost({
           admin
             ? [globalStyles.postTitle, globalStyles.adminPostContent]
             : prime
-            ? [globalStyles.postTitle, globalStyles.primePostContent]
-            : [globalStyles.postTitle, globalStyles.postContent]
+              ? [globalStyles.postTitle, globalStyles.primePostContent]
+              : [globalStyles.postTitle, globalStyles.postContent]
         }
       >
         {title ? title : "No Title Yet"}
@@ -80,8 +80,8 @@ function VideoPost({
           admin
             ? [globalStyles.postDescription, globalStyles.adminPostContent]
             : prime
-            ? [globalStyles.postDescription, globalStyles.primePostContent]
-            : [globalStyles.postDescription, globalStyles.postContent]
+              ? [globalStyles.postDescription, globalStyles.primePostContent]
+              : [globalStyles.postDescription, globalStyles.postContent]
         }
       >
         {description ? description : "No Description Yet"}
@@ -96,8 +96,8 @@ function VideoPost({
               admin
                 ? colors["adminDefaultText"]
                 : prime
-                ? colors["primeDefaultText"]
-                : colors["defaultText"]
+                  ? colors["primeDefaultText"]
+                  : colors["defaultText"]
             }
           />
           {/* <Ionicons size={28} name="trash" color={colors["primeCarT"]} /> */}

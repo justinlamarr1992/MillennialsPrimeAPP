@@ -13,11 +13,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import ProfileTabs from "../ProfileTabs";
-import type {
-  TextPost,
-  PicturePost,
-  VideoPost,
-} from "@/types/posts";
+import type { TextPost, PicturePost, VideoPost } from "@/types/posts";
 
 // Helper functions to create mock posts for testing
 const createMockTextPost = (overrides?: Partial<TextPost>): TextPost => ({
@@ -246,13 +242,17 @@ describe("ProfileTabs Component - Behavioral Tests", () => {
 
   describe("Given a user has no posts", () => {
     it("should display a message indicating no posts are available", () => {
-      const { getByText } = render(<ProfileTabs textPosts={[]} picturePosts={[]} videoPosts={[]} />);
+      const { getByText } = render(
+        <ProfileTabs textPosts={[]} picturePosts={[]} videoPosts={[]} />
+      );
 
       expect(getByText(/no posts/i)).toBeTruthy();
     });
 
     it("should not display any post components", () => {
-      const { queryByText } = render(<ProfileTabs textPosts={[]} picturePosts={[]} videoPosts={[]} />);
+      const { queryByText } = render(
+        <ProfileTabs textPosts={[]} picturePosts={[]} videoPosts={[]} />
+      );
 
       // Verify no posts are displayed (only the empty message)
       expect(queryByText("Text Post 1")).toBeNull();
@@ -264,11 +264,7 @@ describe("ProfileTabs Component - Behavioral Tests", () => {
   describe("Given a user has no photos", () => {
     it("should display a message when Photos tab is selected", () => {
       const { getByText } = render(
-        <ProfileTabs
-          textPosts={mockTextPosts}
-          picturePosts={[]}
-          videoPosts={mockVideoPosts}
-        />
+        <ProfileTabs textPosts={mockTextPosts} picturePosts={[]} videoPosts={mockVideoPosts} />
       );
 
       fireEvent.press(getByText("Photos"));
@@ -278,11 +274,7 @@ describe("ProfileTabs Component - Behavioral Tests", () => {
 
     it("should not display any picture post components", () => {
       const { getByText, queryByText } = render(
-        <ProfileTabs
-          textPosts={mockTextPosts}
-          picturePosts={[]}
-          videoPosts={mockVideoPosts}
-        />
+        <ProfileTabs textPosts={mockTextPosts} picturePosts={[]} videoPosts={mockVideoPosts} />
       );
 
       fireEvent.press(getByText("Photos"));
@@ -295,11 +287,7 @@ describe("ProfileTabs Component - Behavioral Tests", () => {
   describe("Given a user has no videos", () => {
     it("should display a message when Videos tab is selected", () => {
       const { getByText } = render(
-        <ProfileTabs
-          textPosts={mockTextPosts}
-          picturePosts={mockPicturePosts}
-          videoPosts={[]}
-        />
+        <ProfileTabs textPosts={mockTextPosts} picturePosts={mockPicturePosts} videoPosts={[]} />
       );
 
       fireEvent.press(getByText("Videos"));
@@ -309,11 +297,7 @@ describe("ProfileTabs Component - Behavioral Tests", () => {
 
     it("should not display any video post components", () => {
       const { getByText, queryByText } = render(
-        <ProfileTabs
-          textPosts={mockTextPosts}
-          picturePosts={mockPicturePosts}
-          videoPosts={[]}
-        />
+        <ProfileTabs textPosts={mockTextPosts} picturePosts={mockPicturePosts} videoPosts={[]} />
       );
 
       fireEvent.press(getByText("Videos"));
@@ -409,5 +393,4 @@ describe("ProfileTabs Component - Behavioral Tests", () => {
       expect(queryByText("Picture 1")).toBeNull();
     });
   });
-
 });

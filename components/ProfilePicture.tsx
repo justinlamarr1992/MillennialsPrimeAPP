@@ -41,7 +41,7 @@ export default function ProfilePicture({
 
       // Launch image picker
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: 'images',
+        mediaTypes: "images",
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.8,
@@ -70,10 +70,7 @@ export default function ProfilePicture({
   const renderImage = (): JSX.Element => (
     <Image
       source={{ uri: imageUri as string }}
-      style={[
-        styles.image,
-        { width: size, height: size, borderRadius: size / 2 },
-      ]}
+      style={[styles.image, { width: size, height: size, borderRadius: size / 2 }]}
     />
   );
 
@@ -91,9 +88,7 @@ export default function ProfilePicture({
           },
         ]}
       >
-        <Text style={[styles.editButtonText, { color: colors["secT"] }]}>
-          ✎
-        </Text>
+        <Text style={[styles.editButtonText, { color: colors["secT"] }]}>✎</Text>
       </Pressable>
     );
   };

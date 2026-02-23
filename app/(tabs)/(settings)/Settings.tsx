@@ -1,11 +1,4 @@
-import {
-  Text,
-  ScrollView,
-  Pressable,
-  useColorScheme,
-  View,
-  ActivityIndicator,
-} from "react-native";
+import { Text, ScrollView, Pressable, useColorScheme, View, ActivityIndicator } from "react-native";
 import React from "react";
 import { router } from "expo-router";
 import useAuth from "@/hooks/useAuth";

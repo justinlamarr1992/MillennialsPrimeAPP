@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  useColorScheme,
-  Pressable,
-  ActivityIndicator,
-} from "react-native";
+import { Text, View, useColorScheme, Pressable, ActivityIndicator } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { router } from "expo-router";
@@ -26,19 +20,19 @@ export default function LogOutScreen() {
 
     try {
       // Step 1: Sign out from Firebase
-      logger.log('🔓 Signing out from Firebase...');
+      logger.log("🔓 Signing out from Firebase...");
       await auth().signOut();
-      logger.log('✅ Firebase sign-out successful');
+      logger.log("✅ Firebase sign-out successful");
 
       // Step 2: Clear MongoDB server credentials
-      logger.log('🔓 Clearing MongoDB server credentials...');
+      logger.log("🔓 Clearing MongoDB server credentials...");
       await serverAuth.logout();
-      logger.log('✅ MongoDB credentials cleared');
+      logger.log("✅ MongoDB credentials cleared");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
-      logger.error('❌ Sign out error:', firebaseError.code, firebaseError.message);
+      logger.error("❌ Sign out error:", firebaseError.code, firebaseError.message);
       setLoading(false);
       return; // Exit early on error
     }
@@ -58,13 +52,7 @@ export default function LogOutScreen() {
         { backgroundColor: colors["background"] },
       ]}
     >
-      <Text
-        style={[
-          globalStyles.textHuge,
-          globalStyles.padding,
-          { color: colors["priT"] },
-        ]}
-      >
+      <Text style={[globalStyles.textHuge, globalStyles.padding, { color: colors["priT"] }]}>
         Come Back Soon, There's More to Come
       </Text>
       {errMsg && (
@@ -79,9 +67,7 @@ export default function LogOutScreen() {
           style={[globalStyles.button, { backgroundColor: colors["priC"] }]}
           onPress={handleLogOut}
         >
-          <Text style={[globalStyles.buttonText, { color: colors["secT"] }]}>
-            Log Out
-          </Text>
+          <Text style={[globalStyles.buttonText, { color: colors["secT"] }]}>Log Out</Text>
         </Pressable>
       )}
     </View>

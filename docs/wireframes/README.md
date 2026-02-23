@@ -5,6 +5,7 @@ Screen-by-screen wireframes with Mermaid diagrams documenting the current implem
 ## Wireframe Structure
 
 Each wireframe includes:
+
 - **Component Hierarchy Diagram**: Visual tree of React components
 - **UI Layout Diagram**: Screen sections and layout structure
 - **Components Used**: List of imported components
@@ -41,7 +42,9 @@ Each wireframe includes:
 **Status**: Implemented but disabled (`href: null`)
 
 ### Social Tab (5 screens)
-*Documented in [Future Features Flow](../user-journeys/future-features-flow.md)*
+
+_Documented in [Future Features Flow](../user-journeys/future-features-flow.md)_
+
 - Social Feed Index - Navigation hub
 - Connected Users Screen - User list with badges
 - My Profile Screen - User's posts feed
@@ -49,9 +52,11 @@ Each wireframe includes:
 - User Profile [id] - Dynamic user profiles
 
 ### Upload Tab (1 screen)
+
 - Upload Content Screen - File upload interface
 
 ### Shows Tab (2 screens)
+
 - Prime Show - WebView streaming
 - Show View Screen - Episodes listing
 
@@ -64,6 +69,7 @@ Each wireframe includes:
 ## Wireframe Legend
 
 ### Component Hierarchy Diagrams
+
 ```mermaid
 graph TD
     A[Parent Component] --> B[Child Component]
@@ -71,6 +77,7 @@ graph TD
 ```
 
 ### UI Layout Diagrams
+
 ```mermaid
 flowchart LR
     Screen --> Header
@@ -79,6 +86,7 @@ flowchart LR
 ```
 
 ### Status Indicators
+
 - ✅ **Complete** - Wireframe fully documented
 - ⏳ **Pending** - Wireframe to be created
 - 🔒 **Hidden** - Feature implemented but disabled
@@ -86,12 +94,14 @@ flowchart LR
 ## Usage
 
 ### For Business Review
+
 1. Compare wireframes to design mockups
 2. Verify user flows match expectations
 3. Identify gaps or misalignments
 4. Plan design updates
 
 ### For Development
+
 1. Reference component structure
 2. Understand state management patterns
 3. Review validation rules
@@ -100,10 +110,11 @@ flowchart LR
 ## Mermaid Diagrams
 
 All diagrams use Mermaid syntax. View in:
+
 - GitHub (automatic rendering)
 - VSCode (with Mermaid extension)
 - Mermaid Live Editor: https://mermaid.live
 
 ---
 
-*Wireframes documented as of 2026-01-30*
+_Wireframes documented as of 2026-01-30_

@@ -43,12 +43,13 @@ export default function B2BOpportunitySection({
           {b2bTags.map((tag) => (
             <View
               key={tag}
-              style={[globalStyles.borderDefault, { backgroundColor: colors.hexC, borderColor: colors.hexC }]}
+              style={[
+                globalStyles.borderDefault,
+                { backgroundColor: colors.hexC, borderColor: colors.hexC },
+              ]}
               accessibilityLabel={`B2B service: ${tag}`}
             >
-              <Text style={[globalStyles.labelText, { color: colors.secT }]}>
-                {tag}
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors.secT }]}>{tag}</Text>
             </View>
           ))}
         </View>

@@ -13,8 +13,7 @@ describe("InterestSection", () => {
 
   describe("When a user has interests", () => {
     const interests = ["Graphic Design", "Photography", "Music"];
-    const renderWithInterests = () =>
-      render(<InterestSection interests={interests} />);
+    const renderWithInterests = () => render(<InterestSection interests={interests} />);
 
     it("should display all of their interests", () => {
       renderWithInterests();

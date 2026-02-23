@@ -104,11 +104,13 @@ stateDiagram-v2
 ### Step 1: Personal Information (MyInfoScreen)
 
 **Required Fields**:
+
 - First Name
 - Last Name
 - Date of Birth (Millennials 1981-1997)
 
 **Optional Fields**:
+
 - Profile Picture
 - City, State, Country
 - Preferences (Likes, Comments, Shares toggles)
@@ -117,6 +119,7 @@ stateDiagram-v2
 **Next Action**: Navigate to BusinessScreen
 
 **User Journey**:
+
 ```
 1. Fill basic info (name, DOB)
 2. (Optional) Upload profile picture
@@ -132,6 +135,7 @@ stateDiagram-v2
 **Primary Question**: Are you an entrepreneur?
 
 **If Yes**:
+
 - Company Name (required)
 - Industry (required)
 - Business Objectives (optional)
@@ -139,12 +143,14 @@ stateDiagram-v2
 - Number of Employees (optional)
 
 **If No**:
+
 - Skip all business fields
 
 **Validation**: If entrepreneur, company name and industry required
 **Next Action**: Navigate to ArtScreen
 
 **User Journey (Entrepreneur)**:
+
 ```
 1. Select "Yes" for entrepreneur
 2. Fill company name and industry
@@ -153,6 +159,7 @@ stateDiagram-v2
 ```
 
 **User Journey (Non-Entrepreneur)**:
+
 ```
 1. Select "No" for entrepreneur
 2. Tap Next → ArtScreen (skip all fields)
@@ -165,6 +172,7 @@ stateDiagram-v2
 **Primary Question**: Are you an artist?
 
 **If Yes** (14+ conditional fields):
+
 - Professional Artist? (Yes/No)
 - Purpose of work (optional)
 - Favorite/least favorite parts (optional)
@@ -179,12 +187,14 @@ stateDiagram-v2
   - If Yes: What is it? (optional)
 
 **If No**:
+
 - Skip all art fields
 
 **Validation**: All fields optional
 **Next Action**: Navigate to HomePage
 
 **User Journey (Artist with Network & Integral)**:
+
 ```
 1. Select "Yes" for artist
 2. (Optional) Fill professional status
@@ -195,6 +205,7 @@ stateDiagram-v2
 ```
 
 **User Journey (Non-Artist)**:
+
 ```
 1. Select "No" for artist
 2. Tap Save → HomePage (skip all fields)
@@ -259,13 +270,14 @@ Users can enter the workflow in three ways:
 
 ## Data Persistence
 
-| Screen | API Call | MongoDB Collection | Required | Optional |
-|--------|----------|-------------------|----------|----------|
-| My Info | `userProfileService.updatePersonalInfo()` | `profiles.personalInfo` | firstName, lastName, DOB | city, state, country, preferences |
-| Business | `userProfileService.updateBusiness()` | `profiles.business` | companyName, industry (if entrepreneur) | objectives, years, employees |
-| Art | `userProfileService.updateArt()` | `profiles.art` | None (all optional) | All 14 fields |
+| Screen   | API Call                                  | MongoDB Collection      | Required                                | Optional                          |
+| -------- | ----------------------------------------- | ----------------------- | --------------------------------------- | --------------------------------- |
+| My Info  | `userProfileService.updatePersonalInfo()` | `profiles.personalInfo` | firstName, lastName, DOB                | city, state, country, preferences |
+| Business | `userProfileService.updateBusiness()`     | `profiles.business`     | companyName, industry (if entrepreneur) | objectives, years, employees      |
+| Art      | `userProfileService.updateArt()`          | `profiles.art`          | None (all optional)                     | All 14 fields                     |
 
 **Data Model**: User profile stored as single MongoDB document with nested objects:
+
 ```json
 {
   "userId": "firebase-uid",
@@ -278,16 +290,19 @@ Users can enter the workflow in three ways:
 ## User Experience Insights
 
 ### Completion Rates (Expected)
+
 - **My Info**: ~90% (required fields, early in workflow)
 - **Business**: ~60% (conditional, middle of workflow)
 - **Art**: ~40% (conditional, end of workflow, many fields)
 
 ### Drop-off Points
+
 1. **Between My Info → Business**: Users may exit after basic profile
 2. **Within Art Screen**: 14 fields may cause fatigue
 3. **Entrepreneur/Artist "No"**: Large field reduction, faster completion
 
 ### Time Investment
+
 - **Minimal Path** (No entrepreneur, No artist): ~3 minutes
 - **Average Path** (One conditional): ~5-7 minutes
 - **Maximum Path** (Both conditionals): ~10-15 minutes
@@ -295,11 +310,13 @@ Users can enter the workflow in three ways:
 ## Business Value
 
 ### Profile Completeness
+
 - **Targeting**: Complete profiles enable better content recommendations
 - **Networking**: Business/art info enables user connections (future social features)
 - **Insights**: Demographic data for content strategy
 
 ### Form Design Rationale
+
 1. **Sequential Flow**: Guides users through logical progression
 2. **Conditional Fields**: Reduces cognitive load for non-applicable users
 3. **Optional Fields**: Lowers barrier to completion
@@ -314,4 +331,4 @@ Users can enter the workflow in three ways:
 
 ---
 
-*User journey documented as of 2026-01-30*
+_User journey documented as of 2026-01-30_

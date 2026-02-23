@@ -61,7 +61,7 @@ export default function ArtScreen() {
   useEffect(() => {
     if (profile?.art) {
       if (__DEV__) {
-        logger.log('📝 Populating art form with profile data:', profile.art);
+        logger.log("📝 Populating art form with profile data:", profile.art);
       }
       setArtist(profile.art.artist ? "Yes" : "No");
       setProfessional(profile.art.professional ? "Yes" : "No");
@@ -76,7 +76,7 @@ export default function ArtScreen() {
 
   const handleSubmit = async () => {
     if (__DEV__) {
-      logger.log('💾 Art settings submit button pressed');
+      logger.log("💾 Art settings submit button pressed");
     }
 
     // Validation is optional for art settings since all fields are optional
@@ -84,14 +84,14 @@ export default function ArtScreen() {
 
     try {
       if (__DEV__) {
-        logger.log('📤 Art settings submission started');
+        logger.log("📤 Art settings submission started");
       }
 
       if (!user) {
         if (__DEV__) {
-          logger.warn('⚠️ No authenticated user found');
+          logger.warn("⚠️ No authenticated user found");
         }
-        Alert.alert('Error', 'Please log in to save your art information.');
+        Alert.alert("Error", "Please log in to save your art information.");
         return;
       }
 
@@ -108,18 +108,18 @@ export default function ArtScreen() {
       });
 
       if (__DEV__) {
-        logger.log('✅ Art settings saved successfully');
+        logger.log("✅ Art settings saved successfully");
       }
 
       // Refetch profile to get updated data
       await refetch();
 
-      Alert.alert('Success', 'Your art information has been updated!');
+      Alert.alert("Success", "Your art information has been updated!");
 
       router.push("/(tabs)/(home)/HomePage");
     } catch (err) {
-      logger.error('❌ Art settings submission error:', err);
-      Alert.alert('Error', 'Failed to save art settings. Please try again.');
+      logger.error("❌ Art settings submission error:", err);
+      Alert.alert("Error", "Failed to save art settings. Please try again.");
     }
   };
 
@@ -135,16 +135,16 @@ export default function ArtScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={globalStyles.formTitle}>
-            <Text style={[globalStyles.textTitle, { color: colors.text }]}>
-              Art Information
-            </Text>
+            <Text style={[globalStyles.textTitle, { color: colors.text }]}>Art Information</Text>
             <Text style={[globalStyles.labelText, { color: colors.text }]}>
               Edit your Artist information
             </Text>
           </View>
           <View style={globalStyles.groupPadding}>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors.text }]}>Are you an Artist</Text>
+              <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                Are you an Artist
+              </Text>
               <Pressable>
                 <TextInput
                   style={globalStyles.settingsInput}
@@ -156,10 +156,7 @@ export default function ArtScreen() {
                 ></TextInput>
               </Pressable>
               {artistPicker && (
-                <Picker
-                  selectedValue={artist}
-                  onValueChange={(itemValue) => setArtist(itemValue)}
-                >
+                <Picker selectedValue={artist} onValueChange={(itemValue) => setArtist(itemValue)}>
                   <Picker.Item label="Yes" value="Yes" />
                   <Picker.Item label="No" value="No" />
                 </Picker>
@@ -184,9 +181,7 @@ export default function ArtScreen() {
                       {professionalPicker && (
                         <Picker
                           selectedValue={professional}
-                          onValueChange={(itemValue) =>
-                            setProfessional(itemValue)
-                          }
+                          onValueChange={(itemValue) => setProfessional(itemValue)}
                         >
                           <Picker.Item label="Yes" value="Yes" />
                           <Picker.Item label="No" value="No" />
@@ -292,9 +287,7 @@ export default function ArtScreen() {
                       {networkPicker && (
                         <Picker
                           selectedValue={network}
-                          onValueChange={(itemValue) =>
-                            setNetwork(itemValue)
-                          }
+                          onValueChange={(itemValue) => setNetwork(itemValue)}
                         >
                           <Picker.Item label="Yes" value="Yes" />
                           <Picker.Item label="No" value="No" />
@@ -332,9 +325,7 @@ export default function ArtScreen() {
                       {specificIntegralPicker && (
                         <Picker
                           selectedValue={specificIntegral}
-                          onValueChange={(itemValue) =>
-                            setSpecificIntegral(itemValue)
-                          }
+                          onValueChange={(itemValue) => setSpecificIntegral(itemValue)}
                         >
                           <Picker.Item label="Yes" value="Yes" />
                           <Picker.Item label="No" value="No" />
@@ -343,7 +334,9 @@ export default function ArtScreen() {
                     </View>
                     {specificIntegral === "Yes" && (
                       <View style={globalStyles.labelInput}>
-                        <Text style={[globalStyles.labelText, { color: colors.text }]}>What is it?</Text>
+                        <Text style={[globalStyles.labelText, { color: colors.text }]}>
+                          What is it?
+                        </Text>
                         <TextInput
                           style={globalStyles.settingsInput}
                           placeholder="We need deets"
@@ -361,10 +354,7 @@ export default function ArtScreen() {
           {/* Button */}
           <View style={globalStyles.groupPadding}>
             <Pressable
-              style={[
-                globalStyles.button,
-                { backgroundColor: colors.triC, marginBottom: 25 },
-              ]}
+              style={[globalStyles.button, { backgroundColor: colors.triC, marginBottom: 25 }]}
             >
               <Text style={globalStyles.buttonText} onPress={handleSubmit}>
                 Save Changes

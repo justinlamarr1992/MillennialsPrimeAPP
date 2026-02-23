@@ -7,12 +7,12 @@
  * - Allows manual refetch of profile data
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { userProfileService } from '@/services/userProfileService';
-import { logger } from '@/utils/logger';
-import useAuth from './useAuth';
-import useAxiosPrivate from './useAxiosPrivate';
-import type { ServerUserProfile } from '@/types/UserProfile';
+import { useState, useEffect, useCallback } from "react";
+import { userProfileService } from "@/services/userProfileService";
+import { logger } from "@/utils/logger";
+import useAuth from "./useAuth";
+import useAxiosPrivate from "./useAxiosPrivate";
+import type { ServerUserProfile } from "@/types/UserProfile";
 
 interface UseUserProfileResult {
   profile: ServerUserProfile | null;
@@ -44,18 +44,18 @@ export const useUserProfile = (): UseUserProfileResult => {
       setError(null);
 
       if (__DEV__) {
-        logger.log('📥 Fetching user profile from server...');
+        logger.log("📥 Fetching user profile from server...");
       }
       const profileData = await userProfileService.fetchProfile();
       if (__DEV__) {
-        logger.log('✅ Profile data fetched:', JSON.stringify(profileData));
+        logger.log("✅ Profile data fetched:", JSON.stringify(profileData));
       }
       setProfile(profileData);
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('Failed to fetch profile');
+      const error = err instanceof Error ? err : new Error("Failed to fetch profile");
       setError(error);
       setProfile(null);
-      logger.error('❌ Failed to fetch user profile:', err);
+      logger.error("❌ Failed to fetch user profile:", err);
     } finally {
       setLoading(false);
     }

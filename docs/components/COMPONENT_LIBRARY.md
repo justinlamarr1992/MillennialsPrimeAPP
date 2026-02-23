@@ -16,14 +16,14 @@ This document catalogs all reusable components in the `/components/` directory. 
 
 ```typescript
 interface ContentCardProps {
-  title: string;                 // Video/content title
-  description?: string;          // Optional description
-  dateUploaded?: string;         // Upload date (formatted)
-  isPrime?: boolean;             // Premium content flag
-  showMenu?: boolean;            // Show 3-dot menu
-  showNewBadge?: boolean;        // Show "New Episode" badge
-  onPress?: () => void;          // Card tap handler
-  onMenuPress?: () => void;      // Menu tap handler
+  title: string; // Video/content title
+  description?: string; // Optional description
+  dateUploaded?: string; // Upload date (formatted)
+  isPrime?: boolean; // Premium content flag
+  showMenu?: boolean; // Show 3-dot menu
+  showNewBadge?: boolean; // Show "New Episode" badge
+  onPress?: () => void; // Card tap handler
+  onMenuPress?: () => void; // Menu tap handler
 }
 ```
 
@@ -84,8 +84,8 @@ graph TD
 
 ```typescript
 interface ContentCarouselProps {
-  title?: string;                    // Section title
-  data: ContentItem[];               // Array of content items
+  title?: string; // Section title
+  data: ContentItem[]; // Array of content items
   renderItem: (item) => JSX.Element; // Render function for each item
   keyExtractor?: (item, index) => string;
 }
@@ -128,9 +128,9 @@ interface ContentCarouselProps {
 
 ```typescript
 interface ProfilePictureProps {
-  imageUri?: string | null;      // Current profile picture URI
-  size?: number;                 // Image size (default: 120)
-  editable?: boolean;            // Allow upload (default: true)
+  imageUri?: string | null; // Current profile picture URI
+  size?: number; // Image size (default: 120)
+  editable?: boolean; // Allow upload (default: true)
   onImageChange?: (uri: string) => void; // Callback after upload
 }
 ```
@@ -182,7 +182,7 @@ sequenceDiagram
 
 ```typescript
 interface ThemedTextProps extends TextProps {
-  type?: 'default' | 'title' | 'subtitle' | 'link';
+  type?: "default" | "title" | "subtitle" | "link";
   lightColor?: string;
   darkColor?: string;
 }
@@ -380,9 +380,9 @@ interface ErrorBoundaryProps {
 
 ```typescript
 interface TabBarIconProps {
-  name: string;           // Icon name from Ionicons
-  color: string;          // Icon color
-  focused?: boolean;      // Tab active state
+  name: string; // Icon name from Ionicons
+  color: string; // Icon color
+  focused?: boolean; // Tab active state
 }
 ```
 
@@ -397,19 +397,19 @@ interface TabBarIconProps {
 
 ## Component Usage Summary
 
-| Component | Screens Used | Purpose |
-|-----------|--------------|---------|
-| ContentCard | HomePage | Video content display |
-| ContentCarousel | HomePage | Horizontal scrolling sections |
-| ProfilePicture | Settings, MyInfo | Profile image upload/display |
-| ThemedText | All screens | Consistent text styling |
-| ThemedView | All screens | Consistent containers |
-| ParallaxScrollView | Future: Detail screens | Engaging scroll effects |
-| Header | Custom headers | Screen titles and navigation |
-| Collapsible | Future: Settings | Expandable sections |
-| ExternalLink | Future: About, Help | External navigation |
-| ErrorBoundary | Root level | Error handling |
-| TabBarIcon | Tab navigation | Tab bar icons |
+| Component          | Screens Used           | Purpose                       |
+| ------------------ | ---------------------- | ----------------------------- |
+| ContentCard        | HomePage               | Video content display         |
+| ContentCarousel    | HomePage               | Horizontal scrolling sections |
+| ProfilePicture     | Settings, MyInfo       | Profile image upload/display  |
+| ThemedText         | All screens            | Consistent text styling       |
+| ThemedView         | All screens            | Consistent containers         |
+| ParallaxScrollView | Future: Detail screens | Engaging scroll effects       |
+| Header             | Custom headers         | Screen titles and navigation  |
+| Collapsible        | Future: Settings       | Expandable sections           |
+| ExternalLink       | Future: About, Help    | External navigation           |
+| ErrorBoundary      | Root level             | Error handling                |
+| TabBarIcon         | Tab navigation         | Tab bar icons                 |
 
 ---
 
@@ -434,10 +434,10 @@ interface TabBarIconProps {
 ### Import Pattern
 
 ```typescript
-import ContentCard from '@/components/ContentCard';
-import { ThemedText, ThemedView } from '@/components/Themed';
+import ContentCard from "@/components/ContentCard";
+import { ThemedText, ThemedView } from "@/components/Themed";
 ```
 
 ---
 
-*Component library as of 2026-01-30*
+_Component library as of 2026-01-30_

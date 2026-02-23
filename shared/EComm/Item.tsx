@@ -33,30 +33,18 @@ export default function PicturePost({
         admin
           ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]
           : prime
-          ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
-          : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
+            ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
+            : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
       }
     >
       {/* Title */}
       <Text
         style={
           admin
-            ? [
-                globalStyles.itemTitle,
-                globalStyles.adminItemContent,
-                globalStyles.marginB10,
-              ]
+            ? [globalStyles.itemTitle, globalStyles.adminItemContent, globalStyles.marginB10]
             : prime
-            ? [
-                globalStyles.itemTitle,
-                globalStyles.primeItemContent,
-                globalStyles.marginB10,
-              ]
-            : [
-                globalStyles.itemTitle,
-                globalStyles.itemContent,
-                globalStyles.marginB10,
-              ]
+              ? [globalStyles.itemTitle, globalStyles.primeItemContent, globalStyles.marginB10]
+              : [globalStyles.itemTitle, globalStyles.itemContent, globalStyles.marginB10]
         }
       >
         {itemName ? itemName : "No Title yet"}
@@ -78,8 +66,8 @@ export default function PicturePost({
             admin
               ? [globalStyles.itemDescription, globalStyles.adminItemContent]
               : prime
-              ? [globalStyles.itemDescription, globalStyles.primeItemContent]
-              : [globalStyles.itemDescription, globalStyles.postContent]
+                ? [globalStyles.itemDescription, globalStyles.primeItemContent]
+                : [globalStyles.itemDescription, globalStyles.postContent]
           }
         >
           {description ? description : "No description Yet"}
@@ -90,8 +78,8 @@ export default function PicturePost({
             admin
               ? [globalStyles.itemPrice, globalStyles.adminItemContent]
               : prime
-              ? [globalStyles.itemPrice, globalStyles.primeItemContent]
-              : [globalStyles.itemPrice, globalStyles.postContent]
+                ? [globalStyles.itemPrice, globalStyles.primeItemContent]
+                : [globalStyles.itemPrice, globalStyles.postContent]
           }
         >
           {price ? price : "$###.##"}
@@ -103,8 +91,8 @@ export default function PicturePost({
           admin
             ? [globalStyles.adminItemButton]
             : prime
-            ? [globalStyles.primeItemButton]
-            : [globalStyles.itemButton]
+              ? [globalStyles.primeItemButton]
+              : [globalStyles.itemButton]
         }
         // style={[
         //   globalStyles.itemButton,
@@ -119,8 +107,8 @@ export default function PicturePost({
               admin
                 ? [globalStyles.itemAdminButtonText, globalStyles.buttonText]
                 : prime
-                ? [globalStyles.itemPrimeButtonText, globalStyles.buttonText]
-                : [globalStyles.itemButtonText, globalStyles.buttonText]
+                  ? [globalStyles.itemPrimeButtonText, globalStyles.buttonText]
+                  : [globalStyles.itemButtonText, globalStyles.buttonText]
             }
           >
             Buy Now

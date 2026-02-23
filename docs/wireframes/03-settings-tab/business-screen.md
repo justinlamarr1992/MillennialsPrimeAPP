@@ -63,14 +63,14 @@ flowchart TD
 
 ## Fields & Validation
 
-| Field | Condition | Type | Validation |
-|-------|-----------|------|------------|
-| Entrepreneur? | Always | Picker (Yes/No) | Required |
-| Company Name | If Yes | TextInput | Required if entrepreneur |
-| Industry | If Yes | TextInput | Required if entrepreneur |
-| Objectives | If Yes | TextInput (multiline) | Optional |
-| Years in Business | If Yes | Number Input | Optional |
-| Employee Count | If Yes | Number Input | Optional |
+| Field             | Condition | Type                  | Validation               |
+| ----------------- | --------- | --------------------- | ------------------------ |
+| Entrepreneur?     | Always    | Picker (Yes/No)       | Required                 |
+| Company Name      | If Yes    | TextInput             | Required if entrepreneur |
+| Industry          | If Yes    | TextInput             | Required if entrepreneur |
+| Objectives        | If Yes    | TextInput (multiline) | Optional                 |
+| Years in Business | If Yes    | Number Input          | Optional                 |
+| Employee Count    | If Yes    | Number Input          | Optional                 |
 
 ## State Management
 
@@ -150,14 +150,16 @@ sequenceDiagram
 
 ## Implementation Notes
 
-**File Reference**: [app/(tabs)/(settings)/BusinessScreen.tsx](../../../app/(tabs)/(settings)/BusinessScreen.tsx)
+**File Reference**: [app/(tabs)/(settings)/BusinessScreen.tsx](<../../../app/(tabs)/(settings)/BusinessScreen.tsx>)
 
 **Key Dependencies**:
+
 - Picker (@react-native-picker/picker)
 - userProfileService.updateBusiness()
 - useUserProfile hook
 
 **Conditional Rendering**:
+
 ```typescript
 {isEntrepreneur === "Yes" && (
   <View>
@@ -177,4 +179,4 @@ sequenceDiagram
 
 ---
 
-*Wireframe as of 2026-01-30*
+_Wireframe as of 2026-01-30_

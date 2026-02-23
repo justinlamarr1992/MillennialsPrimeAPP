@@ -60,20 +60,20 @@ export default function SignInScreen() {
 
     try {
       // Step 1: Authenticate with Firebase
-      logger.log('🔐 Signing in with Firebase...');
+      logger.log("🔐 Signing in with Firebase...");
       await auth().signInWithEmailAndPassword(email, password);
-      logger.log('✅ Firebase sign-in successful');
+      logger.log("✅ Firebase sign-in successful");
 
       // Step 2: Authenticate with MongoDB server
-      logger.log('🔐 Authenticating with MongoDB server...');
+      logger.log("🔐 Authenticating with MongoDB server...");
       try {
         await serverAuth.loginToServer(email, password);
-        logger.log('✅ MongoDB authentication successful');
+        logger.log("✅ MongoDB authentication successful");
       } catch (mongoError) {
-        logger.error('❌ MongoDB authentication failed:', mongoError);
+        logger.error("❌ MongoDB authentication failed:", mongoError);
         // Don't block the user from accessing the app if MongoDB auth fails
         // They're still authenticated with Firebase
-        setErrMsg('Warning: Could not connect to server. Some features may be limited.');
+        setErrMsg("Warning: Could not connect to server. Some features may be limited.");
       }
 
       // Navigation handled automatically by root layout auth listener
@@ -81,7 +81,7 @@ export default function SignInScreen() {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
-      logger.error('❌ Sign in error:', firebaseError.code, firebaseError.message);
+      logger.error("❌ Sign in error:", firebaseError.code, firebaseError.message);
     } finally {
       setLoading(false);
     }
@@ -95,11 +95,7 @@ export default function SignInScreen() {
     >
       <View style={[globalStyles.signInScreen]}>
         <View
-          style={[
-            globalStyles.registerButtonBox,
-            globalStyles.padding,
-            globalStyles.centerItem,
-          ]}
+          style={[globalStyles.registerButtonBox, globalStyles.padding, globalStyles.centerItem]}
         >
           <Pressable
             style={[globalStyles.button, { backgroundColor: colors["hexC"] }]}
@@ -109,9 +105,7 @@ export default function SignInScreen() {
               <Text style={globalStyles.buttonText}>Create an Account</Text>
             </Link>
           </Pressable>
-          <Text style={[globalStyles.errorText, { color: colors.secC }]}>
-            {errMsg}
-          </Text>
+          <Text style={[globalStyles.errorText, { color: colors.secC }]}>{errMsg}</Text>
         </View>
         <View
           style={[
@@ -124,22 +118,15 @@ export default function SignInScreen() {
             },
           ]}
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={globalStyles.scrollView}
-          >
+          <ScrollView showsVerticalScrollIndicator={false} style={globalStyles.scrollView}>
             <View style={globalStyles.formTitle}>
-              <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
-                Welcome Back
-              </Text>
+              <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>Welcome Back</Text>
               <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
                 Sign in to Continue
               </Text>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
-                Email
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>Email</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
@@ -150,15 +137,18 @@ export default function SignInScreen() {
                 autoCapitalize="none"
               />
               {emailError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {emailError}
                 </Text>
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
-                Password
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>Password</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Password"
@@ -186,9 +176,7 @@ export default function SignInScreen() {
                 <Text style={globalStyles.buttonText}>Login</Text>
               </Pressable>
             )}
-            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>
-              {errMsg}
-            </Text>
+            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>{errMsg}</Text>
             <Link href="/(auth)/PasswordRecoveryScreen" asChild>
               <Text
                 style={[globalStyles.vertPadding, { color: colors["linkC"] }]}

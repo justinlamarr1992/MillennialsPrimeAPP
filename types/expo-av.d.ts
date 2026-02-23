@@ -1,12 +1,12 @@
 // Type declaration for expo-av module
-declare module 'expo-av' {
-  import { Component } from 'react';
-  import { ViewStyle } from 'react-native';
+declare module "expo-av" {
+  import { Component } from "react";
+  import { ViewStyle } from "react-native";
 
   export enum ResizeMode {
-    CONTAIN = 'contain',
-    COVER = 'cover',
-    STRETCH = 'stretch',
+    CONTAIN = "contain",
+    COVER = "cover",
+    STRETCH = "stretch",
   }
 
   export interface VideoProps {
@@ -20,5 +20,5 @@ declare module 'expo-av' {
 
   export class Video extends Component<VideoProps> {}
 
-  export * from 'expo-av/build/index';
+  export * from "expo-av/build/index";
 }

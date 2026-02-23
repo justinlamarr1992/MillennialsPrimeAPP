@@ -20,21 +20,13 @@ describe("ContentCarousel", () => {
 
   describe("Rendering", () => {
     it("should render section title", () => {
-      render(
-        <ContentCarousel title="Test Section">
-          {createMockChildren()}
-        </ContentCarousel>
-      );
+      render(<ContentCarousel title="Test Section">{createMockChildren()}</ContentCarousel>);
 
       expect(screen.getByText("Test Section")).toBeTruthy();
     });
 
     it("should render children content", () => {
-      render(
-        <ContentCarousel title="Test Section">
-          {createMockChildren()}
-        </ContentCarousel>
-      );
+      render(<ContentCarousel title="Test Section">{createMockChildren()}</ContentCarousel>);
 
       expect(screen.getByTestId("child-1")).toBeTruthy();
       expect(screen.getByTestId("child-2")).toBeTruthy();
@@ -62,11 +54,7 @@ describe("ContentCarousel", () => {
 
     it("should display custom badge text", () => {
       render(
-        <ContentCarousel
-          title="Test Section"
-          showBadge={true}
-          badgeText="Custom Badge"
-        >
+        <ContentCarousel title="Test Section" showBadge={true} badgeText="Custom Badge">
           {createMockChildren()}
         </ContentCarousel>
       );
@@ -102,18 +90,12 @@ describe("ContentCarousel", () => {
       };
 
       const { rerender } = render(
-        <ContentCarousel {...props}>
-          {createMockChildren()}
-        </ContentCarousel>
+        <ContentCarousel {...props}>{createMockChildren()}</ContentCarousel>
       );
 
       const firstRender = screen.getByText("Consistent Section");
 
-      rerender(
-        <ContentCarousel {...props}>
-          {createMockChildren()}
-        </ContentCarousel>
-      );
+      rerender(<ContentCarousel {...props}>{createMockChildren()}</ContentCarousel>);
 
       const secondRender = screen.getByText("Consistent Section");
 

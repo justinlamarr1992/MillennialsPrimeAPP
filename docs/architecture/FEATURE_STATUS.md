@@ -3,6 +3,7 @@
 ## Overview
 
 MillennialsPrimeAPP follows a **progressive feature release** strategy. The application contains fully implemented features that are selectively enabled using feature toggles. This approach allows:
+
 - Development ahead of launch without exposing incomplete features
 - Safer, incremental releases
 - Faster iteration cycles
@@ -14,7 +15,7 @@ MillennialsPrimeAPP follows a **progressive feature release** strategy. The appl
 
 Feature toggles are implemented via the `href` property in tab navigation configuration:
 
-**File**: [app/(tabs)/_layout.tsx](../../app/(tabs)/_layout.tsx)
+**File**: [app/(tabs)/\_layout.tsx](<../../app/(tabs)/_layout.tsx>)
 
 ```typescript
 <Tabs.Screen
@@ -28,6 +29,7 @@ Feature toggles are implemented via the `href` property in tab navigation config
 ```
 
 **To Enable a Hidden Feature:**
+
 1. Remove the `href: null` line
 2. Uncomment the `tabBarIcon` and `title` properties
 3. Test thoroughly in development
@@ -42,6 +44,7 @@ Feature toggles are implemented via the `href` property in tab navigation config
 **File Locations**: `app/(auth)/`
 
 **Features**:
+
 - Welcome/splash screen with branding
 - Email/password sign-in with Firebase
 - New user registration with validation
@@ -61,6 +64,7 @@ Feature toggles are implemented via the `href` property in tab navigation config
 **File Locations**: `app/(tabs)/(home)/`
 
 **Features**:
+
 - Video content feed powered by Bunny CDN
 - HBO-style content organization:
   - Featured video hero section
@@ -75,6 +79,7 @@ Feature toggles are implemented via the `href` property in tab navigation config
 **Implementation Status**: ✅ Complete, tested, integrated with CDN
 
 **API Integration**:
+
 - Bunny CDN for video delivery
 - React Query for data fetching and caching
 
@@ -87,12 +92,14 @@ Feature toggles are implemented via the `href` property in tab navigation config
 **File Locations**: `app/(tabs)/(settings)/`
 
 **Features**:
+
 - **Settings Hub**: Profile picture upload, navigation to sub-screens
 - **Personal Info Screen**: Name, DOB, location, preferences (likes, comments, shares)
 - **Business Screen**: Entrepreneur questionnaire with conditional fields
 - **Art Screen**: Artist questionnaire with extensive conditional logic
 
 **Sequential Workflow**:
+
 ```
 Settings → My Info → Business → Art → HomePage
 ```
@@ -101,6 +108,7 @@ Settings → My Info → Business → Art → HomePage
 **Implementation Status**: ✅ Complete, tested, integrated with MongoDB
 
 **Data Storage**:
+
 - MongoDB user profile collections
 - React Query caching
 - Secure token-based API access
@@ -114,6 +122,7 @@ Settings → My Info → Business → Art → HomePage
 **File Locations**: `app/(tabs)/LogOutScreen.tsx`
 
 **Features**:
+
 - Firebase sign out
 - MongoDB server logout (clears JWT tokens)
 - Secure token removal from SecureStore
@@ -133,6 +142,7 @@ Settings → My Info → Business → Art → HomePage
 **File Locations**: `app/(tabs)/(social)/`
 
 **Features**:
+
 - **Social Feed** (`index.tsx`): Navigation hub to other social screens
 - **Connected Users Screen**: List of connected users with status badges:
   - Admin badges
@@ -165,6 +175,7 @@ Settings → My Info → Business → Art → HomePage
 **API Status**: ✅ Edit Profile fully integrated with MongoDB, social feed uses hardcoded data
 
 **To Enable**:
+
 1. Remove `href: null` from `app/(tabs)/_layout.tsx` line ~103
 2. Uncomment `tabBarIcon` and `title`
 3. Connect social feed to production API endpoints
@@ -182,6 +193,7 @@ Settings → My Info → Business → Art → HomePage
 **File Locations**: `app/(tabs)/(upload)/`
 
 **Features**:
+
 - **Upload Content Screen**: File upload interface
   - UploadBox component wrapper
   - Image picker integration (expo-image-picker)
@@ -194,6 +206,7 @@ Settings → My Info → Business → Art → HomePage
 **API Status**: ⏳ Needs server endpoint for file uploads
 
 **To Enable**:
+
 1. Remove `href: null` from `app/(tabs)/_layout.tsx` line ~125
 2. Uncomment `tabBarIcon` and `title`
 3. Implement server upload endpoint
@@ -212,6 +225,7 @@ Settings → My Info → Business → Art → HomePage
 **File Locations**: `app/(tabs)/(shows)/`
 
 **Features**:
+
 - **Prime Show** (`PrimeShow.tsx`): Premium show streaming
   - WebView for video playback
   - Drawer menu integration
@@ -226,6 +240,7 @@ Settings → My Info → Business → Art → HomePage
 **API Status**: ⏳ Needs show/episode data API
 
 **To Enable**:
+
 1. Remove `href: null` from `app/(tabs)/_layout.tsx` line ~145
 2. Uncomment `tabBarIcon` and `title`
 3. Complete ShowViewScreen implementation
@@ -239,17 +254,18 @@ Settings → My Info → Business → Art → HomePage
 
 ## Feature Comparison Matrix
 
-| Feature | Status | Screens | API Integration | Testing | User-Facing |
-|---------|--------|---------|-----------------|---------|-------------|
-| **Authentication** | ✅ Active | 4 | ✅ Complete | ✅ Tested | ✅ Yes |
-| **Home Tab** | ✅ Active | 1 | ✅ Complete | ✅ Tested | ✅ Yes |
-| **Settings Tab** | ✅ Active | 4 | ✅ Complete | ✅ Tested | ✅ Yes |
-| **LogOut** | ✅ Active | 1 | ✅ Complete | ✅ Tested | ✅ Yes |
-| **Social Tab** | 🔒 Hidden | 6 | ✅ Profile / ⏳ Social | ✅ Profile / ⚠️ Social | ❌ No |
-| **Upload Tab** | 🔒 Hidden | 1 | ⏳ Partial | ⚠️ Needs testing | ❌ No |
-| **Shows Tab** | 🔒 Hidden | 2 | ⏳ Partial | ⚠️ Needs testing | ❌ No |
+| Feature            | Status    | Screens | API Integration        | Testing                | User-Facing |
+| ------------------ | --------- | ------- | ---------------------- | ---------------------- | ----------- |
+| **Authentication** | ✅ Active | 4       | ✅ Complete            | ✅ Tested              | ✅ Yes      |
+| **Home Tab**       | ✅ Active | 1       | ✅ Complete            | ✅ Tested              | ✅ Yes      |
+| **Settings Tab**   | ✅ Active | 4       | ✅ Complete            | ✅ Tested              | ✅ Yes      |
+| **LogOut**         | ✅ Active | 1       | ✅ Complete            | ✅ Tested              | ✅ Yes      |
+| **Social Tab**     | 🔒 Hidden | 6       | ✅ Profile / ⏳ Social | ✅ Profile / ⚠️ Social | ❌ No       |
+| **Upload Tab**     | 🔒 Hidden | 1       | ⏳ Partial             | ⚠️ Needs testing       | ❌ No       |
+| **Shows Tab**      | 🔒 Hidden | 2       | ⏳ Partial             | ⚠️ Needs testing       | ❌ No       |
 
 **Legend**:
+
 - ✅ Complete/Active
 - ⏳ In Progress/Partial
 - ⚠️ Needs Attention
@@ -264,6 +280,7 @@ Settings → My Info → Business → Art → HomePage
 **File Locations**: `app/` (root level)
 
 **Screens**:
+
 - `modal.tsx` - Generic modal example
 - `pagetwo.tsx` - Test page ("This is page 2")
 - `testScreen/TestScreen.jsx` - Testing component
@@ -277,6 +294,7 @@ Settings → My Info → Business → Art → HomePage
 ## Roadmap & Release Strategy
 
 ### Phase 1: Current Release (Active)
+
 - ✅ Authentication
 - ✅ Home (Video Feed)
 - ✅ Settings (Profile Management)
@@ -287,9 +305,11 @@ Settings → My Info → Business → Art → HomePage
 ---
 
 ### Phase 2: Social Features (Planned)
+
 **Target**: Q2 2026 (estimated)
 
 **Tasks**:
+
 1. Complete API integration for user connections
 2. Implement real-time updates for social feed
 3. Connect e-commerce to payment system
@@ -297,6 +317,7 @@ Settings → My Info → Business → Art → HomePage
 5. Enable Social Tab
 
 **Dependencies**:
+
 - User connections API endpoints
 - Social feed data model finalization
 - E-commerce backend integration
@@ -304,9 +325,11 @@ Settings → My Info → Business → Art → HomePage
 ---
 
 ### Phase 3: Content Upload (Planned)
+
 **Target**: Q3 2026 (estimated)
 
 **Tasks**:
+
 1. Implement server-side file upload endpoint
 2. Add upload progress tracking
 3. Connect to Bunny CDN for user-generated content
@@ -314,6 +337,7 @@ Settings → My Info → Business → Art → HomePage
 5. Enable Upload Tab
 
 **Dependencies**:
+
 - File storage solution (Bunny CDN or S3)
 - Content moderation system
 - Upload quota/limits implementation
@@ -321,9 +345,11 @@ Settings → My Info → Business → Art → HomePage
 ---
 
 ### Phase 4: Shows Feature (Planned)
+
 **Target**: Q4 2026 (estimated)
 
 **Tasks**:
+
 1. Complete ShowViewScreen implementation
 2. Create show/episode data model
 3. Integrate with streaming backend
@@ -331,6 +357,7 @@ Settings → My Info → Business → Art → HomePage
 5. Enable Shows Tab
 
 **Dependencies**:
+
 - Show content acquisition/licensing
 - Episode metadata API
 - Streaming infrastructure testing
@@ -342,6 +369,7 @@ Settings → My Info → Business → Art → HomePage
 ### Why Progressive Rollout?
 
 **Benefits**:
+
 1. **Risk Mitigation**: Test features with smaller user groups before full release
 2. **Resource Management**: Focus development resources on priority features
 3. **User Experience**: Avoid overwhelming users with too many features at once
@@ -351,6 +379,7 @@ Settings → My Info → Business → Art → HomePage
 ### Feature Prioritization Criteria
 
 Features prioritized based on:
+
 1. **User Value**: Impact on core user experience
 2. **Technical Complexity**: Development and testing effort required
 3. **Dependencies**: External integrations and infrastructure needs
@@ -360,12 +389,14 @@ Features prioritized based on:
 ### Competitive Analysis
 
 Current active features provide:
+
 - ✅ Unique millennial-focused content platform
 - ✅ Comprehensive user profile system
 - ✅ Secure dual authentication
 - ✅ Professional video streaming (Bunny CDN)
 
 Hidden features will add:
+
 - 🔒 Social networking (differentiator from pure streaming apps)
 - 🔒 User-generated content (community engagement)
 - 🔒 E-commerce integration (monetization)
@@ -376,6 +407,7 @@ Hidden features will add:
 ### Active Features
 
 **Maintenance Status**: ✅ Low technical debt
+
 - Clean, tested code
 - Proper error handling
 - TypeScript type safety
@@ -388,16 +420,19 @@ Hidden features will add:
 ### Hidden Features
 
 **Maintenance Status**: ⚠️ Moderate technical debt
+
 - Mock data needs replacement with API calls
 - Some components need real integration testing
 - ShowViewScreen incomplete implementation
 
 **Known Issues**:
+
 1. ConnectedUsersScreen uses hardcoded user data
 2. Upload progress indicators not functional
 3. ShowViewScreen is placeholder implementation
 
 **Recommended Actions**:
+
 - Audit hidden feature code before enabling
 - Update dependencies if stale
 - Add integration tests
@@ -408,11 +443,13 @@ Hidden features will add:
 ### Current Tracking
 
 **Active Features**:
+
 - User authentication events (login, register, logout)
 - Page views (HomePage, Settings screens)
 - Video playback metrics (via Bunny CDN)
 
 **Not Yet Tracked**:
+
 - Social interactions (likes, comments, shares)
 - Upload success rates
 - Show viewing statistics
@@ -420,16 +457,19 @@ Hidden features will add:
 ### Analytics Roadmap
 
 **Phase 2** (Social Tab launch):
+
 - Track connection requests
 - Monitor social feed engagement
 - E-commerce conversion tracking
 
 **Phase 3** (Upload Tab launch):
+
 - Upload success/failure rates
 - File size and type analytics
 - Content moderation metrics
 
 **Phase 4** (Shows Tab launch):
+
 - Show viewing duration
 - Episode completion rates
 - Premium content engagement
@@ -438,9 +478,10 @@ Hidden features will add:
 
 ### General Process
 
-**File to Edit**: [app/(tabs)/_layout.tsx](../../app/(tabs)/_layout.tsx)
+**File to Edit**: [app/(tabs)/\_layout.tsx](<../../app/(tabs)/_layout.tsx>)
 
 **Before (Hidden)**:
+
 ```typescript
 <Tabs.Screen
   name="(social)"
@@ -453,6 +494,7 @@ Hidden features will add:
 ```
 
 **After (Enabled)**:
+
 ```typescript
 <Tabs.Screen
   name="(social)"
@@ -465,6 +507,7 @@ Hidden features will add:
 ```
 
 **Deployment Checklist**:
+
 - [ ] Remove `href: null`
 - [ ] Uncomment `tabBarIcon` and `title`
 - [ ] Test in development environment
@@ -488,10 +531,11 @@ Hidden features will add:
 
 ---
 
-*Last Updated: 2026-02-05*
-*Feature status should be reviewed quarterly or when planning releases.*
+_Last Updated: 2026-02-05_
+_Feature status should be reviewed quarterly or when planning releases._
 
 **Recent Updates:**
+
 - **February 5, 2026**: Added EditProfileScreen to Social Tab (Phase 1.4 complete)
   - Profile editing with validation, interests, social links
   - MongoDB integration complete

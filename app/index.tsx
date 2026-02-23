@@ -1,11 +1,5 @@
 import { Link } from "expo-router";
-import {
-  useColorScheme,
-  Text,
-  View,
-  Pressable,
-  Image,
-} from "react-native";
+import { useColorScheme, Text, View, Pressable, Image } from "react-native";
 import Constants from "expo-constants";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -30,9 +24,7 @@ export default function Index() {
         source={require("@/assets/images/MillennialsPrimeLogoNB.png")}
         style={[globalStyles.imageLoading]}
       />
-      <Text
-        style={[globalStyles.textLoading, { color: colors["loadingTextOppo"] }]}
-      >
+      <Text style={[globalStyles.textLoading, { color: colors["loadingTextOppo"] }]}>
         Welcome to Millennial's Prime
       </Text>
       <View
@@ -44,10 +36,7 @@ export default function Index() {
         ]}
       >
         <Pressable
-          style={[
-            globalStyles.button,
-            { backgroundColor: colors["loadingButton"], width: "45%" },
-          ]}
+          style={[globalStyles.button, { backgroundColor: colors["loadingButton"], width: "45%" }]}
         >
           <Link
             style={[globalStyles.buttonText, { color: colors["loadingText"] }]}
@@ -59,10 +48,7 @@ export default function Index() {
           </Link>
         </Pressable>
         <Pressable
-          style={[
-            globalStyles.button,
-            { backgroundColor: colors["loadingButton"], width: "45%" },
-          ]}
+          style={[globalStyles.button, { backgroundColor: colors["loadingButton"], width: "45%" }]}
         >
           <Link
             style={[globalStyles.buttonText, { color: colors["loadingText"] }]}
@@ -77,27 +63,14 @@ export default function Index() {
       <View
       // style={[globalStyles.flexAlignSelfFlexEnd]}
       >
-        <Text
-          style={[
-            globalStyles.textCenter,
-            { color: colors["loadingTextOppo"] },
-          ]}
-        >
+        <Text style={[globalStyles.textCenter, { color: colors["loadingTextOppo"] }]}>
           Made by JustAPPin' LLC
         </Text>
         <Image
           source={require("@/assets/images/JustAppin'.png")}
-          style={[
-            globalStyles.imageLoadingSmall,
-            globalStyles.flexAlignSelfCenter,
-          ]}
+          style={[globalStyles.imageLoadingSmall, globalStyles.flexAlignSelfCenter]}
         />
-        <Text
-          style={[
-            globalStyles.textCenter,
-            { color: colors["loadingTextOppo"] },
-          ]}
-        >
+        <Text style={[globalStyles.textCenter, { color: colors["loadingTextOppo"] }]}>
           Version: {Constants.expoConfig?.version}
         </Text>
       </View>

@@ -20,7 +20,7 @@ const sendToErrorTracking = (error: Error, context?: Record<string, unknown>) =>
 
   // For now, just log to console in production
   if (!isDev) {
-    console.error('[Error Tracking]', error, context);
+    console.error("[Error Tracking]", error, context);
   }
 };
 
@@ -64,7 +64,7 @@ export const logger = {
    */
   exception: (error: Error, context?: Record<string, unknown>) => {
     // Always log exceptions to console (critical errors should be visible)
-    console.error('[Exception]', error, context);
+    console.error("[Exception]", error, context);
     // Always send exceptions to error tracking service
     sendToErrorTracking(error, context);
   },
@@ -83,7 +83,7 @@ export const logger = {
    */
   api: (method: string, url: string, data?: unknown) => {
     if (isDev) {
-      console.log(`[API ${method}]`, url, data ?? '');
+      console.log(`[API ${method}]`, url, data ?? "");
     }
   },
 };

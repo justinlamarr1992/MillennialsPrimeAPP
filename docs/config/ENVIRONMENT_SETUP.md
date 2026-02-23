@@ -5,6 +5,7 @@ This guide explains how to set up and manage environment variables for the Mille
 ## Overview
 
 The app uses environment variables to manage configuration for different environments (development, staging, production). This allows you to:
+
 - Keep sensitive credentials secure
 - Switch between environments easily
 - Maintain different configurations for development and production
@@ -25,6 +26,7 @@ The app uses environment variables to manage configuration for different environ
 ⚠️ **IMPORTANT**: Never commit actual `.env` files to version control!
 
 The `.gitignore` file is configured to exclude:
+
 - `.env`
 - `.env.local`
 - `.env.*.local`
@@ -38,12 +40,14 @@ Only `.env.example` files should be committed to show required variables.
 1. **Copy the example file for your environment:**
 
    For development:
+
    ```bash
    cp .env.development.example .env.development
    cp .env.development .env  # Set as default
    ```
 
    For production:
+
    ```bash
    cp .env.production.example .env.production
    ```
@@ -51,6 +55,7 @@ Only `.env.example` files should be committed to show required variables.
 2. **Fill in your actual credentials:**
 
    Open the `.env` file and replace placeholder values with your actual credentials:
+
    ```bash
    nano .env  # or use your preferred editor
    ```
@@ -58,6 +63,7 @@ Only `.env.example` files should be committed to show required variables.
 ### Required Environment Variables
 
 #### Firebase Configuration
+
 ```env
 EXPO_PUBLIC_FIREBASE_API_KEY=          # Firebase API key
 EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=      # Firebase auth domain
@@ -69,11 +75,13 @@ EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=   # Analytics measurement ID (optional)
 ```
 
 #### API Configuration
+
 ```env
 EXPO_PUBLIC_API_BASE_URL=  # Backend API base URL
 ```
 
 #### BunnyCDN Configuration
+
 ```env
 EXPO_PUBLIC_BUNNYCDN_ACCESS_KEY=  # BunnyCDN access key
 EXPO_PUBLIC_BUNNYCDN_LIBRARY_ID=  # BunnyCDN library ID
@@ -83,6 +91,7 @@ EXPO_PUBLIC_BUNNYCDN_API_URL=     # BunnyCDN API URL
 ### Finding Your Credentials
 
 #### Firebase Credentials
+
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Select your project
 3. Click the gear icon → Project settings
@@ -90,6 +99,7 @@ EXPO_PUBLIC_BUNNYCDN_API_URL=     # BunnyCDN API URL
 5. Copy the configuration values
 
 #### BunnyCDN Credentials
+
 1. Go to [BunnyCDN Dashboard](https://dash.bunnycdn.com/)
 2. Navigate to Stream → Video Libraries
 3. Select your library
@@ -101,6 +111,7 @@ EXPO_PUBLIC_BUNNYCDN_API_URL=     # BunnyCDN API URL
 ### Development Environment
 
 Use for local development and testing:
+
 - Local or development Firebase project
 - Development API endpoints
 - Test BunnyCDN library
@@ -114,6 +125,7 @@ npm start
 ### Production Environment
 
 Use for production builds:
+
 - Production Firebase project
 - Production API endpoints
 - Live BunnyCDN library
@@ -127,6 +139,7 @@ npm run build  # or eas build for native apps
 ## Best Practices
 
 ### Security
+
 1. ✅ **DO**: Keep `.env` files out of version control
 2. ✅ **DO**: Use different credentials for each environment
 3. ✅ **DO**: Rotate credentials regularly
@@ -136,6 +149,7 @@ npm run build  # or eas build for native apps
 7. ❌ **DON'T**: Use production credentials in development
 
 ### Organization
+
 1. Document all required variables in `.env.example`
 2. Add comments explaining what each variable does
 3. Group related variables together
@@ -158,12 +172,14 @@ FIREBASE_API_KEY=abc123
 ### App Not Reading Environment Variables
 
 1. **Restart the development server:**
+
    ```bash
    # Stop the server (Ctrl+C)
    npm start
    ```
 
 2. **Clear Expo cache:**
+
    ```bash
    npx expo start --clear
    ```
@@ -184,6 +200,7 @@ If you see errors like "Missing required environment variable", check:
 ### Firebase Configuration Errors
 
 If you see Firebase initialization errors:
+
 1. Verify all Firebase variables are set
 2. Check that values match your Firebase project settings
 3. Ensure no extra spaces or quotes in values
@@ -222,6 +239,7 @@ For continuous integration and deployment:
 ## Support
 
 If you encounter issues with environment configuration:
+
 1. Check this documentation
 2. Verify all variables are set correctly
 3. Review error messages in console

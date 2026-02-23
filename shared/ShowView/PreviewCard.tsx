@@ -8,10 +8,7 @@ interface PreviewCardProps {
   description: string;
 }
 
-export default function PreviewCard({
-  title,
-  description,
-}: PreviewCardProps) {
+export default function PreviewCard({ title, description }: PreviewCardProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
   return (
@@ -23,9 +20,7 @@ export default function PreviewCard({
         { backgroundColor: colors.showCar },
       ]}
     >
-      <Text style={[globalStyles.showViewTitle, { color: colors.showCarT }]}>
-        {title}
-      </Text>
+      <Text style={[globalStyles.showViewTitle, { color: colors.showCarT }]}>{title}</Text>
       <Text
         style={[
           globalStyles.showViewDescription,

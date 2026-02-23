@@ -28,12 +28,12 @@ export const isValidImageUri = (uri: string): boolean => {
   const lower = trimmed.toLowerCase();
 
   // Validate data URIs: restrict to image media type
-  if (lower.startsWith('data:')) {
-    return lower.startsWith('data:image/');
+  if (lower.startsWith("data:")) {
+    return lower.startsWith("data:image/");
   }
 
   // Validate file URIs: require proper file scheme
-  if (trimmed.startsWith('file://')) {
+  if (trimmed.startsWith("file://")) {
     return true;
   }
 
@@ -41,7 +41,7 @@ export const isValidImageUri = (uri: string): boolean => {
   try {
     const parsed = new URL(trimmed);
     const protocol = parsed.protocol;
-    return (protocol === 'http:' || protocol === 'https:') && parsed.hostname.length > 0;
+    return (protocol === "http:" || protocol === "https:") && parsed.hostname.length > 0;
   } catch {
     return false;
   }

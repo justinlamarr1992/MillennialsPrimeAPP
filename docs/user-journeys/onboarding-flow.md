@@ -98,6 +98,7 @@ flowchart TD
 ## Key User Paths
 
 ### 1. New User Registration Path
+
 ```
 Welcome → Register → Fill Form → Firebase Signup → MongoDB Profile → Success → Sign In → Authentication → HomePage
 ```
@@ -107,6 +108,7 @@ Welcome → Register → Fill Form → Firebase Signup → MongoDB Profile → S
 **Validation Points**: Form validation, Millennials age check, email uniqueness
 
 ### 2. Existing User Login Path
+
 ```
 Welcome → Sign In → Enter Credentials → Firebase Auth → MongoDB Auth → HomePage
 ```
@@ -116,6 +118,7 @@ Welcome → Sign In → Enter Credentials → Firebase Auth → MongoDB Auth →
 **Validation Points**: Email/password validation, account existence
 
 ### 3. Password Recovery Path
+
 ```
 Sign In → Forgot Password → Enter Email → Send Reset → Check Email → (External: Reset Password) → Sign In → HomePage
 ```
@@ -125,16 +128,17 @@ Sign In → Forgot Password → Enter Email → Send Reset → Check Email → (
 
 ## Critical Decision Points
 
-| Decision Point | Options | Impact |
-|----------------|---------|--------|
-| **Welcome Screen** | Log In / Sign Up | Determines authentication vs registration flow |
-| **Firebase Registration** | Success / Failure | Continues to MongoDB or shows error |
-| **MongoDB Registration** | Success / Failure | Completes registration or triggers cleanup |
-| **MongoDB Authentication** | Success / Failure | Full features vs limited features (warning) |
+| Decision Point             | Options           | Impact                                         |
+| -------------------------- | ----------------- | ---------------------------------------------- |
+| **Welcome Screen**         | Log In / Sign Up  | Determines authentication vs registration flow |
+| **Firebase Registration**  | Success / Failure | Continues to MongoDB or shows error            |
+| **MongoDB Registration**   | Success / Failure | Completes registration or triggers cleanup     |
+| **MongoDB Authentication** | Success / Failure | Full features vs limited features (warning)    |
 
 ## Authentication Gate Behavior
 
 After successful authentication:
+
 - **Root Layout** detects user object in AuthContext
 - **Auto-redirect** from auth screens to HomePage
 - **Tab Navigation** becomes accessible
@@ -143,15 +147,18 @@ After successful authentication:
 ## Error Recovery Paths
 
 ### Registration Errors
+
 - **Form validation fails** → User corrects fields
 - **Firebase fails** → User retries with different email
 - **MongoDB fails** → Firebase user deleted, user starts over
 
 ### Login Errors
+
 - **Invalid credentials** → User retries or uses password recovery
 - **MongoDB auth fails** → User can still access app with warning
 
 ### Password Recovery Errors
+
 - **Email not found** → User checks email or registers
 - **Network error** → User retries when connection restored
 
@@ -178,4 +185,4 @@ After successful authentication:
 
 ---
 
-*User journey documented as of 2026-01-30*
+_User journey documented as of 2026-01-30_

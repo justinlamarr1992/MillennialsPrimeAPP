@@ -390,9 +390,7 @@ describe("userProfileService", () => {
     });
 
     it("throws error when user ID is empty", async () => {
-      await expect(userProfileService.fetchProfileById("")).rejects.toThrow(
-        "User ID is required"
-      );
+      await expect(userProfileService.fetchProfileById("")).rejects.toThrow("User ID is required");
       expect(axiosPrivate.get).not.toHaveBeenCalled();
     });
 
@@ -406,9 +404,7 @@ describe("userProfileService", () => {
       };
       mockedAxiosPrivate.get.mockRejectedValueOnce(mockError);
 
-      await expect(userProfileService.fetchProfileById(otherUserId)).rejects.toEqual(
-        mockError
-      );
+      await expect(userProfileService.fetchProfileById(otherUserId)).rejects.toEqual(mockError);
     });
 
     it("handles server errors correctly", async () => {

@@ -55,8 +55,8 @@ export default function PrimeNewsPost({
           admin
             ? [globalStyles.postTitle, globalStyles.adminPostContent]
             : prime
-            ? [globalStyles.postTitle, globalStyles.primePostContent]
-            : [globalStyles.postTitle, globalStyles.postContent]
+              ? [globalStyles.postTitle, globalStyles.primePostContent]
+              : [globalStyles.postTitle, globalStyles.postContent]
         }
       >
         {title ? title : "No Title Yet"}
@@ -67,8 +67,8 @@ export default function PrimeNewsPost({
           admin
             ? [globalStyles.postDescription, globalStyles.adminPostContent]
             : prime
-            ? [globalStyles.postDescription, globalStyles.primePostContent]
-            : [globalStyles.postDescription, globalStyles.postContent]
+              ? [globalStyles.postDescription, globalStyles.primePostContent]
+              : [globalStyles.postDescription, globalStyles.postContent]
         }
       >
         {description ? description : "No Description Yet"}

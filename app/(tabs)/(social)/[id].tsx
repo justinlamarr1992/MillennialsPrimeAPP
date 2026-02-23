@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  ScrollView,
-  View,
-  Text,
-  ActivityIndicator,
-  useColorScheme,
-} from "react-native";
+import { ScrollView, View, Text, ActivityIndicator, useColorScheme } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";

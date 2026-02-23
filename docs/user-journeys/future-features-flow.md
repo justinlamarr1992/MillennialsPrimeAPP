@@ -65,16 +65,19 @@ flowchart TD
 ## Social Tab Features (5 Screens)
 
 ### 1. Social Feed Index
+
 **Purpose**: Navigation hub for social features
 **Status**: UI complete with mock data
 **Readiness**: 85%
 
 **Features**:
+
 - Navigation buttons to other social screens
 - User role display (admin/prime status)
 - Connection count display
 
 **Flow**:
+
 ```
 Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
 ```
@@ -82,11 +85,13 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
 ---
 
 ### 2. Connected Users Screen
+
 **Purpose**: Display list of connected users with status badges
 **Status**: Complete with hardcoded data
 **Readiness**: 85%
 
 **Features**:
+
 - **User Cards** with:
   - Name and industry
   - Admin badge (if admin)
@@ -95,6 +100,7 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
   - Matching indicator (matching industry/interests)
 
 **Current Implementation**:
+
 ```
 12 Hardcoded Users:
 - 4 Admin users
@@ -103,6 +109,7 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
 ```
 
 **To Enable**:
+
 - Replace mock data with API call
 - Implement user connection logic
 - Add real-time updates
@@ -110,22 +117,26 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
 ---
 
 ### 3. My Profile Screen
+
 **Purpose**: User's own profile with posts
 **Status**: Complete with mock posts
 **Readiness**: 80%
 
 **Features**:
+
 - **Post Types**:
   - TextPost: Title + description (max 10 lines)
   - PicturePost: Image + title + description (2 lines max)
   - VideoPost: Bunny CDN video + title + description
 
 **Post Display**:
+
 - Scrollable feed of user's content
 - Prime/admin badges on posts
 - Author attribution
 
 **To Enable**:
+
 - Connect to user's actual posts API
 - Implement post creation flow
 - Add edit/delete functionality
@@ -133,11 +144,13 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
 ---
 
 ### 4. E-Commerce Screen
+
 **Purpose**: Marketplace with item listings
 **Status**: UI complete with bottom sheet modal
 **Readiness**: 60%
 
 **Features**:
+
 - **Bottom Sheet UI** for item display
 - Item cards with:
   - Item image
@@ -146,6 +159,7 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
   - Purchase button (placeholder)
 
 **To Enable**:
+
 - Implement item catalog API
 - Add payment integration
 - Implement purchase flow
@@ -154,17 +168,20 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
 ---
 
 ### 5. Dynamic User Profile ([id] route)
+
 **Purpose**: View other users' profiles
 **Status**: Component ready, needs data
 **Readiness**: 70%
 
 **Features**:
+
 - **Dynamic Routing**: `/user/[id]` pattern
 - User-specific profile data
 - Posts feed for selected user
 - Connection actions (future)
 
 **To Enable**:
+
 - Implement user profile API endpoint
 - Add connection request functionality
 - Implement follow/unfollow
@@ -174,11 +191,13 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
 ## Upload Tab Features (1 Screen)
 
 ### Upload Content Screen
+
 **Purpose**: File upload interface for user-generated content
 **Status**: UI complete, backend integration needed
 **Readiness**: 60%
 
 **Features**:
+
 - **UploadBox Component**:
   - File selection UI
   - Image picker integration (expo-image-picker)
@@ -186,16 +205,19 @@ Social Feed → [Connected Users | My Profile | E-Commerce | User Profile/ID]
   - Server upload logic (placeholder)
 
 **Supported Content**:
+
 - Images (JPEG, PNG)
 - Videos (future: MP4, MOV)
 - Documents (future: PDF)
 
 **Flow**:
+
 ```
 Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progress → Success/Error
 ```
 
 **To Enable**:
+
 - Implement server upload endpoint
 - Add file size/type validation
 - Implement upload progress tracking
@@ -207,17 +229,20 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 ## Shows Tab Features (2 Screens)
 
 ### 1. Prime Show (WebView Streaming)
+
 **Purpose**: Premium show streaming with WebView
 **Status**: Complete with WebView integration
 **Readiness**: 90%
 
 **Features**:
+
 - **WebView Integration**: Full-screen video playback
 - **Drawer Navigation**: Accessible from side menu
 - Premium content badge
 - Streaming controls
 
 **To Enable**:
+
 - Add show content library
 - Implement playback analytics
 - Add subscription gating (if premium-only)
@@ -225,11 +250,13 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 ---
 
 ### 2. Show View Screen (Episodes List)
+
 **Purpose**: Display show details and episode listings
 **Status**: Placeholder implementation
 **Readiness**: 40%
 
 **Features** (Planned):
+
 - Show metadata (title, description, thumbnail)
 - Episode list with:
   - Episode numbers
@@ -239,6 +266,7 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 - Navigate to PrimeShow for playback
 
 **To Enable**:
+
 - Complete ShowViewScreen implementation
 - Create show/episode data model
 - Implement episode selection
@@ -253,6 +281,7 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 **File to Edit**: `app/(tabs)/_layout.tsx`
 
 **Social Tab** (Line ~103):
+
 ```typescript
 // Before (Hidden)
 <Tabs.Screen
@@ -275,12 +304,14 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 ```
 
 **Upload Tab** (Line ~125):
+
 ```typescript
 // Remove href: null
 // Uncomment tabBarIcon and title
 ```
 
 **Shows Tab** (Line ~145):
+
 ```typescript
 // Remove href: null
 // Uncomment tabBarIcon and title
@@ -301,19 +332,19 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 
 ## Readiness Assessment
 
-| Feature | UI Complete | API Integration | Testing | Readiness |
-|---------|-------------|-----------------|---------|-----------|
-| **Social Tab** |
-| Connected Users | ✅ | ⏳ Partial | ⏳ Needed | 85% |
-| My Profile | ✅ | ⏳ Partial | ⏳ Needed | 80% |
-| E-Commerce | ✅ | ❌ Needed | ⏳ Needed | 60% |
-| User Profile [id] | ✅ | ⏳ Partial | ⏳ Needed | 70% |
-| Social Feed | ✅ | ⏳ Partial | ⏳ Needed | 85% |
-| **Upload Tab** |
-| Upload Screen | ✅ | ❌ Needed | ⏳ Needed | 60% |
-| **Shows Tab** |
-| Prime Show | ✅ | ✅ Complete | ⏳ Needed | 90% |
-| Show View | ⚠️ Partial | ❌ Needed | ❌ Not Started | 40% |
+| Feature           | UI Complete | API Integration | Testing        | Readiness |
+| ----------------- | ----------- | --------------- | -------------- | --------- |
+| **Social Tab**    |
+| Connected Users   | ✅          | ⏳ Partial      | ⏳ Needed      | 85%       |
+| My Profile        | ✅          | ⏳ Partial      | ⏳ Needed      | 80%       |
+| E-Commerce        | ✅          | ❌ Needed       | ⏳ Needed      | 60%       |
+| User Profile [id] | ✅          | ⏳ Partial      | ⏳ Needed      | 70%       |
+| Social Feed       | ✅          | ⏳ Partial      | ⏳ Needed      | 85%       |
+| **Upload Tab**    |
+| Upload Screen     | ✅          | ❌ Needed       | ⏳ Needed      | 60%       |
+| **Shows Tab**     |
+| Prime Show        | ✅          | ✅ Complete     | ⏳ Needed      | 90%       |
+| Show View         | ⚠️ Partial  | ❌ Needed       | ❌ Not Started | 40%       |
 
 **Legend**: ✅ Complete | ⏳ In Progress | ❌ Not Started | ⚠️ Partial
 
@@ -322,38 +353,47 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 ## Business Impact Analysis
 
 ### Social Tab Launch
+
 **Estimated Impact**: High engagement, community building
 **Prerequisites**:
+
 - User connection API
 - Real-time notifications (future)
 - Content moderation system
 - E-commerce payment integration
 
 **Expected Metrics**:
+
 - Daily active users increase
 - User retention improvement
 - Community engagement (connections, posts)
 
 ### Upload Tab Launch
+
 **Estimated Impact**: Medium engagement, UGC growth
 **Prerequisites**:
+
 - File storage solution (Bunny CDN/S3)
 - Content moderation workflow
 - Upload quota/limits
 
 **Expected Metrics**:
+
 - User-generated content volume
 - Upload success rates
 - Content quality/moderation needs
 
 ### Shows Tab Launch
+
 **Estimated Impact**: High value for premium content
 **Prerequisites**:
+
 - Show content library
 - Episode metadata API
 - Streaming infrastructure
 
 **Expected Metrics**:
+
 - Premium show viewership
 - Episode completion rates
 - Subscription conversions (if premium-only)
@@ -363,18 +403,21 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 ## Progressive Rollout Strategy
 
 ### Phase 1: Social Tab (Q2 2026)
+
 1. Complete API integrations
 2. Beta test with select users
 3. Enable for all users
 4. Monitor engagement metrics
 
 ### Phase 2: Upload Tab (Q3 2026)
+
 1. Implement upload backend
 2. Add content moderation
 3. Beta test upload flow
 4. Full rollout
 
 ### Phase 3: Shows Tab (Q4 2026)
+
 1. Complete ShowViewScreen
 2. Populate show library
 3. Test streaming performance
@@ -389,4 +432,4 @@ Upload Tab → Tap Upload Area → Image Picker → Select File → Upload Progr
 
 ---
 
-*Future features documented as of 2026-01-30*
+_Future features documented as of 2026-01-30_

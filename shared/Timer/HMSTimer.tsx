@@ -14,14 +14,9 @@ export default function HMSTimer({
 }: HMSTimerProps) {
   const targetTime = new Date(startDate).getTime();
   const [currentTime, setCurrentTime] = useState(Date.now());
-  const timeBetween = useMemo(
-    () => targetTime - currentTime,
-    [currentTime, targetTime]
-  );
+  const timeBetween = useMemo(() => targetTime - currentTime, [currentTime, targetTime]);
   const days = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeBetween % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
+  const hours = Math.floor((timeBetween % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((timeBetween % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeBetween % (1000 * 60)) / 1000);
 

@@ -7,11 +7,13 @@ MillennialsPrimeAPP is a React Native mobile application built with Expo, target
 ## Tech Stack
 
 ### Frontend Framework
+
 - **React Native 19.0.0**: Cross-platform mobile framework
 - **Expo SDK ~52.0.14**: Development platform and tools
 - **TypeScript**: Type-safe JavaScript for better code quality
 
 ### Navigation & Routing
+
 - **Expo Router ~5.1.7**: File-based routing system
 - **React Navigation 19.0.0**: Navigation library (Stack, Tabs, Drawer)
   - `@react-navigation/native-stack`: Stack navigation
@@ -19,6 +21,7 @@ MillennialsPrimeAPP is a React Native mobile application built with Expo, target
   - `@react-navigation/drawer`: Drawer navigation
 
 ### Authentication & Database
+
 - **Firebase (React Native Firebase ~21.8.1)**:
   - Firebase Authentication for client-side auth
   - Firebase App for core functionality
@@ -26,11 +29,13 @@ MillennialsPrimeAPP is a React Native mobile application built with Expo, target
 - **JWT Tokens**: Stored securely in `expo-secure-store`
 
 ### State Management & Data Fetching
+
 - **React Query (@tanstack/react-query ~5.64.2)**: Server state management
 - **React Context API**: Global auth state
 - **Local State (useState)**: Component-level state
 
 ### UI & Styling
+
 - **React Native Paper ~5.12.6**: Material Design components
 - **Expo Linear Gradient ~14.0.1**: Gradient backgrounds
 - **React Native Gesture Handler ~2.20.2**: Touch interactions
@@ -39,11 +44,13 @@ MillennialsPrimeAPP is a React Native mobile application built with Expo, target
 - **Custom Color Schemes**: Dark/light mode support
 
 ### Media & Content
+
 - **Bunny CDN**: Video content delivery and streaming
 - **Expo Image Picker ~16.0.4**: Profile picture and content uploads
 - **React Native WebView ~13.12.4**: Streaming video playback
 
 ### Developer Tools
+
 - **ESLint**: Code linting
 - **Prettier**: Code formatting
 - **Jest ~29.7.0**: Unit testing
@@ -112,6 +119,7 @@ sequenceDiagram
 ```
 
 **Authentication Flow:**
+
 1. **Firebase Authentication** (Primary): Handles user credentials, password reset, session persistence
 2. **MongoDB Authentication** (Secondary): Provides API access tokens for server-side operations
 3. **Token Storage**: JWT tokens stored in `expo-secure-store` (iOS Keychain/Android Keystore)
@@ -120,12 +128,14 @@ sequenceDiagram
 ### File-Based Routing Architecture
 
 **Expo Router Convention:**
+
 - Directories in parentheses `(groupName)` create route groups without affecting URL
 - `_layout.tsx` files define navigator wrappers for their directory
 - `index.tsx` serves as the default route for a directory
 - `[param].tsx` creates dynamic routes (e.g., `[id].tsx` → `/user/123`)
 
 **Route Structure:**
+
 ```
 app/
 ├── _layout.tsx                 # Root Stack Navigator + Auth Gating
@@ -187,6 +197,7 @@ flowchart LR
 ### Component Hierarchy
 
 **Reusable Components** (`/components/`):
+
 - **ContentCard**: Individual content item card with gradient background
 - **ContentCarousel**: Horizontal scrollable carousel for content
 - **ProfilePicture**: Profile image display and upload
@@ -198,6 +209,7 @@ flowchart LR
 - **TabBarIcon**: Tab navigation icons
 
 **Shared Components** (`/shared/`):
+
 - **PostComponents**: PrimeNewsPost, TextPost, PicturePost, VideoPost
 - **User Components**: User, ConnectedUserInfo
 - **Modals**: CustomBottomSheet, CommentModal
@@ -208,23 +220,27 @@ flowchart LR
 ### Design Patterns
 
 **1. Provider Pattern**
+
 - `AuthProvider` wraps entire app
 - `QueryClientProvider` for React Query
 - `BottomSheetModalProvider` for modals
 
 **2. Custom Hooks**
+
 - `useAuth()`: Access authentication state
 - `useUserProfile()`: Fetch and cache user profile
 - `useAxiosPrivate()`: Authenticated API requests
 - `useColorScheme()`: Dark/light mode detection
 
 **3. Pure Functional Components**
+
 - ContentCard implements pure component pattern
 - Props-driven rendering
 - No side effects in render
 - Helper functions for derived state
 
 **4. Form Management**
+
 - Local state for form inputs
 - Real-time validation on blur
 - Conditional rendering based on answers
@@ -235,6 +251,7 @@ flowchart LR
 ### 1. Dual Authentication System
 
 **Rationale**: Separation of concerns
+
 - **Firebase**: Handles user credentials, security, session management
 - **MongoDB**: Provides flexible user profile storage and API access control
 - **Benefit**: Firebase provides battle-tested auth security, MongoDB provides custom profile schema flexibility
@@ -244,6 +261,7 @@ flowchart LR
 ### 2. File-Based Routing (Expo Router)
 
 **Rationale**: Convention over configuration
+
 - **Benefit**: File structure directly maps to routes, reducing boilerplate
 - **Benefit**: Type-safe navigation with TypeScript
 - **Benefit**: Automatic deep linking support
@@ -253,6 +271,7 @@ flowchart LR
 ### 3. Feature Toggles via `href: null`
 
 **Rationale**: Progressive feature release
+
 - Social, Upload, and Shows features are fully implemented but hidden
 - Can be enabled by removing `href: null` in tab configuration
 - Allows development ahead of launch without exposing incomplete features
@@ -262,6 +281,7 @@ flowchart LR
 ### 4. Component-Based Architecture
 
 **Rationale**: Reusability and maintainability
+
 - Atomic components (ContentCard, User, ProfilePicture)
 - Composite screens built from smaller components
 - Shared styles and theming
@@ -271,18 +291,21 @@ flowchart LR
 ## Security Considerations
 
 ### Authentication Security
+
 - Firebase handles password hashing and secure transmission
 - JWT tokens stored in platform-specific secure storage (Keychain/Keystore)
 - Tokens never stored in AsyncStorage or local state
 - Automatic token refresh mechanism
 
 ### Data Security
+
 - User-generated content validated on client and server
 - Profile data only accessible by authenticated users
 - API endpoints protected with JWT middleware
 - MongoDB document-level permissions
 
 ### Input Validation
+
 - Email format validation (regex)
 - Password strength requirements
 - Date of birth validation (Millennials 1981-1997)
@@ -291,17 +314,20 @@ flowchart LR
 ## Performance Optimizations
 
 ### React Query Caching
+
 - User profile data cached with 5-minute stale time
 - Background refetching for fresh data
 - Optimistic updates for form submissions
 - Reduces unnecessary API calls
 
 ### Content Delivery
+
 - Bunny CDN for video streaming (low latency, high bandwidth)
 - Image optimization with Expo Image
 - Lazy loading for off-screen content
 
 ### Navigation Performance
+
 - Stack navigation preserves screen state
 - Tab navigation keeps all tabs mounted for instant switching
 - Minimal re-renders with pure components
@@ -309,16 +335,19 @@ flowchart LR
 ## Testing Strategy
 
 ### Unit Testing (Jest)
+
 - Form validation logic
 - Helper functions (date formatting, validation)
 - Component rendering with React Testing Library
 
 ### Integration Testing
+
 - Authentication flows
 - Form submissions
 - Navigation flows
 
 ### Manual Testing
+
 - Device testing (iOS/Android)
 - Dark/light mode testing
 - Network error scenarios
@@ -327,6 +356,7 @@ flowchart LR
 ## Development Workflow
 
 ### Environment Setup
+
 1. Clone repository
 2. `npm install` to install dependencies
 3. Configure Firebase credentials (GoogleService-Info.plist, google-services.json)
@@ -334,6 +364,7 @@ flowchart LR
 5. `npx expo start` to run dev server
 
 ### Build & Deploy
+
 - **Development**: `expo start` with Expo Go
 - **Preview**: `expo build:ios` / `expo build:android`
 - **Production**: EAS Build for app store submission
@@ -341,11 +372,13 @@ flowchart LR
 ## Future Enhancements
 
 ### Planned Features (Currently Hidden)
+
 1. **Social Tab**: User connections, profiles, social feed, e-commerce
 2. **Upload Tab**: User-generated content uploads
 3. **Shows Tab**: Premium show streaming with drawer navigation
 
 ### Roadmap Considerations
+
 - Push notifications for new content
 - Offline content caching
 - Advanced video analytics
@@ -355,6 +388,7 @@ flowchart LR
 ## Configuration Files Reference
 
 **Key Configuration Files:**
+
 - [app.json](../../app.json) - Expo app configuration
 - [package.json](../../package.json) - Dependencies and scripts
 - [tsconfig.json](../../tsconfig.json) - TypeScript configuration
@@ -388,10 +422,11 @@ flowchart LR
 
 ---
 
-*Last Updated: 2026-02-05*
-*This document is maintained as part of the app documentation suite and should be updated when architectural changes occur.*
+_Last Updated: 2026-02-05_
+_This document is maintained as part of the app documentation suite and should be updated when architectural changes occur._
 
 **Recent Updates:**
+
 - **February 5, 2026**: Added Phase 1.4 components (ProfileHeader, ProfileTabs, TagInput)
   - EditProfileScreen added to Social Tab
   - Test coverage metrics updated (910 tests)

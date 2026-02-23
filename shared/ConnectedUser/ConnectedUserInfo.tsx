@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  useColorScheme,
-  Pressable,
-} from "react-native";
+import { View, Text, Image, useColorScheme, Pressable } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { logger } from "@/utils/logger";
@@ -45,17 +39,19 @@ export default function ConnectedUserInfo({
       </View>
       <View style={globalStyles.postUserInfoTextContainer}>
         {/* TODO: make this the route to their userid/Profile */}
-        <Pressable onPress={() => {
-          // TODO: Implement navigation to user profile
-          logger.debug(`Navigate to user: ${name}`);
-        }}>
+        <Pressable
+          onPress={() => {
+            // TODO: Implement navigation to user profile
+            logger.debug(`Navigate to user: ${name}`);
+          }}
+        >
           <Text
             style={
               admin
                 ? globalStyles.adminPostUserInfoName
                 : prime
-                ? globalStyles.primePostUserInfoName
-                : globalStyles.postUserInfoName
+                  ? globalStyles.primePostUserInfoName
+                  : globalStyles.postUserInfoName
             }
           >
             {/* TODO: Pressing this takes to their Profile */}
@@ -68,10 +64,12 @@ export default function ConnectedUserInfo({
           Industry:
           {/* Make this the route to the page where list of everyone with industry is at may need new page*/}
           {/* DIFFERENT ROUTE TO DIFF PAGE WITH ALL AS THOS W AS AN INDUSTRY */}
-          <Pressable onPress={() => {
-            // TODO: Implement navigation to industry page
-            logger.debug(`Navigate to industry: ${industry}`);
-          }}>
+          <Pressable
+            onPress={() => {
+              // TODO: Implement navigation to industry page
+              logger.debug(`Navigate to industry: ${industry}`);
+            }}
+          >
             <Text style={globalStyles.bold}>
               {/* If Prime */}
               {prime ? (

@@ -1,0 +1,23 @@
+appId: com.justappin.millennials-prime-app
+# Android: com.justappin.MillennialsPrime_APP
+---
+# Flow: Verify home content feed loads after sign in.
+# Asserts that BunnyCDN video sections are visible.
+
+- launchApp:
+    clearState: true
+
+# Sign in
+- assertVisible: "Enter Email"
+- tapOn:
+    hint: "Enter Email"
+- inputText: ${MAESTRO_TEST_EMAIL}
+- tapOn:
+    hint: "Enter Password"
+- inputText: ${MAESTRO_TEST_PASSWORD}
+- tapOn: "Login"
+
+# Wait for content to load (allows for network latency)
+- assertVisible:
+    text: "New Episodes"
+    timeout: 10000

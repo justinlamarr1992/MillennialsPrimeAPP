@@ -18,18 +18,13 @@ jest.mock("@/hooks/useConnectionStatus");
 jest.mock("@/components/ProfileHeader", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
-  return jest.fn(
-    (props: { user: ServerUserProfile }) =>
-      React.createElement(
-        View,
-        { accessibilityLabel: "Profile header" },
-        React.createElement(Text, {}, props.user.name ?? ""),
-        React.createElement(
-          Text,
-          {},
-          props.user.username ? `@${props.user.username}` : ""
-        )
-      )
+  return jest.fn((props: { user: ServerUserProfile }) =>
+    React.createElement(
+      View,
+      { accessibilityLabel: "Profile header" },
+      React.createElement(Text, {}, props.user.name ?? ""),
+      React.createElement(Text, {}, props.user.username ? `@${props.user.username}` : "")
+    )
   );
 });
 
@@ -48,10 +43,10 @@ jest.mock("@/components/ProfileTabs", () => {
 
 // Real components rendered: ConnectionButton, InterestSection, B2BOpportunitySection
 
-const mockUseUserProfileById =
-  useUserProfileById as jest.MockedFunction<typeof useUserProfileById>;
-const mockUseConnectionStatus =
-  useConnectionStatus as jest.MockedFunction<typeof useConnectionStatus>;
+const mockUseUserProfileById = useUserProfileById as jest.MockedFunction<typeof useUserProfileById>;
+const mockUseConnectionStatus = useConnectionStatus as jest.MockedFunction<
+  typeof useConnectionStatus
+>;
 
 describe("UserProfileScreen", () => {
   const mockProfile: ServerUserProfile = {
@@ -163,9 +158,7 @@ describe("UserProfileScreen", () => {
     it("should offer to send a connection request", () => {
       renderWithProfile();
 
-      expect(
-        screen.getByLabelText("Send connection request")
-      ).toBeTruthy();
+      expect(screen.getByLabelText("Send connection request")).toBeTruthy();
     });
 
     it("should display the user's interests", () => {
@@ -204,9 +197,7 @@ describe("UserProfileScreen", () => {
     it("should show a loading state on the connection button", () => {
       renderWithProfile({}, { loading: true });
 
-      expect(
-        screen.queryByLabelText("Send connection request")
-      ).toBeNull();
+      expect(screen.queryByLabelText("Send connection request")).toBeNull();
     });
   });
 
@@ -222,18 +213,13 @@ describe("UserProfileScreen", () => {
     it("should not display B2B information", () => {
       renderWithProfile({ b2bOpportunities: false });
 
-      expect(
-        screen.queryByLabelText("Business to business opportunities")
-      ).toBeNull();
+      expect(screen.queryByLabelText("Business to business opportunities")).toBeNull();
     });
   });
 
   describe("When the user is already connected", () => {
     it("should show a connected status instead of a connect button", () => {
-      renderWithProfile(
-        {},
-        { status: "connected", connectionId: "conn-123" }
-      );
+      renderWithProfile({}, { status: "connected", connectionId: "conn-123" });
 
       expect(screen.getByLabelText("Remove connection")).toBeTruthy();
     });
@@ -243,9 +229,7 @@ describe("UserProfileScreen", () => {
     it("should show a pending status", () => {
       renderWithProfile({}, { status: "pending_sent" });
 
-      expect(
-        screen.getByLabelText("Connection request pending")
-      ).toBeTruthy();
+      expect(screen.getByLabelText("Connection request pending")).toBeTruthy();
     });
   });
 });

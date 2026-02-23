@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 /**
  * Test component to verify ErrorBoundary functionality
@@ -16,7 +16,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 // Component that throws on render
 const CrashingComponent: React.FC<{ shouldCrash: boolean }> = ({ shouldCrash }) => {
   if (shouldCrash) {
-    throw new Error('Test Error: Component intentionally crashed!');
+    throw new Error("Test Error: Component intentionally crashed!");
   }
   return <Text style={styles.successText}>Component rendered successfully</Text>;
 };
@@ -32,7 +32,7 @@ const AsyncCrashingComponent: React.FC = () => {
   };
 
   if (error) {
-    throw new Error('Test Error: Async operation failed!');
+    throw new Error("Test Error: Async operation failed!");
   }
 
   return (
@@ -49,9 +49,7 @@ const ErrorBoundaryTest: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>ErrorBoundary Test Component</Text>
-      <Text style={styles.subtitle}>
-        Use these buttons to test error handling (DEV ONLY)
-      </Text>
+      <Text style={styles.subtitle}>Use these buttons to test error handling (DEV ONLY)</Text>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -93,10 +91,10 @@ const ErrorBoundaryTest: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     margin: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -104,57 +102,57 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
-    color: '#333',
+    color: "#333",
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginBottom: 16,
   },
   buttonContainer: {
-    flexDirection: 'column',
+    flexDirection: "column",
     marginBottom: 20,
   },
   button: {
     padding: 12,
     borderRadius: 6,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 10,
   },
   dangerButton: {
-    backgroundColor: '#d32f2f',
+    backgroundColor: "#d32f2f",
   },
   warningButton: {
-    backgroundColor: '#f57c00',
+    backgroundColor: "#f57c00",
   },
   infoButton: {
-    backgroundColor: '#0288d1',
+    backgroundColor: "#0288d1",
   },
   asyncButton: {
-    backgroundColor: '#f57c00',
+    backgroundColor: "#f57c00",
     padding: 12,
     borderRadius: 6,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
     fontSize: 14,
   },
   testArea: {
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     borderRadius: 6,
     minHeight: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   successText: {
-    color: '#2e7d32',
+    color: "#2e7d32",
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });
 

@@ -13,6 +13,7 @@ Error Boundaries are React components that catch JavaScript errors anywhere in t
 - Constructors of child components
 
 **Note:** Error boundaries do NOT catch errors for:
+
 - Event handlers (use try-catch for these)
 - Asynchronous code (e.g., setTimeout or requestAnimationFrame callbacks)
 - Server-side rendering
@@ -44,7 +45,7 @@ Error Boundaries are React components that catch JavaScript errors anywhere in t
 
 ### Basic Usage
 
-The ErrorBoundary is already integrated at the root level in [app/_layout.tsx](../app/_layout.tsx):
+The ErrorBoundary is already integrated at the root level in [app/\_layout.tsx](../app/_layout.tsx):
 
 ```tsx
 <ErrorBoundary>
@@ -75,7 +76,7 @@ You can provide a custom error handler:
   onError={(error, errorInfo) => {
     // Custom handling
     logger.exception(error, {
-      componentStack: errorInfo.componentStack
+      componentStack: errorInfo.componentStack,
     });
   }}
 >
@@ -116,11 +117,13 @@ The ErrorBoundary includes integration points for error tracking services but is
 ### Recommended Services
 
 1. **Sentry** (Recommended)
+
    ```bash
    npm install @sentry/react-native
    ```
 
    Integration:
+
    ```tsx
    import * as Sentry from "@sentry/react-native";
 
@@ -131,6 +134,7 @@ The ErrorBoundary includes integration points for error tracking services but is
    ```
 
 2. **Bugsnag**
+
    ```bash
    npm install @bugsnag/react-native
    ```
@@ -153,9 +157,9 @@ try {
   await riskyOperation();
 } catch (error) {
   logger.exception(error as Error, {
-    operation: 'riskyOperation',
+    operation: "riskyOperation",
     userId: user.id,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   });
 }
 ```
@@ -165,7 +169,7 @@ try {
 Enhanced to auto-send Error objects to tracking:
 
 ```tsx
-logger.error('Something went wrong', new Error('Details'));
+logger.error("Something went wrong", new Error("Details"));
 // In production, Error object is automatically sent to tracking service
 ```
 
@@ -176,11 +180,14 @@ logger.error('Something went wrong', new Error('Details'));
 1. **Add Test Component** (DEV ONLY)
 
    In any screen, temporarily add:
+
    ```tsx
-   import ErrorBoundaryTest from '@/components/__tests__/ErrorBoundaryTest';
+   import ErrorBoundaryTest from "@/components/__tests__/ErrorBoundaryTest";
 
    // In render:
-   {__DEV__ && <ErrorBoundaryTest />}
+   {
+     __DEV__ && <ErrorBoundaryTest />;
+   }
    ```
 
 2. **Test Render Errors**
@@ -219,6 +226,7 @@ The ErrorBoundary provides a default fallback UI with:
 ### Styling
 
 The default UI uses:
+
 - Clean white card design
 - Centered layout
 - Responsive to different screen sizes
@@ -231,6 +239,7 @@ To customize, provide your own `fallback` prop.
 ### 1. **Strategic Placement**
 
 Place error boundaries at:
+
 - Root level (already done in `_layout.tsx`)
 - Route boundaries
 - Complex feature boundaries
@@ -245,7 +254,7 @@ Always log caught errors:
   onError={(error, errorInfo) => {
     logger.exception(error, {
       componentStack: errorInfo.componentStack,
-      route: getCurrentRoute()
+      route: getCurrentRoute(),
     });
   }}
 >
@@ -290,6 +299,7 @@ class MyErrorBoundary extends ErrorBoundary {
 Error boundaries have overhead. Don't wrap every component:
 
 ❌ **Too granular:**
+
 ```tsx
 <ErrorBoundary><Button /></ErrorBoundary>
 <ErrorBoundary><Text /></ErrorBoundary>
@@ -297,6 +307,7 @@ Error boundaries have overhead. Don't wrap every component:
 ```
 
 ✅ **Appropriate:**
+
 ```tsx
 <ErrorBoundary>
   <ComplexFeature>
@@ -316,9 +327,9 @@ const handlePress = async () => {
   try {
     await riskyOperation();
   } catch (error) {
-    logger.exception(error as Error, { handler: 'handlePress' });
+    logger.exception(error as Error, { handler: "handlePress" });
     // Show user-friendly error message
-    Alert.alert('Error', 'Something went wrong');
+    Alert.alert("Error", "Something went wrong");
   }
 };
 ```
@@ -337,7 +348,7 @@ useEffect(() => {
       setData(data);
     } catch (err) {
       setError(err as Error);
-      logger.exception(err as Error, { operation: 'fetchData' });
+      logger.exception(err as Error, { operation: "fetchData" });
     }
   };
 
@@ -352,18 +363,21 @@ if (error) {
 ## Future Enhancements
 
 ### Short-term (1-2 weeks)
+
 - [ ] Integrate Sentry or similar error tracking service
 - [ ] Add error boundary to route-specific areas
 - [ ] Create custom fallback UIs for different contexts
 - [ ] Add automated tests for ErrorBoundary
 
 ### Medium-term (1-2 months)
+
 - [ ] Implement error recovery strategies
 - [ ] Add error boundary metrics/monitoring
 - [ ] Create error reporting dashboard
 - [ ] Add user feedback collection on errors
 
 ### Long-term (3+ months)
+
 - [ ] Implement progressive error recovery
 - [ ] Add error prediction/prevention
 - [ ] Integrate with app health monitoring
@@ -383,8 +397,9 @@ if (error) {
 ## Changelog
 
 ### 2025-10-22
+
 - ✅ Created ErrorBoundary component with TypeScript
-- ✅ Integrated at root level in app/_layout.tsx
+- ✅ Integrated at root level in app/\_layout.tsx
 - ✅ Added error tracking integration points
 - ✅ Enhanced logger utility with exception handling
 - ✅ Created test component for verification

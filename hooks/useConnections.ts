@@ -5,12 +5,12 @@
  * for the connection system (Phase 2: Social Features).
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { connectionService } from '@/services/connectionService';
-import { logger } from '@/utils/logger';
-import useAuth from './useAuth';
-import useAxiosPrivate from './useAxiosPrivate';
-import type { Connection, ConnectionUser } from '@/types/connection';
+import { useState, useEffect, useCallback } from "react";
+import { connectionService } from "@/services/connectionService";
+import { logger } from "@/utils/logger";
+import useAuth from "./useAuth";
+import useAxiosPrivate from "./useAxiosPrivate";
+import type { Connection, ConnectionUser } from "@/types/connection";
 
 interface UseConnectionsResult {
   connections: ConnectionUser[];
@@ -49,11 +49,11 @@ export const useConnections = (): UseConnectionsResult => {
       setConnections(connectionsData);
       setPendingRequests(pendingData);
     } catch (err) {
-      const fetchError = err instanceof Error ? err : new Error('Failed to fetch connections');
+      const fetchError = err instanceof Error ? err : new Error("Failed to fetch connections");
       setError(fetchError);
       setConnections([]);
       setPendingRequests([]);
-      logger.error('❌ Failed to fetch connections:', err);
+      logger.error("❌ Failed to fetch connections:", err);
     } finally {
       setLoading(false);
     }
