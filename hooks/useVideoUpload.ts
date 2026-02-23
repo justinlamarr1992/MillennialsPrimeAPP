@@ -100,8 +100,10 @@ export const useVideoUpload = (): UseVideoUploadResult => {
         setPhase("complete");
         logger.log("✅ Video upload complete:", guid);
       } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Upload failed. Please try again.";
+        const raw = err instanceof Error ? err.message : "";
+        const message = raw.toLowerCase().startsWith("tus:")
+          ? "Upload failed. Please check your connection and try again."
+          : raw || "Upload failed. Please try again.";
         setPhase("error");
         setError(message);
         logger.error("❌ Video upload failed:", err);

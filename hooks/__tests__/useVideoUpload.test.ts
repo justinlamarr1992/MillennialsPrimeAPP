@@ -307,9 +307,11 @@ describe("useVideoUpload", () => {
       expect(result.current.error).toBeTruthy();
     });
 
-    it("enters error state when TUS upload fails", async () => {
+    it("shows a friendly message when TUS upload fails with a tus: error", async () => {
       mockVideoUploadService.performTusUpload.mockRejectedValueOnce(
-        new Error("TUS failed")
+        new Error(
+          "tus: unexpected response while creating upload, originated from request (method: POST, url: https://video.bunnycdn.com/tusupload, response code: 401, response text: , request id: n/a)"
+        )
       );
 
       const { result } = renderHook(() => useVideoUpload());
@@ -326,7 +328,28 @@ describe("useVideoUpload", () => {
         expect(result.current.phase).toBe("error");
       });
 
-      expect(result.current.error).toBeTruthy();
+      expect(result.current.error).toBe(
+        "Upload failed. Please check your connection and try again."
+      );
+    });
+
+    it("surfaces the original message for non-TUS service errors", async () => {
+      mockVideoUploadService.createBunnyCDNVideo.mockRejectedValueOnce(
+        new Error("Failed to create video in BunnyCDN (503)")
+      );
+
+      const { result } = renderHook(() => useVideoUpload());
+
+      act(() => {
+        result.current.handleVideoSelect(mockPickerResult);
+      });
+
+      await act(async () => {
+        await result.current.submitUpload(validForm);
+      });
+
+      expect(result.current.phase).toBe("error");
+      expect(result.current.error).toBe("Failed to create video in BunnyCDN (503)");
     });
   });
 });
