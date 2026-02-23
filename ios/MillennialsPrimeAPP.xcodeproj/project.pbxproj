@@ -377,6 +377,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = MillennialsPrimeAPP/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Millennials Prime";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -408,6 +409,7 @@
 				CODE_SIGN_ENTITLEMENTS = MillennialsPrimeAPP/MillennialsPrimeAPP.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = MillennialsPrimeAPP/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Millennials Prime";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
