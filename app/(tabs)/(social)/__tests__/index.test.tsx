@@ -43,9 +43,7 @@ describe("SocialFeedScreen", () => {
 
       fireEvent.press(screen.getByLabelText("Go to My Profile"));
 
-      expect(mockRouter.push).toHaveBeenCalledWith(
-        "/(tabs)/(social)/MyProfileScreen"
-      );
+      expect(mockRouter.push).toHaveBeenCalledWith("/(tabs)/(social)/MyProfileScreen");
     });
   });
 
@@ -61,9 +59,7 @@ describe("SocialFeedScreen", () => {
 
       fireEvent.press(screen.getByLabelText("Go to Connections"));
 
-      expect(mockRouter.push).toHaveBeenCalledWith(
-        "/(tabs)/(social)/ConnectedUsersScreen"
-      );
+      expect(mockRouter.push).toHaveBeenCalledWith("/(tabs)/(social)/ConnectedUsersScreen");
     });
   });
 });

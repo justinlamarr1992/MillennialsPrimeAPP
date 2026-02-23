@@ -20,25 +20,21 @@
  * The backend extracts the requesting userId from the JWT token.
  */
 
-import { axiosPrivate } from '@/API/axios';
-import { logger } from '@/utils/logger';
-import type {
-  Connection,
-  ConnectionStatusResponse,
-  ConnectionUser,
-} from '@/types/connection';
+import { axiosPrivate } from "@/API/axios";
+import { logger } from "@/utils/logger";
+import type { Connection, ConnectionStatusResponse, ConnectionUser } from "@/types/connection";
 
 /**
  * Helper to log axios error details in development mode
  */
 function logAxiosError(error: unknown): void {
-  if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+  if (__DEV__ && error && typeof error === "object" && "response" in error) {
     const axiosError = error as {
       response?: { status?: number; data?: unknown };
       message?: string;
     };
-    logger.error('Error status:', axiosError.response?.status);
-    logger.error('Error data:', JSON.stringify(axiosError.response?.data));
+    logger.error("Error status:", axiosError.response?.status);
+    logger.error("Error data:", JSON.stringify(axiosError.response?.data));
   }
 }
 
@@ -52,25 +48,25 @@ export const connectionService = {
    */
   async sendConnectionRequest(targetUserId: string): Promise<Connection> {
     if (!targetUserId) {
-      throw new Error('Target user ID is required');
+      throw new Error("Target user ID is required");
     }
 
     if (__DEV__) {
-      logger.log('📤 Sending connection request to:', targetUserId);
+      logger.log("📤 Sending connection request to:", targetUserId);
     }
 
     try {
-      const response = await axiosPrivate.post<Connection>('/connections/request', {
+      const response = await axiosPrivate.post<Connection>("/connections/request", {
         recipientId: targetUserId,
       });
 
       if (__DEV__) {
-        logger.log('✅ Connection request sent successfully');
+        logger.log("✅ Connection request sent successfully");
       }
 
       return response.data;
     } catch (error: unknown) {
-      logger.error('❌ Failed to send connection request');
+      logger.error("❌ Failed to send connection request");
       logAxiosError(error);
       throw error;
     }
@@ -84,25 +80,23 @@ export const connectionService = {
    */
   async acceptConnectionRequest(connectionId: string): Promise<Connection> {
     if (!connectionId) {
-      throw new Error('Connection ID is required');
+      throw new Error("Connection ID is required");
     }
 
     if (__DEV__) {
-      logger.log('✅ Accepting connection request:', connectionId);
+      logger.log("✅ Accepting connection request:", connectionId);
     }
 
     try {
-      const response = await axiosPrivate.patch<Connection>(
-        `/connections/${connectionId}/accept`
-      );
+      const response = await axiosPrivate.patch<Connection>(`/connections/${connectionId}/accept`);
 
       if (__DEV__) {
-        logger.log('✅ Connection request accepted');
+        logger.log("✅ Connection request accepted");
       }
 
       return response.data;
     } catch (error: unknown) {
-      logger.error('❌ Failed to accept connection request');
+      logger.error("❌ Failed to accept connection request");
       logAxiosError(error);
       throw error;
     }
@@ -115,21 +109,21 @@ export const connectionService = {
    */
   async declineConnectionRequest(connectionId: string): Promise<void> {
     if (!connectionId) {
-      throw new Error('Connection ID is required');
+      throw new Error("Connection ID is required");
     }
 
     if (__DEV__) {
-      logger.log('❌ Declining connection request:', connectionId);
+      logger.log("❌ Declining connection request:", connectionId);
     }
 
     try {
       await axiosPrivate.patch(`/connections/${connectionId}/decline`);
 
       if (__DEV__) {
-        logger.log('✅ Connection request declined');
+        logger.log("✅ Connection request declined");
       }
     } catch (error: unknown) {
-      logger.error('❌ Failed to decline connection request');
+      logger.error("❌ Failed to decline connection request");
       logAxiosError(error);
       throw error;
     }
@@ -142,21 +136,21 @@ export const connectionService = {
    */
   async removeConnection(connectionId: string): Promise<void> {
     if (!connectionId) {
-      throw new Error('Connection ID is required');
+      throw new Error("Connection ID is required");
     }
 
     if (__DEV__) {
-      logger.log('🗑️ Removing connection:', connectionId);
+      logger.log("🗑️ Removing connection:", connectionId);
     }
 
     try {
       await axiosPrivate.delete(`/connections/${connectionId}`);
 
       if (__DEV__) {
-        logger.log('✅ Connection removed');
+        logger.log("✅ Connection removed");
       }
     } catch (error: unknown) {
-      logger.error('❌ Failed to remove connection');
+      logger.error("❌ Failed to remove connection");
       logAxiosError(error);
       throw error;
     }
@@ -170,19 +164,19 @@ export const connectionService = {
    */
   async getConnections(): Promise<ConnectionUser[]> {
     if (__DEV__) {
-      logger.log('📥 Fetching connections');
+      logger.log("📥 Fetching connections");
     }
 
     try {
-      const response = await axiosPrivate.get<ConnectionUser[]>('/connections');
+      const response = await axiosPrivate.get<ConnectionUser[]>("/connections");
 
       if (__DEV__) {
-        logger.log('✅ Connections fetched:', response.data.length);
+        logger.log("✅ Connections fetched:", response.data.length);
       }
 
       return response.data;
     } catch (error: unknown) {
-      logger.error('❌ Failed to fetch connections');
+      logger.error("❌ Failed to fetch connections");
       logAxiosError(error);
       throw error;
     }
@@ -196,19 +190,19 @@ export const connectionService = {
    */
   async getPendingRequests(): Promise<Connection[]> {
     if (__DEV__) {
-      logger.log('📥 Fetching pending connection requests');
+      logger.log("📥 Fetching pending connection requests");
     }
 
     try {
-      const response = await axiosPrivate.get<Connection[]>('/connections/pending');
+      const response = await axiosPrivate.get<Connection[]>("/connections/pending");
 
       if (__DEV__) {
-        logger.log('✅ Pending requests fetched:', response.data.length);
+        logger.log("✅ Pending requests fetched:", response.data.length);
       }
 
       return response.data;
     } catch (error: unknown) {
-      logger.error('❌ Failed to fetch pending requests');
+      logger.error("❌ Failed to fetch pending requests");
       logAxiosError(error);
       throw error;
     }
@@ -222,11 +216,11 @@ export const connectionService = {
    */
   async getConnectionStatus(targetUserId: string): Promise<ConnectionStatusResponse> {
     if (!targetUserId) {
-      throw new Error('Target user ID is required');
+      throw new Error("Target user ID is required");
     }
 
     if (__DEV__) {
-      logger.log('🔍 Checking connection status with:', targetUserId);
+      logger.log("🔍 Checking connection status with:", targetUserId);
     }
 
     try {
@@ -235,12 +229,12 @@ export const connectionService = {
       );
 
       if (__DEV__) {
-        logger.log('✅ Connection status:', response.data.status);
+        logger.log("✅ Connection status:", response.data.status);
       }
 
       return response.data;
     } catch (error: unknown) {
-      logger.error('❌ Failed to check connection status');
+      logger.error("❌ Failed to check connection status");
       logAxiosError(error);
       throw error;
     }

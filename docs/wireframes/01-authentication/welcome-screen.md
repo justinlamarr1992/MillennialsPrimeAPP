@@ -62,15 +62,18 @@ flowchart TD
 ## Components Used
 
 **React Native Core:**
+
 - `View` - Container components
 - `ScrollView` - Scrollable content wrapper
 - `Text` - Text display
 - `useColorScheme` - Dark/light mode detection
 
 **Expo Router:**
+
 - `Link` - Declarative navigation component
 
 **Custom:**
+
 - `globalStyles` - Global style constants
 - `COLORS` - Theme color scheme
 
@@ -83,9 +86,9 @@ flowchart TD
 
 ## User Interactions
 
-| Element | Action | Navigation Target | Method |
-|---------|--------|-------------------|--------|
-| "Log In" Button | onPress | `/(auth)/SignInScreen` | Link (replace) |
+| Element          | Action  | Navigation Target        | Method         |
+| ---------------- | ------- | ------------------------ | -------------- |
+| "Log In" Button  | onPress | `/(auth)/SignInScreen`   | Link (replace) |
 | "Sign Up" Button | onPress | `/(auth)/RegisterScreen` | Link (replace) |
 
 ## State Management
@@ -93,23 +96,27 @@ flowchart TD
 **No Local State** - This is a stateless presentation component.
 
 **Global State Used:**
+
 - `colorScheme` - Device theme (dark/light)
 - `colors` - Theme-based color palette
 
 ## Visual Design
 
 ### Typography
+
 - **Title**: Large, bold - "Welcome to Millennial's Prime"
 - **Version**: Small text showing app version
 - **Footer**: Company attribution text
 
 ### Colors (Dynamic)
+
 - **Background**: `colors.background` (theme-aware)
 - **Text**: `colors.text` (theme-aware)
 - **Login Button**: Primary color (usually green)
 - **Sign Up Button**: Secondary color (usually blue)
 
 ### Layout
+
 - **Alignment**: Centered (both horizontal and vertical)
 - **Spacing**: Generous padding between elements
 - **Scroll**: Enabled for smaller screens or landscape orientation
@@ -117,10 +124,12 @@ flowchart TD
 ## Navigation Behavior
 
 ### Entry Point
+
 - First screen shown to unauthenticated users
 - Auth gating in root layout redirects here if no user logged in
 
 ### Exit Points
+
 ```mermaid
 flowchart LR
     Welcome[Welcome Screen] -->|Log In| SignIn[SignIn Screen]
@@ -133,6 +142,7 @@ flowchart LR
 ### Link Configuration
 
 **Log In Link:**
+
 ```tsx
 <Link href="/(auth)/SignInScreen" replace asChild>
   <Pressable>
@@ -140,10 +150,12 @@ flowchart LR
   </Pressable>
 </Link>
 ```
+
 - Uses `replace` to prevent back navigation to welcome screen
 - `asChild` applies Link behavior to child Pressable
 
 **Sign Up Link:**
+
 ```tsx
 <Link href="/(auth)/RegisterScreen" replace asChild>
   <Pressable>
@@ -151,18 +163,21 @@ flowchart LR
   </Pressable>
 </Link>
 ```
+
 - Uses `replace` for same reason
 - Maintains consistent navigation pattern
 
 ## Screen States
 
 ### Default State
+
 - Logo visible
 - Welcome text displayed
 - Both action buttons visible
 - Footer with version info
 
 ### No Additional States
+
 - No loading states (stateless component)
 - No error states (no data fetching)
 - No conditional rendering based on user input
@@ -170,6 +185,7 @@ flowchart LR
 ## Accessibility
 
 **Potential Improvements:**
+
 - Add `accessibilityLabel` to buttons
 - Add `accessibilityHint` for navigation actions
 - Ensure sufficient color contrast for text
@@ -178,14 +194,17 @@ flowchart LR
 ## Implementation Notes
 
 ### File Reference
+
 [app/index.tsx](../../../app/index.tsx)
 
 ### Key Dependencies
+
 - `expo-router` - Link component for navigation
 - `globalStyles` from `@/constants/global`
 - `COLORS` from `@/constants/Colors`
 
 ### Styling Approach
+
 - Uses global style constants for consistency
 - Theme-aware colors for dark/light mode support
 - Responsive layout adapts to screen size
@@ -193,12 +212,14 @@ flowchart LR
 ## Related Screens
 
 **Next Screens:**
+
 - [Sign In Screen](./signin-screen.md) - Primary user login
 - [Register Screen](./register-screen.md) - New user account creation
 
 **Parent Layout:**
+
 - Root Layout (`app/_layout.tsx`) - Auth gating logic
 
 ---
 
-*This wireframe documents the current implementation as of 2026-01-30.*
+_This wireframe documents the current implementation as of 2026-01-30._

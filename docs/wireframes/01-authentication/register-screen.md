@@ -92,6 +92,7 @@ flowchart TD
 ## Components Used
 
 **React Native Core:**
+
 - `KeyboardAvoidingView` - Keyboard layout adjustment
 - `ScrollView` - Scrollable form
 - `View` - Container components
@@ -103,19 +104,24 @@ flowchart TD
 - `ActivityIndicator` - Loading state
 
 **External Libraries:**
+
 - `@react-native-community/datetimepicker` - Birth date picker
 
 **Expo Router:**
+
 - `Link` - Navigation to login
 - `useRouter` - Imperative navigation
 
 **Firebase:**
+
 - `auth().createUserWithEmailAndPassword()` - User registration
 
 **Services:**
+
 - `serverAuth.registerOnServer()` - MongoDB registration
 
 **Utilities:**
+
 - `errorHandler` - Firebase error parsing
 - `isValidEmail` - Email validation
 
@@ -134,21 +140,22 @@ flowchart TD
 
 ## User Interactions
 
-| Element | Action | Navigation Target | Method |
-|---------|--------|-------------------|--------|
-| Back Button | onPress → router.back() | Previous screen | Imperative |
-| First Name Input | onBlur → validateField() | - | Validation |
-| Last Name Input | onBlur → validateField() | - | Validation |
-| Email Input | onBlur → validateField() | - | Validation |
-| Password Input | onBlur → validateField() | - | Validation |
-| Confirm Password | onBlur → validateField() | - | Validation |
-| DOB Picker | onChange → setDateOfBirth() | - | State update |
-| Sign Up Button | onPress → handleRegister() | `/(auth)/SignInScreen` | On success |
-| Login Link | onPress | `/(auth)/SignInScreen` | Link (replace) |
+| Element          | Action                      | Navigation Target      | Method         |
+| ---------------- | --------------------------- | ---------------------- | -------------- |
+| Back Button      | onPress → router.back()     | Previous screen        | Imperative     |
+| First Name Input | onBlur → validateField()    | -                      | Validation     |
+| Last Name Input  | onBlur → validateField()    | -                      | Validation     |
+| Email Input      | onBlur → validateField()    | -                      | Validation     |
+| Password Input   | onBlur → validateField()    | -                      | Validation     |
+| Confirm Password | onBlur → validateField()    | -                      | Validation     |
+| DOB Picker       | onChange → setDateOfBirth() | -                      | State update   |
+| Sign Up Button   | onPress → handleRegister()  | `/(auth)/SignInScreen` | On success     |
+| Login Link       | onPress                     | `/(auth)/SignInScreen` | Link (replace) |
 
 ## State Management
 
 **Local State:**
+
 ```typescript
 - firstName: string                // First name input
 - lastName: string                 // Last name input
@@ -171,16 +178,19 @@ flowchart TD
 ## Validation Rules
 
 ### First Name
+
 - **Trigger**: onBlur
 - **Rule**: Not empty
 - **Error**: "First name is required."
 
 ### Last Name
+
 - **Trigger**: onBlur
 - **Rule**: Not empty
 - **Error**: "Last name is required."
 
 ### Email
+
 - **Trigger**: onBlur
 - **Rules**:
   1. Not empty → "Email is required."
@@ -188,6 +198,7 @@ flowchart TD
 - **Function**: `isValidEmail(email)`
 
 ### Password
+
 - **Trigger**: onBlur
 - **Rules**:
   1. Not empty → "Password is required."
@@ -195,18 +206,21 @@ flowchart TD
 - **Security**: `secureTextEntry={true}`
 
 ### Confirm Password
+
 - **Trigger**: onBlur
 - **Rules**:
   1. Not empty → "Please confirm your password."
   2. Matches password → "Passwords do not match."
 
 ### Date of Birth
+
 - **Trigger**: onChange and form submission
 - **Rules**:
   1. Year >= 1981 AND Year <= 1997 → "You must be a Millennial (born between 1981 and 1997)."
   2. Not in future → "Date of birth cannot be in the future."
 
 **Millennials Validation Function:**
+
 ```typescript
 const isMillennial = (date: Date): boolean => {
   const year = date.getFullYear();
@@ -257,17 +271,20 @@ sequenceDiagram
 ## Error Handling
 
 ### Firebase Errors
+
 - `auth/email-already-in-use` → "This email is already registered"
 - `auth/invalid-email` → "Invalid email format"
 - `auth/weak-password` → "Password is too weak"
 - `auth/operation-not-allowed` → "Email/password accounts are not enabled"
 
 ### MongoDB Errors
+
 - If MongoDB registration fails, Firebase user is deleted to prevent orphaned accounts
 - User must retry entire registration process
 - Error alert: "Registration failed. Please try again."
 
 ### Validation Errors
+
 - Field-specific errors shown below each input
 - Prevents submission if any field is invalid
 - Real-time feedback on blur events
@@ -275,12 +292,14 @@ sequenceDiagram
 ## Visual Design
 
 ### Typography
+
 - **Title**: "Create your account" - Large, bold
 - **Subtitle**: "Fill your information below" - Regular
 - **Input Labels**: Placeholders in input fields
 - **Error Messages**: Small, red text below fields
 
 ### Colors (Theme-aware)
+
 - **Background**: `colors.background`
 - **Text**: `colors.text`
 - **Inputs**: Border color from theme
@@ -288,6 +307,7 @@ sequenceDiagram
 - **Sign Up Button**: Primary green color
 
 ### Layout
+
 - **Form Fields**: Stacked vertically with consistent spacing
 - **Keyboard Avoidance**: Adjusts scroll position
 - **Date Picker**: Platform-specific native picker
@@ -314,6 +334,7 @@ stateDiagram-v2
 ```
 
 **UI Changes:**
+
 - Sign Up button shows `<ActivityIndicator />`
 - Button disabled during loading
 - Form inputs disabled to prevent changes
@@ -323,35 +344,42 @@ stateDiagram-v2
 ### Platform Differences
 
 **iOS:**
+
 - Inline wheel picker
 - Appears below trigger button
 - Smooth scrolling
 
 **Android:**
+
 - Modal calendar picker
 - Full-screen overlay
 - Date selection dialog
 
 ### Default Date
+
 - Set to 1990-01-01 (middle of Millennials range)
 - Ensures valid Millennial date by default
 
 ### Date Format Display
+
 - Shows selected date in locale-specific format
 - Example: "01/15/1990" (US) or "15/01/1990" (EU)
 
 ## Navigation Behavior
 
 ### Entry Points
+
 1. Welcome screen "Sign Up" button
 2. Sign In screen "Create Account" link
 
 ### Exit Points
+
 1. **Success**: Navigate to `/(auth)/SignInScreen` with alert
 2. **Back Button**: Return to previous screen
 3. **Login Link**: Navigate to `/(auth)/SignInScreen` (replace)
 
 ### Post-Registration
+
 - User must log in after successful registration
 - Credentials not auto-filled (security)
 - Success alert guides user to sign in
@@ -380,15 +408,18 @@ stateDiagram-v2
 ## Implementation Notes
 
 ### File Reference
-[app/(auth)/RegisterScreen.tsx](../../../app/(auth)/RegisterScreen.tsx)
+
+[app/(auth)/RegisterScreen.tsx](<../../../app/(auth)/RegisterScreen.tsx>)
 
 ### Key Dependencies
+
 - `@react-native-firebase/auth` - Firebase authentication
 - `@react-native-community/datetimepicker` - Date picker
 - `serverAuth` service - MongoDB registration
 - `errorHandler` utility - Error parsing
 
 ### Validation Timing
+
 ```typescript
 // Validate on blur for immediate feedback
 onBlur={() => validateField('firstName')}
@@ -405,15 +436,18 @@ handleRegister() {
 ## Related Screens
 
 **Previous Screens:**
+
 - [Welcome Screen](./welcome-screen.md) - Initial entry point
 - [Sign In Screen](./signin-screen.md) - Alternative for existing users
 
 **Next Screens:**
+
 - [Sign In Screen](./signin-screen.md) - Post-registration login
 
 **Parent Layout:**
+
 - Auth Stack Layout (`app/(auth)/_layout.tsx`)
 
 ---
 
-*This wireframe documents the current implementation as of 2026-01-30.*
+_This wireframe documents the current implementation as of 2026-01-30._

@@ -69,6 +69,7 @@ flowchart TD
 ## Components Used
 
 **React Native Core:**
+
 - `KeyboardAvoidingView` - Adjusts layout when keyboard appears
 - `ScrollView` - Scrollable content
 - `View` - Container components
@@ -81,19 +82,24 @@ flowchart TD
 - `useColorScheme` - Theme detection
 
 **Expo Router:**
+
 - `Link` - Navigation to register and password recovery
 - `useRouter` - Imperative navigation after success
 
 **Custom Hooks:**
+
 - `useAuth` - Access authentication context
 
 **Services:**
+
 - `serverAuth` - MongoDB authentication service
 
 **Firebase:**
+
 - `auth().signInWithEmailAndPassword()` - Firebase authentication
 
 **Utilities:**
+
 - `errorHandler` - Firebase error message parsing
 - `isValidEmail` - Email validation function
 
@@ -111,17 +117,18 @@ flowchart TD
 
 ## User Interactions
 
-| Element | Action | Navigation Target | Method |
-|---------|--------|-------------------|--------|
-| Back Button | onPress → router.back() | Previous screen | Imperative (router.back) |
-| Email Input | onBlur → validateEmail() | - | Local validation |
-| Forgot Password Link | onPress | `/(auth)/PasswordRecoveryScreen` | Link (push) |
-| Sign In Button | onPress → handleLogin() | `/(tabs)/(home)/HomePage` | Imperative (on success) |
-| Create Account Link | onPress | `/(auth)/RegisterScreen` | Link (replace) |
+| Element              | Action                   | Navigation Target                | Method                   |
+| -------------------- | ------------------------ | -------------------------------- | ------------------------ |
+| Back Button          | onPress → router.back()  | Previous screen                  | Imperative (router.back) |
+| Email Input          | onBlur → validateEmail() | -                                | Local validation         |
+| Forgot Password Link | onPress                  | `/(auth)/PasswordRecoveryScreen` | Link (push)              |
+| Sign In Button       | onPress → handleLogin()  | `/(tabs)/(home)/HomePage`        | Imperative (on success)  |
+| Create Account Link  | onPress                  | `/(auth)/RegisterScreen`         | Link (replace)           |
 
 ## State Management
 
 **Local State:**
+
 ```typescript
 - email: string                    // Email input value
 - password: string                 // Password input value
@@ -131,17 +138,20 @@ flowchart TD
 ```
 
 **Global State:**
+
 - `user` - Auth context (from useAuth hook)
 
 ## Validation Rules
 
 ### Email Validation
+
 - **Trigger**: onBlur (when user leaves the field)
 - **Rule**: Must match email regex pattern
 - **Error Message**: "Please enter a valid email address."
 - **Function**: `isValidEmail(email)`
 
 ### Form Submission Validation
+
 1. **Email Required**: "Email is required!"
 2. **Password Required**: "Password is required!"
 3. **Email Format**: Must pass `isValidEmail()` check
@@ -188,18 +198,22 @@ sequenceDiagram
 ## Error Handling
 
 ### Firebase Errors
+
 Handled by `errorHandler()` utility:
+
 - `auth/invalid-email` → "Invalid email format"
 - `auth/user-not-found` → "No account found with this email"
 - `auth/wrong-password` → "Incorrect password"
 - `auth/too-many-requests` → "Too many attempts, try again later"
 
 ### MongoDB Errors
+
 - Server authentication failures show warning but don't block app access
 - User can still access app with Firebase auth only
 - MongoDB provides API access tokens, not required for basic features
 
 ### Form Validation Errors
+
 - Empty email → "Email is required!"
 - Empty password → "Password is required!"
 - Invalid email format → "Please enter a valid email address."
@@ -207,12 +221,14 @@ Handled by `errorHandler()` utility:
 ## Visual Design
 
 ### Typography
+
 - **Title**: "Account Login" - Large, bold
 - **Subtitle**: "Login to your account" - Regular
 - **Input Labels**: Email, Password
 - **Error Messages**: Red text, smaller font
 
 ### Colors (Theme-aware)
+
 - **Background**: `colors.background`
 - **Text**: `colors.text`
 - **Input Borders**: `colors.border`
@@ -220,6 +236,7 @@ Handled by `errorHandler()` utility:
 - **Sign In Button**: Primary color (green)
 
 ### Layout
+
 - **Keyboard Avoidance**: iOS uses padding, Android uses height adjustment
 - **Scroll Support**: Ensures form visible when keyboard open
 - **Input Spacing**: Generous padding between form fields
@@ -228,6 +245,7 @@ Handled by `errorHandler()` utility:
 ## Loading States
 
 ### During Authentication
+
 - **Sign In Button**: Shows ActivityIndicator instead of text
 - **Button Disabled**: Prevents multiple submissions
 - **State**: `loading === true`
@@ -252,12 +270,14 @@ stateDiagram-v2
 ## Navigation Behavior
 
 ### Entry Points
+
 1. Welcome screen "Log In" button
 2. Registration success (after creating account)
 3. Password recovery success
 4. Auth gating redirect (unauthenticated user)
 
 ### Exit Points
+
 1. **Success**: Navigate to `/(tabs)/(home)/HomePage`
 2. **Back Button**: Return to previous screen
 3. **Create Account**: Navigate to `/(auth)/RegisterScreen`
@@ -266,10 +286,12 @@ stateDiagram-v2
 ## Accessibility
 
 **Current Implementation:**
+
 - TextInput placeholders
 - Secure text entry for password
 
 **Potential Improvements:**
+
 - `accessibilityLabel` for inputs
 - `accessibilityHint` for buttons
 - Screen reader support for error messages
@@ -297,15 +319,18 @@ stateDiagram-v2
 ## Implementation Notes
 
 ### File Reference
-[app/(auth)/SignInScreen.tsx](../../../app/(auth)/SignInScreen.tsx)
+
+[app/(auth)/SignInScreen.tsx](<../../../app/(auth)/SignInScreen.tsx>)
 
 ### Key Dependencies
+
 - `@react-native-firebase/auth` - Firebase authentication
 - `serverAuth` service - MongoDB authentication
 - `errorHandler` utility - Error message parsing
 - `isValidEmail` utility - Email validation
 
 ### Validation Functions
+
 ```typescript
 const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -316,16 +341,19 @@ const isValidEmail = (email: string): boolean => {
 ## Related Screens
 
 **Previous Screens:**
+
 - [Welcome Screen](./welcome-screen.md) - Entry point
 
 **Next Screens:**
+
 - [Register Screen](./register-screen.md) - New account creation
 - [Password Recovery Screen](./password-recovery-screen.md) - Reset password
 - [HomePage](../02-home-tab/home-page.md) - Post-authentication
 
 **Parent Layout:**
+
 - Auth Stack Layout (`app/(auth)/_layout.tsx`)
 
 ---
 
-*This wireframe documents the current implementation as of 2026-01-30.*
+_This wireframe documents the current implementation as of 2026-01-30._

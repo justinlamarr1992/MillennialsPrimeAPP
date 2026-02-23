@@ -1,4 +1,5 @@
 # Testing Guide
+
 **Millennials Prime App - Developer Testing Reference**
 
 ## Running Tests
@@ -26,10 +27,12 @@ npm run test:update-snapshots
 ## Writing Tests
 
 ### File Naming Convention
+
 - Test files: `ComponentName.test.tsx` or `functionName.test.ts`
 - Location: `__tests__/` folder in the same directory as the file being tested
 
 Example structure:
+
 ```
 utils/
   validation.ts
@@ -85,12 +88,13 @@ describe('MyComponent', () => {
    - Mock API calls, navigation, Firebase
 
 5. **Use descriptive test names**
+
    ```typescript
    // Good
-   it('should show error message when email is invalid', () => {});
+   it("should show error message when email is invalid", () => {});
 
    // Bad
-   it('test email', () => {});
+   it("test email", () => {});
    ```
 
 ## Common Testing Patterns
@@ -163,19 +167,19 @@ it('should submit form with valid data', () => {
 ### Testing Validation
 
 ```typescript
-import { validateEmail } from '../validation';
+import { validateEmail } from "../validation";
 
-describe('validateEmail', () => {
-  it('should return null for valid email', () => {
-    expect(validateEmail('test@example.com')).toBeNull();
+describe("validateEmail", () => {
+  it("should return null for valid email", () => {
+    expect(validateEmail("test@example.com")).toBeNull();
   });
 
-  it('should return error message for invalid email', () => {
-    expect(validateEmail('invalid')).toBe('Invalid email format');
+  it("should return error message for invalid email", () => {
+    expect(validateEmail("invalid")).toBe("Invalid email format");
   });
 
-  it('should return error message for empty email', () => {
-    expect(validateEmail('')).toBe('Email is required');
+  it("should return error message for empty email", () => {
+    expect(validateEmail("")).toBe("Email is required");
   });
 });
 ```
@@ -183,10 +187,10 @@ describe('validateEmail', () => {
 ### Testing Hooks
 
 ```typescript
-import { renderHook } from '@testing-library/react-native';
-import { useAuth } from '../useAuth';
+import { renderHook } from "@testing-library/react-native";
+import { useAuth } from "../useAuth";
 
-it('should return auth context', () => {
+it("should return auth context", () => {
   const { result } = renderHook(() => useAuth());
 
   expect(result.current.user).toBeDefined();
@@ -197,6 +201,7 @@ it('should return auth context', () => {
 ## Available Mocks
 
 ### Firebase Auth
+
 ```typescript
 import {
   mockAuth,
@@ -205,55 +210,55 @@ import {
   signInWithEmailAndPassword,
   signOut,
   resetFirebaseMocks,
-} from '@/__tests__/__mocks__/firebase';
+} from "@/__tests__/__mocks__/firebase";
 ```
 
 ### Expo Router
+
 ```typescript
-import {
-  mockRouter,
-  useRouter,
-  resetRouterMocks,
-} from '@/__tests__/__mocks__/expo-router';
+import { mockRouter, useRouter, resetRouterMocks } from "@/__tests__/__mocks__/expo-router";
 ```
 
 ### React Query
+
 ```typescript
-import {
-  useQuery,
-  useMutation,
-  resetQueryMocks,
-} from '@/__tests__/__mocks__/react-query';
+import { useQuery, useMutation, resetQueryMocks } from "@/__tests__/__mocks__/react-query";
 ```
 
 ## Troubleshooting
 
 ### Test fails with "Cannot find module"
+
 - Check that `jest.config.js` has correct `moduleNameMapper`
 - Ensure the mock file exists in `__tests__/__mocks__/`
 
 ### Test times out
+
 - Add `jest.setTimeout(10000)` in setup.ts
 - Check for unresolved promises in async tests
 
 ### Mock not working
+
 - Ensure mock is defined before test runs
 - Check that mock path matches actual import path
 - Clear mocks between tests using `beforeEach`
 
 ### Snapshot test failing
+
 - Run `npm run test:update-snapshots` to update
 - Review changes carefully before committing
 
 ## Test Coverage
 
 View coverage report:
+
 ```bash
 npm run test:coverage
 open coverage/lcov-report/index.html
 ```
 
 Current coverage thresholds (in `jest.config.js`):
+
 - Statements: 30%
 - Branches: 25%
 - Functions: 30%

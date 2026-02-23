@@ -10,10 +10,14 @@ export default function SocialFeedScreen() {
   const colors = COLORS[colorScheme ?? "dark"];
 
   return (
-    <View style={[globalStyles.centerItem, globalStyles.flexAlignItemsCenter, { backgroundColor: colors.background }]}>
-      <Text style={[globalStyles.textTitle, { color: colors.text, fontSize: 28 }]}>
-        Social
-      </Text>
+    <View
+      style={[
+        globalStyles.centerItem,
+        globalStyles.flexAlignItemsCenter,
+        { backgroundColor: colors.background },
+      ]}
+    >
+      <Text style={[globalStyles.textTitle, { color: colors.text, fontSize: 28 }]}>Social</Text>
 
       <View style={[globalStyles.padding, globalStyles.gap12, { width: "100%", maxWidth: 400 }]}>
         <Pressable

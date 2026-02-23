@@ -21,8 +21,9 @@ const getLocationString = (location?: ServerUserProfile["location"]): string => 
   if (!location) return "Location not set";
 
   const { city, state, country } = location;
-  const parts = [city, state, country]
-    .filter((part): part is string => typeof part === "string" && part.trim() !== "");
+  const parts = [city, state, country].filter(
+    (part): part is string => typeof part === "string" && part.trim() !== ""
+  );
 
   return parts.length > 0 ? parts.join(", ") : "Location not set";
 };
@@ -75,9 +76,7 @@ export default function ProfileHeader({
           onPress={onEditPress}
           testID="edit-profile-button"
         >
-          <Text style={[styles.actionButtonText, { color: colors.secT }]}>
-            Edit Profile
-          </Text>
+          <Text style={[styles.actionButtonText, { color: colors.secT }]}>Edit Profile</Text>
         </Pressable>
       );
     }
@@ -130,7 +129,10 @@ export default function ProfileHeader({
   const friendsCount = getFriendsCount(user);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]} testID="profile-header">
+    <View
+      style={[styles.container, { backgroundColor: colors.background }]}
+      testID="profile-header"
+    >
       {/* Profile Picture Section */}
       <View style={styles.profilePictureContainer}>
         <ProfilePicture
@@ -149,9 +151,7 @@ export default function ProfileHeader({
         </Text>
 
         {user.username && user.username.trim() !== "" && (
-          <Text style={[styles.userHandle, { color: colors.triT }]}>
-            @{user.username}
-          </Text>
+          <Text style={[styles.userHandle, { color: colors.triT }]}>@{user.username}</Text>
         )}
 
         <Text style={[styles.location, { color: colors.triT }]} testID="user-location">
@@ -167,9 +167,7 @@ export default function ProfileHeader({
       </View>
 
       {/* Action Button */}
-      <View style={styles.actionButtonContainer}>
-        {renderActionButton()}
-      </View>
+      <View style={styles.actionButtonContainer}>{renderActionButton()}</View>
     </View>
   );
 }

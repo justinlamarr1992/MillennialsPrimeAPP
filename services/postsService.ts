@@ -14,10 +14,10 @@
  * This service defines the API contract for when backend is ready.
  */
 
-import { axiosPrivate } from '@/API/axios';
-import { serverAuth } from './serverAuth';
-import { logger } from '@/utils/logger';
-import type { Post } from '@/types/posts';
+import { axiosPrivate } from "@/API/axios";
+import { serverAuth } from "./serverAuth";
+import { logger } from "@/utils/logger";
+import type { Post } from "@/types/posts";
 
 /**
  * Response from GET /posts/profile endpoint
@@ -40,33 +40,33 @@ export const postsService = {
   async fetchUserPosts(): Promise<UserPostsResponse> {
     const userId = await serverAuth.getUserId();
     if (!userId) {
-      throw new Error('User ID not found');
+      throw new Error("User ID not found");
     }
 
     if (__DEV__) {
-      logger.log('📥 Fetching posts for user:', userId);
+      logger.log("📥 Fetching posts for user:", userId);
     }
 
     try {
-      const response = await axiosPrivate.get<UserPostsResponse>('/posts/profile');
+      const response = await axiosPrivate.get<UserPostsResponse>("/posts/profile");
 
       if (__DEV__) {
-        logger.log('✅ Posts fetched successfully');
-        logger.log('📊 Total posts:', response.data.totalCount);
+        logger.log("✅ Posts fetched successfully");
+        logger.log("📊 Total posts:", response.data.totalCount);
       }
 
       return response.data;
     } catch (error: unknown) {
-      logger.error('❌ Failed to fetch user posts');
+      logger.error("❌ Failed to fetch user posts");
 
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+      if (__DEV__ && error && typeof error === "object" && "response" in error) {
         const axiosError = error as {
           response?: { status?: number; data?: unknown };
           message?: string;
         };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-        logger.error('Error message:', axiosError.message);
+        logger.error("Error status:", axiosError.response?.status);
+        logger.error("Error data:", JSON.stringify(axiosError.response?.data));
+        logger.error("Error message:", axiosError.message);
       }
 
       throw error;
@@ -85,33 +85,33 @@ export const postsService = {
    */
   async fetchPostsByUserId(userId: string): Promise<UserPostsResponse> {
     if (!userId) {
-      throw new Error('User ID is required');
+      throw new Error("User ID is required");
     }
 
     if (__DEV__) {
-      logger.log('📥 Fetching posts for user ID:', userId);
+      logger.log("📥 Fetching posts for user ID:", userId);
     }
 
     try {
       const response = await axiosPrivate.get<UserPostsResponse>(`/posts/${userId}`);
 
       if (__DEV__) {
-        logger.log('✅ Posts fetched successfully');
-        logger.log('📊 Total posts:', response.data.totalCount);
+        logger.log("✅ Posts fetched successfully");
+        logger.log("📊 Total posts:", response.data.totalCount);
       }
 
       return response.data;
     } catch (error: unknown) {
-      logger.error('❌ Failed to fetch posts for user:', userId);
+      logger.error("❌ Failed to fetch posts for user:", userId);
 
-      if (__DEV__ && error && typeof error === 'object' && 'response' in error) {
+      if (__DEV__ && error && typeof error === "object" && "response" in error) {
         const axiosError = error as {
           response?: { status?: number; data?: unknown };
           message?: string;
         };
-        logger.error('Error status:', axiosError.response?.status);
-        logger.error('Error data:', JSON.stringify(axiosError.response?.data));
-        logger.error('Error message:', axiosError.message);
+        logger.error("Error status:", axiosError.response?.status);
+        logger.error("Error data:", JSON.stringify(axiosError.response?.data));
+        logger.error("Error message:", axiosError.message);
       }
 
       throw error;

@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
-import BusinessScreen from '../BusinessScreen';
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
+import BusinessScreen from "../BusinessScreen";
 
 // Mock expo-router
-jest.mock('expo-router', () => ({
+jest.mock("expo-router", () => ({
   router: {
     back: jest.fn(),
     push: jest.fn(),
@@ -11,25 +11,25 @@ jest.mock('expo-router', () => ({
 }));
 
 // Mock @react-native-picker/picker
-jest.mock('@react-native-picker/picker', () => ({
+jest.mock("@react-native-picker/picker", () => ({
   Picker: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock useAuth hook
-jest.mock('@/hooks/useAuth', () => ({
+jest.mock("@/hooks/useAuth", () => ({
   __esModule: true,
   default: jest.fn(() => ({
     user: {
-      uid: 'test-user-id',
-      email: 'testuser@example.com',
-      displayName: 'Test User',
+      uid: "test-user-id",
+      email: "testuser@example.com",
+      displayName: "Test User",
     },
     loading: false,
   })),
 }));
 
 // Mock useUserProfile hook - will be overridden in specific tests
-jest.mock('@/hooks/useUserProfile', () => ({
+jest.mock("@/hooks/useUserProfile", () => ({
   useUserProfile: jest.fn(() => ({
     profile: null,
     loading: false,
@@ -39,131 +39,131 @@ jest.mock('@/hooks/useUserProfile', () => ({
 }));
 
 // Mock userProfileService
-jest.mock('@/services/userProfileService', () => ({
+jest.mock("@/services/userProfileService", () => ({
   userProfileService: {
     updateBusiness: jest.fn(),
   },
 }));
 
-describe('BusinessScreen', () => {
+describe("BusinessScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Initial Content Display', () => {
-    it('should display screen title', () => {
+  describe("Initial Content Display", () => {
+    it("should display screen title", () => {
       render(<BusinessScreen />);
-      expect(screen.getByText('Business Information')).toBeTruthy();
+      expect(screen.getByText("Business Information")).toBeTruthy();
     });
 
-    it('should display subtitle', () => {
+    it("should display subtitle", () => {
       render(<BusinessScreen />);
-      expect(screen.getByText('Edit your Business information')).toBeTruthy();
+      expect(screen.getByText("Edit your Business information")).toBeTruthy();
     });
 
-    it('should display business question', () => {
+    it("should display business question", () => {
       render(<BusinessScreen />);
-      expect(screen.getByText('Do you have a Business')).toBeTruthy();
+      expect(screen.getByText("Do you have a Business")).toBeTruthy();
     });
 
-    it('should display business input placeholder', () => {
+    it("should display business input placeholder", () => {
       render(<BusinessScreen />);
-      expect(screen.getByPlaceholderText('Do you have a Business')).toBeTruthy();
+      expect(screen.getByPlaceholderText("Do you have a Business")).toBeTruthy();
     });
 
-    it('should display save changes button', () => {
+    it("should display save changes button", () => {
       render(<BusinessScreen />);
-      expect(screen.getByText('Save Changes')).toBeTruthy();
-    });
-  });
-
-  describe('Initial State Behavior', () => {
-    it('should not show company name question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('What is the Name of the Company')).toBeNull();
-    });
-
-    it('should not show open to business question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('Are you Open to Business with Users here.')).toBeNull();
-    });
-
-    it('should not show industry question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('What is the Industry you Operate in')).toBeNull();
-    });
-
-    it('should not show why industry question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('Why start a business in the Industry')).toBeNull();
-    });
-
-    it('should not show length open question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('How long have you ran your business?')).toBeNull();
-    });
-
-    it('should not show why business question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('Why did you decide to start your own business')).toBeNull();
-    });
-
-    it('should not show first objectives question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('What were the first objectives for the business?')).toBeNull();
-    });
-
-    it('should not show current objectives question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('What are the objectives now?')).toBeNull();
-    });
-
-    it('should not show employee count question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('How many people work for the business?')).toBeNull();
-    });
-
-    it('should not show products and services question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('What products or services do you offer?')).toBeNull();
-    });
-
-    it('should not show primary promotion question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('What Primary Method Promotes the Business?')).toBeNull();
-    });
-
-    it('should not show location factors question initially', () => {
-      render(<BusinessScreen />);
-      expect(screen.queryByText('What factors influenced the location?')).toBeNull();
+      expect(screen.getByText("Save Changes")).toBeTruthy();
     });
   });
 
-  describe('Business Data Display', () => {
-    it('should populate business fields when profile data exists', async () => {
+  describe("Initial State Behavior", () => {
+    it("should not show company name question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("What is the Name of the Company")).toBeNull();
+    });
+
+    it("should not show open to business question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("Are you Open to Business with Users here.")).toBeNull();
+    });
+
+    it("should not show industry question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("What is the Industry you Operate in")).toBeNull();
+    });
+
+    it("should not show why industry question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("Why start a business in the Industry")).toBeNull();
+    });
+
+    it("should not show length open question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("How long have you ran your business?")).toBeNull();
+    });
+
+    it("should not show why business question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("Why did you decide to start your own business")).toBeNull();
+    });
+
+    it("should not show first objectives question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("What were the first objectives for the business?")).toBeNull();
+    });
+
+    it("should not show current objectives question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("What are the objectives now?")).toBeNull();
+    });
+
+    it("should not show employee count question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("How many people work for the business?")).toBeNull();
+    });
+
+    it("should not show products and services question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("What products or services do you offer?")).toBeNull();
+    });
+
+    it("should not show primary promotion question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("What Primary Method Promotes the Business?")).toBeNull();
+    });
+
+    it("should not show location factors question initially", () => {
+      render(<BusinessScreen />);
+      expect(screen.queryByText("What factors influenced the location?")).toBeNull();
+    });
+  });
+
+  describe("Business Data Display", () => {
+    it("should populate business fields when profile data exists", async () => {
       render(<BusinessScreen />);
 
       // Screen should render even without business data
       await waitFor(() => {
-        expect(screen.getByText('Business Information')).toBeTruthy();
-        expect(screen.getByPlaceholderText('Do you have a Business')).toBeTruthy();
+        expect(screen.getByText("Business Information")).toBeTruthy();
+        expect(screen.getByPlaceholderText("Do you have a Business")).toBeTruthy();
       });
     });
 
-    it('should render screen even when profile fails to load', async () => {
+    it("should render screen even when profile fails to load", async () => {
       render(<BusinessScreen />);
 
       // Screen should still render all basic fields
       await waitFor(() => {
-        expect(screen.getByText('Business Information')).toBeTruthy();
-        expect(screen.getByText('Do you have a Business')).toBeTruthy();
+        expect(screen.getByText("Business Information")).toBeTruthy();
+        expect(screen.getByText("Do you have a Business")).toBeTruthy();
       });
     });
 
-    it('should handle business data submission', async () => {
+    it("should handle business data submission", async () => {
       const { getByText } = render(<BusinessScreen />);
 
-      const saveButton = getByText('Save Changes');
+      const saveButton = getByText("Save Changes");
       fireEvent.press(saveButton);
 
       // Should allow save even without entrepreneur selection

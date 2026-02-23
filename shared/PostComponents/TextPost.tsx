@@ -34,8 +34,8 @@ function TextPost({ name, title, description, prime, admin, authorId }: TextPost
         admin
           ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]
           : prime
-          ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
-          : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
+            ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
+            : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
       }
 
       // colors={["#F7F7F7", "#DEDEDE", "#C4C4C4"]}
@@ -50,8 +50,8 @@ function TextPost({ name, title, description, prime, admin, authorId }: TextPost
           admin
             ? [globalStyles.postTitle, globalStyles.adminPostContent]
             : prime
-            ? [globalStyles.postTitle, globalStyles.primePostContent]
-            : [globalStyles.postTitle, globalStyles.postContent]
+              ? [globalStyles.postTitle, globalStyles.primePostContent]
+              : [globalStyles.postTitle, globalStyles.postContent]
         }
       >
         {title ? title : "No Title yet"}
@@ -62,8 +62,8 @@ function TextPost({ name, title, description, prime, admin, authorId }: TextPost
           admin
             ? [globalStyles.postDescription, globalStyles.adminPostContent]
             : prime
-            ? [globalStyles.postDescription, globalStyles.primePostContent]
-            : [globalStyles.postDescription, globalStyles.postContent]
+              ? [globalStyles.postDescription, globalStyles.primePostContent]
+              : [globalStyles.postDescription, globalStyles.postContent]
         }
       >
         {description ? description : "No description Yet"}
@@ -80,8 +80,8 @@ function TextPost({ name, title, description, prime, admin, authorId }: TextPost
               admin
                 ? colors["adminDefaultText"]
                 : prime
-                ? colors["primeDefaultText"]
-                : colors["defaultText"]
+                  ? colors["primeDefaultText"]
+                  : colors["defaultText"]
             }
           />
           {/* <Ionicons size={28} name="trash" color={colors["primeCarT"]} /> */}

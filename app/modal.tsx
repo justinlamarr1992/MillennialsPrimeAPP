@@ -14,13 +14,7 @@ export default function Modal() {
         { backgroundColor: colors["background"] },
       ]}
     >
-      <Text
-        style={[
-          globalStyles.textHuge,
-          globalStyles.padding,
-          { color: colors["priT"] },
-        ]}
-      >
+      <Text style={[globalStyles.textHuge, globalStyles.padding, { color: colors["priT"] }]}>
         modal
       </Text>
     </View>

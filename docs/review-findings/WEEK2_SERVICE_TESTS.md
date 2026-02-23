@@ -11,6 +11,7 @@
 The service layer tests demonstrate high quality with comprehensive data transformation testing and proper async handling. Both files follow TDD approach and test service integration with external dependencies (axios, SecureStore). Tests are well-organized and cover both success and error paths.
 
 **Overall Quality**: 8/10
+
 - ✓ Comprehensive data transformation testing
 - ✓ Good async/await handling
 - ✓ Tests both success and error paths
@@ -24,9 +25,11 @@ The service layer tests demonstrate high quality with comprehensive data transfo
 ## File-by-File Analysis
 
 ### 1. userProfileService.test.ts
+
 **Lines**: 358 | **Tests**: 27 | **Quality**: 8/10
 
 #### Strengths
+
 - ✓ Comprehensive data transformation testing
   - String to number conversion (zip codes)
   - Yes/No to boolean conversion
@@ -41,6 +44,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
 #### Issues Found
 
 **P1 - High Priority:**
+
 1. **ESLint Warnings - Manual Mocking** (8 instances):
    - Line 43: `mockedServerAuth.getUserId = jest.fn().mockResolvedValue(mockUserId);`
    - Line 71: `mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);`
@@ -61,6 +65,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
    **Recommendation**: Consistently use `mockedAxiosPrivate` or `axiosPrivate` throughout
 
 **P2 - Medium Priority:**
+
 1. **ESLint Warning - toEqual vs toStrictEqual** (1 instance):
    - Line 67: `expect(result).toEqual(mockProfile);`
 
@@ -72,10 +77,11 @@ The service layer tests demonstrate high quality with comprehensive data transfo
    - Identical structure each time
 
    **Recommendation**: Extract helper function:
+
    ```typescript
    const expectUserIdNotFoundError = async (serviceMethod: Promise<any>) => {
      mockedServerAuth.getUserId = jest.fn().mockResolvedValue(null);
-     await expect(serviceMethod).rejects.toThrow('User ID not found');
+     await expect(serviceMethod).rejects.toThrow("User ID not found");
    };
    ```
 
@@ -86,6 +92,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
    **Recommendation**: Extract endpoint constants or use helper function
 
 #### Test Coverage by Method
+
 - **fetchProfile** (3 tests): ✓ Complete (success, no user ID, server error)
 - **updateMyInfo** (4 tests): ✓ Excellent (success, zip conversion, invalid zip, no user ID)
 - **updateBusiness** (3 tests): ✓ Complete (success with conversion, false conversion, no user ID)
@@ -100,9 +107,11 @@ The service layer tests demonstrate high quality with comprehensive data transfo
 ---
 
 ### 2. serverAuth.test.ts
+
 **Lines**: 297 | **Tests**: 21 | **Quality**: 8.5/10
 
 #### Strengths
+
 - ✓ Tests SecureStore integration (encrypted storage)
 - ✓ Comprehensive CRUD operation testing
 - ✓ Tests both success and error paths for every method
@@ -116,6 +125,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
 #### Issues Found
 
 **P2 - Medium Priority:**
+
 1. **ESLint Warning - toEqual vs toStrictEqual** (1 instance):
    - Line 55: `expect(result).toEqual({ accessToken: '...', _id: '...', roles: {...} });`
 
@@ -123,6 +133,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
    **Recommendation**: Replace with `.toStrictEqual()`
 
 **P3 - Low Priority:**
+
 1. **Test Organization Opportunity**:
    - Tests for getAccessToken, getUserId, and hasValidCredentials all test SecureStore error handling
    - Similar patterns repeated 3 times
@@ -136,6 +147,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
    **Recommendation**: Extract constants (but acceptable in test context)
 
 #### Test Coverage by Method
+
 - **loginToServer** (3 tests): ✓ Excellent (success with storage, failed login, server error)
 - **registerOnServer** (3 tests): ✓ Excellent (full data, minimal data, failure)
 - **getAccessToken** (3 tests): ✓ Complete (success, null, error handling)
@@ -211,14 +223,17 @@ The service layer tests demonstrate high quality with comprehensive data transfo
 ## Recommendations
 
 ### Immediate Fixes (P1)
+
 1. **userProfileService.test.ts:43,71,159,218,287,315,352** - Replace 8 manual mocks with jest.spyOn()
 
 ### Important Improvements (P2)
+
 1. **Both files** - Replace 2 instances of `.toEqual()` with `.toStrictEqual()`
 2. **userProfileService.test.ts** - Extract "user ID not found" helper function to reduce duplication
 3. **userProfileService.test.ts:143** - Use consistent mock variable naming throughout
 
 ### Future Enhancements (P3)
+
 1. **Extract Constants**:
    - Create `TEST_CONSTANTS.ts` with:
      - Endpoint paths
@@ -237,6 +252,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
 ## ESLint Issues (From Baseline + Manual Review)
 
 **By File:**
+
 - **userProfileService.test.ts**: 9 warnings
   - 8× jest/prefer-spy-on (manual mocking of getUserId)
   - 1× jest/prefer-strict-equal (.toEqual → .toStrictEqual)
@@ -251,6 +267,7 @@ The service layer tests demonstrate high quality with comprehensive data transfo
 ## Coverage Impact
 
 Both services have excellent coverage:
+
 - **userProfileService** implementation: Not in coverage report (likely in services/ directory)
 - **serverAuth** implementation: Not in coverage report
 
@@ -261,6 +278,7 @@ Both services have excellent coverage:
 ## Data Transformation Quality
 
 ### userProfileService Transformations ⭐
+
 1. **MyInfo**: `zip: string → zip: number`
 2. **Business**:
    - `entrepreneur: "Yes"/"No" → entrepreneur: boolean`
@@ -277,6 +295,7 @@ Both services have excellent coverage:
 **Quality**: All transformations are tested with both positive and edge cases ✓
 
 ### serverAuth Transformations
+
 1. **Login/Register**: `email → user`, `password → pwd`
 2. **Storage**: Credentials stored in SecureStore (encrypted)
 3. **Refresh**: New token replaces old in SecureStore
@@ -288,12 +307,14 @@ Both services have excellent coverage:
 ## Action Items
 
 ### Week 2 Fixes
+
 - [ ] Fix 8 P1 issues (manual getUserId mocking in userProfileService)
 - [ ] Replace 2 `.toEqual()` with `.toStrictEqual()`
 - [ ] Extract helper for repeated "user ID not found" tests
 - [ ] Standardize mock variable naming in userProfileService
 
 ### Week 4 Standards
+
 - [ ] Document service testing patterns in TESTING.md
 - [ ] Add data transformation testing example from userProfileService
 - [ ] Document SecureStore testing patterns from serverAuth
@@ -304,22 +325,28 @@ Both services have excellent coverage:
 ## Comparison: Both Files Excellent
 
 ### userProfileService.test.ts (8/10)
+
 **Strengths**:
+
 - Comprehensive data transformation testing
 - Tests all CRUD operations
 - Verifies exact request payloads
 
 **Needs Improvement**:
+
 - 8 instances of manual mocking
 - Test duplication
 
 ### serverAuth.test.ts (8.5/10)
+
 **Strengths**:
+
 - Excellent SecureStore integration testing
 - Comprehensive error handling
 - Tests all authentication flows
 
 **Needs Improvement**:
+
 - Minor assertion improvement needed
 
 Both files are high quality with similar scores. The main difference is serverAuth has slightly fewer issues to address.

@@ -9,14 +9,14 @@
  * testAuthenticationFlow(mockLogin, mockNavigate);
  */
 
-import { fireEvent, waitFor } from '@testing-library/react-native';
-import type { RenderResult } from '@testing-library/react-native';
+import { fireEvent, waitFor } from "@testing-library/react-native";
+import type { RenderResult } from "@testing-library/react-native";
 
 // Helper types for Testing Library query functions
-type GetByFunction = (text: string | RegExp) => ReturnType<RenderResult['getByText']>;
-type QueryByFunction = (text: string | RegExp) => ReturnType<RenderResult['queryByText']> | null;
-type GetByTestIdFunction = (testId: string) => ReturnType<RenderResult['getByTestId']>;
-type QueryByTestIdFunction = (testId: string) => ReturnType<RenderResult['queryByTestId']> | null;
+type GetByFunction = (text: string | RegExp) => ReturnType<RenderResult["getByText"]>;
+type QueryByFunction = (text: string | RegExp) => ReturnType<RenderResult["queryByText"]> | null;
+type GetByTestIdFunction = (testId: string) => ReturnType<RenderResult["getByTestId"]>;
+type QueryByTestIdFunction = (testId: string) => ReturnType<RenderResult["queryByTestId"]> | null;
 
 /**
  * Edge Case String Testing
@@ -35,23 +35,23 @@ export const testEdgeCaseStrings = <TRender = RenderResult>(
 ) => {
   const scenarios = [
     {
-      name: 'empty string',
-      value: '',
+      name: "empty string",
+      value: "",
       assertion: assertions.empty,
     },
     {
-      name: 'very long string',
-      value: 'A'.repeat(500),
+      name: "very long string",
+      value: "A".repeat(500),
       assertion: assertions.veryLong,
     },
     {
-      name: 'special characters',
+      name: "special characters",
       value: 'Test & "special" <chars>',
       assertion: assertions.specialChars,
     },
     {
-      name: 'unicode characters',
-      value: 'José García Müller',
+      name: "unicode characters",
+      value: "José García Müller",
       assertion: assertions.unicode,
     },
   ];
@@ -74,43 +74,43 @@ export const testEdgeCaseStrings = <TRender = RenderResult>(
  */
 export const createAuthenticationScenarios = () => ({
   successfulLogin: {
-    description: 'should successfully log in with valid credentials',
+    description: "should successfully log in with valid credentials",
     setup: (mockLogin: jest.Mock) => {
       mockLogin.mockResolvedValue({
-        accessToken: 'token-123',
-        _id: 'user-456',
+        accessToken: "token-123",
+        _id: "user-456",
         roles: { User: 2001 },
       });
     },
     assertions: async (mockLogin: jest.Mock, mockNavigate: jest.Mock) => {
       await waitFor(() => {
-        expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123');
-        expect(mockNavigate).toHaveBeenCalledWith('/home');
+        expect(mockLogin).toHaveBeenCalledWith("test@example.com", "password123");
+        expect(mockNavigate).toHaveBeenCalledWith("/home");
       });
     },
   },
 
   invalidCredentials: {
-    description: 'should display error for invalid credentials',
+    description: "should display error for invalid credentials",
     setup: (mockLogin: jest.Mock) => {
       mockLogin.mockRejectedValue({
-        code: 'auth/invalid-credential',
-        message: 'Invalid credentials',
+        code: "auth/invalid-credential",
+        message: "Invalid credentials",
       });
     },
     assertions: async (getByText: GetByFunction) => {
       await waitFor(() => {
-        expect(getByText('Invalid email or password')).toBeTruthy();
+        expect(getByText("Invalid email or password")).toBeTruthy();
       });
     },
   },
 
   networkError: {
-    description: 'should display error for network failure',
+    description: "should display error for network failure",
     setup: (mockLogin: jest.Mock) => {
       mockLogin.mockRejectedValue({
-        code: 'auth/network-request-failed',
-        message: 'Network error',
+        code: "auth/network-request-failed",
+        message: "Network error",
       });
     },
     assertions: async (getByText: GetByFunction) => {
@@ -126,15 +126,12 @@ export const createAuthenticationScenarios = () => ({
  *
  * Tests common form validation patterns
  */
-export const createFormValidationScenarios = (
-  fieldName: string,
-  testId: string
-) => ({
+export const createFormValidationScenarios = (fieldName: string, testId: string) => ({
   requiredField: {
     description: `should show error when ${fieldName} is empty`,
     test: (getByTestId: GetByTestIdFunction, fireSubmit: () => void) => {
       const input = getByTestId(testId);
-      fireEvent.changeText(input, '');
+      fireEvent.changeText(input, "");
       fireSubmit();
       return getByTestId(`${testId}-error`);
     },
@@ -167,36 +164,36 @@ export const createFormValidationScenarios = (
  */
 export const createLoadingStateScenarios = () => ({
   showsLoadingIndicator: {
-    description: 'should display loading indicator while fetching',
+    description: "should display loading indicator while fetching",
     test: (getByTestId: GetByTestIdFunction) => {
-      expect(getByTestId('loading-indicator')).toBeTruthy();
+      expect(getByTestId("loading-indicator")).toBeTruthy();
     },
   },
 
   hidesLoadingAfterSuccess: {
-    description: 'should hide loading indicator after successful fetch',
+    description: "should hide loading indicator after successful fetch",
     test: async (getByTestId: GetByTestIdFunction, queryByTestId: QueryByTestIdFunction) => {
-      expect(getByTestId('loading-indicator')).toBeTruthy();
+      expect(getByTestId("loading-indicator")).toBeTruthy();
 
       await waitFor(() => {
-        expect(queryByTestId('loading-indicator')).toBeNull();
+        expect(queryByTestId("loading-indicator")).toBeNull();
       });
     },
   },
 
   hidesLoadingAfterError: {
-    description: 'should hide loading indicator after error',
+    description: "should hide loading indicator after error",
     test: async (queryByTestId: QueryByTestIdFunction) => {
       await waitFor(() => {
-        expect(queryByTestId('loading-indicator')).toBeNull();
+        expect(queryByTestId("loading-indicator")).toBeNull();
       });
     },
   },
 
   disablesButtonWhileLoading: {
-    description: 'should disable submit button while loading',
+    description: "should disable submit button while loading",
     test: (getByTestId: GetByTestIdFunction) => {
-      const button = getByTestId('submit-button');
+      const button = getByTestId("submit-button");
       expect(button.props.disabled).toBe(true);
     },
   },
@@ -209,7 +206,7 @@ export const createLoadingStateScenarios = () => ({
  */
 export const createErrorHandlingScenarios = () => ({
   displaysErrorMessage: {
-    description: 'should display error message when operation fails',
+    description: "should display error message when operation fails",
     test: async (getByText: GetByFunction, errorMessage: string) => {
       await waitFor(() => {
         expect(getByText(errorMessage)).toBeTruthy();
@@ -218,7 +215,7 @@ export const createErrorHandlingScenarios = () => ({
   },
 
   allowsRetry: {
-    description: 'should allow retry after error',
+    description: "should allow retry after error",
     test: async (getByText: GetByFunction, mockRetry: jest.Mock) => {
       const retryButton = getByText(/try again/i);
       fireEvent.press(retryButton);
@@ -230,7 +227,7 @@ export const createErrorHandlingScenarios = () => ({
   },
 
   clearsErrorOnRetry: {
-    description: 'should clear error message on retry',
+    description: "should clear error message on retry",
     test: async (getByText: GetByFunction, queryByText: QueryByFunction, errorMessage: string) => {
       const retryButton = getByText(/try again/i);
       fireEvent.press(retryButton);
@@ -247,28 +244,31 @@ export const createErrorHandlingScenarios = () => ({
  *
  * Tests post/content ownership logic
  */
-export const createPostOwnershipScenarios = (mockPost: { authorId: string; [key: string]: unknown }) => ({
+export const createPostOwnershipScenarios = (mockPost: {
+  authorId: string;
+  [key: string]: unknown;
+}) => ({
   ownerCanEdit: {
-    description: 'should show edit/delete options when user owns the post',
+    description: "should show edit/delete options when user owns the post",
     props: { ...mockPost, currentUserId: mockPost.authorId },
     assertion: (getByTestId: GetByTestIdFunction) => {
-      expect(getByTestId('post-menu')).toBeTruthy();
+      expect(getByTestId("post-menu")).toBeTruthy();
     },
   },
 
   nonOwnerCannotEdit: {
-    description: 'should not show edit/delete options when user does not own post',
-    props: { ...mockPost, currentUserId: 'different-user' },
+    description: "should not show edit/delete options when user does not own post",
+    props: { ...mockPost, currentUserId: "different-user" },
     assertion: (queryByTestId: QueryByTestIdFunction) => {
-      expect(queryByTestId('post-menu')).toBeNull();
+      expect(queryByTestId("post-menu")).toBeNull();
     },
   },
 
   unauthenticatedCannotEdit: {
-    description: 'should not show edit/delete options when not logged in',
+    description: "should not show edit/delete options when not logged in",
     props: { ...mockPost, currentUserId: null },
     assertion: (queryByTestId: QueryByTestIdFunction) => {
-      expect(queryByTestId('post-menu')).toBeNull();
+      expect(queryByTestId("post-menu")).toBeNull();
     },
   },
 });
@@ -280,32 +280,32 @@ export const createPostOwnershipScenarios = (mockPost: { authorId: string; [key:
  */
 export const createUserRoleScenarios = (baseProps: Record<string, unknown>) => ({
   defaultUser: {
-    description: 'should render with default user styling',
+    description: "should render with default user styling",
     props: { ...baseProps, isAdmin: false, isPrime: false },
   },
 
   adminUser: {
-    description: 'should render with admin styling',
+    description: "should render with admin styling",
     props: { ...baseProps, isAdmin: true, isPrime: false },
     assertion: (getByTestId: GetByTestIdFunction) => {
-      expect(getByTestId('admin-badge')).toBeTruthy();
+      expect(getByTestId("admin-badge")).toBeTruthy();
     },
   },
 
   primeUser: {
-    description: 'should render with prime user styling',
+    description: "should render with prime user styling",
     props: { ...baseProps, isAdmin: false, isPrime: true },
     assertion: (getByTestId: GetByTestIdFunction) => {
-      expect(getByTestId('prime-badge')).toBeTruthy();
+      expect(getByTestId("prime-badge")).toBeTruthy();
     },
   },
 
   adminPrecedence: {
-    description: 'should prioritize admin badge when user is both admin and prime',
+    description: "should prioritize admin badge when user is both admin and prime",
     props: { ...baseProps, isAdmin: true, isPrime: true },
     assertion: (getByTestId: GetByTestIdFunction, queryByTestId: QueryByTestIdFunction) => {
-      expect(getByTestId('admin-badge')).toBeTruthy();
-      expect(queryByTestId('prime-badge')).toBeNull();
+      expect(getByTestId("admin-badge")).toBeTruthy();
+      expect(queryByTestId("prime-badge")).toBeNull();
     },
   },
 });
@@ -317,20 +317,20 @@ export const createUserRoleScenarios = (baseProps: Record<string, unknown>) => (
  */
 export const createDataTransformationScenarios = () => ({
   stringToBoolean: {
-    yes: { input: 'Yes', expected: true },
-    no: { input: 'No', expected: false },
+    yes: { input: "Yes", expected: true },
+    no: { input: "No", expected: false },
   },
 
   stringToNumber: {
-    validZip: { input: '10001', expected: 10001 },
-    invalidZip: { input: 'invalid', expected: null },
+    validZip: { input: "10001", expected: 10001 },
+    invalidZip: { input: "invalid", expected: null },
   },
 
   fieldMapping: {
     clientToServer: (clientField: string, serverField: string) => ({
       description: `should map ${clientField} to ${serverField}`,
-      input: { [clientField]: 'value' },
-      expected: { [serverField]: 'value' },
+      input: { [clientField]: "value" },
+      expected: { [serverField]: "value" },
     }),
   },
 });
@@ -365,7 +365,7 @@ export const createServiceCallScenarios = (serviceName: string) => ({
     description: `should retry ${serviceName} on failure`,
     setup: (mockService: jest.Mock, successResponse: unknown) => {
       mockService
-        .mockRejectedValueOnce(new Error('Network error'))
+        .mockRejectedValueOnce(new Error("Network error"))
         .mockResolvedValueOnce(successResponse);
     },
     assertions: async (mockService: jest.Mock) => {
@@ -383,7 +383,7 @@ export const createServiceCallScenarios = (serviceName: string) => ({
  */
 export const createNavigationScenarios = () => ({
   navigatesOnSuccess: {
-    description: 'should navigate to destination on success',
+    description: "should navigate to destination on success",
     test: async (mockNavigate: jest.Mock, expectedRoute: string) => {
       await waitFor(() => {
         expect(mockNavigate).toHaveBeenCalledWith(expectedRoute);
@@ -392,14 +392,14 @@ export const createNavigationScenarios = () => ({
   },
 
   doesNotNavigateOnError: {
-    description: 'should not navigate when operation fails',
+    description: "should not navigate when operation fails",
     test: (mockNavigate: jest.Mock) => {
       expect(mockNavigate).not.toHaveBeenCalled();
     },
   },
 
   passesDataToNextScreen: {
-    description: 'should pass data to next screen',
+    description: "should pass data to next screen",
     test: async (mockNavigate: jest.Mock, expectedRoute: string, expectedData: unknown) => {
       await waitFor(() => {
         expect(mockNavigate).toHaveBeenCalledWith(expectedRoute, expectedData);
@@ -426,7 +426,10 @@ export const runScenario = (
  * Helper function to run multiple scenarios
  */
 export const runScenarios = (
-  scenarios: Record<string, { description: string; test: (...args: unknown[]) => void | Promise<void> }>,
+  scenarios: Record<
+    string,
+    { description: string; test: (...args: unknown[]) => void | Promise<void> }
+  >,
   getArgs: () => unknown[]
 ) => {
   Object.values(scenarios).forEach((scenario) => {

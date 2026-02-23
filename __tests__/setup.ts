@@ -9,44 +9,44 @@ global.console = {
 };
 
 // Mock Expo modules
-jest.mock('expo-constants', () => ({
+jest.mock("expo-constants", () => ({
   expoConfig: {
     extra: {
-      firebaseApiKey: 'test-api-key',
-      firebaseAuthDomain: 'test.firebaseapp.com',
-      firebaseProjectId: 'test-project',
+      firebaseApiKey: "test-api-key",
+      firebaseAuthDomain: "test.firebaseapp.com",
+      firebaseProjectId: "test-project",
     },
   },
 }));
 
 // Mock React Native Reanimated
-jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
+jest.mock("react-native-reanimated", () => {
+  const Reanimated = require("react-native-reanimated/mock");
   Reanimated.default.call = () => {};
   return Reanimated;
 });
 
 // Mock react-native-gesture-handler
-jest.mock('react-native-gesture-handler', () => ({
+jest.mock("react-native-gesture-handler", () => ({
   GestureHandlerRootView: ({ children }: { children: React.ReactNode }) => children,
-  PanGestureHandler: 'PanGestureHandler',
+  PanGestureHandler: "PanGestureHandler",
   State: {},
   Directions: {},
 }));
 
 // Mock @gorhom/bottom-sheet
-jest.mock('@gorhom/bottom-sheet', () => ({
+jest.mock("@gorhom/bottom-sheet", () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => children,
   BottomSheetModal: ({ children }: { children: React.ReactNode }) => children,
   BottomSheetModalProvider: ({ children }: { children: React.ReactNode }) => children,
   BottomSheetView: ({ children }: { children: React.ReactNode }) => children,
   BottomSheetBackdrop: ({ children }: { children: React.ReactNode }) => children,
-  BottomSheetTextInput: 'BottomSheetTextInput',
+  BottomSheetTextInput: "BottomSheetTextInput",
 }));
 
 // Mock expo-router
-jest.mock('expo-router', () => ({
+jest.mock("expo-router", () => ({
   mockRouter: {
     push: jest.fn(),
     replace: jest.fn(),
@@ -75,56 +75,56 @@ jest.mock('expo-router', () => ({
     canGoBack: jest.fn(() => true),
     setParams: jest.fn(),
   })),
-  usePathname: jest.fn(() => '/'),
+  usePathname: jest.fn(() => "/"),
   useSegments: jest.fn(() => []),
   useLocalSearchParams: jest.fn(() => ({})),
   Stack: {
-    Screen: 'StackScreen',
+    Screen: "StackScreen",
   },
   Tabs: {
-    Screen: 'TabsScreen',
+    Screen: "TabsScreen",
   },
-  Link: 'Link',
-  Redirect: 'Redirect',
+  Link: "Link",
+  Redirect: "Redirect",
 }));
 
 // Mock Firebase
-jest.mock('../firebase/firebaseConfig', () => require('./__mocks__/firebase'));
+jest.mock("../firebase/firebaseConfig", () => require("./__mocks__/firebase"));
 
 // Mock React Native Firebase
-jest.mock('@react-native-firebase/auth', () => require('./__mocks__/firebase'));
+jest.mock("@react-native-firebase/auth", () => require("./__mocks__/firebase"));
 
-jest.mock('@react-native-firebase/app', () => ({
+jest.mock("@react-native-firebase/app", () => ({
   apps: [],
   initializeApp: jest.fn(),
 }));
 
 // Mock React Query
-jest.mock('@tanstack/react-query', () => require('./__mocks__/react-query'));
+jest.mock("@tanstack/react-query", () => require("./__mocks__/react-query"));
 
 // Mock expo-image-picker
-jest.mock('expo-image-picker', () => ({
+jest.mock("expo-image-picker", () => ({
   launchImageLibraryAsync: jest.fn(),
   launchCameraAsync: jest.fn(),
   MediaTypeOptions: {
-    Images: 'Images',
-    Videos: 'Videos',
-    All: 'All',
+    Images: "Images",
+    Videos: "Videos",
+    All: "All",
   },
 }));
 
 // Mock React Native useColorScheme
-jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
-  default: jest.fn(() => 'light'),
+jest.mock("react-native/Libraries/Utilities/useColorScheme", () => ({
+  default: jest.fn(() => "light"),
 }));
 
 // Mock react-native-webview
-jest.mock('react-native-webview', () => ({
-  WebView: 'WebView',
+jest.mock("react-native-webview", () => ({
+  WebView: "WebView",
 }));
 
 // Mock AsyncStorage
-jest.mock('@react-native-async-storage/async-storage', () => ({
+jest.mock("@react-native-async-storage/async-storage", () => ({
   __esModule: true,
   default: {
     getItem: jest.fn(),
@@ -139,16 +139,16 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 }));
 
 // Mock expo-secure-store for encrypted token storage
-jest.mock('expo-secure-store', () => ({
+jest.mock("expo-secure-store", () => ({
   getItemAsync: jest.fn(),
   setItemAsync: jest.fn(),
   deleteItemAsync: jest.fn(),
-  WHEN_UNLOCKED: 'WHEN_UNLOCKED',
-  AFTER_FIRST_UNLOCK: 'AFTER_FIRST_UNLOCK',
-  ALWAYS: 'ALWAYS',
-  WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: 'WHEN_PASSCODE_SET_THIS_DEVICE_ONLY',
+  WHEN_UNLOCKED: "WHEN_UNLOCKED",
+  AFTER_FIRST_UNLOCK: "AFTER_FIRST_UNLOCK",
+  ALWAYS: "ALWAYS",
+  WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: "WHEN_PASSCODE_SET_THIS_DEVICE_ONLY",
 }));
 
 // Register custom matchers
-import { registerCustomMatchers } from './matchers/customMatchers';
+import { registerCustomMatchers } from "./matchers/customMatchers";
 registerCustomMatchers();

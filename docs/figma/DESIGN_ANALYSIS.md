@@ -18,6 +18,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 ### Home Screen
 
 **Figma Shows ([Home.png](Home.png)):**
+
 - ✅ Video content sections (implemented as ContentCarousel)
 - ✅ Featured/hero content (implemented as PrimeNewsPost)
 - ❌ Search functionality (icon present in Figma, not in app)
@@ -25,13 +26,15 @@ This document analyzes the feature gaps between Figma designs and the current ap
 - ❌ Featured Stories horizontal carousel with circular avatars
 - ✅ News Feed structure (implemented with different components)
 
-**Current Implementation ([HomePage.tsx:33](../../app/(tabs)/(home)/HomePage.tsx#L33)):**
+**Current Implementation ([HomePage.tsx:33](<../../app/(tabs)/(home)/HomePage.tsx#L33>)):**
+
 - ContentCarousel with sections: New Episodes, Popular, Recommended
 - PrimeNewsPost for featured content
 - Ad component
 - Test link to ConnectedUsersScreen
 
 **Missing Features:**
+
 1. Search functionality
 2. Notifications system
 3. Featured Stories carousel with user avatars
@@ -46,11 +49,13 @@ This document analyzes the feature gaps between Figma designs and the current ap
 **Figma Shows ([Own User Profile.png](Own%20User%20Profile.png)):**
 
 **Header Section:**
+
 - Profile picture
 - User name and location
 - Stats row: Post count, Friends count
 
 **Metrics Dashboard:**
+
 - Profile Viewed (this week)
 - Pending Connections
 - Interactions (this month)
@@ -61,13 +66,16 @@ This document analyzes the feature gaps between Figma designs and the current ap
 - PrimeCoin Rewarded
 
 **Actions:**
+
 - "Edit Profile" button
 
 **Content Section:**
+
 - Tabs: Posts, Photos, Videos
 - Feed of user's content
 
-**Current Implementation ([MyProfileScreen.tsx:10](../../app/(tabs)/(social)/MyProfileScreen.tsx#L10)):**
+**Current Implementation ([MyProfileScreen.tsx:10](<../../app/(tabs)/(social)/MyProfileScreen.tsx#L10>)):**
+
 - ScrollView with hardcoded test posts
 - VideoPost, PicturePost, TextPost components
 - No profile header
@@ -75,6 +83,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 - No tabs
 
 **Missing Features:**
+
 1. Profile header component
    - Profile picture display
    - User name and location
@@ -98,26 +107,31 @@ This document analyzes the feature gaps between Figma designs and the current ap
 **Figma Shows ([User Profile.png](User%20Profile.png), [User Button.png](User%20Button.png)):**
 
 **Profile Header:**
+
 - Profile picture
 - User name
 - Username/handle (@username)
 - Connection action button ("Connect")
 
 **Profile Information:**
+
 - **Interest Section:** User's interests as comma-separated list
 - **B2B Opportunity Section:** Services/skills offered
 - **Connected Users Grid:** Mutual or all connections displayed as profile pictures
 
 **Content:**
+
 - Tabs: Posts, Photos, Videos
 - User's public content feed
 
 **Current Implementation:**
+
 - Dynamic route exists at `app/(tabs)/(social)/[id].tsx`
 - Not fully implemented as other user profile view
 - Connection functionality not implemented
 
 **Missing Features:**
+
 1. Other user profile view
    - Distinct from own profile (no Edit button, has Connect button)
 2. Connection system
@@ -136,6 +150,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 **Figma Shows ([Verified Profile.png](Verified%20Profile.png), [Verified User Button.png](Verified%20User%20Button.png)):**
 
 **Additional Features Beyond Regular Profile:**
+
 - Verification badge on profile picture
 - "Verified Since: [date]" display
 - "Connected" button state (when already connected)
@@ -144,11 +159,13 @@ This document analyzes the feature gaps between Figma designs and the current ap
 - Enhanced B2B Opportunity section
 
 **Current Implementation:**
+
 - Verification system not implemented
 - No verified user data model
 - No special tabs for verified users
 
 **Missing Features:**
+
 1. Verification system
    - User verification status in data model
    - Verification badge component
@@ -166,6 +183,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 ### Connection Workflow
 
 **Figma Suggests:**
+
 1. User views another user's profile
 2. Sees "Connect" button
 3. Clicks to send connection request
@@ -175,11 +193,13 @@ This document analyzes the feature gaps between Figma designs and the current ap
 7. Users appear in each other's "Connected Users" grid
 
 **Current State:**
+
 - No connection system implemented
 - No connection requests
 - No connection management
 
 **Required Implementation:**
+
 1. Connection data model (relationships between users)
 2. Connection request system
 3. Connection status tracking
@@ -191,6 +211,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 ### Content Discovery Workflow
 
 **Figma Suggests:**
+
 1. User lands on Home screen
 2. Sees Featured/Hero content
 3. Scrolls through Featured Stories (user highlights)
@@ -199,6 +220,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 6. Gets notifications for new content
 
 **Current State:**
+
 - ✅ Home screen with sections
 - ✅ Featured content
 - ❌ Featured Stories carousel
@@ -206,6 +228,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 - ❌ Notifications
 
 **Required Implementation:**
+
 1. Search functionality
    - Search bar component
    - Search results view
@@ -225,6 +248,7 @@ This document analyzes the feature gaps between Figma designs and the current ap
 
 **Figma Suggests:**
 Users can track their profile performance through metrics:
+
 - Who viewed their profile (weekly tracking)
 - Connection activity (pending, made this period)
 - Engagement metrics (interactions this month)
@@ -232,9 +256,11 @@ Users can track their profile performance through metrics:
 - Rewards (PrimeCoin earned)
 
 **Current State:**
+
 - No analytics system
 
 **Required Implementation:**
+
 1. Analytics data collection
    - Profile view tracking
    - Interaction tracking
@@ -251,25 +277,25 @@ Users can track their profile performance through metrics:
 
 **Figma Shows:**
 5-tab structure:
+
 1. **Home** - Content discovery
 2. **Calendar** - Events/scheduled content (?)
 3. **Create/Upload** - Center button for content creation
 4. **Messages** - Direct messaging
 5. **Profile** - User profile
 
-**Current Implementation ([_layout.tsx:10](../../app/(tabs)/_layout.tsx#L10)):**
+**Current Implementation ([\_layout.tsx:10](<../../app/(tabs)/_layout.tsx#L10>)):**
 
 Visible:
+
 1. **Home** - Content feed
 2. **Settings** - App settings
 3. **Log Out** - Sign out
 
-Hidden (href: null):
-4. **Social** - Social features
-5. **Upload** - Content upload
-6. **Shows** - Shows content
+Hidden (href: null): 4. **Social** - Social features 5. **Upload** - Content upload 6. **Shows** - Shows content
 
 **Navigation Gaps:**
+
 1. No dedicated Messages/DM system
 2. No Calendar/Events functionality
 3. Upload tab exists but hidden
@@ -277,6 +303,7 @@ Hidden (href: null):
 5. No quick-access profile tab (Log Out serves different purpose)
 
 **Required Implementation:**
+
 1. Messaging system
    - Message data model
    - Chat interface
@@ -353,6 +380,7 @@ Hidden (href: null):
 ### User Profile Extended Fields
 
 Current profile needs these additional fields:
+
 ```typescript
 {
   // Existing fields...
@@ -389,6 +417,7 @@ Current profile needs these additional fields:
 ### New Data Models
 
 1. **Connection**
+
 ```typescript
 {
   id: string,
@@ -401,6 +430,7 @@ Current profile needs these additional fields:
 ```
 
 2. **Notification**
+
 ```typescript
 {
   id: string,
@@ -415,6 +445,7 @@ Current profile needs these additional fields:
 ```
 
 3. **Story** (for Featured Stories)
+
 ```typescript
 {
   id: string,
@@ -428,6 +459,7 @@ Current profile needs these additional fields:
 ```
 
 4. **Message**
+
 ```typescript
 {
   id: string,
@@ -445,6 +477,7 @@ Current profile needs these additional fields:
 ## Implementation Priority
 
 ### Phase 1: Core Profile Features (HIGH PRIORITY)
+
 1. ProfileHeader component
 2. Edit Profile functionality
 3. User profile data integration (remove hardcoded data)
@@ -452,6 +485,7 @@ Current profile needs these additional fields:
 5. Other user profile view
 
 ### Phase 2: Social Features (HIGH PRIORITY)
+
 1. Connection system (data model + API)
 2. Connect/Connected button states
 3. Connected Users grid
@@ -459,24 +493,28 @@ Current profile needs these additional fields:
 5. Pending connections management
 
 ### Phase 3: Analytics & Metrics (MEDIUM PRIORITY)
+
 1. Profile view tracking
 2. Metrics dashboard component
 3. Interaction tracking
 4. PrimeCoin system integration
 
 ### Phase 4: Discovery & Engagement (MEDIUM PRIORITY)
+
 1. Search functionality
 2. Notification system
 3. Featured Stories carousel
 4. Message/DM system
 
 ### Phase 5: Verification & Premium Features (LOW PRIORITY)
+
 1. Verification system
 2. Verification badge component
 3. Store tab for verified users
 4. Music tab for verified users
 
 ### Phase 6: Navigation & Polish (LOW PRIORITY)
+
 1. Enable hidden tabs (Social, Upload, Shows)
 2. Refine navigation structure
 3. Calendar/Events system (if desired)

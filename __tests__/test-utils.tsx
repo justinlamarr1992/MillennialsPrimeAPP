@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react-native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from '@/provider/AuthProvider';
-import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import React, { ReactElement } from "react";
+import { render, RenderOptions } from "@testing-library/react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/provider/AuthProvider";
+import type { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 // Create a test query client
 const createTestQueryClient = () =>
@@ -36,25 +36,22 @@ const AllProviders: React.FC<AllProvidersProps> = ({ children, queryClient }) =>
 // Custom render function
 const customRender = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'> & { queryClient?: QueryClient }
+  options?: Omit<RenderOptions, "wrapper"> & { queryClient?: QueryClient }
 ) => {
   const { queryClient, ...renderOptions } = options || {};
 
   return render(ui, {
-    wrapper: ({ children }) => (
-      <AllProviders queryClient={queryClient}>{children}</AllProviders>
-    ),
+    wrapper: ({ children }) => <AllProviders queryClient={queryClient}>{children}</AllProviders>,
     ...renderOptions,
   });
 };
 
 // Re-export everything
-export * from '@testing-library/react-native';
+export * from "@testing-library/react-native";
 export { customRender as render };
 
 // Helper functions
-export const waitForLoadingToFinish = () =>
-  new Promise((resolve) => setTimeout(resolve, 0));
+export const waitForLoadingToFinish = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 interface MockUserOverrides {
   uid?: string;
@@ -65,9 +62,9 @@ interface MockUserOverrides {
 
 export const createMockUser = (overrides: MockUserOverrides = {}): FirebaseAuthTypes.User =>
   ({
-    uid: 'test-user-123',
-    email: 'test@example.com',
+    uid: "test-user-123",
+    email: "test@example.com",
     emailVerified: true,
-    displayName: 'Test User',
+    displayName: "Test User",
     ...overrides,
   }) as unknown as FirebaseAuthTypes.User;

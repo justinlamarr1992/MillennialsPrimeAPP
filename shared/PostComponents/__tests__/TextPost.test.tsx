@@ -1,24 +1,24 @@
-import React from 'react';
-import { render, screen, createMockUser } from '@/__tests__/test-utils';
-import TextPost from '../TextPost';
-import useAuth from '@/hooks/useAuth';
+import React from "react";
+import { render, screen, createMockUser } from "@/__tests__/test-utils";
+import TextPost from "../TextPost";
+import useAuth from "@/hooks/useAuth";
 
 // Mock useAuth to control current user
-jest.mock('@/hooks/useAuth', () => ({
+jest.mock("@/hooks/useAuth", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
-describe('TextPost', () => {
+describe("TextPost", () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 
   const defaultProps = {
-    name: 'John Doe',
-    title: 'Test Post Title',
-    description: 'This is a test post description',
+    name: "John Doe",
+    title: "Test Post Title",
+    description: "This is a test post description",
     prime: false,
     admin: false,
-    authorId: 'author-123',
+    authorId: "author-123",
   };
 
   beforeEach(() => {
@@ -33,81 +33,81 @@ describe('TextPost', () => {
     jest.clearAllMocks();
   });
 
-  describe('Post Content Display', () => {
-    it('should display author name', () => {
+  describe("Post Content Display", () => {
+    it("should display author name", () => {
       render(<TextPost {...defaultProps} />);
-      expect(screen.getByText('John Doe')).toBeTruthy();
+      expect(screen.getByText("John Doe")).toBeTruthy();
     });
 
-    it('should display post title', () => {
+    it("should display post title", () => {
       render(<TextPost {...defaultProps} />);
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
     });
 
-    it('should display post description', () => {
+    it("should display post description", () => {
       render(<TextPost {...defaultProps} />);
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
 
     it('should display "No Title yet" when title is empty or falsy', () => {
       render(<TextPost {...defaultProps} title="" />);
-      expect(screen.getByText('No Title yet')).toBeTruthy();
+      expect(screen.getByText("No Title yet")).toBeTruthy();
     });
 
     it('should display "No description Yet" when description is empty or falsy', () => {
       render(<TextPost {...defaultProps} description="" />);
-      expect(screen.getByText('No description Yet')).toBeTruthy();
+      expect(screen.getByText("No description Yet")).toBeTruthy();
     });
   });
 
-  describe('User Role Display', () => {
-    it('should render post with admin styling when user is admin', () => {
+  describe("User Role Display", () => {
+    it("should render post with admin styling when user is admin", () => {
       render(<TextPost {...defaultProps} admin={true} />);
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
 
-    it('should render post with prime styling when user is prime member', () => {
+    it("should render post with prime styling when user is prime member", () => {
       render(<TextPost {...defaultProps} prime={true} />);
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
 
-    it('should render post with default styling when user is neither admin nor prime', () => {
+    it("should render post with default styling when user is neither admin nor prime", () => {
       render(<TextPost {...defaultProps} admin={false} prime={false} />);
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
   });
 
-  describe('Post Ownership and Delete Functionality', () => {
-    it('should render post successfully when current user is the post author', () => {
+  describe("Post Ownership and Delete Functionality", () => {
+    it("should render post successfully when current user is the post author", () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser({ uid: 'author-123', email: 'author@test.com' }),
+        user: createMockUser({ uid: "author-123", email: "author@test.com" }),
         loading: false,
       });
 
       render(<TextPost {...defaultProps} authorId="author-123" />);
 
       // Post should render with all content when user is the author
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
 
-    it('should render post successfully when current user is not the post author', () => {
+    it("should render post successfully when current user is not the post author", () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser({ uid: 'different-user', email: 'other@test.com' }),
+        user: createMockUser({ uid: "different-user", email: "other@test.com" }),
         loading: false,
       });
 
       render(<TextPost {...defaultProps} authorId="author-123" />);
 
       // Post should render normally even when not the author
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
 
-    it('should render post successfully when user is not logged in', () => {
+    it("should render post successfully when user is not logged in", () => {
       mockUseAuth.mockReturnValue({
         user: null,
         loading: false,
@@ -116,75 +116,75 @@ describe('TextPost', () => {
       render(<TextPost {...defaultProps} />);
 
       // Post should render even when user is not logged in
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
   });
 
-  describe('Like and Comment Integration', () => {
-    it('should render LikeComment component within post', () => {
+  describe("Like and Comment Integration", () => {
+    it("should render LikeComment component within post", () => {
       render(<TextPost {...defaultProps} />);
 
       // LikeComment component should be rendered
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
   });
 
-  describe('Post Content Edge Cases', () => {
-    it('should handle very long title', () => {
-      const longTitle = 'A'.repeat(500);
+  describe("Post Content Edge Cases", () => {
+    it("should handle very long title", () => {
+      const longTitle = "A".repeat(500);
       render(<TextPost {...defaultProps} title={longTitle} />);
       expect(screen.getByText(longTitle)).toBeTruthy();
     });
 
-    it('should handle very long description', () => {
-      const longDescription = 'B'.repeat(1000);
+    it("should handle very long description", () => {
+      const longDescription = "B".repeat(1000);
       render(<TextPost {...defaultProps} description={longDescription} />);
       expect(screen.getByText(longDescription)).toBeTruthy();
     });
 
-    it('should handle special characters in title', () => {
-      const specialTitle = 'Test & Title with Special Characters';
+    it("should handle special characters in title", () => {
+      const specialTitle = "Test & Title with Special Characters";
       render(<TextPost {...defaultProps} title={specialTitle} />);
       expect(screen.getByText(specialTitle)).toBeTruthy();
     });
 
-    it('should handle unicode characters in description', () => {
-      const unicodeDescription = 'Hello World in Multiple Languages';
+    it("should handle unicode characters in description", () => {
+      const unicodeDescription = "Hello World in Multiple Languages";
       render(<TextPost {...defaultProps} description={unicodeDescription} />);
       expect(screen.getByText(unicodeDescription)).toBeTruthy();
     });
 
-    it('should handle multiline description', () => {
-      const multilineDescription = 'Line 1\nLine 2\nLine 3';
+    it("should handle multiline description", () => {
+      const multilineDescription = "Line 1\nLine 2\nLine 3";
       render(<TextPost {...defaultProps} description={multilineDescription} />);
       expect(screen.getByText(multilineDescription)).toBeTruthy();
     });
   });
 
-  describe('Author ID Validation', () => {
-    it('should render correctly when post author matches current user', () => {
+  describe("Author ID Validation", () => {
+    it("should render correctly when post author matches current user", () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser({ uid: 'test-user-123', email: 'test@example.com' }),
+        user: createMockUser({ uid: "test-user-123", email: "test@example.com" }),
         loading: false,
       });
 
       render(<TextPost {...defaultProps} authorId="test-user-123" />);
 
       // Post should render successfully
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
-      expect(screen.getByText('This is a test post description')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
+      expect(screen.getByText("This is a test post description")).toBeTruthy();
     });
 
-    it('should handle missing authorId gracefully', () => {
+    it("should handle missing authorId gracefully", () => {
       mockUseAuth.mockReturnValue({
-        user: createMockUser({ uid: 'test-user-123', email: 'test@example.com' }),
+        user: createMockUser({ uid: "test-user-123", email: "test@example.com" }),
         loading: false,
       });
 
       render(<TextPost {...defaultProps} authorId="" />);
-      expect(screen.getByText('Test Post Title')).toBeTruthy();
+      expect(screen.getByText("Test Post Title")).toBeTruthy();
     });
   });
 });

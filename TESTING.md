@@ -86,21 +86,21 @@ project-root/
  */
 
 // Imports
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
-import { ComponentUnderTest } from '../ComponentUnderTest';
+import { render, screen, fireEvent, waitFor } from "@testing-library/react-native";
+import { ComponentUnderTest } from "../ComponentUnderTest";
 
 // Mocks (if needed)
-jest.mock('@/path/to/dependency');
+jest.mock("@/path/to/dependency");
 
-describe('ComponentUnderTest', () => {
+describe("ComponentUnderTest", () => {
   // Setup
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   // Test groups by feature
-  describe('feature or behavior', () => {
-    it('should do something specific', () => {
+  describe("feature or behavior", () => {
+    it("should do something specific", () => {
       // Test implementation
     });
   });
@@ -116,6 +116,7 @@ describe('ComponentUnderTest', () => {
 Use the component/function name or feature being tested:
 
 **Good:**
+
 ```typescript
 describe('SignInScreen', () => { ... });
 describe('handleAuthError', () => { ... });
@@ -123,6 +124,7 @@ describe('email validation', () => { ... });
 ```
 
 **Bad:**
+
 ```typescript
 describe('tests', () => { ... });
 describe('component tests', () => { ... });
@@ -133,6 +135,7 @@ describe('component tests', () => { ... });
 Use clear, descriptive sentences that explain **what** the test verifies and **why** it matters:
 
 **Good:**
+
 ```typescript
 it('should display error message when email is invalid', () => { ... });
 it('should call onSuccess callback after successful login', () => { ... });
@@ -140,6 +143,7 @@ it('should disable submit button while request is pending', () => { ... });
 ```
 
 **Bad:**
+
 ```typescript
 it('test email', () => { ... });
 it('works', () => { ... });
@@ -198,19 +202,21 @@ it('should update profile when form is submitted', async () => {
 ### 1. Use jest.spyOn() Instead of Direct Assignment
 
 **Good:**
-```typescript
-import * as serverAuth from '@/services/serverAuth';
 
-it('should fetch user ID', async () => {
-  jest.spyOn(serverAuth, 'getUserId').mockResolvedValue('user-123');
+```typescript
+import * as serverAuth from "@/services/serverAuth";
+
+it("should fetch user ID", async () => {
+  jest.spyOn(serverAuth, "getUserId").mockResolvedValue("user-123");
   // Test implementation
 });
 ```
 
 **Bad:**
+
 ```typescript
 const mockedServerAuth = serverAuth as jest.Mocked<typeof serverAuth>;
-mockedServerAuth.getUserId = jest.fn().mockResolvedValue('user-123');
+mockedServerAuth.getUserId = jest.fn().mockResolvedValue("user-123");
 ```
 
 **Why**: `jest.spyOn()` is more explicit, easier to restore, and caught by ESLint rules.
@@ -226,6 +232,7 @@ beforeEach(() => {
 ### 3. Avoid Over-Mocking
 
 **Good (Minimal Mocking):**
+
 ```typescript
 it('should display logout confirmation', () => {
   const mockLogout = jest.fn();
@@ -236,6 +243,7 @@ it('should display logout confirmation', () => {
 ```
 
 **Bad (Over-Mocking):**
+
 ```typescript
 it('should display logout confirmation', () => {
   const mockRouter = { push: jest.fn() };
@@ -269,19 +277,21 @@ it('should display logout confirmation', () => {
 ### 5. Use Realistic Mock Data
 
 **Good:**
+
 ```typescript
 const mockUser = {
-  id: 'user-123',
-  email: 'john@example.com',
-  firstName: 'John',
-  lastName: 'Doe',
-  roles: { User: 2001 }
+  id: "user-123",
+  email: "john@example.com",
+  firstName: "John",
+  lastName: "Doe",
+  roles: { User: 2001 },
 };
 ```
 
 **Bad:**
+
 ```typescript
-const mockUser = { id: '1', email: 'a', name: 'b' };
+const mockUser = { id: "1", email: "a", name: "b" };
 ```
 
 ---
@@ -291,15 +301,17 @@ const mockUser = { id: '1', email: 'a', name: 'b' };
 ### 1. Use Specific Assertions
 
 **Good:**
+
 ```typescript
-expect(screen.getByText('Invalid email or password')).toBeTruthy();
-expect(mockLoginFn).toHaveBeenCalledWith('user@example.com', 'password123');
-expect(result).toStrictEqual({ success: true, userId: '123' });
+expect(screen.getByText("Invalid email or password")).toBeTruthy();
+expect(mockLoginFn).toHaveBeenCalledWith("user@example.com", "password123");
+expect(result).toStrictEqual({ success: true, userId: "123" });
 ```
 
 **Bad:**
+
 ```typescript
-expect(screen.getAllByText('Invalid email or password').length).toBeGreaterThan(0);
+expect(screen.getAllByText("Invalid email or password").length).toBeGreaterThan(0);
 expect(mockLoginFn).toHaveBeenCalled();
 expect(result).toEqual(expect.anything());
 ```
@@ -307,16 +319,19 @@ expect(result).toEqual(expect.anything());
 ### 2. Prefer .toStrictEqual() Over .toEqual()
 
 **Good:**
+
 ```typescript
-expect(result).toStrictEqual({ accessToken: 'token-123', _id: 'user-456' });
+expect(result).toStrictEqual({ accessToken: "token-123", _id: "user-456" });
 ```
 
 **Bad:**
+
 ```typescript
-expect(result).toEqual({ accessToken: 'token-123', _id: 'user-456' });
+expect(result).toEqual({ accessToken: "token-123", _id: "user-456" });
 ```
 
 **Why**: `.toStrictEqual()` catches:
+
 - Undefined properties that shouldn't exist
 - Array vs object mismatches
 - Sparse arrays
@@ -324,19 +339,22 @@ expect(result).toEqual({ accessToken: 'token-123', _id: 'user-456' });
 ### 3. Use .toHaveLength() for Arrays
 
 **Good:**
+
 ```typescript
-expect(getAllByRole('button')).toHaveLength(3);
+expect(getAllByRole("button")).toHaveLength(3);
 ```
 
 **Bad:**
+
 ```typescript
-expect(getAllByRole('button').length).toBe(3);
-expect(getAllByRole('button').length).toBeGreaterThan(0);
+expect(getAllByRole("button").length).toBe(3);
+expect(getAllByRole("button").length).toBeGreaterThan(0);
 ```
 
 ### 4. Avoid Weak Assertions
 
 **Bad Patterns:**
+
 ```typescript
 expect(element).toBeTruthy(); // Too vague
 expect(array.length).toBeGreaterThan(0); // Should know exact length
@@ -347,13 +365,15 @@ expect(() => doSomething()).not.toThrow(); // Test should verify behavior
 ### 5. Test Error Messages
 
 **Good:**
+
 ```typescript
-await expect(validateEmail('')).rejects.toThrow('Email is required');
+await expect(validateEmail("")).rejects.toThrow("Email is required");
 ```
 
 **Bad:**
+
 ```typescript
-await expect(validateEmail('')).rejects.toThrow();
+await expect(validateEmail("")).rejects.toThrow();
 ```
 
 ---
@@ -363,16 +383,18 @@ await expect(validateEmail('')).rejects.toThrow();
 ### 1. Mark Async Tests Properly
 
 **Good:**
+
 ```typescript
-it('should fetch user profile', async () => {
+it("should fetch user profile", async () => {
   await userProfileService.fetchProfile();
   expect(mockAxios.get).toHaveBeenCalled();
 });
 ```
 
 **Bad:**
+
 ```typescript
-it('should fetch user profile', () => {
+it("should fetch user profile", () => {
   userProfileService.fetchProfile();
   expect(mockAxios.get).toHaveBeenCalled();
 });
@@ -381,23 +403,26 @@ it('should fetch user profile', () => {
 ### 2. Use waitFor() for State Changes
 
 **Good:**
+
 ```typescript
 fireEvent.press(loginButton);
 
 await waitFor(() => {
-  expect(screen.getByText('Welcome back!')).toBeTruthy();
+  expect(screen.getByText("Welcome back!")).toBeTruthy();
 });
 ```
 
 **Bad:**
+
 ```typescript
 fireEvent.press(loginButton);
-expect(screen.getByText('Welcome back!')).toBeTruthy(); // Will fail - not waiting
+expect(screen.getByText("Welcome back!")).toBeTruthy(); // Will fail - not waiting
 ```
 
 ### 3. Avoid Unnecessary act() Wrappers
 
 **Good:**
+
 ```typescript
 fireEvent.press(button);
 
@@ -407,6 +432,7 @@ await waitFor(() => {
 ```
 
 **Bad:**
+
 ```typescript
 await act(async () => {
   fireEvent.press(button);
@@ -440,6 +466,7 @@ it('should show loading spinner while fetching data', async () => {
 ### 1. Tests with No Assertions ⚠️ CRITICAL
 
 **Bad:**
+
 ```typescript
 it('should handle press on user name without errors', () => {
   const { getByText } = render(<UserInfo name="John Doe" />);
@@ -452,6 +479,7 @@ it('should handle press on user name without errors', () => {
 **Why**: This test doesn't test anything. It will always pass.
 
 **Fix:**
+
 ```typescript
 it('should handle press on user name', () => {
   const mockOnPress = jest.fn();
@@ -468,6 +496,7 @@ it('should handle press on user name', () => {
 ### 2. Unnecessary act() Wrappers ⚠️ CRITICAL
 
 **Bad:**
+
 ```typescript
 await act(async () => {
   fireEvent.press(mockProfilePicture);
@@ -477,6 +506,7 @@ await act(async () => {
 **Why**: `fireEvent` already wraps in `act()`. Double-wrapping is unnecessary and flagged by ESLint.
 
 **Fix:**
+
 ```typescript
 fireEvent.press(mockProfilePicture);
 
@@ -490,6 +520,7 @@ await waitFor(() => {
 ### 3. Over-Granular Tests
 
 **Bad (38 tests for one screen):**
+
 ```typescript
 it('should display "First Name" label', () => { ... });
 it('should display "Last Name" label', () => { ... });
@@ -501,6 +532,7 @@ it('should display "Date of Birth" label', () => { ... });
 **Why**: Too many tests for simple rendering. Makes maintenance difficult.
 
 **Fix (Combine into logical groups):**
+
 ```typescript
 it('should display all required form fields', () => {
   const { getByText } = render(<MyInfoScreen />);
@@ -515,29 +547,33 @@ it('should display all required form fields', () => {
 ### 4. Weak Assertions
 
 **Bad:**
+
 ```typescript
-expect(getAllByText('13').length).toBeGreaterThanOrEqual(2);
+expect(getAllByText("13").length).toBeGreaterThanOrEqual(2);
 expect(mockFn).toHaveBeenCalled(); // Not checking arguments
 expect(element).toBeTruthy(); // Too vague
 ```
 
 **Fix:**
+
 ```typescript
-expect(getAllByText('13')).toHaveLength(3);
-expect(mockFn).toHaveBeenCalledWith('expected-arg');
-expect(getByRole('button', { name: 'Submit' })).toBeEnabled();
+expect(getAllByText("13")).toHaveLength(3);
+expect(mockFn).toHaveBeenCalledWith("expected-arg");
+expect(getByRole("button", { name: "Submit" })).toBeEnabled();
 ```
 
 ### 5. Manual Mocking
 
 **Bad:**
+
 ```typescript
-mockedServerAuth.getUserId = jest.fn().mockResolvedValue('user-123');
+mockedServerAuth.getUserId = jest.fn().mockResolvedValue("user-123");
 ```
 
 **Fix:**
+
 ```typescript
-jest.spyOn(serverAuth, 'getUserId').mockResolvedValue('user-123');
+jest.spyOn(serverAuth, "getUserId").mockResolvedValue("user-123");
 ```
 
 **ESLint Rule**: `jest/prefer-spy-on` will catch this.
@@ -545,31 +581,33 @@ jest.spyOn(serverAuth, 'getUserId').mockResolvedValue('user-123');
 ### 6. DRY Violations
 
 **Bad (Repeated 6 times):**
+
 ```typescript
-it('should throw error when user ID not found - method1', async () => {
-  jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
-  await expect(service.method1()).rejects.toThrow('User ID not found');
+it("should throw error when user ID not found - method1", async () => {
+  jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
+  await expect(service.method1()).rejects.toThrow("User ID not found");
 });
 
-it('should throw error when user ID not found - method2', async () => {
-  jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
-  await expect(service.method2()).rejects.toThrow('User ID not found');
+it("should throw error when user ID not found - method2", async () => {
+  jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
+  await expect(service.method2()).rejects.toThrow("User ID not found");
 });
 // ... 4 more identical tests
 ```
 
 **Fix (Extract Helper):**
+
 ```typescript
 const expectUserIdNotFoundError = async (serviceMethod: () => Promise<any>) => {
-  jest.spyOn(serverAuth, 'getUserId').mockResolvedValue(null);
-  await expect(serviceMethod()).rejects.toThrow('User ID not found');
+  jest.spyOn(serverAuth, "getUserId").mockResolvedValue(null);
+  await expect(serviceMethod()).rejects.toThrow("User ID not found");
 };
 
-it('should throw error when user ID not found - method1', async () => {
+it("should throw error when user ID not found - method1", async () => {
   await expectUserIdNotFoundError(() => service.method1());
 });
 
-it('should throw error when user ID not found - method2', async () => {
+it("should throw error when user ID not found - method2", async () => {
   await expectUserIdNotFoundError(() => service.method2());
 });
 ```
@@ -577,6 +615,7 @@ it('should throw error when user ID not found - method2', async () => {
 ### 7. Testing Implementation Details
 
 **Bad:**
+
 ```typescript
 it('should update internal state variable', () => {
   const component = render(<MyComponent />);
@@ -585,6 +624,7 @@ it('should update internal state variable', () => {
 ```
 
 **Fix (Test Behavior):**
+
 ```typescript
 it('should display initial count of 0', () => {
   const { getByTestId } = render(<MyComponent />);
@@ -601,41 +641,42 @@ it('should display initial count of 0', () => {
 **Example from validation.test.ts (9.5/10 quality):**
 
 ```typescript
-describe('email validation', () => {
-  it('should accept valid email formats', () => {
-    expect(validateEmail('user@example.com')).toBe(true);
-    expect(validateEmail('user.name+tag@example.co.uk')).toBe(true);
-    expect(validateEmail('user123@sub.domain.com')).toBe(true);
+describe("email validation", () => {
+  it("should accept valid email formats", () => {
+    expect(validateEmail("user@example.com")).toBe(true);
+    expect(validateEmail("user.name+tag@example.co.uk")).toBe(true);
+    expect(validateEmail("user123@sub.domain.com")).toBe(true);
   });
 
-  it('should reject invalid email formats', () => {
-    expect(validateEmail('invalid')).toBe(false);
-    expect(validateEmail('@example.com')).toBe(false);
-    expect(validateEmail('user@')).toBe(false);
-    expect(validateEmail('user @example.com')).toBe(false);
+  it("should reject invalid email formats", () => {
+    expect(validateEmail("invalid")).toBe(false);
+    expect(validateEmail("@example.com")).toBe(false);
+    expect(validateEmail("user@")).toBe(false);
+    expect(validateEmail("user @example.com")).toBe(false);
   });
 
-  it('should handle edge cases', () => {
-    expect(validateEmail('')).toBe(false);
-    expect(validateEmail('   ')).toBe(false);
+  it("should handle edge cases", () => {
+    expect(validateEmail("")).toBe(false);
+    expect(validateEmail("   ")).toBe(false);
     expect(validateEmail(null as any)).toBe(false);
     expect(validateEmail(undefined as any)).toBe(false);
   });
 
-  it('should handle very long emails', () => {
-    const longEmail = 'a'.repeat(250) + '@example.com';
+  it("should handle very long emails", () => {
+    const longEmail = "a".repeat(250) + "@example.com";
     expect(validateEmail(longEmail)).toBe(false);
   });
 
-  it('should handle special characters', () => {
-    expect(validateEmail('user+tag@example.com')).toBe(true);
-    expect(validateEmail('user.name@example.com')).toBe(true);
-    expect(validateEmail('user<script>@example.com')).toBe(false);
+  it("should handle special characters", () => {
+    expect(validateEmail("user+tag@example.com")).toBe(true);
+    expect(validateEmail("user.name@example.com")).toBe(true);
+    expect(validateEmail("user<script>@example.com")).toBe(false);
   });
 });
 ```
 
 **Why This is Good:**
+
 - Tests valid inputs
 - Tests invalid inputs
 - Tests edge cases (empty, null, undefined)
@@ -648,45 +689,45 @@ describe('email validation', () => {
 **Example from errorHandler.test.ts (9.5/10 quality):**
 
 ```typescript
-describe('handleAuthError', () => {
-  describe('sign in errors', () => {
-    it('should return user-friendly message for user-not-found', () => {
-      const error = new FirebaseError('auth/user-not-found', 'User not found');
-      expect(handleAuthError(error)).toBe('No account found with this email address');
+describe("handleAuthError", () => {
+  describe("sign in errors", () => {
+    it("should return user-friendly message for user-not-found", () => {
+      const error = new FirebaseError("auth/user-not-found", "User not found");
+      expect(handleAuthError(error)).toBe("No account found with this email address");
     });
 
-    it('should return user-friendly message for wrong-password', () => {
-      const error = new FirebaseError('auth/wrong-password', 'Wrong password');
-      expect(handleAuthError(error)).toBe('Incorrect password. Please try again');
+    it("should return user-friendly message for wrong-password", () => {
+      const error = new FirebaseError("auth/wrong-password", "Wrong password");
+      expect(handleAuthError(error)).toBe("Incorrect password. Please try again");
     });
 
-    it('should return user-friendly message for invalid-credential', () => {
-      const error = new FirebaseError('auth/invalid-credential', 'Invalid credential');
-      expect(handleAuthError(error)).toBe('Invalid email or password');
-    });
-  });
-
-  describe('network errors', () => {
-    it('should return user-friendly message for network-request-failed', () => {
-      const error = new FirebaseError('auth/network-request-failed', 'Network failed');
-      expect(handleAuthError(error)).toBe('Network error. Please check your internet connection');
+    it("should return user-friendly message for invalid-credential", () => {
+      const error = new FirebaseError("auth/invalid-credential", "Invalid credential");
+      expect(handleAuthError(error)).toBe("Invalid email or password");
     });
   });
 
-  describe('unknown error codes', () => {
-    it('should return generic message for unknown error code', () => {
-      const error = new FirebaseError('auth/unknown-error-code', 'Some unknown error');
-      expect(handleAuthError(error)).toBe('An unexpected error occurred. Please try again');
+  describe("network errors", () => {
+    it("should return user-friendly message for network-request-failed", () => {
+      const error = new FirebaseError("auth/network-request-failed", "Network failed");
+      expect(handleAuthError(error)).toBe("Network error. Please check your internet connection");
+    });
+  });
+
+  describe("unknown error codes", () => {
+    it("should return generic message for unknown error code", () => {
+      const error = new FirebaseError("auth/unknown-error-code", "Some unknown error");
+      expect(handleAuthError(error)).toBe("An unexpected error occurred. Please try again");
     });
 
-    it('should log unknown error codes for debugging', () => {
-      const error = new FirebaseError('auth/unknown-error-code', 'Some unknown error');
+    it("should log unknown error codes for debugging", () => {
+      const error = new FirebaseError("auth/unknown-error-code", "Some unknown error");
       handleAuthError(error);
 
       expect(logger.error).toHaveBeenCalledWith(
-        'Unhandled Firebase auth error:',
-        'auth/unknown-error-code',
-        'Some unknown error'
+        "Unhandled Firebase auth error:",
+        "auth/unknown-error-code",
+        "Some unknown error"
       );
     });
   });
@@ -694,6 +735,7 @@ describe('handleAuthError', () => {
 ```
 
 **Why This is Good:**
+
 - Tests all error types
 - Tests unknown error handling
 - Tests logging integration
@@ -705,7 +747,7 @@ describe('handleAuthError', () => {
 **Example from useRefreshToken.test.ts (9/10 quality):**
 
 ```typescript
-describe('useRefreshToken', () => {
+describe("useRefreshToken", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
@@ -716,12 +758,12 @@ describe('useRefreshToken', () => {
     jest.useRealTimers();
   });
 
-  it('should refresh token when access token expires', async () => {
-    const mockRefreshToken = jest.fn().mockResolvedValue('new-token-123');
-    jest.spyOn(serverAuth, 'refreshToken').mockImplementation(mockRefreshToken);
+  it("should refresh token when access token expires", async () => {
+    const mockRefreshToken = jest.fn().mockResolvedValue("new-token-123");
+    jest.spyOn(serverAuth, "refreshToken").mockImplementation(mockRefreshToken);
 
     const { result } = renderHook(() => useRefreshToken(), {
-      wrapper: createWrapper()
+      wrapper: createWrapper(),
     });
 
     // Simulate token expiration
@@ -729,22 +771,22 @@ describe('useRefreshToken', () => {
 
     await waitFor(() => {
       expect(mockRefreshToken).toHaveBeenCalled();
-      expect(result.current.accessToken).toBe('new-token-123');
+      expect(result.current.accessToken).toBe("new-token-123");
     });
   });
 
-  it('should handle refresh token failure gracefully', async () => {
-    const mockError = new Error('Refresh token expired');
-    jest.spyOn(serverAuth, 'refreshToken').mockRejectedValue(mockError);
+  it("should handle refresh token failure gracefully", async () => {
+    const mockError = new Error("Refresh token expired");
+    jest.spyOn(serverAuth, "refreshToken").mockRejectedValue(mockError);
 
     const { result } = renderHook(() => useRefreshToken(), {
-      wrapper: createWrapper()
+      wrapper: createWrapper(),
     });
 
     jest.advanceTimersByTime(3600000);
 
     await waitFor(() => {
-      expect(result.current.error).toBe('Refresh token expired');
+      expect(result.current.error).toBe("Refresh token expired");
       expect(result.current.accessToken).toBeNull();
     });
   });
@@ -752,6 +794,7 @@ describe('useRefreshToken', () => {
 ```
 
 **Why This is Good:**
+
 - Proper timer setup and cleanup
 - Tests success and error paths
 - Uses waitFor() for async state changes
@@ -762,54 +805,49 @@ describe('useRefreshToken', () => {
 **Example from userProfileService.test.ts (8/10 quality):**
 
 ```typescript
-describe('updateBusiness', () => {
+describe("updateBusiness", () => {
   it('should transform "Yes" to true when updating business info', async () => {
-    jest.spyOn(serverAuth, 'getUserId').mockResolvedValue('user-123');
+    jest.spyOn(serverAuth, "getUserId").mockResolvedValue("user-123");
     (axiosPrivate.patch as jest.Mock).mockResolvedValueOnce({ data: {} });
 
     await userProfileService.updateBusiness({
-      entrepreneur: 'Yes',
-      businessSize: 'Small',
-      businessLocationReason: 'Market access'
+      entrepreneur: "Yes",
+      businessSize: "Small",
+      businessLocationReason: "Market access",
     });
 
-    expect(axiosPrivate.patch).toHaveBeenCalledWith(
-      '/users/business/user-123',
-      {
-        values: {
-          entrepreneur: true,
-          lengthOpen: 'Small',
-          factorsOfLocation: 'Market access'
-        }
-      }
-    );
+    expect(axiosPrivate.patch).toHaveBeenCalledWith("/users/business/user-123", {
+      values: {
+        entrepreneur: true,
+        lengthOpen: "Small",
+        factorsOfLocation: "Market access",
+      },
+    });
   });
 
   it('should transform "No" to false when updating business info', async () => {
-    jest.spyOn(serverAuth, 'getUserId').mockResolvedValue('user-123');
+    jest.spyOn(serverAuth, "getUserId").mockResolvedValue("user-123");
     (axiosPrivate.patch as jest.Mock).mockResolvedValueOnce({ data: {} });
 
     await userProfileService.updateBusiness({
-      entrepreneur: 'No',
-      businessSize: 'Large',
-      businessLocationReason: 'Low cost'
+      entrepreneur: "No",
+      businessSize: "Large",
+      businessLocationReason: "Low cost",
     });
 
-    expect(axiosPrivate.patch).toHaveBeenCalledWith(
-      '/users/business/user-123',
-      {
-        values: {
-          entrepreneur: false,
-          lengthOpen: 'Large',
-          factorsOfLocation: 'Low cost'
-        }
-      }
-    );
+    expect(axiosPrivate.patch).toHaveBeenCalledWith("/users/business/user-123", {
+      values: {
+        entrepreneur: false,
+        lengthOpen: "Large",
+        factorsOfLocation: "Low cost",
+      },
+    });
   });
 });
 ```
 
 **Why This is Good:**
+
 - Tests data transformation (string → boolean)
 - Tests field name mapping (client ↔ server format)
 - Verifies exact request payloads
@@ -860,6 +898,7 @@ describe('post ownership', () => {
 ```
 
 **Why This is Good:**
+
 - Tests all user states (owner, non-owner, not logged in)
 - Important for security and UX
 - Clear, focused tests
@@ -869,49 +908,51 @@ describe('post ownership', () => {
 **Example from serverAuth.test.ts (8.5/10 quality):**
 
 ```typescript
-describe('loginToServer', () => {
-  it('stores access token and user ID on successful login', async () => {
+describe("loginToServer", () => {
+  it("stores access token and user ID on successful login", async () => {
     const mockResponse = {
       data: {
-        accessToken: 'mock-access-token-123',
-        _id: 'user-mongodb-id-456',
-        roles: { User: 2001 }
-      }
+        accessToken: "mock-access-token-123",
+        _id: "user-mongodb-id-456",
+        roles: { User: 2001 },
+      },
     };
 
     (axios.post as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-    const result = await serverAuth.loginToServer('test@example.com', 'password123');
+    const result = await serverAuth.loginToServer("test@example.com", "password123");
 
     // Verify API call
-    expect(axios.post).toHaveBeenCalledWith('/auth', {
-      user: 'test@example.com',
-      pwd: 'password123'
-    }, {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    expect(axios.post).toHaveBeenCalledWith(
+      "/auth",
+      {
+        user: "test@example.com",
+        pwd: "password123",
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     // Verify secure storage
     expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-      'server_access_token',
-      'mock-access-token-123'
+      "server_access_token",
+      "mock-access-token-123"
     );
-    expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-      'server_user_id',
-      'user-mongodb-id-456'
-    );
+    expect(SecureStore.setItemAsync).toHaveBeenCalledWith("server_user_id", "user-mongodb-id-456");
 
     // Verify return value
     expect(result).toStrictEqual({
-      accessToken: 'mock-access-token-123',
-      _id: 'user-mongodb-id-456',
-      roles: { User: 2001 }
+      accessToken: "mock-access-token-123",
+      _id: "user-mongodb-id-456",
+      roles: { User: 2001 },
     });
   });
 });
 ```
 
 **Why This is Good:**
+
 - Tests external dependency integration
 - Verifies all side effects (API call, storage, return value)
 - Clear AAA structure
@@ -923,6 +964,7 @@ describe('loginToServer', () => {
 ### Target Coverage
 
 Based on baseline analysis:
+
 - **Statements**: 60%+ (current: 62.81%)
 - **Branches**: 50%+ (current: 51.74%)
 - **Functions**: 60%+ (current: 60.56%)
@@ -931,6 +973,7 @@ Based on baseline analysis:
 ### Critical Files (100% Target)
 
 These files require 100% coverage:
+
 - Authentication utilities (validation, errorHandler)
 - Core services (serverAuth, userProfileService)
 - Security-related utilities
@@ -938,13 +981,13 @@ These files require 100% coverage:
 
 ### Coverage by Category
 
-| Category | Target | Current | Status |
-|----------|--------|---------|--------|
-| Authentication Screens | 70% | 73.07% | ✅ |
-| Hooks | 80% | 85.23% | ✅ |
-| Services | 90% | N/A | - |
-| Utilities | 95% | 97%+ | ✅ |
-| Components | 60% | 62.96% | ✅ |
+| Category               | Target | Current | Status |
+| ---------------------- | ------ | ------- | ------ |
+| Authentication Screens | 70%    | 73.07%  | ✅     |
+| Hooks                  | 80%    | 85.23%  | ✅     |
+| Services               | 90%    | N/A     | -      |
+| Utilities              | 95%    | 97%+    | ✅     |
+| Components             | 60%    | 62.96%  | ✅     |
 
 ### What NOT to Test
 
@@ -963,17 +1006,17 @@ These files require 100% coverage:
 **Use for**: Pure functions, validation, data transformation
 
 ```typescript
-describe('validateEmail', () => {
-  it('should accept valid email formats', () => {
-    expect(validateEmail('user@example.com')).toBe(true);
+describe("validateEmail", () => {
+  it("should accept valid email formats", () => {
+    expect(validateEmail("user@example.com")).toBe(true);
   });
 
-  it('should reject invalid email formats', () => {
-    expect(validateEmail('invalid')).toBe(false);
+  it("should reject invalid email formats", () => {
+    expect(validateEmail("invalid")).toBe(false);
   });
 
-  it('should handle edge cases', () => {
-    expect(validateEmail('')).toBe(false);
+  it("should handle edge cases", () => {
+    expect(validateEmail("")).toBe(false);
     expect(validateEmail(null as any)).toBe(false);
   });
 });
@@ -984,15 +1027,15 @@ describe('validateEmail', () => {
 **Use for**: Error handling, message formatting
 
 ```typescript
-describe('handleAuthError', () => {
-  it('should return user-friendly message for user-not-found', () => {
-    const error = new FirebaseError('auth/user-not-found', 'User not found');
-    expect(handleAuthError(error)).toBe('No account found with this email address');
+describe("handleAuthError", () => {
+  it("should return user-friendly message for user-not-found", () => {
+    const error = new FirebaseError("auth/user-not-found", "User not found");
+    expect(handleAuthError(error)).toBe("No account found with this email address");
   });
 
-  it('should return generic message for unknown error', () => {
-    const error = new FirebaseError('auth/unknown', 'Unknown error');
-    expect(handleAuthError(error)).toBe('An unexpected error occurred. Please try again');
+  it("should return generic message for unknown error", () => {
+    const error = new FirebaseError("auth/unknown", "Unknown error");
+    expect(handleAuthError(error)).toBe("An unexpected error occurred. Please try again");
   });
 });
 ```
@@ -1041,25 +1084,25 @@ describe('LogOutScreen', () => {
 **Use for**: Custom React hooks, state management
 
 ```typescript
-describe('useRefreshToken', () => {
+describe("useRefreshToken", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should return initial state', () => {
+  it("should return initial state", () => {
     const { result } = renderHook(() => useRefreshToken(), {
-      wrapper: createWrapper()
+      wrapper: createWrapper(),
     });
 
     expect(result.current.isRefreshing).toBe(false);
     expect(result.current.error).toBeNull();
   });
 
-  it('should refresh token successfully', async () => {
-    jest.spyOn(serverAuth, 'refreshToken').mockResolvedValue('new-token');
+  it("should refresh token successfully", async () => {
+    jest.spyOn(serverAuth, "refreshToken").mockResolvedValue("new-token");
 
     const { result } = renderHook(() => useRefreshToken(), {
-      wrapper: createWrapper()
+      wrapper: createWrapper(),
     });
 
     act(() => {
@@ -1067,7 +1110,7 @@ describe('useRefreshToken', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.token).toBe('new-token');
+      expect(result.current.token).toBe("new-token");
       expect(result.current.isRefreshing).toBe(false);
     });
   });
@@ -1079,42 +1122,46 @@ describe('useRefreshToken', () => {
 **Use for**: API services, data fetching, external integrations
 
 ```typescript
-describe('serverAuth', () => {
+describe("serverAuth", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('loginToServer', () => {
-    it('stores credentials on successful login', async () => {
+  describe("loginToServer", () => {
+    it("stores credentials on successful login", async () => {
       const mockResponse = {
         data: {
-          accessToken: 'token-123',
-          _id: 'user-456',
-          roles: { User: 2001 }
-        }
+          accessToken: "token-123",
+          _id: "user-456",
+          roles: { User: 2001 },
+        },
       };
 
       (axios.post as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      const result = await serverAuth.loginToServer('user@example.com', 'password');
+      const result = await serverAuth.loginToServer("user@example.com", "password");
 
-      expect(axios.post).toHaveBeenCalledWith('/auth', {
-        user: 'user@example.com',
-        pwd: 'password'
-      }, {
-        headers: { 'Content-Type': 'application/json' }
-      });
+      expect(axios.post).toHaveBeenCalledWith(
+        "/auth",
+        {
+          user: "user@example.com",
+          pwd: "password",
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-      expect(SecureStore.setItemAsync).toHaveBeenCalledWith('server_access_token', 'token-123');
+      expect(SecureStore.setItemAsync).toHaveBeenCalledWith("server_access_token", "token-123");
       expect(result).toStrictEqual(mockResponse.data);
     });
 
-    it('throws error on failed login', async () => {
-      (axios.post as jest.Mock).mockRejectedValueOnce(new Error('Unauthorized'));
+    it("throws error on failed login", async () => {
+      (axios.post as jest.Mock).mockRejectedValueOnce(new Error("Unauthorized"));
 
-      await expect(
-        serverAuth.loginToServer('user@example.com', 'wrongpassword')
-      ).rejects.toThrow('Unauthorized');
+      await expect(serverAuth.loginToServer("user@example.com", "wrongpassword")).rejects.toThrow(
+        "Unauthorized"
+      );
     });
   });
 });
@@ -1253,12 +1300,14 @@ Before submitting a test file, verify:
 The project uses `eslint-plugin-jest` and `eslint-plugin-testing-library` with these key rules:
 
 **Critical Rules (Error):**
+
 - `jest/expect-expect` - All tests must have assertions
 - `jest/no-focused-tests` - No `.only()` or `.skip()`
 - `testing-library/await-async-queries` - Await async queries
 - `testing-library/no-unnecessary-act` - No unnecessary act()
 
 **Important Rules (Warning):**
+
 - `jest/prefer-spy-on` - Use jest.spyOn() instead of manual mocks
 - `jest/prefer-strict-equal` - Use .toStrictEqual() instead of .toEqual()
 - `jest/no-disabled-tests` - No skipped tests in main branch

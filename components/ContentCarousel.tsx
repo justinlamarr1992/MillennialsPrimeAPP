@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  useColorScheme,
-  Dimensions,
-  StyleSheet,
-} from "react-native";
+import { View, Text, ScrollView, useColorScheme, Dimensions, StyleSheet } from "react-native";
 import { COLORS } from "@/constants/Colors";
 
 interface ContentCarouselProps {
@@ -67,15 +60,9 @@ const SectionHeader = ({
   badgeTextColor: string;
 }): JSX.Element => (
   <View style={styles.titleContainer}>
-    <Text style={[styles.sectionTitle, { color: textColor }]}>
-      {title}
-    </Text>
+    <Text style={[styles.sectionTitle, { color: textColor }]}>{title}</Text>
     {showBadge && (
-      <Badge
-        text={badgeText}
-        backgroundColor={badgeBackgroundColor}
-        textColor={badgeTextColor}
-      />
+      <Badge text={badgeText} backgroundColor={badgeBackgroundColor} textColor={badgeTextColor} />
     )}
   </View>
 );
@@ -94,9 +81,7 @@ const Badge = ({
   textColor: string;
 }): JSX.Element => (
   <View style={[styles.badge, { backgroundColor }]}>
-    <Text style={[styles.badgeText, { color: textColor }]}>
-      {text}
-    </Text>
+    <Text style={[styles.badgeText, { color: textColor }]}>{text}</Text>
   </View>
 );
 
@@ -104,11 +89,7 @@ const Badge = ({
  * Component for horizontal scrolling container.
  * Pure component - renders children in horizontal scroll view.
  */
-const HorizontalScroll = ({
-  children,
-}: {
-  children: React.ReactNode;
-}): JSX.Element => (
+const HorizontalScroll = ({ children }: { children: React.ReactNode }): JSX.Element => (
   <ScrollView
     horizontal
     showsHorizontalScrollIndicator={false}

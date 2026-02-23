@@ -44,6 +44,7 @@ flowchart TD
 ## Components Used
 
 **React Native Core:**
+
 - `View` - Container
 - `Text` - Title and button label
 - `Pressable` - Logout button
@@ -52,13 +53,16 @@ flowchart TD
 - `useColorScheme` - Theme detection
 
 **Expo Router:**
+
 - `useRouter` - Navigation after logout
 
 **Authentication:**
+
 - `auth().signOut()` - Firebase logout
 - `serverAuth.logout()` - MongoDB token cleanup
 
 **Custom Hooks:**
+
 - `useAuth` - Access auth context
 
 ## Key Features
@@ -72,8 +76,8 @@ flowchart TD
 
 ## User Interactions
 
-| Element | Action | Result |
-|---------|--------|--------|
+| Element        | Action                   | Result              |
+| -------------- | ------------------------ | ------------------- |
 | Log Out Button | onPress → handleLogout() | Trigger logout flow |
 
 ## Logout Flow
@@ -140,6 +144,7 @@ const handleLogout = async () => {
 ## Visual Design
 
 ### Layout
+
 ```
 ┌─────────────────────────┐
 │                         │
@@ -156,16 +161,19 @@ const handleLogout = async () => {
 ```
 
 ### Typography
+
 - **Title**: Medium, centered
 - **Button Label**: Bold, white text
 
 ### Colors (Theme-aware)
+
 - **Background**: `colors.background`
 - **Title Text**: `colors.text`
 - **Logout Button**: Red/danger color (#f44336)
 - **Button Text**: White
 
 ### Loading State
+
 - Button shows `<ActivityIndicator color="white" />`
 - Button label hidden
 - Button disabled
@@ -173,6 +181,7 @@ const handleLogout = async () => {
 ## Screen States
 
 ### 1. Default State
+
 ```mermaid
 stateDiagram-v2
     [*] --> Idle
@@ -187,11 +196,13 @@ stateDiagram-v2
 ```
 
 ### 2. Loading State
+
 - **UI**: ActivityIndicator in button
 - **Button**: Disabled
 - **Duration**: 1-3 seconds typically
 
 ### 3. Error State
+
 - **Alert**: "Failed to log out. Please try again."
 - **Button**: Re-enabled
 - **User Action**: Can retry
@@ -204,10 +215,11 @@ stateDiagram-v2
    - User object set to null in AuthContext
 
 2. **Token Removal**:
+
    ```typescript
    // Removes from secure storage
-   await SecureStore.deleteItemAsync('accessToken');
-   await SecureStore.deleteItemAsync('refreshToken');
+   await SecureStore.deleteItemAsync("accessToken");
+   await SecureStore.deleteItemAsync("refreshToken");
    ```
 
 3. **Navigation**:
@@ -221,29 +233,34 @@ stateDiagram-v2
 ## Error Handling
 
 ### Firebase Logout Errors
+
 - Rare, usually network-related
 - User still redirected to sign-in (fail-safe)
 
 ### MongoDB Logout Errors
+
 - Token cleanup may fail if network issues
 - Not critical - tokens expire naturally
 - User still signed out from Firebase
 
 ### Network Errors
+
 - Show alert: "Check your connection and try again"
 - Keep user on logout screen
 - Allow retry
 
 ## Implementation Notes
 
-**File Reference**: [app/(tabs)/LogOutScreen.tsx](../../../app/(tabs)/LogOutScreen.tsx)
+**File Reference**: [app/(tabs)/LogOutScreen.tsx](<../../../app/(tabs)/LogOutScreen.tsx>)
 
 **Key Dependencies**:
+
 - `@react-native-firebase/auth`
 - `serverAuth` service
 - `expo-secure-store` (via serverAuth)
 
 **Auth State Update**:
+
 - Firebase `signOut()` triggers `onAuthStateChanged` in AuthProvider
 - AuthProvider sets `user = null`
 - Root layout detects null user → redirects to auth screens
@@ -251,28 +268,29 @@ stateDiagram-v2
 ## Related Screens
 
 **Previous Screens:**
+
 - Any authenticated screen (accessed via tab)
 
 **Next Screen:**
+
 - [Sign In Screen](../01-authentication/signin-screen.md) - After logout
 
 **Navigation Context:**
+
 - Logout tab always visible in authenticated tabs
 - Instant access from anywhere in app
 
 ## Future Enhancements
 
 ### Potential Features
+
 1. **Confirmation Dialog**:
+
    ```typescript
-   Alert.alert(
-     "Log Out",
-     "Are you sure you want to log out?",
-     [
-       { text: "Cancel", style: "cancel" },
-       { text: "Log Out", onPress: handleLogout, style: "destructive" }
-     ]
-   );
+   Alert.alert("Log Out", "Are you sure you want to log out?", [
+     { text: "Cancel", style: "cancel" },
+     { text: "Log Out", onPress: handleLogout, style: "destructive" },
+   ]);
    ```
 
 2. **Sign Out of All Devices**:
@@ -299,4 +317,4 @@ stateDiagram-v2
 
 ---
 
-*Wireframe as of 2026-01-30*
+_Wireframe as of 2026-01-30_

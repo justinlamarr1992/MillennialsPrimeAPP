@@ -54,9 +54,7 @@ const TabsLayout = () => {
           title: "Home",
           // tabBarStyle: { marginBottom: 10 },
 
-          tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="home" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="home" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -77,9 +75,7 @@ const TabsLayout = () => {
           },
           headerLeft: () => <TabBackButton />,
           title: "Settings",
-          tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="cog" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons size={28} name="cog" color={color} />,
         }}
       />
       {/*
@@ -120,9 +116,7 @@ const TabsLayout = () => {
             </Pressable>
           ),
           title: "Social",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="people-circle" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="people-circle" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -142,9 +136,7 @@ const TabsLayout = () => {
             fontWeight: "bold",
           },
           title: "Upload",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="cloud-upload" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="cloud-upload" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -190,9 +182,7 @@ const TabsLayout = () => {
           },
           title: "Log Out",
           headerTitle: "Log Out",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="log-out" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="log-out" size={28} color={color} />,
         }}
       />
       {/* screenOptions=

@@ -15,9 +15,7 @@ describe("ConnectedUsersGrid", () => {
 
   describe("When a user has no connections", () => {
     it("should not display the connections section", () => {
-      const { toJSON } = render(
-        <ConnectedUsersGrid users={[]} onUserPress={mockOnUserPress} />
-      );
+      const { toJSON } = render(<ConnectedUsersGrid users={[]} onUserPress={mockOnUserPress} />);
 
       expect(toJSON()).toBeNull();
     });
@@ -26,9 +24,7 @@ describe("ConnectedUsersGrid", () => {
   describe("When a user views their connections", () => {
     const users = createMockConnectionUsers(3);
     const renderConnections = () =>
-      render(
-        <ConnectedUsersGrid users={users} onUserPress={mockOnUserPress} />
-      );
+      render(<ConnectedUsersGrid users={users} onUserPress={mockOnUserPress} />);
 
     it("should display each connected user by name", () => {
       renderConnections();
@@ -59,25 +55,13 @@ describe("ConnectedUsersGrid", () => {
     const users = createMockConnectionUsers(8);
 
     it("should show how many additional connections exist", () => {
-      render(
-        <ConnectedUsersGrid
-          users={users}
-          onUserPress={mockOnUserPress}
-          maxDisplay={5}
-        />
-      );
+      render(<ConnectedUsersGrid users={users} onUserPress={mockOnUserPress} maxDisplay={5} />);
 
       expect(screen.getByText("+3")).toBeTruthy();
     });
 
     it("should only show connections up to the display limit", () => {
-      render(
-        <ConnectedUsersGrid
-          users={users}
-          onUserPress={mockOnUserPress}
-          maxDisplay={5}
-        />
-      );
+      render(<ConnectedUsersGrid users={users} onUserPress={mockOnUserPress} maxDisplay={5} />);
 
       for (let i = 0; i < 5; i++) {
         expect(screen.getByText(users[i].name)).toBeTruthy();
@@ -86,9 +70,7 @@ describe("ConnectedUsersGrid", () => {
     });
 
     it("should default to showing 6 connections before overflow", () => {
-      render(
-        <ConnectedUsersGrid users={users} onUserPress={mockOnUserPress} />
-      );
+      render(<ConnectedUsersGrid users={users} onUserPress={mockOnUserPress} />);
 
       for (let i = 0; i < 6; i++) {
         expect(screen.getByText(users[i].name)).toBeTruthy();
@@ -100,9 +82,7 @@ describe("ConnectedUsersGrid", () => {
   describe("When there is exactly one connection", () => {
     it("should display the connection without an overflow indicator", () => {
       const user = createMockConnectionUser();
-      render(
-        <ConnectedUsersGrid users={[user]} onUserPress={mockOnUserPress} />
-      );
+      render(<ConnectedUsersGrid users={[user]} onUserPress={mockOnUserPress} />);
 
       expect(screen.getByText(user.name)).toBeTruthy();
       expect(screen.queryByText(/^\+\d+$/)).toBeNull();
@@ -110,14 +90,22 @@ describe("ConnectedUsersGrid", () => {
 
     it("when users have invalid profilePic URIs, grid still displays all names correctly", () => {
       const usersWithInvalidPics = [
-        { ...createMockConnectionUser(), _id: "user-1", name: "Alice", profilePic: "https://example.com/valid.jpg" },
+        {
+          ...createMockConnectionUser(),
+          _id: "user-1",
+          name: "Alice",
+          profilePic: "https://example.com/valid.jpg",
+        },
         { ...createMockConnectionUser(), _id: "user-2", name: "Bob", profilePic: "" }, // empty
-        { ...createMockConnectionUser(), _id: "user-3", name: "Charlie", profilePic: "6988bc396a977b0030ea7b9e" }, // raw MongoDB ObjectId
+        {
+          ...createMockConnectionUser(),
+          _id: "user-3",
+          name: "Charlie",
+          profilePic: "6988bc396a977b0030ea7b9e",
+        }, // raw MongoDB ObjectId
       ];
 
-      render(
-        <ConnectedUsersGrid users={usersWithInvalidPics} onUserPress={mockOnUserPress} />
-      );
+      render(<ConnectedUsersGrid users={usersWithInvalidPics} onUserPress={mockOnUserPress} />);
 
       // Users see all connection names regardless of invalid profile pics
       expect(screen.getByText("Alice")).toBeTruthy();

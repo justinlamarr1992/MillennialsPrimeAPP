@@ -33,9 +33,7 @@ export default function Layout() {
         options={{
           headerTitle: "Prime Users",
           drawerLabel: "Prime Users",
-          drawerIcon: ({ color }) => (
-            <Ionicons size={28} name="star" color={color} />
-          ),
+          drawerIcon: ({ color }) => <Ionicons size={28} name="star" color={color} />,
         }}
       />
       <Stack.Screen

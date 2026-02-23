@@ -28,6 +28,7 @@ After implementing Phases 1-5 of the testing plan (infrastructure, utils, hooks,
 ### Current Test Coverage
 
 **Test Statistics** (as of Phase 5):
+
 - Test Suites: 18 passed
 - Tests: 354 passing
 - Execution Time: ~3 seconds
@@ -40,52 +41,58 @@ After implementing Phases 1-5 of the testing plan (infrastructure, utils, hooks,
 
 ### Integration Scenarios Covered by Unit Tests
 
-| Scenario | Covered By | Test File |
-|----------|------------|-----------|
-| User registration → Firebase → Navigation | RegisterScreen tests | `app/(auth)/__tests__/RegisterScreen.test.tsx` |
-| Sign in → Firebase auth → HomePage redirect | SignInScreen tests | `app/(auth)/__tests__/SignInScreen.test.tsx` |
-| Password recovery → Firebase email | PasswordRecoveryScreen tests | `app/(auth)/__tests__/PasswordRecoveryScreen.test.tsx` |
-| HomePage → API fetch → React Query cache | HomePage tests | `app/(tabs)/(home)/__tests__/HomePage.test.tsx` |
-| Form validation → Button state → Submission | All auth screen tests | `app/(auth)/__tests__/*.test.tsx` |
-| Error handling → User feedback | All screen/component tests | Various test files |
+| Scenario                                    | Covered By                   | Test File                                              |
+| ------------------------------------------- | ---------------------------- | ------------------------------------------------------ |
+| User registration → Firebase → Navigation   | RegisterScreen tests         | `app/(auth)/__tests__/RegisterScreen.test.tsx`         |
+| Sign in → Firebase auth → HomePage redirect | SignInScreen tests           | `app/(auth)/__tests__/SignInScreen.test.tsx`           |
+| Password recovery → Firebase email          | PasswordRecoveryScreen tests | `app/(auth)/__tests__/PasswordRecoveryScreen.test.tsx` |
+| HomePage → API fetch → React Query cache    | HomePage tests               | `app/(tabs)/(home)/__tests__/HomePage.test.tsx`        |
+| Form validation → Button state → Submission | All auth screen tests        | `app/(auth)/__tests__/*.test.tsx`                      |
+| Error handling → User feedback              | All screen/component tests   | Various test files                                     |
 
 ### Examples of Behavior-Driven Integration Coverage
 
 #### Example 1: RegisterScreen (33 tests)
+
 Tests verify the complete registration flow:
+
 ```typescript
 // Tests Firebase integration
-it('should create user account and navigate to sign in on success')
+it("should create user account and navigate to sign in on success");
 
 // Tests form validation integration
-it('should prevent submission when passwords do not match')
+it("should prevent submission when passwords do not match");
 
 // Tests error handling integration
-it('should display user-friendly error for existing email')
+it("should display user-friendly error for existing email");
 ```
 
 #### Example 2: HomePage (16 tests)
+
 Tests verify the complete data fetching flow:
+
 ```typescript
 // Tests React Query + API integration
-it('should fetch and display videos from BunnyCDN')
+it("should fetch and display videos from BunnyCDN");
 
 // Tests error recovery flow
-it('should show error message and allow retry on fetch failure')
+it("should show error message and allow retry on fetch failure");
 
 // Tests empty state handling
-it('should display message when no videos are available')
+it("should display message when no videos are available");
 ```
 
 ### Testing Philosophy Going Forward
 
 **Continue with behavior-driven unit tests** that:
+
 - Test components in isolation but with real dependencies (Firebase, React Query)
 - Verify user-observable behavior, not implementation
 - Cover error paths and edge cases
 - Execute quickly (<5 seconds for full suite)
 
 **Avoid traditional integration tests** that would:
+
 - Test multiple components unnecessarily
 - Duplicate existing coverage
 - Become brittle due to implementation coupling

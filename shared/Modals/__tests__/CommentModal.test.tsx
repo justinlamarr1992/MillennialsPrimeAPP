@@ -1,12 +1,12 @@
-import React from 'react';
-import { render, screen } from '@/__tests__/test-utils';
-import CommentModal from '../CommentModal';
+import React from "react";
+import { render, screen } from "@/__tests__/test-utils";
+import CommentModal from "../CommentModal";
 
-describe('CommentModal', () => {
-  describe('Modal Content Display', () => {
-    it('should display comment modal text', () => {
+describe("CommentModal", () => {
+  describe("Modal Content Display", () => {
+    it("should display comment modal text", () => {
       render(<CommentModal />);
-      expect(screen.getByText('CommentModal')).toBeTruthy();
+      expect(screen.getByText("CommentModal")).toBeTruthy();
     });
   });
 });

@@ -23,9 +23,7 @@ jest.mock("@/hooks/useAxiosPrivate", () => ({
 }));
 jest.mock("@/utils/logger");
 
-const mockUseUserProfile = useUserProfile as jest.MockedFunction<
-  typeof useUserProfile
->;
+const mockUseUserProfile = useUserProfile as jest.MockedFunction<typeof useUserProfile>;
 
 type ProfileReturn = ReturnType<typeof useUserProfile>;
 
@@ -90,9 +88,7 @@ describe("UploadContentScreen", () => {
 
   describe("when user is not a prime content creator", () => {
     it("shows the Content Creators Only message", () => {
-      mockUseUserProfile.mockReturnValue(
-        makeProfile({ profile: { prime: false } as never })
-      );
+      mockUseUserProfile.mockReturnValue(makeProfile({ profile: { prime: false } as never }));
 
       render(<UploadContentScreen />);
 
@@ -100,9 +96,7 @@ describe("UploadContentScreen", () => {
     });
 
     it("shows the explanatory subtitle", () => {
-      mockUseUserProfile.mockReturnValue(
-        makeProfile({ profile: { prime: false } as never })
-      );
+      mockUseUserProfile.mockReturnValue(makeProfile({ profile: { prime: false } as never }));
 
       render(<UploadContentScreen />);
 
@@ -114,9 +108,7 @@ describe("UploadContentScreen", () => {
 
   describe("when user is a prime content creator", () => {
     it("does not show the Content Creators Only message", () => {
-      mockUseUserProfile.mockReturnValue(
-        makeProfile({ profile: { prime: true } as never })
-      );
+      mockUseUserProfile.mockReturnValue(makeProfile({ profile: { prime: true } as never }));
 
       render(<UploadContentScreen />);
 

@@ -76,7 +76,7 @@ export default function BusinessScreen() {
   useEffect(() => {
     if (profile?.business) {
       if (__DEV__) {
-        logger.log('📝 Populating business form with profile data:', profile.business);
+        logger.log("📝 Populating business form with profile data:", profile.business);
       }
       setEntrepreneur(profile.business.entrepreneur ? "Yes" : "No");
       setIndustry(profile.business.industry || "");
@@ -87,34 +87,34 @@ export default function BusinessScreen() {
   }, [profile]);
 
   const handleSubmit = async () => {
-    logger.log('Business settings submit button pressed');
+    logger.log("Business settings submit button pressed");
 
     // Only validate if user indicated they have a business
     if (entrepreneur === "Yes") {
       const errors: string[] = [];
 
       // Validate required fields for business owners
-      const industryError = validateRequired(industry, 'Industry');
+      const industryError = validateRequired(industry, "Industry");
       if (industryError) errors.push(industryError);
 
       // Show validation errors if any
       if (errors.length > 0) {
-        Alert.alert('Validation Error', errors.join('\n'));
-        logger.warn('Business settings validation failed:', errors);
+        Alert.alert("Validation Error", errors.join("\n"));
+        logger.warn("Business settings validation failed:", errors);
         return;
       }
     }
 
     try {
       if (__DEV__) {
-        logger.log('📤 Business settings submission started');
+        logger.log("📤 Business settings submission started");
       }
 
       if (!user) {
         if (__DEV__) {
-          logger.warn('⚠️ No authenticated user found');
+          logger.warn("⚠️ No authenticated user found");
         }
-        Alert.alert('Error', 'Please log in to save your business information.');
+        Alert.alert("Error", "Please log in to save your business information.");
         return;
       }
 
@@ -127,19 +127,19 @@ export default function BusinessScreen() {
       });
 
       if (__DEV__) {
-        logger.log('✅ Business settings saved successfully');
+        logger.log("✅ Business settings saved successfully");
       }
 
       // Refetch profile to get updated data
       await refetch();
 
-      Alert.alert('Success', 'Your business information has been updated!');
+      Alert.alert("Success", "Your business information has been updated!");
 
       // Navigate to ArtScreen (next step in settings flow)
       router.push("/(tabs)/(settings)/ArtScreen");
     } catch (err) {
-      logger.error('❌ Business settings submission error:', err);
-      Alert.alert('Error', 'Failed to save business settings. Please try again.');
+      logger.error("❌ Business settings submission error:", err);
+      Alert.alert("Error", "Failed to save business settings. Please try again.");
     }
   };
 
@@ -181,17 +181,12 @@ export default function BusinessScreen() {
               {entrepreneurPicker && (
                 <Picker
                   selectedValue={entrepreneur}
-                  onValueChange={(itemValue) =>
-                    setEntrepreneur(itemValue)
-                  }
+                  onValueChange={(itemValue) => setEntrepreneur(itemValue)}
                   itemStyle={{
                     color: colors.text,
                   }}
                 >
-                  <Picker.Item
-                    label="Select an Answer"
-                    value="Select an Answer"
-                  />
+                  <Picker.Item label="Select an Answer" value="Select an Answer" />
                   <Picker.Item label="Yes" value="Yes" />
                   <Picker.Item label="No" value="No" />
                 </Picker>
@@ -203,9 +198,7 @@ export default function BusinessScreen() {
                   </View>
                   <View style={globalStyles.groupPadding}>
                     <View style={globalStyles.labelInput}>
-                      <Text
-                        style={[globalStyles.labelText, { color: colors.text }]}
-                      >
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         What is the Name of the Company
                       </Text>
                       <TextInput
@@ -215,9 +208,7 @@ export default function BusinessScreen() {
                       ></TextInput>
                     </View>
                     <View style={globalStyles.labelInput}>
-                      <Text
-                        style={[globalStyles.labelText, { color: colors.text }]}
-                      >
+                      <Text style={[globalStyles.labelText, { color: colors.text }]}>
                         Are you Open to Business with Users here.
                       </Text>
                       <Pressable>
@@ -233,9 +224,7 @@ export default function BusinessScreen() {
                       {openOnMillPrimePicker && (
                         <Picker
                           selectedValue={openOnMillPrime}
-                          onValueChange={(itemValue) =>
-                            setOpenOnMillPrime(itemValue)
-                          }
+                          onValueChange={(itemValue) => setOpenOnMillPrime(itemValue)}
                           itemStyle={{
                             color: colors.text,
                           }}
@@ -264,57 +253,25 @@ export default function BusinessScreen() {
                       {industryPicker && (
                         <Picker
                           selectedValue={industry}
-                          onValueChange={(itemValue) =>
-                            setIndustry(itemValue)
-                          }
+                          onValueChange={(itemValue) => setIndustry(itemValue)}
                         >
-                          <Picker.Item
-                            label="Architecture"
-                            value="architecture"
-                          />
+                          <Picker.Item label="Architecture" value="architecture" />
                           <Picker.Item label="Education" value="education" />
                           <Picker.Item label="Engineering" value="engineer" />
-                          <Picker.Item
-                            label="Financial Services & Insurance"
-                            value="financial"
-                          />
+                          <Picker.Item label="Financial Services & Insurance" value="financial" />
                           <Picker.Item label="Government" value="government" />
-                          <Picker.Item
-                            label="Healthcare & Pharmaceutical"
-                            value="healthcare"
-                          />
-                          <Picker.Item
-                            label="Hospitality"
-                            value="hospitality"
-                          />
-                          <Picker.Item
-                            label="Manufacturing/ Industrial"
-                            value="manufacturing"
-                          />
+                          <Picker.Item label="Healthcare & Pharmaceutical" value="healthcare" />
+                          <Picker.Item label="Hospitality" value="hospitality" />
+                          <Picker.Item label="Manufacturing/ Industrial" value="manufacturing" />
                           <Picker.Item label="Marketing" value="marketing" />
-                          <Picker.Item
-                            label="Media & Entertainment"
-                            value="media"
-                          />
+                          <Picker.Item label="Media & Entertainment" value="media" />
                           <Picker.Item label="Non-Profit" value="nonprofit" />
-                          <Picker.Item
-                            label="Professional Services"
-                            value="professional"
-                          />
-                          <Picker.Item
-                            label="Retail & Consumer Products"
-                            value="retail"
-                          />
+                          <Picker.Item label="Professional Services" value="professional" />
+                          <Picker.Item label="Retail & Consumer Products" value="retail" />
                           <Picker.Item label="Sports" value="sports" />
                           <Picker.Item label="Tech" value="tech" />
-                          <Picker.Item
-                            label="Telecommunications"
-                            value="telecommunications"
-                          />
-                          <Picker.Item
-                            label="Transportation"
-                            value="transportation"
-                          />
+                          <Picker.Item label="Telecommunications" value="telecommunications" />
+                          <Picker.Item label="Transportation" value="transportation" />
                           <Picker.Item label="Other" value="other" />
                         </Picker>
                       )}
@@ -345,26 +302,12 @@ export default function BusinessScreen() {
                       {lengthOpenPicker && (
                         <Picker
                           selectedValue={lengthOpen}
-                          onValueChange={(itemValue) =>
-                            setLengthOpen(itemValue)
-                          }
+                          onValueChange={(itemValue) => setLengthOpen(itemValue)}
                         >
-                          <Picker.Item
-                            label="5+ Years (Expert)"
-                            value="expert"
-                          />
-                          <Picker.Item
-                            label="2 - 5 Years (Professional)"
-                            value="professional"
-                          />
-                          <Picker.Item
-                            label="1 - 2 Years (Experienced)"
-                            value="experienced"
-                          />
-                          <Picker.Item
-                            label="0 - 11 Months (New)"
-                            value="new"
-                          />
+                          <Picker.Item label="5+ Years (Expert)" value="expert" />
+                          <Picker.Item label="2 - 5 Years (Professional)" value="professional" />
+                          <Picker.Item label="1 - 2 Years (Experienced)" value="experienced" />
+                          <Picker.Item label="0 - 11 Months (New)" value="new" />
                         </Picker>
                       )}
                     </View>
@@ -385,33 +328,16 @@ export default function BusinessScreen() {
                       {whyBusinessPicker && (
                         <Picker
                           selectedValue={whyBusiness}
-                          onValueChange={(itemValue) =>
-                            setWhyBusiness(itemValue)
-                          }
+                          onValueChange={(itemValue) => setWhyBusiness(itemValue)}
                         >
-                          <Picker.Item
-                            label="Follow My Passion"
-                            value="passion"
-                          />
-                          <Picker.Item
-                            label="Financial Independence"
-                            value="financial"
-                          />
+                          <Picker.Item label="Follow My Passion" value="passion" />
+                          <Picker.Item label="Financial Independence" value="financial" />
                           <Picker.Item label="Be The Boss" value="boss" />
-                          <Picker.Item
-                            label="Start from Scratch"
-                            value="start"
-                          />
+                          <Picker.Item label="Start from Scratch" value="start" />
                           <Picker.Item label="Help Others" value="help" />
                           <Picker.Item label="Tax Benefits" value="taxes" />
-                          <Picker.Item
-                            label="Connect with Others"
-                            value="connect"
-                          />
-                          <Picker.Item
-                            label="Learn new Skills"
-                            value="skills"
-                          />
+                          <Picker.Item label="Connect with Others" value="connect" />
+                          <Picker.Item label="Learn new Skills" value="skills" />
                           <Picker.Item label="Other" value="other" />
                         </Picker>
                       )}
@@ -458,9 +384,7 @@ export default function BusinessScreen() {
                       {howManyPicker && (
                         <Picker
                           selectedValue={howMany}
-                          onValueChange={(itemValue) =>
-                            setHowMany(itemValue)
-                          }
+                          onValueChange={(itemValue) => setHowMany(itemValue)}
                         >
                           <Picker.Item label="1" value="solo" />
                           <Picker.Item label="2 - 10" value="group" />
@@ -499,29 +423,15 @@ export default function BusinessScreen() {
                       {primaryPromotionPicker && (
                         <Picker
                           selectedValue={primaryPromotion}
-                          onValueChange={(itemValue) =>
-                            setPrimaryPromotion(itemValue)
-                          }
+                          onValueChange={(itemValue) => setPrimaryPromotion(itemValue)}
                         >
                           <Picker.Item label="Word of Mouth" value="mouth" />
-                          <Picker.Item
-                            label="Social Media"
-                            value="social-media"
-                          />
-                          <Picker.Item
-                            label="Referral Programs"
-                            value="referral"
-                          />
+                          <Picker.Item label="Social Media" value="social-media" />
+                          <Picker.Item label="Referral Programs" value="referral" />
                           <Picker.Item label="Local Ads" value="ads" />
                           <Picker.Item label="Directory" value="directory" />
-                          <Picker.Item
-                            label="Loyalty Program"
-                            value="loyalty"
-                          />
-                          <Picker.Item
-                            label="Partnerships"
-                            value="partnership"
-                          />
+                          <Picker.Item label="Loyalty Program" value="loyalty" />
+                          <Picker.Item label="Partnerships" value="partnership" />
                           <Picker.Item label="Website" value="website" />
                           <Picker.Item label="Other" value="other" />
                         </Picker>
@@ -544,36 +454,16 @@ export default function BusinessScreen() {
                       {factorsOfLocation && (
                         <Picker
                           selectedValue={lengthOpen}
-                          onValueChange={(itemValue) =>
-                            setLengthOpen(itemValue)
-                          }
+                          onValueChange={(itemValue) => setLengthOpen(itemValue)}
                         >
-                          <Picker.Item
-                            label="Geographical Location"
-                            value="Word of Mouth"
-                          />
-                          <Picker.Item
-                            label="Operational Needs"
-                            value="Social Media"
-                          />
-                          <Picker.Item
-                            label="Rent Cost"
-                            value="Referral Programs"
-                          />
+                          <Picker.Item label="Geographical Location" value="Word of Mouth" />
+                          <Picker.Item label="Operational Needs" value="Social Media" />
+                          <Picker.Item label="Rent Cost" value="Referral Programs" />
                           <Picker.Item label="Security" value="Local Ads" />
                           <Picker.Item label="Competition" value="Directory" />
-                          <Picker.Item
-                            label="Growth Potential"
-                            value="Loyalty Program"
-                          />
-                          <Picker.Item
-                            label="Accessibility"
-                            value="Partnerships"
-                          />
-                          <Picker.Item
-                            label="Utilities and Infrastructure"
-                            value="Website"
-                          />
+                          <Picker.Item label="Growth Potential" value="Loyalty Program" />
+                          <Picker.Item label="Accessibility" value="Partnerships" />
+                          <Picker.Item label="Utilities and Infrastructure" value="Website" />
                           <Picker.Item label="Other" value="Other" />
                         </Picker>
                       )}
@@ -584,10 +474,7 @@ export default function BusinessScreen() {
             </View>
             <View style={globalStyles.groupPadding}>
               <Pressable
-                style={[
-                  globalStyles.button,
-                  { backgroundColor: colors.triC, marginBottom: 25 },
-                ]}
+                style={[globalStyles.button, { backgroundColor: colors.triC, marginBottom: 25 }]}
               >
                 <Text style={globalStyles.buttonText} onPress={handleSubmit}>
                   Save Changes

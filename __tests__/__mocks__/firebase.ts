@@ -1,8 +1,8 @@
 export const mockUser = {
-  uid: 'test-user-123',
-  email: 'test@example.com',
+  uid: "test-user-123",
+  email: "test@example.com",
   emailVerified: true,
-  displayName: 'Test User',
+  displayName: "Test User",
   delete: jest.fn().mockResolvedValue(undefined),
 };
 

@@ -81,22 +81,22 @@ flowchart TD
 
 ## Fields & Validation
 
-| Field | Condition | Type | Validation |
-|-------|-----------|------|------------|
-| Artist? | Always | Picker (Yes/No) | Required |
-| **If Artist = Yes:** |
-| Professional Artist? | If Artist | Picker (Yes/No) | Optional |
-| Purpose of work | If Artist | TextInput (multiline) | Optional |
-| Favorites/least favorites | If Artist | TextInput (multiline) | Optional |
-| Societal issues impact | If Artist | TextInput (multiline) | Optional |
-| Inspiration sources | If Artist | TextInput (multiline) | Optional |
-| Style evolution | If Artist | TextInput (multiline) | Optional |
-| Critics' feedback | If Artist | TextInput (multiline) | Optional |
-| Industry navigation | If Artist | TextInput (multiline) | Optional |
-| Artist network? | If Artist | Picker (Yes/No) | Optional |
-| Network support | If Network=Yes | TextInput (multiline) | Optional |
-| Specific integral? | If Artist | Picker (Yes/No) | Optional |
-| What specific? | If Integral=Yes | TextInput (multiline) | Optional |
+| Field                     | Condition       | Type                  | Validation |
+| ------------------------- | --------------- | --------------------- | ---------- |
+| Artist?                   | Always          | Picker (Yes/No)       | Required   |
+| **If Artist = Yes:**      |
+| Professional Artist?      | If Artist       | Picker (Yes/No)       | Optional   |
+| Purpose of work           | If Artist       | TextInput (multiline) | Optional   |
+| Favorites/least favorites | If Artist       | TextInput (multiline) | Optional   |
+| Societal issues impact    | If Artist       | TextInput (multiline) | Optional   |
+| Inspiration sources       | If Artist       | TextInput (multiline) | Optional   |
+| Style evolution           | If Artist       | TextInput (multiline) | Optional   |
+| Critics' feedback         | If Artist       | TextInput (multiline) | Optional   |
+| Industry navigation       | If Artist       | TextInput (multiline) | Optional   |
+| Artist network?           | If Artist       | Picker (Yes/No)       | Optional   |
+| Network support           | If Network=Yes  | TextInput (multiline) | Optional   |
+| Specific integral?        | If Artist       | Picker (Yes/No)       | Optional   |
+| What specific?            | If Integral=Yes | TextInput (multiline) | Optional   |
 
 ## State Management
 
@@ -205,14 +205,16 @@ sequenceDiagram
 
 ## Implementation Notes
 
-**File Reference**: [app/(tabs)/(settings)/ArtScreen.tsx](../../../app/(tabs)/(settings)/ArtScreen.tsx)
+**File Reference**: [app/(tabs)/(settings)/ArtScreen.tsx](<../../../app/(tabs)/(settings)/ArtScreen.tsx>)
 
 **Key Dependencies**:
+
 - Picker (@react-native-picker/picker)
 - userProfileService.updateArt()
 - useUserProfile hook
 
 **Conditional Rendering Pattern**:
+
 ```typescript
 {artist === "Yes" && (
   <View>
@@ -228,6 +230,7 @@ sequenceDiagram
 ```
 
 **Data Persistence**:
+
 - Saves to MongoDB `profile.art` collection
 - All fields optional (users can skip if not artists)
 
@@ -242,4 +245,4 @@ sequenceDiagram
 
 ---
 
-*Wireframe as of 2026-01-30*
+_Wireframe as of 2026-01-30_

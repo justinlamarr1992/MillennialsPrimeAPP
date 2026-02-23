@@ -55,9 +55,7 @@ describe("ConnectionButton", () => {
       render(<ConnectionButton {...defaultProps} status="pending_sent" />);
 
       const button = screen.getByLabelText("Connection request pending");
-      expect(button.props.accessibilityState).toEqual(
-        expect.objectContaining({ disabled: true })
-      );
+      expect(button.props.accessibilityState).toEqual(expect.objectContaining({ disabled: true }));
     });
 
     it("should not call any handler when Pending is pressed", () => {
@@ -74,19 +72,11 @@ describe("ConnectionButton", () => {
     const connectionId = "conn-abc-123";
     const renderPendingReceived = () =>
       render(
-        <ConnectionButton
-          {...defaultProps}
-          status="pending_received"
-          connectionId={connectionId}
-        />
+        <ConnectionButton {...defaultProps} status="pending_received" connectionId={connectionId} />
       );
     const renderPendingReceivedWithoutId = () =>
       render(
-        <ConnectionButton
-          {...defaultProps}
-          status="pending_received"
-          connectionId={undefined}
-        />
+        <ConnectionButton {...defaultProps} status="pending_received" connectionId={undefined} />
       );
 
     it("should render Accept and Decline buttons", () => {
@@ -143,21 +133,9 @@ describe("ConnectionButton", () => {
   describe("Given the connection status is 'connected'", () => {
     const connectionId = "conn-xyz-789";
     const renderConnected = () =>
-      render(
-        <ConnectionButton
-          {...defaultProps}
-          status="connected"
-          connectionId={connectionId}
-        />
-      );
+      render(<ConnectionButton {...defaultProps} status="connected" connectionId={connectionId} />);
     const renderConnectedWithoutId = () =>
-      render(
-        <ConnectionButton
-          {...defaultProps}
-          status="connected"
-          connectionId={undefined}
-        />
-      );
+      render(<ConnectionButton {...defaultProps} status="connected" connectionId={undefined} />);
 
     it("should render a Connected button", () => {
       renderConnected();

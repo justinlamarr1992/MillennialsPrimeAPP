@@ -35,20 +35,17 @@ export default function MyProfileScreen() {
     error: connectionsError,
   } = useConnections();
 
-  const metrics = useMemo<Metric[]>(
-    () => {
-      // Avoid showing misleading "0" values while connections are loading or have failed
-      if (connectionsLoading || connectionsError) {
-        return [];
-      }
+  const metrics = useMemo<Metric[]>(() => {
+    // Avoid showing misleading "0" values while connections are loading or have failed
+    if (connectionsLoading || connectionsError) {
+      return [];
+    }
 
-      return [
-        { label: "Connections", value: connections.length, icon: "people-outline" },
-        { label: "Pending", value: pendingRequests.length, icon: "time-outline" },
-      ];
-    },
-    [connections.length, pendingRequests.length, connectionsLoading, connectionsError]
-  );
+    return [
+      { label: "Connections", value: connections.length, icon: "people-outline" },
+      { label: "Pending", value: pendingRequests.length, icon: "time-outline" },
+    ];
+  }, [connections.length, pendingRequests.length, connectionsLoading, connectionsError]);
 
   // Handle Edit Profile navigation
   const handleEditProfile = (): void => {
@@ -132,11 +129,7 @@ export default function MyProfileScreen() {
       <MetricsDashboard metrics={metrics} />
 
       {/* ProfileTabs - Phase 1.3 with Phase 1.5 real data integration */}
-      <ProfileTabs
-        textPosts={textPosts}
-        picturePosts={picturePosts}
-        videoPosts={videoPosts}
-      />
+      <ProfileTabs textPosts={textPosts} picturePosts={picturePosts} videoPosts={videoPosts} />
     </ScrollView>
   );
 }

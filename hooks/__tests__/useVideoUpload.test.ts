@@ -18,12 +18,8 @@ jest.mock("../useAxiosPrivate");
 jest.mock("@/services/videoUploadService");
 jest.mock("@/utils/logger");
 
-const mockUseAxiosPrivate = useAxiosPrivate as jest.MockedFunction<
-  typeof useAxiosPrivate
->;
-const mockVideoUploadService = videoUploadService as jest.Mocked<
-  typeof videoUploadService
->;
+const mockUseAxiosPrivate = useAxiosPrivate as jest.MockedFunction<typeof useAxiosPrivate>;
+const mockVideoUploadService = videoUploadService as jest.Mocked<typeof videoUploadService>;
 
 describe("useVideoUpload", () => {
   const mockAxiosPrivate = {} as ReturnType<typeof useAxiosPrivate>;
@@ -71,9 +67,7 @@ describe("useVideoUpload", () => {
     jest.clearAllMocks();
     mockUseAxiosPrivate.mockReturnValue(mockAxiosPrivate);
 
-    mockVideoUploadService.createBunnyCDNVideo.mockResolvedValue(
-      mockBunnyResponse
-    );
+    mockVideoUploadService.createBunnyCDNVideo.mockResolvedValue(mockBunnyResponse);
     mockVideoUploadService.getUploadAuth.mockResolvedValue(mockAuthResponse);
     mockVideoUploadService.performTusUpload.mockResolvedValue(undefined);
     mockVideoUploadService.updateBunnyCDNMetadata.mockResolvedValue(undefined);
@@ -131,9 +125,7 @@ describe("useVideoUpload", () => {
 
   describe("reset", () => {
     it("returns to idle with cleared file, error, and progress", async () => {
-      mockVideoUploadService.createBunnyCDNVideo.mockRejectedValueOnce(
-        new Error("CDN error")
-      );
+      mockVideoUploadService.createBunnyCDNVideo.mockRejectedValueOnce(new Error("CDN error"));
 
       const { result } = renderHook(() => useVideoUpload());
 
@@ -289,9 +281,7 @@ describe("useVideoUpload", () => {
     });
 
     it("enters error state when getting upload auth fails", async () => {
-      mockVideoUploadService.getUploadAuth.mockRejectedValueOnce(
-        new Error("Auth failed")
-      );
+      mockVideoUploadService.getUploadAuth.mockRejectedValueOnce(new Error("Auth failed"));
 
       const { result } = renderHook(() => useVideoUpload());
 

@@ -72,12 +72,7 @@ const hasContent = (tab: TabType, props: ProfileTabsProps): boolean => {
   return contentMap[tab].length > 0;
 };
 
-
-export default function ProfileTabs({
-  textPosts,
-  picturePosts,
-  videoPosts,
-}: ProfileTabsProps) {
+export default function ProfileTabs({ textPosts, picturePosts, videoPosts }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("posts");
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
@@ -104,12 +99,7 @@ export default function ProfileTabs({
         accessibilityHint={`Show ${label.toLowerCase()}`}
         accessibilityState={{ selected: isActive }}
       >
-        <Text
-          style={[
-            globalStyles.tabText,
-            { color: isActive ? colors.priC : colors.text },
-          ]}
-        >
+        <Text style={[globalStyles.tabText, { color: isActive ? colors.priC : colors.text }]}>
           {label}
         </Text>
       </Pressable>

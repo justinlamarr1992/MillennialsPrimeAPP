@@ -39,7 +39,7 @@ const validateTag = (tag: string, existingTags: string[]): { valid: boolean; err
     return { valid: false, error: `Maximum ${MAX_TAG_LENGTH} characters per tag` };
   }
 
-  if (existingTags.map(tagItem => tagItem.toLowerCase()).includes(trimmedTag.toLowerCase())) {
+  if (existingTags.map((tagItem) => tagItem.toLowerCase()).includes(trimmedTag.toLowerCase())) {
     return { valid: false, error: "Tag already exists" };
   }
 
@@ -125,9 +125,7 @@ export default function TagInput({ tags, onTagsChange, placeholder }: TagInputPr
 
       {/* Error message */}
       {errorMessage && (
-        <Text style={[styles.errorText, { color: colors.triC }]}>
-          {errorMessage}
-        </Text>
+        <Text style={[styles.errorText, { color: colors.triC }]}>{errorMessage}</Text>
       )}
 
       {/* Tags display */}

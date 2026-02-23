@@ -17,6 +17,7 @@ find . -path "*/__tests__/*" -name "*[ComponentName].test.*"
 ```
 
 **Checks:**
+
 - [ ] Test file exists for every new implementation file
 - [ ] Tests were written BEFORE implementation (verify git history if unclear)
 - [ ] All tests pass: `npm test -- [ComponentName]`
@@ -41,6 +42,7 @@ grep -r "function [utilityName]" utils/
 ```
 
 **Checks:**
+
 - [ ] No inline styles where global styles exist
   ```bash
   # Search your new files for inline style objects
@@ -52,6 +54,7 @@ grep -r "function [utilityName]" utils/
 - [ ] Consistent naming conventions with codebase
 
 **Test helper audit** — for every helper created in a test file:
+
 - [ ] Does a shared version already exist in `__tests__/test-utils.tsx` or `__tests__/__mocks__/`?
   ```bash
   grep -r "createMock\|mockFactory\|buildMock" __tests__/
@@ -59,6 +62,7 @@ grep -r "function [utilityName]" utils/
 - [ ] If yes, delete the local version and use the shared one
 
 **Test mock audit** — for every `jest.mock()` added:
+
 - [ ] Is the mock actually required? Verify the module can't be loaded without it:
   ```bash
   node -e "require('./path/to/module'); console.log('ok')"
@@ -66,10 +70,12 @@ grep -r "function [utilityName]" utils/
 - [ ] Remove mocks that load cleanly without them — unnecessary mocks add noise and maintenance cost
 
 **Quote style audit** — for every new string literal added to an existing file:
+
 - [ ] Check the dominant quote style in the file (`grep "'" vs `grep '"'`)
 - [ ] Match it exactly — mixed quotes cause noisy diffs and style violations
 
 **Type cast audit** — for every `as T` or `as unknown as T` introduced:
+
 - [ ] Is there a type-level fix instead? (conditional types, narrowing, restricted generics)
 - [ ] If a cast is truly unavoidable, add a comment explaining why
 
@@ -87,6 +93,7 @@ npm test -- --coverage --collectCoverageFrom="[your-file-path]"
 ```
 
 **Checks:**
+
 - [ ] Line coverage ≥ 80%
 - [ ] Branch coverage ≥ 75%
 - [ ] All critical paths tested (happy path, error cases, edge cases)
@@ -94,6 +101,7 @@ npm test -- --coverage --collectCoverageFrom="[your-file-path]"
 - [ ] API calls/service methods tested
 
 **Required test categories:**
+
 - Initial render/content display
 - User interactions (forms, buttons, navigation)
 - Data population/state changes
@@ -126,6 +134,7 @@ grep -r "http://\|https://\|localhost" [your-changed-files] | grep -v "test\|spe
 ```
 
 **Checks:**
+
 - [ ] No linting errors
 - [ ] No type errors
 - [ ] No unresolved TODOs/FIXMEs
@@ -147,6 +156,7 @@ git diff --cached
 ```
 
 **Security Checks:**
+
 - [ ] No SQL injection vulnerabilities
 - [ ] No XSS vulnerabilities (properly escaped user input)
 - [ ] No sensitive data in logs — log minimal non-sensitive fields only (e.g. IDs, not full request bodies)
@@ -159,6 +169,7 @@ git diff --cached
   - Never leave default unlimited or copy an arbitrary large limit without justification
 
 **Best Practices:**
+
 - [ ] No over-engineering (YAGNI principle)
 - [ ] No premature abstractions
 - [ ] Functions have single responsibility
@@ -167,6 +178,7 @@ git diff --cached
 - [ ] No deeply nested conditionals (>3 levels)
 
 **Accessibility:**
+
 - [ ] All interactive elements have `accessibilityLabel`
 - [ ] Proper `accessibilityRole` set (button, switch, etc.)
 - [ ] Complex interactions have `accessibilityHint`
@@ -194,6 +206,7 @@ npm run test -- --listTests | grep [YourFeature]
 ```
 
 **Checks:**
+
 - [ ] Build succeeds
 - [ ] All routes properly registered
 - [ ] All dependencies installed
@@ -216,12 +229,14 @@ grep -rn "\.post\|\.get\|\.patch\|\.put\|\.delete" \
 ```
 
 **For each changed endpoint, verify:**
+
 - [ ] Request shape unchanged — web client sends the same fields the server now expects
 - [ ] Response shape unchanged — web client reads only fields that still exist in the response
 - [ ] Auth contract unchanged — if a route's role/JWT requirement changed, web client can satisfy it
 - [ ] No endpoint removed that the web client calls
 
 **Key web client files to cross-reference:**
+
 - Auth: `client/src/Pages/auth/SignIn.jsx`, `client/src/Hooks/useRefreshToken.js`
 - User: `client/src/Pages/Settings/MyInfo.jsx`, `client/src/Pages/ShowView/PrimeShow.jsx`
 - Video: `client/src/Pages/Uploads/UploadContent.jsx`, `client/src/Pages/ShowView/`
@@ -271,6 +286,7 @@ npm test
 ```
 
 **Final Checks:**
+
 - [ ] All tests pass
 - [ ] Only intended files staged
 - [ ] Ready for commit message
@@ -311,6 +327,7 @@ If you're tempted to skip ANY step:
 **STOP.**
 
 Ask yourself:
+
 1. Why am I rushing?
 2. Will this create technical debt?
 3. Will I have to fix this later?
@@ -323,6 +340,7 @@ Ask yourself:
 ## Success Criteria
 
 **A PR is ready to commit when:**
+
 - ✅ All 8 phases completed
 - ✅ All tests pass
 - ✅ No Copilot-catchable issues remain

@@ -18,8 +18,7 @@ const { router: mockRouter } = require("expo-router") as {
   router: { push: jest.MockedFunction<(href: string) => void> };
 };
 
-const mockUseConnections =
-  useConnections as jest.MockedFunction<typeof useConnections>;
+const mockUseConnections = useConnections as jest.MockedFunction<typeof useConnections>;
 
 const connectionDefaults: ReturnType<typeof useConnections> = {
   connections: [],

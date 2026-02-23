@@ -5,12 +5,12 @@
  * for the connection system (Phase 2: Social Features).
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { connectionService } from '@/services/connectionService';
-import { logger } from '@/utils/logger';
-import useAuth from './useAuth';
-import useAxiosPrivate from './useAxiosPrivate';
-import type { ConnectionStatus } from '@/types/connection';
+import { useState, useEffect, useCallback } from "react";
+import { connectionService } from "@/services/connectionService";
+import { logger } from "@/utils/logger";
+import useAuth from "./useAuth";
+import useAxiosPrivate from "./useAxiosPrivate";
+import type { ConnectionStatus } from "@/types/connection";
 
 interface UseConnectionStatusResult {
   status: ConnectionStatus;
@@ -26,14 +26,14 @@ interface UseConnectionStatusResult {
 export const useConnectionStatus = (targetUserId: string): UseConnectionStatusResult => {
   const { user, loading: authLoading } = useAuth();
   useAxiosPrivate();
-  const [status, setStatus] = useState<ConnectionStatus>('none');
+  const [status, setStatus] = useState<ConnectionStatus>("none");
   const [connectionId, setConnectionId] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchStatus = useCallback(async (): Promise<void> => {
     if (!user || !targetUserId) {
-      setStatus('none');
+      setStatus("none");
       setConnectionId(undefined);
       setLoading(false);
       setError(null);
@@ -48,11 +48,12 @@ export const useConnectionStatus = (targetUserId: string): UseConnectionStatusRe
       setStatus(response.status);
       setConnectionId(response.connectionId);
     } catch (err) {
-      const fetchError = err instanceof Error ? err : new Error('Failed to fetch connection status');
+      const fetchError =
+        err instanceof Error ? err : new Error("Failed to fetch connection status");
       setError(fetchError);
-      setStatus('none');
+      setStatus("none");
       setConnectionId(undefined);
-      logger.error('❌ Failed to fetch connection status:', err);
+      logger.error("❌ Failed to fetch connection status:", err);
     } finally {
       setLoading(false);
     }
@@ -73,58 +74,70 @@ export const useConnectionStatus = (targetUserId: string): UseConnectionStatusRe
       await connectionService.sendConnectionRequest(targetUserId);
       await fetchStatus();
     } catch (err) {
-      const actionError = err instanceof Error ? err : new Error('Failed to send connection request');
+      const actionError =
+        err instanceof Error ? err : new Error("Failed to send connection request");
       setError(actionError);
-      logger.error('❌ Failed to send connection request:', err);
+      logger.error("❌ Failed to send connection request:", err);
     } finally {
       setLoading(false);
     }
   }, [targetUserId, fetchStatus]);
 
-  const acceptRequest = useCallback(async (connId: string): Promise<void> => {
-    setLoading(true);
-    setError(null);
-    try {
-      await connectionService.acceptConnectionRequest(connId);
-      await fetchStatus();
-    } catch (err) {
-      const actionError = err instanceof Error ? err : new Error('Failed to accept connection request');
-      setError(actionError);
-      logger.error('❌ Failed to accept connection request:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [fetchStatus]);
+  const acceptRequest = useCallback(
+    async (connId: string): Promise<void> => {
+      setLoading(true);
+      setError(null);
+      try {
+        await connectionService.acceptConnectionRequest(connId);
+        await fetchStatus();
+      } catch (err) {
+        const actionError =
+          err instanceof Error ? err : new Error("Failed to accept connection request");
+        setError(actionError);
+        logger.error("❌ Failed to accept connection request:", err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchStatus]
+  );
 
-  const declineRequest = useCallback(async (connId: string): Promise<void> => {
-    setLoading(true);
-    setError(null);
-    try {
-      await connectionService.declineConnectionRequest(connId);
-      await fetchStatus();
-    } catch (err) {
-      const actionError = err instanceof Error ? err : new Error('Failed to decline connection request');
-      setError(actionError);
-      logger.error('❌ Failed to decline connection request:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [fetchStatus]);
+  const declineRequest = useCallback(
+    async (connId: string): Promise<void> => {
+      setLoading(true);
+      setError(null);
+      try {
+        await connectionService.declineConnectionRequest(connId);
+        await fetchStatus();
+      } catch (err) {
+        const actionError =
+          err instanceof Error ? err : new Error("Failed to decline connection request");
+        setError(actionError);
+        logger.error("❌ Failed to decline connection request:", err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchStatus]
+  );
 
-  const removeConnectionAction = useCallback(async (connId: string): Promise<void> => {
-    setLoading(true);
-    setError(null);
-    try {
-      await connectionService.removeConnection(connId);
-      await fetchStatus();
-    } catch (err) {
-      const actionError = err instanceof Error ? err : new Error('Failed to remove connection');
-      setError(actionError);
-      logger.error('❌ Failed to remove connection:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [fetchStatus]);
+  const removeConnectionAction = useCallback(
+    async (connId: string): Promise<void> => {
+      setLoading(true);
+      setError(null);
+      try {
+        await connectionService.removeConnection(connId);
+        await fetchStatus();
+      } catch (err) {
+        const actionError = err instanceof Error ? err : new Error("Failed to remove connection");
+        setError(actionError);
+        logger.error("❌ Failed to remove connection:", err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchStatus]
+  );
 
   return {
     status,

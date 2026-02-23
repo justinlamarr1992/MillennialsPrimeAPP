@@ -30,8 +30,8 @@ export default function UserInfo({ name, admin, prime }: UserInfoProps) {
               admin
                 ? globalStyles.adminPostUserInfoName
                 : prime
-                ? globalStyles.primePostUserInfoName
-                : globalStyles.postUserInfoName
+                  ? globalStyles.primePostUserInfoName
+                  : globalStyles.postUserInfoName
             }
           >
             {/* TODO: Pressing this takes to their Profile */}

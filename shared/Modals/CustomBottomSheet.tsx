@@ -29,13 +29,7 @@ const CustomBottomSheet = forwardRef<Ref, Props>((props, ref) => {
         backgroundStyle={{ backgroundColor: colors["backgroundModal"] }}
       >
         <View>
-          <Text
-            style={[
-              globalStyles.textHuge,
-              globalStyles.padding,
-              { color: colors["priT"] },
-            ]}
-          >
+          <Text style={[globalStyles.textHuge, globalStyles.padding, { color: colors["priT"] }]}>
             {props.title}
           </Text>
         </View>

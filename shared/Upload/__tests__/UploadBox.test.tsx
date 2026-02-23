@@ -26,10 +26,7 @@ jest.mock("@/shared/Upload/ImagePickerComponent", () => {
     default: ({
       handleVideoSelect,
     }: {
-      handleVideoSelect: (result: {
-        canceled: false;
-        assets: { uri: string }[];
-      }) => void;
+      handleVideoSelect: (result: { canceled: false; assets: { uri: string }[] }) => void;
     }) => (
       <View testID="image-picker">
         <Button
@@ -48,9 +45,7 @@ jest.mock("@/shared/Upload/ImagePickerComponent", () => {
 });
 jest.mock("@/utils/logger");
 
-const mockUseVideoUpload = useVideoUpload as jest.MockedFunction<
-  typeof useVideoUpload
->;
+const mockUseVideoUpload = useVideoUpload as jest.MockedFunction<typeof useVideoUpload>;
 
 const makeHookReturn = (
   overrides: Partial<ReturnType<typeof useVideoUpload>> = {}
@@ -76,9 +71,7 @@ describe("UploadBox", () => {
   describe("initial render", () => {
     it("shows the upload type picker field", () => {
       render(<UploadBox />);
-      expect(
-        screen.getByPlaceholderText(/what type/i)
-      ).toBeTruthy();
+      expect(screen.getByPlaceholderText(/what type/i)).toBeTruthy();
     });
 
     it("shows the Upload button", () => {
@@ -170,10 +163,7 @@ describe("UploadBox", () => {
       fireEvent.press(screen.getByRole("button", { name: "Select upload type" }));
       fireEvent(screen.getByTestId("upload-type-picker"), "valueChange", "Video");
       fireEvent.changeText(screen.getByPlaceholderText(/enter title/i), "My Video");
-      fireEvent.changeText(
-        screen.getByPlaceholderText(/description/i),
-        "A brief description"
-      );
+      fireEvent.changeText(screen.getByPlaceholderText(/description/i), "A brief description");
       fireEvent.press(screen.getByRole("button", { name: "Select category" }));
       fireEvent(screen.getByTestId("category-picker"), "valueChange", "Music");
       fireEvent.press(screen.getByTestId("mock-video-select"));
@@ -279,18 +269,14 @@ describe("UploadBox", () => {
 
   describe("while upload is in progress", () => {
     it("shows a progress indicator when phase is uploading", () => {
-      mockUseVideoUpload.mockReturnValue(
-        makeHookReturn({ phase: "uploading", progress: 50 })
-      );
+      mockUseVideoUpload.mockReturnValue(makeHookReturn({ phase: "uploading", progress: 50 }));
 
       render(<UploadBox />);
       expect(screen.getByText(/uploading/i)).toBeTruthy();
     });
 
     it("shows authorizing state text when phase is authorizing", () => {
-      mockUseVideoUpload.mockReturnValue(
-        makeHookReturn({ phase: "authorizing" })
-      );
+      mockUseVideoUpload.mockReturnValue(makeHookReturn({ phase: "authorizing" }));
 
       render(<UploadBox />);
       expect(screen.getByText(/authorizing/i)).toBeTruthy();

@@ -16,14 +16,7 @@ interface UserProps {
   prime: boolean;
 }
 
-export default function User({
-  name,
-  industry,
-  connected,
-  matching,
-  admin,
-  prime,
-}: UserProps) {
+export default function User({ name, industry, connected, matching, admin, prime }: UserProps) {
   const [bConnected, setBConnected] = useState(connected);
   // let prime = false;
   const colorScheme = useColorScheme();
@@ -44,8 +37,8 @@ export default function User({
         admin
           ? ["#b9a054", "#cbb665", "#ddcd76", "#eee588", "#fffd9b"]
           : prime
-          ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
-          : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
+            ? ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
+            : ["#F7F7F7", "#DEDEDE", "#C4C4C4"]
       }
     >
       <ConnectedUserInfo
@@ -62,8 +55,8 @@ export default function User({
           admin
             ? [globalStyles.adminConnectedUserButton]
             : prime
-            ? [globalStyles.primeConnectedUserButton]
-            : [globalStyles.connectedUserButton]
+              ? [globalStyles.primeConnectedUserButton]
+              : [globalStyles.connectedUserButton]
         }
         // style={[
         //   globalStyles.connectedUserButton,
@@ -73,19 +66,11 @@ export default function User({
         {/* Connected ? check : pending ? clock : add */}
         {bConnected ? (
           <Pressable onPress={onPressFun}>
-            <Ionicons
-              size={28}
-              name="checkmark-done-outline"
-              color={colors["primeCarT"]}
-            />
+            <Ionicons size={28} name="checkmark-done-outline" color={colors["primeCarT"]} />
           </Pressable>
         ) : (
           <Pressable onPress={onPressFun}>
-            <Ionicons
-              size={28}
-              name="time-outline"
-              color={colors["primeCarT"]}
-            />
+            <Ionicons size={28} name="time-outline" color={colors["primeCarT"]} />
           </Pressable>
         )}
       </View>

@@ -9,6 +9,7 @@ On 2026-02-04, a critical workflow failure was identified:
 **Root Cause:** No systematic self-review process before commits. I moved from "feature works" directly to "commit" without quality verification.
 
 **Impact:**
+
 - Wasted time fixing preventable issues
 - Copilot catching problems I should have caught
 - Technical debt from rushing to "done"
@@ -40,6 +41,7 @@ On 2026-02-04, a critical workflow failure was identified:
 ## Specific Changes to My Process
 
 ### OLD (Broken) Process:
+
 ```
 1. Understand task
 2. Implement feature
@@ -48,6 +50,7 @@ On 2026-02-04, a critical workflow failure was identified:
 ```
 
 ### NEW (Quality-First) Process:
+
 ```
 1. Understand task
 2. Write tests (TDD)
@@ -71,10 +74,12 @@ On 2026-02-04, a critical workflow failure was identified:
 ## How I'll Actually Execute This
 
 ### At the start of each task:
+
 - [ ] Reference `.claude/QUICK_CHECKLIST.md`
 - [ ] Set expectation that checklist will be run before commit
 
 ### During implementation:
+
 - [ ] Write tests FIRST (TDD)
 - [ ] Check for existing patterns BEFORE writing new code
   ```bash
@@ -83,12 +88,14 @@ On 2026-02-04, a critical workflow failure was identified:
 - [ ] Use existing utilities instead of recreating
 
 ### Before commit:
+
 - [ ] Run FULL checklist (all 8 phases)
 - [ ] Fix ALL issues found
 - [ ] Document in commit message
 - [ ] Verify tests pass one final time
 
 ### Commit message format:
+
 ```
 type(scope): summary
 
@@ -112,6 +119,7 @@ Quality Checklist Completed:
 ## Tools I'll Use Proactively
 
 ### Pattern Discovery:
+
 ```bash
 # Before writing styles
 grep -r "flex\|margin\|padding" constants/global.ts
@@ -124,6 +132,7 @@ find . -name "*Similar*" | grep -v node_modules
 ```
 
 ### Quality Verification:
+
 ```bash
 # Lint check
 npm run lint
@@ -136,6 +145,7 @@ grep -r "console\|TODO\|FIXME" [my-files]
 ```
 
 ### Integration Check:
+
 ```bash
 # Build verification
 npm run build
@@ -149,6 +159,7 @@ grep -r "Stack.Screen" app/**/_layout.tsx
 ## Success Metrics
 
 **PRs are flawless when they:**
+
 - Pass all 8 checklist phases
 - Have zero Copilot-catchable issues
 - Follow TDD (tests first)
@@ -159,6 +170,7 @@ grep -r "Stack.Screen" app/**/_layout.tsx
 - Are clear, maintainable, and properly scoped
 
 **My goal:**
+
 - **100% of PRs pass Copilot review without issues**
 - **Zero TDD violations**
 - **Zero pattern violations (inline styles, recreated utilities)**
@@ -180,6 +192,7 @@ If I create a PR that Copilot finds issues with, I will:
 ## The Commitment
 
 **I commit to:**
+
 - Running the Pre-Commit Checklist before EVERY commit
 - Never skipping phases "to save time"
 - Fixing issues immediately when found

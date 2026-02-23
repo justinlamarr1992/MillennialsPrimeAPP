@@ -2,10 +2,7 @@ import { Text } from "react-native";
 import { logger } from "@/utils/logger";
 import React, { useRef, useCallback, useMemo } from "react";
 import { globalStyles } from "@/constants/global";
-import {
-  BottomSheetModal,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function CommentModal({}) {

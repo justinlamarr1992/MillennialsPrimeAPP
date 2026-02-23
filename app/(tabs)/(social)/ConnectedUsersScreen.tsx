@@ -1,12 +1,5 @@
 import React, { useCallback } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  Pressable,
-  ActivityIndicator,
-  useColorScheme,
-} from "react-native";
+import { View, Text, FlatList, Pressable, ActivityIndicator, useColorScheme } from "react-native";
 import { router } from "expo-router";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
@@ -16,8 +9,7 @@ import type { ConnectionUser } from "@/types/connection";
 export default function ConnectedUsersScreen() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const { connections, pendingRequests, loading, error, refetch } =
-    useConnections();
+  const { connections, pendingRequests, loading, error, refetch } = useConnections();
 
   const handleUserPress = useCallback((userId: string) => {
     router.push(`/(tabs)/(social)/${userId}`);
@@ -37,12 +29,8 @@ export default function ConnectedUsersScreen() {
       >
         <View style={[globalStyles.avatarCircle, { backgroundColor: colors.secC }]} />
         <View style={globalStyles.marginL12}>
-          <Text style={[globalStyles.textTitle, { color: colors.text }]}>
-            {item.name}
-          </Text>
-          <Text style={[globalStyles.marginT4, { color: colors.triT }]}>
-            @{item.username}
-          </Text>
+          <Text style={[globalStyles.textTitle, { color: colors.text }]}>{item.name}</Text>
+          <Text style={[globalStyles.marginT4, { color: colors.triT }]}>@{item.username}</Text>
           {item.business?.industry ? (
             <Text style={[globalStyles.labelText, { color: colors.secT }]}>
               {item.business.industry}

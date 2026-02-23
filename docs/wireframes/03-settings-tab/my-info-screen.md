@@ -70,18 +70,18 @@ flowchart TD
 
 ## Fields & Validation
 
-| Field | Type | Validation | Error Message |
-|-------|------|------------|---------------|
-| Profile Picture | Image | Optional | - |
-| First Name | TextInput | Required, not empty | "First name is required" |
-| Last Name | TextInput | Required, not empty | "Last name is required" |
-| Date of Birth | DatePicker | Required, Millennials 1981-1997 | "Must be Millennial (1981-1997)" |
-| City | TextInput | Optional | - |
-| State | TextInput | Optional | - |
-| Country | TextInput | Optional | - |
-| Likes | Switch | Boolean (default: true) | - |
-| Comments | Switch | Boolean (default: true) | - |
-| Shares | Switch | Boolean (default: true) | - |
+| Field           | Type       | Validation                      | Error Message                    |
+| --------------- | ---------- | ------------------------------- | -------------------------------- |
+| Profile Picture | Image      | Optional                        | -                                |
+| First Name      | TextInput  | Required, not empty             | "First name is required"         |
+| Last Name       | TextInput  | Required, not empty             | "Last name is required"          |
+| Date of Birth   | DatePicker | Required, Millennials 1981-1997 | "Must be Millennial (1981-1997)" |
+| City            | TextInput  | Optional                        | -                                |
+| State           | TextInput  | Optional                        | -                                |
+| Country         | TextInput  | Optional                        | -                                |
+| Likes           | Switch     | Boolean (default: true)         | -                                |
+| Comments        | Switch     | Boolean (default: true)         | -                                |
+| Shares          | Switch     | Boolean (default: true)         | -                                |
 
 ## State Management
 
@@ -105,12 +105,12 @@ flowchart TD
 
 ## User Interactions
 
-| Element | Action | Target |
-|---------|--------|--------|
-| Profile Picture | Tap | Image picker modal |
-| Date Picker | Tap | Open native date picker |
-| Switches | Toggle | Update boolean state |
-| Next Button | Submit | Validate → Navigate to BusinessScreen |
+| Element         | Action | Target                                |
+| --------------- | ------ | ------------------------------------- |
+| Profile Picture | Tap    | Image picker modal                    |
+| Date Picker     | Tap    | Open native date picker               |
+| Switches        | Toggle | Update boolean state                  |
+| Next Button     | Submit | Validate → Navigate to BusinessScreen |
 
 ## Form Submission Flow
 
@@ -143,9 +143,10 @@ sequenceDiagram
 
 ## Implementation Notes
 
-**File Reference**: [app/(tabs)/(settings)/MyInfoScreen.tsx](../../../app/(tabs)/(settings)/MyInfoScreen.tsx)
+**File Reference**: [app/(tabs)/(settings)/MyInfoScreen.tsx](<../../../app/(tabs)/(settings)/MyInfoScreen.tsx>)
 
 **Key Dependencies**:
+
 - ProfilePicture component
 - DateTimePicker
 - userProfileService.updatePersonalInfo()
@@ -162,4 +163,4 @@ sequenceDiagram
 
 ---
 
-*Wireframe as of 2026-01-30*
+_Wireframe as of 2026-01-30_

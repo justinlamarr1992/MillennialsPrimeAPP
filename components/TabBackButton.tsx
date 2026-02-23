@@ -43,7 +43,8 @@ export function getScreenTitle(state: TabState | null, defaultTitle: string): st
   if (!focusedRoute) return defaultTitle;
   const nestedState = focusedRoute.state as NestedState | undefined;
   const nestedIndex = nestedState?.index ?? 0;
-  if (!nestedState?.routes || nestedIndex === 0 || nestedIndex >= nestedState.routes.length) return defaultTitle;
+  if (!nestedState?.routes || nestedIndex === 0 || nestedIndex >= nestedState.routes.length)
+    return defaultTitle;
   const currentRoute = nestedState.routes[nestedIndex];
   if (!currentRoute || currentRoute.name === "index") return defaultTitle;
   return ROUTE_TITLES[currentRoute.name] ?? currentRoute.name;
@@ -55,7 +56,8 @@ export function getBackLabel(state: TabState | null): string | null {
   if (!focusedRoute) return null;
   const nestedState = focusedRoute.state as NestedState | undefined;
   const nestedIndex = nestedState?.index ?? 0;
-  if (!nestedState?.routes || nestedIndex === 0 || nestedIndex - 1 >= nestedState.routes.length) return null;
+  if (!nestedState?.routes || nestedIndex === 0 || nestedIndex - 1 >= nestedState.routes.length)
+    return null;
   const previousRoute = nestedState.routes[nestedIndex - 1];
   if (!previousRoute) return null;
   if (previousRoute.name === "index") {
@@ -67,22 +69,18 @@ export function getBackLabel(state: TabState | null): string | null {
 export function TabHeaderTitle({ defaultTitle }: TabHeaderTitleProps) {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
-  const title = useNavigationState(
-    (state): string => getScreenTitle(state as TabState | null, defaultTitle)
+  const title = useNavigationState((state): string =>
+    getScreenTitle(state as TabState | null, defaultTitle)
   );
-  return (
-    <Text style={[globalStyles.tabHeaderTitleText, { color: colors.secT }]}>
-      {title}
-    </Text>
-  );
+  return <Text style={[globalStyles.tabHeaderTitleText, { color: colors.secT }]}>{title}</Text>;
 }
 
 export function TabBackButton() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const backLabel = useNavigationState(
-    (state): string | null => getBackLabel(state as TabState | null)
+  const backLabel = useNavigationState((state): string | null =>
+    getBackLabel(state as TabState | null)
   );
 
   if (!backLabel) return null;
@@ -96,9 +94,7 @@ export function TabBackButton() {
       style={globalStyles.tabBackButton}
     >
       <Ionicons name="arrow-back" size={22} color={colors.secT} />
-      <Text style={[globalStyles.tabBackButtonLabel, { color: colors.secT }]}>
-        {backLabel}
-      </Text>
+      <Text style={[globalStyles.tabBackButtonLabel, { color: colors.secT }]}>{backLabel}</Text>
     </Pressable>
   );
 }

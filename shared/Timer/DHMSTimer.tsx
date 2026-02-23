@@ -19,9 +19,7 @@ export default function DHMSTimer({
     [currentTime, targetTime]
   );
   const days = Math.floor(timeBetween / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeBetween % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
+  const hours = Math.floor((timeBetween % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((timeBetween % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeBetween % (1000 * 60)) / 1000);
 

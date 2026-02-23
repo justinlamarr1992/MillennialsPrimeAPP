@@ -72,9 +72,7 @@ const getEnvConfig = (): EnvConfig => {
   if (!apiUrl?.trim()) missingVars.push("EXPO_PUBLIC_BUNNYCDN_API_URL");
 
   if (missingVars.length > 0) {
-    logger.error(
-      `Missing or empty BunnyCDN environment variables: ${missingVars.join(", ")}`
-    );
+    logger.error(`Missing or empty BunnyCDN environment variables: ${missingVars.join(", ")}`);
     throw new Error("Unable to load videos. Please try again later.");
   }
 
@@ -103,11 +101,7 @@ const buildFetchOptions = (accessKey: string): RequestInit => ({
  *
  * @pure Same input always returns same output
  */
-const buildVideoApiUrl = (
-  apiUrl: string,
-  libraryId: string,
-  itemsPerPage: number = 10
-): string =>
+const buildVideoApiUrl = (apiUrl: string, libraryId: string, itemsPerPage: number = 10): string =>
   `${apiUrl}/library/${libraryId}/videos?page=1&itemsPerPage=${itemsPerPage}&orderBy=date`;
 
 /**
@@ -131,7 +125,7 @@ const generateDummyVideos = (realVideos: VideoData[], targetCount: number = 10):
     "Expert Interview",
     "Community Stories",
     "Behind the Scenes",
-    "Future Insights"
+    "Future Insights",
   ];
 
   // Use a fixed base date: January 1, 2024 UTC for deterministic output
@@ -143,7 +137,7 @@ const generateDummyVideos = (realVideos: VideoData[], targetCount: number = 10):
       description: `This is placeholder content for demonstration purposes. Video ${i + 1} will be replaced with real content.`,
       guid: `dummy-${i}`,
       dateUploaded: new Date(baseDate + i * 86400000).toISOString(),
-      videoLibraryId: realVideos[0]?.videoLibraryId || "dummy-library"
+      videoLibraryId: realVideos[0]?.videoLibraryId || "dummy-library",
     });
   }
 
@@ -162,7 +156,9 @@ const fetchBunnyCDNVideos = async (): Promise<VideoData[]> => {
   const response = await fetch(url, options);
 
   if (!response.ok) {
-    logger.error(`BunnyCDN API error: status=${response.status}, statusText=${response.statusText}`);
+    logger.error(
+      `BunnyCDN API error: status=${response.status}, statusText=${response.statusText}`
+    );
     throw new Error("Failed to load videos. Please try again later.");
   }
 

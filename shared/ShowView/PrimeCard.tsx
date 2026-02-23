@@ -1,8 +1,4 @@
-import {
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
+import { Text, TouchableOpacity, useColorScheme } from "react-native";
 import React from "react";
 import { globalStyles } from "@/constants/global";
 import { LinearGradient } from "expo-linear-gradient";
@@ -39,7 +35,7 @@ export default function PrimeCard({
 
   var confirm;
 
-  logger.log('PrimeCard rendered:', { id, description, prime, userPosting });
+  logger.log("PrimeCard rendered:", { id, description, prime, userPosting });
 
   const pressedVideo = () => {
     // TODO: Remove or implement video navigation when ShowView feature is reactivated
@@ -49,11 +45,11 @@ export default function PrimeCard({
     //   2. Implement expo-router navigation: router.push(`/prime-show/${videoLibraryId}`)
     //   3. Remove this warning and implement actual navigation
     if (__DEV__) {
-      logger.warn('PrimeShow navigation not available - feature in TabsLater (inactive)');
+      logger.warn("PrimeShow navigation not available - feature in TabsLater (inactive)");
     }
   };
   const deleteVideo = () => {
-    logger.log('Delete video initiated');
+    logger.log("Delete video initiated");
     const options = {
       method: "DELETE",
       headers: {
@@ -65,19 +61,16 @@ export default function PrimeCard({
       },
     };
 
-    fetch(
-      `https://video.bunnycdn.com/library/${videoLibraryId}/videos/${guid}`,
-      options
-    )
+    fetch(`https://video.bunnycdn.com/library/${videoLibraryId}/videos/${guid}`, options)
       .then((response) => response.json())
-      .then((response) => logger.log('Video deleted:', response))
-      .catch((err) => logger.error('Error deleting video:', err));
+      .then((response) => logger.log("Video deleted:", response))
+      .catch((err) => logger.error("Error deleting video:", err));
   };
 
   const checkOriginal = () => {
-    logger.log('Checking if user is original poster:', id);
+    logger.log("Checking if user is original poster:", id);
     userPosting = `"${userPosting}"`;
-    logger.log('Formatted userPosting:', userPosting);
+    logger.log("Formatted userPosting:", userPosting);
     if (id === userPosting) {
       confirm = true;
       return;
@@ -100,10 +93,7 @@ export default function PrimeCard({
           : ["#bd2932", "#a5242f", "#8e202b", "#771c26", "#611821"]
       }
     >
-      <TouchableOpacity
-        onPress={pressedVideo}
-        style={[globalStyles.primeCardLeft]}
-      >
+      <TouchableOpacity onPress={pressedVideo} style={[globalStyles.primeCardLeft]}>
         <Text
           style={
             prime
@@ -113,9 +103,7 @@ export default function PrimeCard({
         >
           {title}
         </Text>
-        <Text
-          style={[globalStyles.showViewDescription, { color: colors.primeCarT }]}
-        >
+        <Text style={[globalStyles.showViewDescription, { color: colors.primeCarT }]}>
           {description ? description : "No Description for now"}
         </Text>
         <Text
@@ -139,10 +127,7 @@ export default function PrimeCard({
         </Text>
       </TouchableOpacity>
       {confirm && (
-        <TouchableOpacity
-          style={[globalStyles.primeCardRight]}
-          onPress={deleteVideo}
-        >
+        <TouchableOpacity style={[globalStyles.primeCardRight]} onPress={deleteVideo}>
           {prime ? (
             <Ionicons name="trash" size={24} color="#611821" />
           ) : (

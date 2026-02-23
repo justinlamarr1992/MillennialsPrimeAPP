@@ -7,6 +7,7 @@ MillennialsPrimeAPP uses **Expo Router** (v5.1.7) for file-based routing, combin
 ## Navigation Framework
 
 ### Core Libraries
+
 - **expo-router ~5.1.7**: File-based routing system
 - **@react-navigation/native-stack**: Stack navigation
 - **@react-navigation/bottom-tabs**: Tab navigation
@@ -14,33 +15,38 @@ MillennialsPrimeAPP uses **Expo Router** (v5.1.7) for file-based routing, combin
 
 ### Navigator Types Used
 
-| Navigator Type | Purpose | Location |
-|----------------|---------|----------|
-| **Stack** | Screen-to-screen transitions with back stack | Root, Auth, Tab groups |
-| **Tabs** | Bottom tab bar for main app sections | Main app container |
-| **Drawer** | Side menu navigation | Shows tab (hidden) |
+| Navigator Type | Purpose                                      | Location               |
+| -------------- | -------------------------------------------- | ---------------------- |
+| **Stack**      | Screen-to-screen transitions with back stack | Root, Auth, Tab groups |
+| **Tabs**       | Bottom tab bar for main app sections         | Main app container     |
+| **Drawer**     | Side menu navigation                         | Shows tab (hidden)     |
 
 ## File-Based Routing Conventions
 
 ### Expo Router Patterns
 
 **1. Route Groups** - `(groupName)/`
+
 - Creates logical groups without affecting URLs
 - Example: `(auth)/` and `(tabs)/` both route from root
 
 **2. Layout Files** - `_layout.tsx`
+
 - Define navigator wrappers for their directory
 - Configure screen options and navigation structure
 
 **3. Index Routes** - `index.tsx`
+
 - Default route for a directory
 - Example: `app/index.tsx` → `/` (root)
 
 **4. Dynamic Routes** - `[param].tsx`
+
 - Parameterized routes for dynamic content
 - Example: `[id].tsx` → `/user/123`
 
 **5. Screen Files** - `ScreenName.tsx`
+
 - Individual screen components
 - Auto-registered with parent navigator
 
@@ -103,7 +109,7 @@ graph TD
 
 ### Root Layout Auth Gating
 
-**File**: [app/_layout.tsx](../../app/_layout.tsx)
+**File**: [app/\_layout.tsx](../../app/_layout.tsx)
 
 The root layout implements authentication-based routing logic:
 
@@ -162,12 +168,13 @@ flowchart TD
 
 ### 1. Authentication Group `(auth)/`
 
-**File**: [app/(auth)/_layout.tsx](../../app/(auth)/_layout.tsx)
+**File**: [app/(auth)/\_layout.tsx](<../../app/(auth)/_layout.tsx>)
 
 **Navigator**: Stack
 **Access**: Unauthenticated users only (auto-redirected if logged in)
 
 **Screens**:
+
 - `index.tsx` - Welcome/splash screen
 - `SignInScreen.tsx` - Email/password login
 - `RegisterScreen.tsx` - New user registration
@@ -175,18 +182,20 @@ flowchart TD
 - `AboutScreen.tsx` - About page
 
 **Stack Configuration**:
+
 - `headerShown: false` - Custom headers in screens
 - Modal presentation for some screens
 - Replace navigation to prevent back button to auth
 
 ### 2. Main App Tabs `(tabs)/`
 
-**File**: [app/(tabs)/_layout.tsx](../../app/(tabs)/_layout.tsx)
+**File**: [app/(tabs)/\_layout.tsx](<../../app/(tabs)/_layout.tsx>)
 
 **Navigator**: Tabs (Bottom Tab Bar)
 **Access**: Authenticated users only
 
 **Tab Configuration**:
+
 ```typescript
 {
   tabBarStyle: {
@@ -200,26 +209,26 @@ flowchart TD
 ```
 
 **Visible Tabs** (3):
+
 1. **Home Tab** - Main content feed
 2. **Settings Tab** - User profile and settings
 3. **LogOut Tab** - Logout action
 
-**Hidden Tabs** (3) - `href: null`:
-4. **Social Tab** - Social networking features
-5. **Upload Tab** - Content upload
-6. **Shows Tab** - Premium show streaming
+**Hidden Tabs** (3) - `href: null`: 4. **Social Tab** - Social networking features 5. **Upload Tab** - Content upload 6. **Shows Tab** - Premium show streaming
 
 ### 3. Home Tab `(tabs)/(home)/`
 
-**File**: [app/(tabs)/(home)/_layout.tsx](../../app/(tabs)/(home)/_layout.tsx)
+**File**: [app/(tabs)/(home)/\_layout.tsx](<../../app/(tabs)/(home)/_layout.tsx>)
 
 **Navigator**: Stack
 **Status**: Active
 
 **Screens**:
+
 - `HomePage.tsx` - Main content feed with video carousels
 
 **Features**:
+
 - Featured video hero section
 - Multiple content carousels (New Episodes, Popular, Recommended)
 - Bunny CDN video integration
@@ -227,18 +236,20 @@ flowchart TD
 
 ### 4. Settings Tab `(tabs)/(settings)/`
 
-**File**: [app/(tabs)/(settings)/_layout.tsx](../../app/(tabs)/(settings)/_layout.tsx)
+**File**: [app/(tabs)/(settings)/\_layout.tsx](<../../app/(tabs)/(settings)/_layout.tsx>)
 
 **Navigator**: Stack
 **Status**: Active
 
 **Screens**:
+
 1. `Settings.tsx` - Settings hub with profile picture
 2. `MyInfoScreen.tsx` - Personal information form
 3. `BusinessScreen.tsx` - Business questionnaire
 4. `ArtScreen.tsx` - Artist questionnaire
 
 **Navigation Flow**:
+
 ```
 Settings Hub
     → Personal Info → Next
@@ -248,12 +259,13 @@ Settings Hub
 
 ### 5. Social Tab `(tabs)/(social)/` [HIDDEN]
 
-**File**: [app/(tabs)/(social)/_layout.tsx](../../app/(tabs)/(social)/_layout.tsx)
+**File**: [app/(tabs)/(social)/\_layout.tsx](<../../app/(tabs)/(social)/_layout.tsx>)
 
 **Navigator**: Drawer + Stack (hybrid)
 **Status**: Hidden (`href: null`)
 
 **Screens**:
+
 - `index.tsx` - Social feed with navigation buttons
 - `ConnectedUsersScreen.tsx` - Connected users list
 - `MyProfileScreen.tsx` - User profile with posts
@@ -261,27 +273,30 @@ Settings Hub
 - `[id].tsx` - Dynamic user profile route
 
 **Drawer Configuration**:
+
 - PrimeShow listed as drawer menu item
 - Stack screens for other routes
 
 ### 6. Upload Tab `(tabs)/(upload)/` [HIDDEN]
 
-**File**: [app/(tabs)/(upload)/_layout.tsx](../../app/(tabs)/(upload)/_layout.tsx)
+**File**: [app/(tabs)/(upload)/\_layout.tsx](<../../app/(tabs)/(upload)/_layout.tsx>)
 
 **Navigator**: Stack
 **Status**: Hidden (`href: null`)
 
 **Screens**:
+
 - `UploadContentScreen.tsx` - File upload interface with UploadBox component
 
 ### 7. Shows Tab `(tabs)/(shows)/` [HIDDEN]
 
-**File**: [app/(tabs)/(shows)/_layout.tsx](../../app/(tabs)/(shows)/_layout.tsx)
+**File**: [app/(tabs)/(shows)/\_layout.tsx](<../../app/(tabs)/(shows)/_layout.tsx>)
 
 **Navigator**: Drawer + Stack (hybrid)
 **Status**: Hidden (`href: null`)
 
 **Screens**:
+
 - `PrimeShow.tsx` - WebView streaming (Drawer menu item)
 - `ShowViewScreen.tsx` - Episodes listing (Stack screen)
 
@@ -290,16 +305,17 @@ Settings Hub
 ### 1. Declarative Navigation (Link Component)
 
 ```tsx
-import { Link } from 'expo-router';
+import { Link } from "expo-router";
 
 <Link href="/(auth)/SignInScreen" replace asChild>
   <Pressable>
     <Text>Log In</Text>
   </Pressable>
-</Link>
+</Link>;
 ```
 
 **Props**:
+
 - `href`: Target route
 - `replace`: Replace current screen (no back button)
 - `push`: Add to stack (default)
@@ -308,7 +324,7 @@ import { Link } from 'expo-router';
 ### 2. Imperative Navigation (useRouter)
 
 ```tsx
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
 
 const router = useRouter();
 
@@ -332,6 +348,7 @@ Tab navigation happens automatically when user taps tab bar icons. No explicit c
 ## Route Parameters
 
 ### Static Routes
+
 ```
 /(auth)/SignInScreen
 /(tabs)/(home)/HomePage
@@ -341,11 +358,12 @@ Tab navigation happens automatically when user taps tab bar icons. No explicit c
 ### Dynamic Routes
 
 **User Profile Route**:
+
 ```typescript
 // Route: /(tabs)/(social)/[id].tsx
 // Access: /(tabs)/(social)/123456
 
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from "expo-router";
 
 function UserProfile() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -396,6 +414,7 @@ const segments = useSegments();
 ```
 
 Used for:
+
 - Auth gating logic
 - Conditional navigation
 - Route-based UI changes
@@ -443,6 +462,7 @@ To hide a tab without removing code:
 3. Test thoroughly before deployment
 
 **Hidden Features Ready for Launch**:
+
 - Social Tab (5 screens ready)
 - Upload Tab (1 screen ready)
 - Shows Tab (2 screens ready)
@@ -508,7 +528,7 @@ router.push("/(tabs)/(settings)/MyInfoScreen");
 Expo Router provides TypeScript types for routes:
 
 ```typescript
-import { Href } from 'expo-router';
+import { Href } from "expo-router";
 
 const route: Href = "/(tabs)/(home)/HomePage"; // Type-checked
 ```
@@ -530,15 +550,19 @@ router.push("./MyInfoScreen");
 ### Common Issues
 
 **Issue**: Screen not appearing in navigator
+
 - **Fix**: Ensure file is in correct directory and follows naming convention
 
 **Issue**: Tab not showing
+
 - **Fix**: Check if `href: null` is set (feature toggle)
 
 **Issue**: Auth redirect loop
+
 - **Fix**: Verify auth state logic in root layout
 
 **Issue**: Dynamic route not working
+
 - **Fix**: Ensure file named `[param].tsx` and using `useLocalSearchParams()`
 
 ## Navigation Performance
@@ -564,5 +588,5 @@ router.push("./MyInfoScreen");
 
 ---
 
-*Last Updated: 2026-01-30*
-*This document is maintained as part of the app documentation suite.*
+_Last Updated: 2026-01-30_
+_This document is maintained as part of the app documentation suite._

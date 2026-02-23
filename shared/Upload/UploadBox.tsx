@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  TextInput,
-  ScrollView,
-  useColorScheme,
-} from "react-native";
+import { View, Text, Pressable, TextInput, ScrollView, useColorScheme } from "react-native";
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
 import ImagePickerComponent from "./ImagePickerComponent";
@@ -17,16 +10,13 @@ export default function UploadBox() {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
-  const { phase, progress, error, handleVideoSelect, submitUpload, reset } =
-    useVideoUpload();
+  const { phase, progress, error, handleVideoSelect, submitUpload, reset } = useVideoUpload();
 
   const [uploadType, setUploadType] = useState<string | null>(null);
   const [uploadTypePicker, setUploadTypePicker] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [audience, setAudience] = useState<"millennials" | "primes">(
-    "millennials"
-  );
+  const [audience, setAudience] = useState<"millennials" | "primes">("millennials");
   const [audiencePicker, setAudiencePicker] = useState(false);
   const [category, setCategory] = useState("");
   const [categoryPicker, setCategoryPicker] = useState(false);
@@ -101,12 +91,8 @@ export default function UploadBox() {
   if (phase === "complete") {
     return (
       <View style={[globalStyles.container, globalStyles.centerItem]}>
-        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
-          Video Uploaded!
-        </Text>
-        <Text
-          style={[globalStyles.labelText, { color: colors["priT"] }]}
-        >
+        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>Video Uploaded!</Text>
+        <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
           Your video has been uploaded and will be available shortly.
         </Text>
         <Pressable
@@ -126,13 +112,10 @@ export default function UploadBox() {
   }
 
   if (phase === "authorizing" || phase === "uploading") {
-    const label =
-      phase === "authorizing" ? "Authorizing…" : `Uploading… ${progress}%`;
+    const label = phase === "authorizing" ? "Authorizing…" : `Uploading… ${progress}%`;
     return (
       <View style={[globalStyles.container, globalStyles.centerItem]}>
-        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>
-          {label}
-        </Text>
+        <Text style={[globalStyles.textTitle, { color: colors["priT"] }]}>{label}</Text>
       </View>
     );
   }
@@ -192,11 +175,7 @@ export default function UploadBox() {
                 selectedValue={uploadType}
                 onValueChange={(value) => handleUploadTypeChange(value as string)}
               >
-                <Picker.Item
-                  label="Select your Option"
-                  value=""
-                  enabled={false}
-                />
+                <Picker.Item label="Select your Option" value="" enabled={false} />
                 <Picker.Item label="Video" value="Video" />
                 <Picker.Item label="Text (Coming Soon)" value="Text" enabled={false} />
                 <Picker.Item label="Images (Coming Soon)" value="Images" enabled={false} />
@@ -209,9 +188,7 @@ export default function UploadBox() {
             <View>
               {/* Title */}
               <View style={globalStyles.labelInput}>
-                <Text
-                  style={[globalStyles.labelText, { color: colors["priT"] }]}
-                >
+                <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
                   Title of Video *
                 </Text>
                 <TextInput
@@ -225,9 +202,7 @@ export default function UploadBox() {
 
               {/* Description */}
               <View style={globalStyles.labelInput}>
-                <Text
-                  style={[globalStyles.labelText, { color: colors["priT"] }]}
-                >
+                <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
                   Description of the Video *
                 </Text>
                 <TextInput
@@ -241,9 +216,7 @@ export default function UploadBox() {
 
               {/* Audience */}
               <View style={globalStyles.labelInput}>
-                <Text
-                  style={[globalStyles.labelText, { color: colors["priT"] }]}
-                >
+                <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>
                   Who is the Video For?
                 </Text>
                 <Pressable
@@ -276,11 +249,7 @@ export default function UploadBox() {
 
               {/* Category */}
               <View style={globalStyles.labelInput}>
-                <Text
-                  style={[globalStyles.labelText, { color: colors["priT"] }]}
-                >
-                  Category *
-                </Text>
+                <Text style={[globalStyles.labelText, { color: colors["priT"] }]}>Category *</Text>
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel="Select category"
@@ -303,11 +272,7 @@ export default function UploadBox() {
                       setCategoryPicker(false);
                     }}
                   >
-                    <Picker.Item
-                      label="Select your Option"
-                      value=""
-                      enabled={false}
-                    />
+                    <Picker.Item label="Select your Option" value="" enabled={false} />
                     <Picker.Item label="All News" value="All News" />
                     <Picker.Item label="Music" value="Music" />
                     <Picker.Item label="Movie's" value="Movie's" />

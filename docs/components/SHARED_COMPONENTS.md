@@ -17,6 +17,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: HomePage hero section
 
 **Features**:
+
 - Large video player integration (Bunny CDN)
 - Title and description overlay
 - Author information display
@@ -24,16 +25,17 @@ This document catalogs shared components in the `/shared/` directory. These are 
 - Video playback controls
 
 **Props**:
+
 ```typescript
 {
-  name: string;          // Author name
-  title: string;         // Post title
-  description: string;   // Post description
-  prime: boolean;        // Prime member flag
-  admin: boolean;        // Admin flag
-  libraryId: number;     // Bunny CDN library ID
-  videoId: string;       // Video UUID
-  authorId: string;      // Author user ID
+  name: string; // Author name
+  title: string; // Post title
+  description: string; // Post description
+  prime: boolean; // Prime member flag
+  admin: boolean; // Admin flag
+  libraryId: number; // Bunny CDN library ID
+  videoId: string; // Video UUID
+  authorId: string; // Author user ID
 }
 ```
 
@@ -46,12 +48,14 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: My Profile Screen, Social Feed (hidden)
 
 **Features**:
+
 - Title and description (max 10 lines)
 - Author info with badges
 - Like/comment/share buttons (future)
 - Timestamp display
 
 **Props**:
+
 ```typescript
 {
   name: string;
@@ -72,18 +76,20 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: My Profile Screen, Social Feed (hidden)
 
 **Features**:
+
 - Full-width image display
 - Title and description (2 lines max)
 - Image loading state
 - Author info with badges
 
 **Props**:
+
 ```typescript
 {
   name: string;
   title: string;
   description: string;
-  picture: string;       // Image URL
+  picture: string; // Image URL
   prime: boolean;
   admin: boolean;
   authorId: string;
@@ -99,6 +105,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: My Profile Screen, Social Feed (hidden)
 
 **Features**:
+
 - Bunny CDN video player
 - Title and description
 - Video thumbnail
@@ -106,6 +113,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 - Author info with badges
 
 **Props**:
+
 ```typescript
 {
   name: string;
@@ -132,6 +140,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: Connected Users Screen (hidden)
 
 **Features**:
+
 - User name and industry display
 - **Status Badges**:
   - Admin badge (red/orange)
@@ -141,18 +150,20 @@ This document catalogs shared components in the `/shared/` directory. These are 
 - Pressable card for user profile navigation
 
 **Props**:
+
 ```typescript
 {
-  name: string;        // User display name
-  industry: string;    // User's industry/profession
-  connected: boolean;  // Connection status
-  matching: boolean;   // Industry/interest match
-  prime: boolean;      // Prime member status
-  admin: boolean;      // Admin status
+  name: string; // User display name
+  industry: string; // User's industry/profession
+  connected: boolean; // Connection status
+  matching: boolean; // Industry/interest match
+  prime: boolean; // Prime member status
+  admin: boolean; // Admin status
 }
 ```
 
 **Badge Colors**:
+
 - **Admin**: Red/orange background
 - **Prime**: Purple/gold background
 - **Matching**: Green indicator
@@ -167,6 +178,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: User profile pages (hidden)
 
 **Features**:
+
 - Extended user details
 - Profile picture
 - Bio/description
@@ -186,6 +198,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: E-Commerce Screen (hidden)
 
 **Features**:
+
 - Item image display
 - Title and description
 - Price display (future)
@@ -193,6 +206,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 - Item rating (future)
 
 **Props**:
+
 ```typescript
 {
   title: string;
@@ -216,6 +230,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: E-Commerce item details, action menus (future)
 
 **Features**:
+
 - Slide-up animation
 - Draggable to dismiss
 - Backdrop dim effect
@@ -223,6 +238,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 - Snap points configuration
 
 **Props**:
+
 ```typescript
 {
   isVisible: boolean;
@@ -233,6 +249,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 ```
 
 **Usage Example**:
+
 ```typescript
 <CustomBottomSheet
   isVisible={showSheet}
@@ -252,6 +269,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: Post interactions (future)
 
 **Features**:
+
 - Comment list display
 - Add comment input
 - User avatars
@@ -271,6 +289,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 **Usage**: Upload Content Screen (hidden)
 
 **Features**:
+
 - **Drag and drop area** (web) / Tap to select (mobile)
 - **File type filtering**: Images, videos, documents
 - **Upload progress indicator**
@@ -279,6 +298,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 - **Validation**: Size and type checking
 
 **Props**:
+
 ```typescript
 {
   onFileSelect: (file: File) => void;
@@ -289,6 +309,7 @@ This document catalogs shared components in the `/shared/` directory. These are 
 ```
 
 **Upload Flow**:
+
 ```mermaid
 sequenceDiagram
     User->>UploadBox: Tap upload area
@@ -318,6 +339,7 @@ sequenceDiagram
 **Usage**: Timed events, limited offers (future)
 
 **Features**:
+
 - Hours, minutes, seconds display
 - Countdown functionality
 - Completion callback
@@ -332,6 +354,7 @@ sequenceDiagram
 **Usage**: Long-duration countdowns (future)
 
 **Features**:
+
 - Days, hours, minutes, seconds display
 - Extended countdown support
 - Auto-refresh
@@ -346,6 +369,7 @@ sequenceDiagram
 **Usage**: Used by HMSTimer and DHMSTimer
 
 **Features**:
+
 - Flip animation on number change
 - Customizable styling
 - Responsive sizing
@@ -361,6 +385,7 @@ sequenceDiagram
 **Usage**: Future monetization
 
 **Features**:
+
 - Ad banner display
 - Multiple ad formats
 - Click tracking
@@ -375,6 +400,7 @@ sequenceDiagram
 **Usage**: Post interactions (future)
 
 **Features**:
+
 - Like button with count
 - Comment button with count
 - Share button
@@ -382,6 +408,7 @@ sequenceDiagram
 - State management
 
 **Props**:
+
 ```typescript
 {
   likes: number;
@@ -398,22 +425,22 @@ sequenceDiagram
 
 ## Component Usage Matrix
 
-| Component | Screens | Status | Purpose |
-|-----------|---------|--------|---------|
-| **PrimeNewsPost** | HomePage | Active | Featured video hero |
-| **TextPost** | MyProfile | Hidden | Text-only posts |
-| **PicturePost** | MyProfile | Hidden | Image posts |
-| **VideoPost** | MyProfile | Hidden | Video posts |
-| **User** | ConnectedUsers | Hidden | User cards with badges |
-| **ConnectedUserInfo** | User Profile | Hidden | Detailed user info |
-| **Item** | E-Commerce | Hidden | Product cards |
-| **CustomBottomSheet** | E-Commerce | Hidden | Modal dialogs |
-| **CommentModal** | Post screens | Future | Comment threads |
-| **UploadBox** | Upload | Hidden | File upload UI |
-| **HMSTimer** | Future | Future | Countdown timers |
-| **DHMSTimer** | Future | Future | Long countdowns |
-| **Ad** | Future | Future | Advertisements |
-| **LikeComment** | Posts | Future | Interaction buttons |
+| Component             | Screens        | Status | Purpose                |
+| --------------------- | -------------- | ------ | ---------------------- |
+| **PrimeNewsPost**     | HomePage       | Active | Featured video hero    |
+| **TextPost**          | MyProfile      | Hidden | Text-only posts        |
+| **PicturePost**       | MyProfile      | Hidden | Image posts            |
+| **VideoPost**         | MyProfile      | Hidden | Video posts            |
+| **User**              | ConnectedUsers | Hidden | User cards with badges |
+| **ConnectedUserInfo** | User Profile   | Hidden | Detailed user info     |
+| **Item**              | E-Commerce     | Hidden | Product cards          |
+| **CustomBottomSheet** | E-Commerce     | Hidden | Modal dialogs          |
+| **CommentModal**      | Post screens   | Future | Comment threads        |
+| **UploadBox**         | Upload         | Hidden | File upload UI         |
+| **HMSTimer**          | Future         | Future | Countdown timers       |
+| **DHMSTimer**         | Future         | Future | Long countdowns        |
+| **Ad**                | Future         | Future | Advertisements         |
+| **LikeComment**       | Posts          | Future | Interaction buttons    |
 
 ---
 
@@ -437,6 +464,7 @@ Used across User and Post components:
 ### Post Component Pattern
 
 All post components share common structure:
+
 1. **Header**: Author info, name, badges
 2. **Body**: Content (text, image, or video)
 3. **Footer**: Like/comment/share buttons (future)
@@ -445,6 +473,7 @@ All post components share common structure:
 ### Modal Pattern
 
 Consistent modal implementation:
+
 - Bottom sheet for mobile-friendly UX
 - Backdrop tap to dismiss
 - Swipe down to close
@@ -467,18 +496,18 @@ Consistent modal implementation:
 
 ```typescript
 // Post components
-import { PrimeNewsPost, TextPost, VideoPost } from '@/shared/PostComponents';
+import { PrimeNewsPost, TextPost, VideoPost } from "@/shared/PostComponents";
 
 // User components
-import User from '@/shared/ConnectedUser/User';
+import User from "@/shared/ConnectedUser/User";
 
 // Modals
-import CustomBottomSheet from '@/shared/Modals/CustomBottomSheet';
+import CustomBottomSheet from "@/shared/Modals/CustomBottomSheet";
 
 // Upload
-import UploadBox from '@/shared/Upload/UploadBox';
+import UploadBox from "@/shared/Upload/UploadBox";
 ```
 
 ---
 
-*Shared components documented as of 2026-01-30*
+_Shared components documented as of 2026-01-30_

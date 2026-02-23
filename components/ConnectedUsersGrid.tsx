@@ -56,7 +56,12 @@ export default function ConnectedUsersGrid({
               <View style={[globalStyles.avatarCircle, { backgroundColor: colors.regC }]} />
             )}
             <Text
-              style={[globalStyles.labelText, globalStyles.marginT4, globalStyles.textCenter, { color: colors.text }]}
+              style={[
+                globalStyles.labelText,
+                globalStyles.marginT4,
+                globalStyles.textCenter,
+                { color: colors.text },
+              ]}
               numberOfLines={1}
             >
               {item.name}
@@ -65,13 +70,22 @@ export default function ConnectedUsersGrid({
         )}
         ListFooterComponent={
           overflowCount > 0 ? (
-            <View style={[globalStyles.flexAlignItemsCenter, globalStyles.flexJustifyContentCenter, globalStyles.avatarCircle]}>
+            <View
+              style={[
+                globalStyles.flexAlignItemsCenter,
+                globalStyles.flexJustifyContentCenter,
+                globalStyles.avatarCircle,
+              ]}
+            >
               <View
-                style={[globalStyles.avatarCircle, globalStyles.flexAlignItemsCenter, globalStyles.flexJustifyContentCenter, { backgroundColor: colors.regC }]}
+                style={[
+                  globalStyles.avatarCircle,
+                  globalStyles.flexAlignItemsCenter,
+                  globalStyles.flexJustifyContentCenter,
+                  { backgroundColor: colors.regC },
+                ]}
               >
-                <Text style={[globalStyles.bold, { color: colors.priT }]}>
-                  +{overflowCount}
-                </Text>
+                <Text style={[globalStyles.bold, { color: colors.priT }]}>+{overflowCount}</Text>
               </View>
             </View>
           ) : null

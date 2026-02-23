@@ -14,9 +14,7 @@ interface MetricsDashboardProps {
   metrics: Metric[];
 }
 
-export default function MetricsDashboard({
-  metrics,
-}: MetricsDashboardProps): JSX.Element | null {
+export default function MetricsDashboard({ metrics }: MetricsDashboardProps): JSX.Element | null {
   const colorScheme = useColorScheme();
   const colors = COLORS[colorScheme ?? "dark"];
 
@@ -24,7 +22,12 @@ export default function MetricsDashboard({
 
   return (
     <View
-      style={[globalStyles.padding, globalStyles.flexRow, globalStyles.flexWrap, globalStyles.gap12]}
+      style={[
+        globalStyles.padding,
+        globalStyles.flexRow,
+        globalStyles.flexWrap,
+        globalStyles.gap12,
+      ]}
       accessibilityLabel="Profile metrics"
     >
       {metrics.map((metric) => (
@@ -47,12 +50,8 @@ export default function MetricsDashboard({
             size={24}
             color={colors.priC}
           />
-          <Text style={[globalStyles.textTitle, { color: colors.text }]}>
-            {metric.value}
-          </Text>
-          <Text style={[globalStyles.labelText, { color: colors.triT }]}>
-            {metric.label}
-          </Text>
+          <Text style={[globalStyles.textTitle, { color: colors.text }]}>{metric.value}</Text>
+          <Text style={[globalStyles.labelText, { color: colors.triT }]}>{metric.label}</Text>
         </View>
       ))}
     </View>

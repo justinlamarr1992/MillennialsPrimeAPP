@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { View, Text, TouchableOpacity, useColorScheme, StyleSheet, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, Colors } from "@/constants/Colors";
@@ -96,9 +89,7 @@ const getTextColor = (isPrime: boolean, colors: Colors): string =>
  */
 const NewBadge = ({ colors }: { colors: Colors }): JSX.Element => (
   <View style={[styles.newBadge, { backgroundColor: colors.triC }]}>
-    <Text style={[styles.newBadgeText, { color: colors.secT }]}>
-      New Episode
-    </Text>
+    <Text style={[styles.newBadgeText, { color: colors.secT }]}>New Episode</Text>
   </View>
 );
 
@@ -149,11 +140,7 @@ const MenuButton = ({
   isPrime: boolean;
   colors: Colors;
 }): JSX.Element => (
-  <TouchableOpacity
-    style={styles.menuButton}
-    onPress={onPress}
-    accessibilityHint="Menu"
-  >
+  <TouchableOpacity style={styles.menuButton} onPress={onPress} accessibilityHint="Menu">
     <Ionicons
       name="ellipsis-vertical"
       size={20}

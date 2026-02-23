@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  ActivityIndicator,
-  useColorScheme,
-} from "react-native";
+import { View, Text, Pressable, ActivityIndicator, useColorScheme } from "react-native";
 import { COLORS, Colors } from "@/constants/Colors";
 import { globalStyles } from "@/constants/global";
 import type { ConnectionStatus } from "@/types/connection";
@@ -71,7 +65,11 @@ export default function ConnectionButton(props: ConnectionButtonProps): JSX.Elem
   if (loading) {
     return (
       <View
-        style={[globalStyles.padding, globalStyles.flexAlignItemsCenter, globalStyles.flexJustifyContentCenter]}
+        style={[
+          globalStyles.padding,
+          globalStyles.flexAlignItemsCenter,
+          globalStyles.flexJustifyContentCenter,
+        ]}
         testID="connection-button-loading"
       >
         <ActivityIndicator size="small" color={colors.priC} />
@@ -91,9 +89,7 @@ export default function ConnectionButton(props: ConnectionButtonProps): JSX.Elem
             accessibilityLabel="Accept connection request"
             accessibilityState={!connectionId ? { disabled: true } : undefined}
           >
-            <Text style={[globalStyles.buttonText, { color: colors.secT }]}>
-              Accept
-            </Text>
+            <Text style={[globalStyles.buttonText, { color: colors.secT }]}>Accept</Text>
           </Pressable>
           <Pressable
             style={[globalStyles.button, globalStyles.flex1, { backgroundColor: colors.regC }]}
@@ -103,9 +99,7 @@ export default function ConnectionButton(props: ConnectionButtonProps): JSX.Elem
             accessibilityLabel="Decline connection request"
             accessibilityState={!connectionId ? { disabled: true } : undefined}
           >
-            <Text style={[globalStyles.buttonText, { color: colors.priT }]}>
-              Decline
-            </Text>
+            <Text style={[globalStyles.buttonText, { color: colors.priT }]}>Decline</Text>
           </Pressable>
         </View>
       </View>

@@ -1,19 +1,20 @@
 # SecureStore Migration Guide
 
 ## Overview
+
 This document explains how the migration from AsyncStorage to SecureStore works in `serverAuth.ts`.
 
 ## Why Migrate?
 
 ### Security Comparison
 
-| Feature | AsyncStorage (OLD) | SecureStore (NEW) |
-|---------|-------------------|-------------------|
-| **Encryption** | ❌ Plain text | ✅ Hardware-backed encryption |
-| **Storage Location** | Device filesystem | iOS: Keychain<br>Android: Keystore |
-| **Root/Jailbreak Protection** | ❌ Accessible | ✅ Protected |
-| **Biometric Protection** | ❌ No | ✅ Yes (device passcode required) |
-| **Backup Security** | ❌ Included in backups | ✅ Excluded or encrypted |
+| Feature                       | AsyncStorage (OLD)     | SecureStore (NEW)                  |
+| ----------------------------- | ---------------------- | ---------------------------------- |
+| **Encryption**                | ❌ Plain text          | ✅ Hardware-backed encryption      |
+| **Storage Location**          | Device filesystem      | iOS: Keychain<br>Android: Keystore |
+| **Root/Jailbreak Protection** | ❌ Accessible          | ✅ Protected                       |
+| **Biometric Protection**      | ❌ No                  | ✅ Yes (device passcode required)  |
+| **Backup Security**           | ❌ Included in backups | ✅ Excluded or encrypted           |
 
 ## How Migration Works
 
@@ -106,10 +107,11 @@ SKIP MIGRATION → Read directly from SecureStore
 ## Code Example
 
 ### Before Migration (AsyncStorage)
+
 ```typescript
 // OLD CODE - Unencrypted storage
-await AsyncStorage.setItem('server_access_token', token);
-const token = await AsyncStorage.getItem('server_access_token');
+await AsyncStorage.setItem("server_access_token", token);
+const token = await AsyncStorage.getItem("server_access_token");
 
 // ❌ Token stored as plain text:
 // /data/data/com.app/shared_prefs/RCTAsyncLocalStorage.xml
@@ -117,10 +119,11 @@ const token = await AsyncStorage.getItem('server_access_token');
 ```
 
 ### After Migration (SecureStore)
+
 ```typescript
 // NEW CODE - Encrypted storage
-await SecureStore.setItemAsync('server_access_token', token);
-const token = await SecureStore.getItemAsync('server_access_token');
+await SecureStore.setItemAsync("server_access_token", token);
+const token = await SecureStore.getItemAsync("server_access_token");
 
 // ✅ Token stored encrypted:
 // iOS: /var/mobile/Library/Keychains/keychain-2.db (encrypted)
@@ -130,7 +133,9 @@ const token = await SecureStore.getItemAsync('server_access_token');
 ## Testing
 
 ### Unit Tests
+
 All 21 unit tests in `serverAuth.test.ts` verify:
+
 - ✅ Login stores tokens in SecureStore
 - ✅ Tokens can be retrieved from SecureStore
 - ✅ Logout clears tokens from SecureStore
@@ -140,12 +145,15 @@ All 21 unit tests in `serverAuth.test.ts` verify:
 ### Manual Testing
 
 #### Test Migration Flow:
+
 1. **Before Update**: Use old app version with AsyncStorage
+
    ```bash
    # User logs in, token stored in AsyncStorage
    ```
 
 2. **Update App**: Install new version with SecureStore
+
    ```bash
    # Next time user opens app or accesses token
    ```
@@ -165,6 +173,7 @@ All 21 unit tests in `serverAuth.test.ts` verify:
    - Logout/login cycle works ✓
 
 #### Test New User Flow:
+
 1. Fresh install of app
 2. Register/login
 3. Token goes directly to SecureStore
@@ -173,10 +182,12 @@ All 21 unit tests in `serverAuth.test.ts` verify:
 ## Security Benefits
 
 ### 1. Encryption at Rest
+
 - Tokens are encrypted using device hardware
 - Cannot be read even with file system access
 
 ### 2. Platform-Specific Protection
+
 - **iOS**: Uses Keychain with Secure Enclave
   - Tokens protected by device passcode/Face ID/Touch ID
   - Survives app uninstall (can be configured)
@@ -186,6 +197,7 @@ All 21 unit tests in `serverAuth.test.ts` verify:
   - Keys never leave secure hardware
 
 ### 3. Attack Resistance
+
 - ✅ Protects against rooted/jailbroken device access
 - ✅ Protects against file system dumps
 - ✅ Protects against backup extraction
@@ -199,13 +211,14 @@ Migration is designed to be fault-tolerant:
 try {
   // Attempt migration
 } catch (error) {
-  logger.error('Migration failed:', error);
+  logger.error("Migration failed:", error);
   // Don't throw - continue with SecureStore
   // Worst case: user needs to re-login
 }
 ```
 
 If migration fails:
+
 - App continues to work
 - User may need to log in again
 - New tokens go to SecureStore
@@ -221,6 +234,7 @@ If migration fails:
 ## Compliance
 
 This change helps meet security compliance requirements:
+
 - ✅ OWASP Mobile Top 10 - M2 (Insecure Data Storage)
 - ✅ PCI DSS (if handling payment data)
 - ✅ GDPR (personal data protection)

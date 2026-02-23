@@ -13,9 +13,7 @@ export default function HomeLayout() {
         // headerLeft: () => (
         //   <Ionicons size={28} name="search" color={colors["hexC"]} />
         // ),
-        headerRight: () => (
-          <Ionicons size={28} name="ellipsis-vertical" color={colors["quaC"]} />
-        ),
+        headerRight: () => <Ionicons size={28} name="ellipsis-vertical" color={colors["quaC"]} />,
         headerStyle: {
           backgroundColor: colors["priC"],
           // height: 200, This is what i need to show more of the users in profiles

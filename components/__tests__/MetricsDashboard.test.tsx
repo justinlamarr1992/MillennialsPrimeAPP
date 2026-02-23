@@ -48,9 +48,7 @@ describe("MetricsDashboard", () => {
   describe("When a single metric is provided", () => {
     it("should display the metric", () => {
       render(
-        <MetricsDashboard
-          metrics={[{ label: "Connections", value: 5, icon: "people-outline" }]}
-        />
+        <MetricsDashboard metrics={[{ label: "Connections", value: 5, icon: "people-outline" }]} />
       );
 
       expect(screen.getByText("Connections")).toBeTruthy();

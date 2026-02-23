@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
-import UserInfo from '../UserInfo';
-import { logger } from '@/utils/logger';
+import React from "react";
+import { render, screen, fireEvent } from "@/__tests__/test-utils";
+import UserInfo from "../UserInfo";
+import { logger } from "@/utils/logger";
 
-jest.mock('@/utils/logger', () => ({
+jest.mock("@/utils/logger", () => ({
   logger: {
     debug: jest.fn(),
     info: jest.fn(),
@@ -12,9 +12,9 @@ jest.mock('@/utils/logger', () => ({
   },
 }));
 
-describe('UserInfo', () => {
+describe("UserInfo", () => {
   const defaultProps = {
-    name: 'John Doe',
+    name: "John Doe",
     admin: false,
     prime: false,
   };
@@ -23,30 +23,30 @@ describe('UserInfo', () => {
     jest.clearAllMocks();
   });
 
-  describe('User Name Display', () => {
-    it('should display the user name when provided', () => {
+  describe("User Name Display", () => {
+    it("should display the user name when provided", () => {
       render(<UserInfo {...defaultProps} />);
-      expect(screen.getByText('John Doe')).toBeTruthy();
+      expect(screen.getByText("John Doe")).toBeTruthy();
     });
 
     it('should display "Loading" when name is empty or falsy', () => {
       render(<UserInfo name="" admin={false} prime={false} />);
-      expect(screen.getByText('Loading')).toBeTruthy();
+      expect(screen.getByText("Loading")).toBeTruthy();
     });
   });
 
-  describe('User Profile Picture', () => {
-    it('should display user profile picture', () => {
+  describe("User Profile Picture", () => {
+    it("should display user profile picture", () => {
       render(<UserInfo {...defaultProps} />);
       // Profile picture renders as part of the component
-      expect(screen.getByText('John Doe')).toBeTruthy();
+      expect(screen.getByText("John Doe")).toBeTruthy();
     });
   });
 
-  describe('User Name Interaction', () => {
-    it('should make user name pressable for navigation to profile', () => {
+  describe("User Name Interaction", () => {
+    it("should make user name pressable for navigation to profile", () => {
       const { getByText } = render(<UserInfo {...defaultProps} />);
-      const nameElement = getByText('John Doe');
+      const nameElement = getByText("John Doe");
 
       // User name should be inside a Pressable component
       expect(nameElement).toBeTruthy();
@@ -55,68 +55,68 @@ describe('UserInfo', () => {
       expect(() => fireEvent.press(nameElement)).not.toThrow();
     });
 
-    it('should log debug message when user name is pressed', () => {
+    it("should log debug message when user name is pressed", () => {
       const { getByText } = render(<UserInfo {...defaultProps} />);
-      const nameElement = getByText('John Doe');
+      const nameElement = getByText("John Doe");
 
       fireEvent.press(nameElement);
 
-      expect(logger.debug).toHaveBeenCalledWith('Navigate to user: John Doe');
+      expect(logger.debug).toHaveBeenCalledWith("Navigate to user: John Doe");
     });
   });
 
-  describe('User Role Badges', () => {
-    it('should display admin-styled name when user is an admin', () => {
+  describe("User Role Badges", () => {
+    it("should display admin-styled name when user is an admin", () => {
       render(<UserInfo {...defaultProps} admin={true} />);
-      expect(screen.getByText('John Doe')).toBeTruthy();
+      expect(screen.getByText("John Doe")).toBeTruthy();
     });
 
-    it('should display prime-styled name when user is prime member', () => {
+    it("should display prime-styled name when user is prime member", () => {
       render(<UserInfo {...defaultProps} prime={true} />);
-      expect(screen.getByText('John Doe')).toBeTruthy();
+      expect(screen.getByText("John Doe")).toBeTruthy();
     });
 
-    it('should display default-styled name when user is neither admin nor prime', () => {
+    it("should display default-styled name when user is neither admin nor prime", () => {
       render(<UserInfo {...defaultProps} admin={false} prime={false} />);
-      expect(screen.getByText('John Doe')).toBeTruthy();
+      expect(screen.getByText("John Doe")).toBeTruthy();
     });
 
-    it('should prioritize admin styling over prime when user is both', () => {
+    it("should prioritize admin styling over prime when user is both", () => {
       render(<UserInfo {...defaultProps} admin={true} prime={true} />);
       // Admin styling takes precedence in the ternary
-      expect(screen.getByText('John Doe')).toBeTruthy();
+      expect(screen.getByText("John Doe")).toBeTruthy();
     });
   });
 
-  describe('User Information Layout', () => {
-    it('should display user info with picture and name together', () => {
+  describe("User Information Layout", () => {
+    it("should display user info with picture and name together", () => {
       const { getByText } = render(<UserInfo {...defaultProps} />);
 
-      expect(getByText('John Doe')).toBeTruthy();
+      expect(getByText("John Doe")).toBeTruthy();
       // Picture and name render together in the component
     });
   });
 
-  describe('Edge Cases', () => {
-    it('should handle empty string name gracefully', () => {
+  describe("Edge Cases", () => {
+    it("should handle empty string name gracefully", () => {
       render(<UserInfo name="" admin={false} prime={false} />);
-      expect(screen.getByText('Loading')).toBeTruthy();
+      expect(screen.getByText("Loading")).toBeTruthy();
     });
 
-    it('should handle special characters in name', () => {
+    it("should handle special characters in name", () => {
       render(<UserInfo name="O'Brien-Smith" admin={false} prime={false} />);
       expect(screen.getByText("O'Brien-Smith")).toBeTruthy();
     });
 
-    it('should handle long names', () => {
-      const longName = 'Christopher Alexander Montgomery-Richardson III';
+    it("should handle long names", () => {
+      const longName = "Christopher Alexander Montgomery-Richardson III";
       render(<UserInfo name={longName} admin={false} prime={false} />);
       expect(screen.getByText(longName)).toBeTruthy();
     });
 
-    it('should handle unicode characters in name', () => {
+    it("should handle unicode characters in name", () => {
       render(<UserInfo name="José García" admin={false} prime={false} />);
-      expect(screen.getByText('José García')).toBeTruthy();
+      expect(screen.getByText("José García")).toBeTruthy();
     });
   });
 });

@@ -99,6 +99,7 @@ flowchart TD
 ## Components Used
 
 **React Native Core:**
+
 - `View` - Container components
 - `ScrollView` - Vertical scrolling for entire page
 - `Text` - Section titles, error messages
@@ -107,15 +108,18 @@ flowchart TD
 - `useColorScheme` - Theme detection
 
 **Custom Components:**
+
 - **PrimeNewsPost** (`/shared/PostComponents/PrimeNewsPost`) - Featured video hero
 - **ContentCarousel** (`/components/ContentCarousel`) - Horizontal scrolling carousel
 - **ContentCard** (`/components/ContentCard`) - Individual content cards
 
 **Data Fetching:**
+
 - **React Query** (`useQuery`) - Data fetching and caching
 - Bunny CDN API integration
 
 **Expo Router:**
+
 - Tab navigation (automatic)
 
 ## Key Features
@@ -161,27 +165,29 @@ sequenceDiagram
 
 ## User Interactions
 
-| Element | Action | Result | Navigation |
-|---------|--------|--------|------------|
-| Featured Video | Tap | Play video | Video player screen (future) |
-| ContentCard | Tap | View details | Content detail screen (future) |
-| Card Menu Button | Tap | Open menu | Bottom sheet with options |
-| Retry Button | Tap | Refetch data | Reload from API |
-| Scroll Down | Scroll | View more sections | - |
-| Carousel Scroll | Horizontal scroll | View more cards in section | - |
+| Element          | Action            | Result                     | Navigation                     |
+| ---------------- | ----------------- | -------------------------- | ------------------------------ |
+| Featured Video   | Tap               | Play video                 | Video player screen (future)   |
+| ContentCard      | Tap               | View details               | Content detail screen (future) |
+| Card Menu Button | Tap               | Open menu                  | Bottom sheet with options      |
+| Retry Button     | Tap               | Refetch data               | Reload from API                |
+| Scroll Down      | Scroll            | View more sections         | -                              |
+| Carousel Scroll  | Horizontal scroll | View more cards in section | -                              |
 
 ## State Management
 
 **React Query State:**
+
 ```typescript
 const { data, isLoading, isError, error, refetch } = useQuery({
-  queryKey: ['videos'],
+  queryKey: ["videos"],
   queryFn: fetchVideosFromBunny,
   staleTime: 5 * 60 * 1000, // 5 minutes
 });
 ```
 
 **Derived State:**
+
 ```typescript
 - isLoading: boolean          // Loading spinner visible
 - isError: boolean            // Error state active
@@ -190,6 +196,7 @@ const { data, isLoading, isError, error, refetch } = useQuery({
 ```
 
 **Local State (if any):**
+
 ```typescript
 // Minimal local state - mostly relies on React Query
 ```
@@ -197,6 +204,7 @@ const { data, isLoading, isError, error, refetch } = useQuery({
 ## Screen States
 
 ### 1. Loading State
+
 ```mermaid
 stateDiagram-v2
     [*] --> Loading
@@ -205,11 +213,14 @@ stateDiagram-v2
 ```
 
 **UI**:
+
 - Centered ActivityIndicator
 - No content visible
 
 ### 2. Error State
+
 **UI**:
+
 - Error icon or message
 - Error text: "Failed to load content"
 - Retry button
@@ -218,13 +229,17 @@ stateDiagram-v2
 **User Action**: Tap retry → refetch data
 
 ### 3. Empty State
+
 **UI**:
+
 - Icon or illustration
 - Message: "No content available"
 - No carousels visible
 
 ### 4. Success State (Content Display)
+
 **UI**:
+
 - Featured video hero
 - Multiple content carousels
 - All sections visible
@@ -235,6 +250,7 @@ stateDiagram-v2
 ### Featured Video Hero (PrimeNewsPost)
 
 **Layout**:
+
 - Full-width video player
 - Video title overlay
 - Description text
@@ -242,6 +258,7 @@ stateDiagram-v2
 - Prime badge (if applicable)
 
 **Component Props**:
+
 ```typescript
 <PrimeNewsPost
   name="Creator Name"
@@ -260,11 +277,13 @@ stateDiagram-v2
 **Section Title**: "New Episodes"
 
 **Features**:
+
 - Horizontal scrolling carousel
 - ContentCard components with "New Episode" badge
 - Shows latest content first
 
 **ContentCard Props**:
+
 ```typescript
 <ContentCard
   title="Episode Title"
@@ -282,6 +301,7 @@ stateDiagram-v2
 **Section Title**: "Popular"
 
 **Features**:
+
 - Most viewed or trending content
 - Standard ContentCard without special badges
 - Horizontal scroll
@@ -291,12 +311,14 @@ stateDiagram-v2
 **Section Title**: "Recommended"
 
 **Features**:
+
 - Personalized recommendations (future: ML-based)
 - Currently: Curated content
 - ContentCard with menu options
 - Horizontal scroll
 
 **ContentCard with Menu**:
+
 ```typescript
 <ContentCard
   title="Video Title"
@@ -310,6 +332,7 @@ stateDiagram-v2
 ## Content Card Menu Options (Future)
 
 When user taps menu on ContentCard:
+
 1. **Share** - Share content with others
 2. **Save** - Add to watch later
 3. **Report** - Report inappropriate content
@@ -318,12 +341,14 @@ When user taps menu on ContentCard:
 ## Visual Design
 
 ### Typography
+
 - **Section Titles**: Large, bold (e.g., "New Episodes")
 - **Card Titles**: Medium, bold
 - **Card Descriptions**: Small, regular
 - **Dates**: Extra small, low opacity
 
 ### Colors (Theme-aware)
+
 - **Background**: `colors.background`
 - **Text**: `colors.text`
 - **Prime Cards**: Purple gradient (`colors.primeGradient`)
@@ -331,6 +356,7 @@ When user taps menu on ContentCard:
 - **New Badge**: Accent color (`colors.triC`)
 
 ### Layout
+
 - **Section Spacing**: Consistent vertical padding between sections
 - **Carousel Spacing**: Horizontal padding and gap between cards
 - **Hero Sizing**: Full width, variable height based on video aspect ratio
@@ -339,6 +365,7 @@ When user taps menu on ContentCard:
 ## Loading & Error Behavior
 
 ### Loading Sequence
+
 ```mermaid
 flowchart TD
     Mount[Component Mounts] --> Query[React Query Starts]
@@ -360,12 +387,14 @@ flowchart TD
 ```
 
 ### Retry Logic
+
 - User taps retry button
 - Calls `refetch()` from React Query
 - Returns to loading state
 - Attempts to fetch data again
 
 ### Cache Strategy
+
 - **Stale Time**: 5 minutes (data considered fresh for 5 mins)
 - **Cache Time**: 30 minutes (data kept in cache for 30 mins)
 - **Background Refetch**: Automatically refetches when window refocuses
@@ -378,6 +407,7 @@ flowchart TD
 **Endpoint**: `https://api.bunnycdn.com/videolibrary/{libraryId}/videos`
 
 **Response Structure** (Example):
+
 ```json
 {
   "items": [
@@ -395,6 +425,7 @@ flowchart TD
 ```
 
 **Data Transformation**:
+
 - Maps Bunny CDN response to app's data model
 - Filters content by category (new, popular, recommended)
 - Sorts by date, views, or recommendation score
@@ -402,26 +433,31 @@ flowchart TD
 ## Performance Optimizations
 
 ### React Query Caching
+
 - Reduces API calls
 - Instant display from cache
 - Background updates
 
 ### Carousel Optimization
+
 - Lazy loading of images in cards
 - Virtual scrolling for long lists (future enhancement)
 - Image optimization with Expo Image
 
 ### Video Player
+
 - Thumbnail preview (not full video) in cards
 - Full video loads only on tap
 
 ## Accessibility
 
 **Current Implementation:**
+
 - ScrollView with showsVerticalScrollIndicator
 - Touchable cards with onPress handlers
 
 **Potential Improvements:**
+
 - `accessibilityLabel` for cards ("Play [Video Title]")
 - `accessibilityHint` for carousels ("Swipe left or right to browse")
 - Screen reader support for section titles
@@ -430,9 +466,11 @@ flowchart TD
 ## Implementation Notes
 
 ### File Reference
-[app/(tabs)/(home)/HomePage.tsx](../../../app/(tabs)/(home)/HomePage.tsx)
+
+[app/(tabs)/(home)/HomePage.tsx](<../../../app/(tabs)/(home)/HomePage.tsx>)
 
 ### Key Dependencies
+
 - `@tanstack/react-query` - Data fetching and caching
 - Bunny CDN API client
 - PrimeNewsPost component
@@ -440,11 +478,17 @@ flowchart TD
 - ContentCard component
 
 ### Data Fetching Hook
-```typescript
-import { useQuery } from '@tanstack/react-query';
 
-const { data: videos, isLoading, isError, refetch } = useQuery({
-  queryKey: ['videos'],
+```typescript
+import { useQuery } from "@tanstack/react-query";
+
+const {
+  data: videos,
+  isLoading,
+  isError,
+  refetch,
+} = useQuery({
+  queryKey: ["videos"],
   queryFn: fetchVideosFromBunny,
   staleTime: 5 * 60 * 1000,
 });
@@ -453,6 +497,7 @@ const { data: videos, isLoading, isError, refetch } = useQuery({
 ## Future Enhancements
 
 ### Planned Features
+
 1. **Infinite Scroll**: Load more content as user scrolls
 2. **Pull to Refresh**: Swipe down to reload
 3. **Personalized Recommendations**: ML-based content suggestions
@@ -463,6 +508,7 @@ const { data: videos, isLoading, isError, refetch } = useQuery({
 8. **Watch Progress**: Track where user left off
 
 ### Analytics
+
 - Track video views
 - Carousel engagement metrics
 - Popular content identification
@@ -471,18 +517,21 @@ const { data: videos, isLoading, isError, refetch } = useQuery({
 ## Related Screens
 
 **Parent Screens:**
+
 - Main App Tabs - Home tab selected
 
 **Related Components:**
+
 - [ContentCard Component](../../components/COMPONENT_LIBRARY.md#contentcard)
 - [ContentCarousel Component](../../components/COMPONENT_LIBRARY.md#contentcarousel)
 - [PrimeNewsPost Component](../../components/SHARED_COMPONENTS.md#primenewspost)
 
 **Navigation:**
+
 - Tab navigation to Settings
 - Future: Navigate to video player
 - Future: Navigate to content details
 
 ---
 
-*This wireframe documents the current implementation as of 2026-01-30.*
+_This wireframe documents the current implementation as of 2026-01-30._

@@ -21,7 +21,7 @@ import {
   validateEmail,
   validatePassword,
   validatePasswordMatch,
-  validateRequired
+  validateRequired,
 } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
 import { serverAuth } from "@/services/serverAuth";
@@ -103,7 +103,7 @@ export default function RegisterScreen() {
       firstName: firstNameValidation,
       lastName: lastNameValidation,
       dob: dobValidation,
-      hasErrors
+      hasErrors,
     };
   }, [email, password, matchPassword, firstName, lastName, DOB]);
 
@@ -176,16 +176,16 @@ export default function RegisterScreen() {
     try {
       // Step 1: Register with Firebase
       if (__DEV__) {
-        logger.log('🔐 Registering with Firebase...');
+        logger.log("🔐 Registering with Firebase...");
       }
       await auth().createUserWithEmailAndPassword(email, password);
       if (__DEV__) {
-        logger.log('✅ Firebase registration successful');
+        logger.log("✅ Firebase registration successful");
       }
 
       // Step 2: Register with MongoDB server
       if (__DEV__) {
-        logger.log('🔐 Registering with MongoDB server...');
+        logger.log("🔐 Registering with MongoDB server...");
       }
       try {
         await serverAuth.registerOnServer({
@@ -193,13 +193,13 @@ export default function RegisterScreen() {
           password,
           firstName,
           lastName,
-          DOB
+          DOB,
         });
         if (__DEV__) {
-          logger.log('✅ MongoDB registration successful');
+          logger.log("✅ MongoDB registration successful");
         }
       } catch (mongoError: unknown) {
-        logger.error('❌ MongoDB registration failed:', mongoError);
+        logger.error("❌ MongoDB registration failed:", mongoError);
         // Cleanup: delete Firebase user to avoid orphaned accounts
         try {
           const currentUser = auth().currentUser;
@@ -207,17 +207,22 @@ export default function RegisterScreen() {
             // Delete user first (this automatically signs them out)
             await currentUser.delete();
             if (__DEV__) {
-              logger.log('🧹 Firebase user deleted after MongoDB registration failure');
+              logger.log("🧹 Firebase user deleted after MongoDB registration failure");
             }
           } else {
             if (__DEV__) {
-              logger.log('ℹ️ No Firebase user found to delete after MongoDB failure');
+              logger.log("ℹ️ No Firebase user found to delete after MongoDB failure");
             }
           }
         } catch (cleanupError: unknown) {
-          logger.error('⚠️ Failed to sign out/delete Firebase user after MongoDB failure:', cleanupError);
+          logger.error(
+            "⚠️ Failed to sign out/delete Firebase user after MongoDB failure:",
+            cleanupError
+          );
         }
-        setErrMsg('Registration failed on the server. Your account was not created. Please try again.');
+        setErrMsg(
+          "Registration failed on the server. Your account was not created. Please try again."
+        );
         return;
       }
 
@@ -231,7 +236,7 @@ export default function RegisterScreen() {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
-      logger.error('Registration error:', firebaseError.code, firebaseError.message);
+      logger.error("Registration error:", firebaseError.code, firebaseError.message);
     } finally {
       setLoading(false);
     }
@@ -244,13 +249,7 @@ export default function RegisterScreen() {
       style={globalStyles.flex1}
     >
       <View style={[globalStyles.signInScreen]}>
-        <View
-          style={[
-            globalStyles.loginButtonBox,
-            globalStyles.padding,
-            globalStyles.centerItem,
-          ]}
-        >
+        <View style={[globalStyles.loginButtonBox, globalStyles.padding, globalStyles.centerItem]}>
           <Pressable
             style={[globalStyles.button, { backgroundColor: colors["hexC"] }]}
             // onPress={() => navigation.navigate("Sign In")}
@@ -259,9 +258,7 @@ export default function RegisterScreen() {
               <Text style={globalStyles.buttonText}>Login</Text>
             </Link>
           </Pressable>
-          <Text style={[globalStyles.errorText, { color: colors.secC }]}>
-            {errMsg}
-          </Text>
+          <Text style={[globalStyles.errorText, { color: colors.secC }]}>{errMsg}</Text>
         </View>
         <View
           style={[
@@ -275,10 +272,7 @@ export default function RegisterScreen() {
             },
           ]}
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={globalStyles.scrollView}
-          >
+          <ScrollView showsVerticalScrollIndicator={false} style={globalStyles.scrollView}>
             <View style={globalStyles.formTitle}>
               <Text style={[globalStyles.textTitle, { color: colors["text"] }]}>
                 Create an Account
@@ -288,9 +282,7 @@ export default function RegisterScreen() {
               </Text>
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
-                First Name
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>First Name</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholderTextColor={colors["plcHoldText"]}
@@ -303,15 +295,18 @@ export default function RegisterScreen() {
                 onBlur={validateFirstNameField}
               />
               {firstNameError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {firstNameError}
                 </Text>
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
-                Last Name
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>Last Name</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Last Name"
@@ -324,15 +319,18 @@ export default function RegisterScreen() {
                 onBlur={validateLastNameField}
               />
               {lastNameError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {lastNameError}
                 </Text>
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
-                Email
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>Email</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Email"
@@ -348,15 +346,18 @@ export default function RegisterScreen() {
                 onBlur={validateEmailField} // Validate on blur
               />
               {emailError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {emailError}
                 </Text>
               )}
             </View>
             <View style={globalStyles.labelInput}>
-              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>
-                Password
-              </Text>
+              <Text style={[globalStyles.labelText, { color: colors["text"] }]}>Password</Text>
               <TextInput
                 style={globalStyles.input}
                 placeholder="Enter Password"
@@ -372,7 +373,12 @@ export default function RegisterScreen() {
                 onBlur={validatePasswordField} // Validate on blur
               />
               {passwordError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {passwordError}
                 </Text>
               )}
@@ -396,7 +402,12 @@ export default function RegisterScreen() {
                 onBlur={validateConfirmPasswordField} // Validate on blur
               />
               {confirmPasswordError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {confirmPasswordError}
                 </Text>
               )}
@@ -427,12 +438,7 @@ export default function RegisterScreen() {
                     style={[globalStyles.button, globalStyles.cancelButton]}
                     onPress={toggleDatePicker}
                   >
-                    <Text
-                      style={[
-                        globalStyles.buttonText,
-                        globalStyles.cancelButtonText,
-                      ]}
-                    >
+                    <Text style={[globalStyles.buttonText, globalStyles.cancelButtonText]}>
                       Cancel
                     </Text>
                   </TouchableOpacity>
@@ -440,12 +446,7 @@ export default function RegisterScreen() {
                     style={[globalStyles.button, globalStyles.confirmButton]}
                     onPress={confirmIOSDate}
                   >
-                    <Text
-                      style={[
-                        globalStyles.buttonText,
-                        globalStyles.confirmButtonText,
-                      ]}
-                    >
+                    <Text style={[globalStyles.buttonText, globalStyles.confirmButtonText]}>
                       Confirm
                     </Text>
                   </TouchableOpacity>
@@ -467,7 +468,12 @@ export default function RegisterScreen() {
                 </Pressable>
               )}
               {dobError && (
-                <Text style={[globalStyles.errorText, { color: colors["secC"], fontSize: 12, marginTop: 4 }]}>
+                <Text
+                  style={[
+                    globalStyles.errorText,
+                    { color: colors["secC"], fontSize: 12, marginTop: 4 },
+                  ]}
+                >
                   {dobError}
                 </Text>
               )}
@@ -482,21 +488,17 @@ export default function RegisterScreen() {
                   globalStyles.marginVertical,
                   {
                     backgroundColor: !isFormValid ? colors["quiC"] : colors["triC"],
-                    opacity: !isFormValid ? 0.5 : 1
+                    opacity: !isFormValid ? 0.5 : 1,
                   },
                 ]}
                 disabled={!isFormValid}
                 onPress={handleSubmit}
               >
-                <Text style={globalStyles.buttonText}>
-                  Create an Account
-                </Text>
+                <Text style={globalStyles.buttonText}>Create an Account</Text>
               </Pressable>
             )}
 
-            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>
-              {errMsg}
-            </Text>
+            <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>{errMsg}</Text>
             {/* <Text>Connect with Socials</Text> */}
           </ScrollView>
         </View>

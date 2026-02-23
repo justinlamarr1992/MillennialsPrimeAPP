@@ -11,6 +11,7 @@
 The hooks test suite demonstrates good quality with proper use of `renderHook` and strong behavior-focused testing. All tests properly test hooks in isolation with appropriate mocking. The test coverage is comprehensive with good edge case handling.
 
 **Overall Quality**: 7.5/10
+
 - ✓ Proper use of renderHook from Testing Library
 - ✓ Good edge case coverage
 - ✓ Behavior-focused testing (especially useUserProfile)
@@ -24,9 +25,11 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 ## File-by-File Analysis
 
 ### 1. useAuth.test.tsx
+
 **Lines**: 201 | **Tests**: 10 | **Quality**: 7/10
 
 #### Strengths
+
 - ✓ Tests hook behavior within and outside context
 - ✓ Tests error throwing when used outside provider
 - ✓ Tests context updates and re-renders
@@ -37,6 +40,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 #### Issues Found
 
 **P1 - High Priority:**
+
 1. **ESLint Warning - Manual Console Mock** (lines 136, 148):
    ```typescript
    const consoleError = console.error;
@@ -48,10 +52,13 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
    **Recommendation**: Use `jest.spyOn(console, 'error').mockImplementation(() => {})` and restore with `.mockRestore()`
 
 **P2 - Medium Priority:**
+
 1. **Weak Assertion** (line 28):
+
    ```typescript
    expect(result.current).toBe(mockContextValue);
    ```
+
    **Issue**: Using `.toBe()` for object reference check, then `.toEqual()` on line 29 for content check
    **Recommendation**: Remove line 28 or change to `.toStrictEqual()` if testing value equality
 
@@ -67,6 +74,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
    - Each test creates identical wrapper with different mockContextValue
 
    **Recommendation**: Create helper function:
+
    ```typescript
    const createAuthWrapper = (contextValue: any) => {
      return ({ children }: { children: React.ReactNode }) => {
@@ -76,6 +84,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
    ```
 
 #### Test Coverage
+
 - ✓ Context value reading (6 tests)
 - ✓ Error handling outside provider (2 tests)
 - ✓ Context updates (1 test)
@@ -86,9 +95,11 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 ---
 
 ### 2. useUserProfile.test.ts ⭐ TEMPLATE EXAMPLE
+
 **Lines**: 215 | **Tests**: 11 | **Quality**: 8.5/10
 
 #### Strengths
+
 - ✓ Excellent behavior-focused testing (documented in header)
 - ✓ Tests all states: loading, success, error
 - ✓ Tests refetch functionality
@@ -101,6 +112,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 #### Issues Found
 
 **P2 - Medium Priority:**
+
 1. **ESLint Warnings - toEqual vs toStrictEqual** (5 instances):
    - Line 84: `expect(result.current.profile).toEqual(mockProfile);`
    - Line 99: `expect(result.current.error).toEqual(fetchError);`
@@ -120,6 +132,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
    **Recommendation**: Define proper types for props to avoid `as any`
 
 #### Test Coverage
+
 - ✓ No user logged in (1 test)
 - ✓ User logged in - success/error/refetch (4 tests)
 - ✓ Auth state changes (2 tests)
@@ -130,9 +143,11 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 ---
 
 ### 3. useRefreshToken.test.ts ⭐ EXCELLENT
+
 **Lines**: 282 | **Tests**: 14 | **Quality**: 9/10
 
 #### Strengths
+
 - ✓ Comprehensive edge case testing
 - ✓ Tests multiple sequential calls
 - ✓ Tests delayed token resolution
@@ -146,6 +161,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 #### Issues Found
 
 **P3 - Low Priority:**
+
 1. **No Critical Issues Found** ✓
 
 2. **Potential Improvement** (line 36):
@@ -155,6 +171,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
    **Note**: Type assertion is necessary here due to mocking limitations. Acceptable in test context.
 
 #### Test Coverage
+
 - ✓ Successful token refresh (4 tests)
 - ✓ Error handling (4 tests)
 - ✓ Multiple refresh calls (2 tests)
@@ -165,9 +182,11 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 ---
 
 ### 4. useAxiosPrivate.test.ts
+
 **Lines**: 140 | **Tests**: 11 | **Quality**: 6.5/10
 
 #### Strengths
+
 - ✓ Tests interceptor setup and cleanup
 - ✓ Tests hook returns same instance on re-render
 - ✓ Tests cleanup on unmount
@@ -177,15 +196,17 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 #### Issues Found
 
 **P1 - High Priority:**
+
 1. **ESLint Warnings - Manual Mocking** (lines 53, 54):
    ```typescript
-   mockedServerAuth.getAccessToken = jest.fn().mockResolvedValue('mock-access-token');
-   mockedServerAuth.refreshToken = jest.fn().mockResolvedValue('new-access-token');
+   mockedServerAuth.getAccessToken = jest.fn().mockResolvedValue("mock-access-token");
+   mockedServerAuth.refreshToken = jest.fn().mockResolvedValue("new-access-token");
    ```
    **Severity**: `jest/prefer-spy-on` (4 warnings total - includes lines 111, 132)
    **Recommendation**: Use `jest.spyOn(mockedServerAuth, 'getAccessToken')` instead
 
 **P2 - Medium Priority:**
+
 1. **Incomplete Interceptor Testing** (lines 102-138):
    - Tests verify interceptors are set up but don't test their actual behavior
    - Request interceptor: No test of token attachment to requests
@@ -203,6 +224,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
    **Recommendation**: Consider using a more realistic axios mock or test actual interceptor functions
 
 **P3 - Low Priority:**
+
 1. **Coverage Target** (line 3):
    - Target coverage is 75%, lower than other hooks (80-90%)
    - Likely due to untested interceptor behavior
@@ -210,6 +232,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
    **Recommendation**: Increase coverage target to 85% after adding interceptor behavior tests
 
 #### Test Coverage
+
 - ✓ Hook behavior (5 tests)
 - ✓ Request interceptor setup (2 tests)
 - ✓ Response interceptor setup (2 tests)
@@ -276,10 +299,12 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 ## Recommendations
 
 ### Immediate Fixes (P1)
+
 1. **useAuth.test.tsx:136,148** - Replace manual console.error mocking with jest.spyOn()
 2. **useAxiosPrivate.test.ts:53,54,111,132** - Replace 4 manual mocks with jest.spyOn()
 
 ### Important Improvements (P2)
+
 1. **All files** - Replace 11 instances of `.toEqual()` with `.toStrictEqual()`
 2. **useAuth.test.tsx** - Extract wrapper creation helper to reduce duplication
 3. **useAxiosPrivate.test.ts** - Add 5-7 tests for actual interceptor behavior:
@@ -291,6 +316,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 4. **useUserProfile.test.ts** - Replace `as any` with proper types
 
 ### Future Enhancements (P3)
+
 1. Create shared hook testing utilities in `test-utils.tsx`:
    - `createContextWrapper(Context, value)` - Reusable wrapper creator
    - `renderHookWithAuth(hook, authValue)` - Pre-configured auth wrapper
@@ -302,6 +328,7 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 ## ESLint Issues (From Baseline + Manual Review)
 
 **By File:**
+
 - **useAuth.test.tsx**: 4 warnings
   - 2× jest/prefer-spy-on (console.error mocking)
   - 2× jest/prefer-strict-equal (.toEqual → .toStrictEqual)
@@ -321,12 +348,14 @@ The hooks test suite demonstrates good quality with proper use of `renderHook` a
 ## Coverage Impact
 
 All hooks have excellent coverage:
+
 - useAuth.ts: 100% statements ✓
 - useUserProfile.ts: 96.77% statements ✓
 - useRefreshToken.ts: 100% statements ✓
 - useAxiosPrivate.ts: 31.25% statements ⚠
 
 **Coverage Analysis**:
+
 - useAxiosPrivate has low coverage (31.25%) but this is expected
 - Most logic is in interceptor setup which runs in useEffect
 - Interceptor functions themselves are hard to unit test
@@ -337,12 +366,14 @@ All hooks have excellent coverage:
 ## Action Items
 
 ### Week 2 Fixes
+
 - [ ] Fix 6 P1 issues (manual mocks in useAuth and useAxiosPrivate)
 - [ ] Replace 11 `.toEqual()` with `.toStrictEqual()`
 - [ ] Extract wrapper helper in useAuth.test.tsx
 - [ ] Add interceptor behavior tests to useAxiosPrivate (5-7 new tests)
 
 ### Week 4 Standards
+
 - [ ] Document hook testing patterns in TESTING.md
 - [ ] Add useUserProfile.test.ts as behavior-focused example
 - [ ] Add useRefreshToken.test.ts as edge-case testing example
@@ -353,6 +384,7 @@ All hooks have excellent coverage:
 ## Comparison: Best vs Needs Improvement
 
 ### Best File: useRefreshToken.test.ts (9/10) ⭐
+
 - Zero ESLint warnings
 - Comprehensive edge cases
 - Clean organization
@@ -360,12 +392,14 @@ All hooks have excellent coverage:
 - Tests multiple sequential calls
 
 ### Needs Most Improvement: useAxiosPrivate.test.ts (6.5/10)
+
 - 4 ESLint warnings
 - Tests setup but not behavior
 - Missing critical interceptor tests
 - Low coverage (but acceptable given infrastructure nature)
 
 ### Template Examples
+
 - **Behavior-focused testing**: useUserProfile.test.ts
 - **Edge case testing**: useRefreshToken.test.ts
 - **Error handling**: useRefreshToken.test.ts

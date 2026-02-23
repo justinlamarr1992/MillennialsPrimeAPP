@@ -76,9 +76,7 @@ const PrimeShow = ({ route }: PrimeShowProps) => {
   // };
 
   return (
-    <View
-      style={[globalStyles.padding, { backgroundColor: colors["background"] }]}
-    >
+    <View style={[globalStyles.padding, { backgroundColor: colors["background"] }]}>
       <LinearGradient
         style={globalStyles.post}
         colors={
