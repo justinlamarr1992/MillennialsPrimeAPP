@@ -66,7 +66,15 @@ target 'MillennialsPrimeAPP' do
     installer.pods_project.targets.each do |target|
       if target.name.start_with?('RNFB')
         target.build_configurations.each do |config|
-          config.build_settings['OTHER_CFLAGS'] = '$(inherited) -Wno-non-modular-include-in-framework-module'
+          warning_flag = '-Wno-non-modular-include-in-framework-module'
+          existing = config.build_settings['OTHER_CFLAGS']
+          if existing.is_a?(Array)
+            config.build_settings['OTHER_CFLAGS'] << warning_flag unless existing.include?(warning_flag)
+          elsif existing.is_a?(String)
+            config.build_settings['OTHER_CFLAGS'] = "#{existing} #{warning_flag}" unless existing.include?(warning_flag)
+          else
+            config.build_settings['OTHER_CFLAGS'] = "$(inherited) #{warning_flag}"
+          end
         end
       end
     end
