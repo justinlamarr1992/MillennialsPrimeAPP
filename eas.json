@@ -20,7 +20,11 @@
         "simulator": true
       }
     },
-    "production": {},
+    "production": {
+      "ios": {
+        "image": "macos-sequoia-15.6-xcode-26.0"
+      }
+    },
     "development-simulator": {
       "developmentClient": true,
       "distribution": "internal",

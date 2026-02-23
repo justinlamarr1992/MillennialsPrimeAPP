@@ -4,6 +4,7 @@
     "slug": "Millennials-Prime_APP",
     "scheme": "your-app-scheme",
     "version": "1.2.0",
+    "newArchEnabled": true,
     "orientation": "portrait",
     "icon": "./assets/images/mill-prime-icon.png",
     "userInterfaceStyle": "automatic",
@@ -46,7 +47,8 @@
       ],
       "expo-font",
       "expo-web-browser",
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true
