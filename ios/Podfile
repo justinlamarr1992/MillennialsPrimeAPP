@@ -59,5 +59,16 @@ target 'MillennialsPrimeAPP' do
       :mac_catalyst_enabled => false,
       :ccache_enabled => ccache_enabled?(podfile_properties),
     )
+
+    # @react-native-firebase imports React headers without module maps, which
+    # clang treats as an error under use_frameworks! :linkage => :static.
+    # Suppress the warning for all RNFB pod targets only.
+    installer.pods_project.targets.each do |target|
+      if target.name.start_with?('RNFB')
+        target.build_configurations.each do |config|
+          config.build_settings['OTHER_CFLAGS'] = '$(inherited) -Wno-non-modular-include-in-framework-module'
+        end
+      end
+    end
   end
 end
