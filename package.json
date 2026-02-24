@@ -28,9 +28,9 @@
     "validate:checks": "npm run type-check && npm run lint && npm run format:check",
     "validate": "npm run validate:checks && npm test",
     "version:bump": "bash ./scripts/bump-version.sh",
-    "test:e2e": "maestro test .maestro/flows/",
-    "test:e2e:ios": "maestro test .maestro/flows/ --platform ios",
-    "test:e2e:android": "maestro test .maestro/flows/ --platform android"
+    "test:e2e": "bash .maestro/run-tests.sh test .maestro/flows/",
+    "test:e2e:ios": "bash .maestro/run-tests.sh test .maestro/flows/ --platform ios",
+    "test:e2e:android": "bash .maestro/run-tests.sh test .maestro/flows/ --platform android"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

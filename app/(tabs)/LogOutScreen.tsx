@@ -66,6 +66,7 @@ export default function LogOutScreen() {
         <Pressable
           style={[globalStyles.button, { backgroundColor: colors["priC"] }]}
           onPress={handleLogOut}
+          testID="logout-confirm-button"
         >
           <Text style={[globalStyles.buttonText, { color: colors["secT"] }]}>Log Out</Text>
         </Pressable>

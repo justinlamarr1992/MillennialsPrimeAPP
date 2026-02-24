@@ -1,8 +1,12 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
+import { render, screen, fireEvent, waitFor, act } from "@/__tests__/test-utils";
 import RegisterScreen from "../RegisterScreen";
 import { router } from "expo-router";
-import { createUserWithEmailAndPassword } from "@/__tests__/__mocks__/firebase";
+import {
+  createUserWithEmailAndPassword,
+  mockAuthInstance,
+  mockUser,
+} from "@/__tests__/__mocks__/firebase";
 import { serverAuth } from "@/services/serverAuth";
 import auth from "@react-native-firebase/auth";
 
@@ -12,6 +16,19 @@ import auth from "@react-native-firebase/auth";
 jest.mock("@/services/serverAuth", () => ({
   serverAuth: {
     registerOnServer: jest.fn(),
+  },
+}));
+
+// Capture DateTimePicker's onChange so we can test its branches.
+// DateTimePicker renders null in tests (unsupported platform fallback), so we mock it
+// to capture the onChange prop and still return null, preserving existing test behaviour.
+// jest-hoist allows `mock`-prefixed variables inside jest.mock factories.
+let mockDatePickerOnChange: ((event: { type: string }, date?: Date) => void) | null = null;
+jest.mock("@react-native-community/datetimepicker", () => ({
+  __esModule: true,
+  default: ({ onChange }: { onChange: (event: { type: string }, date?: Date) => void }) => {
+    mockDatePickerOnChange = onChange;
+    return null;
   },
 }));
 
@@ -34,6 +51,8 @@ describe("RegisterScreen", () => {
     jest.clearAllMocks();
     // Mock global.alert for tests that need it
     global.alert = jest.fn();
+    // Reset captured DateTimePicker onChange ref
+    mockDatePickerOnChange = null;
   });
 
   describe("Rendering", () => {
@@ -541,12 +560,107 @@ describe("RegisterScreen", () => {
     });
   });
 
+  describe("E2E Test IDs", () => {
+    it("should expose register-email-input testID", () => {
+      render(<RegisterScreen />);
+      expect(screen.getByTestId("register-email-input")).toBeTruthy();
+    });
+
+    it("should expose register-password-input testID", () => {
+      render(<RegisterScreen />);
+      expect(screen.getByTestId("register-password-input")).toBeTruthy();
+    });
+
+    it("should expose register-confirm-input testID on confirm password field", () => {
+      render(<RegisterScreen />);
+      expect(screen.getByTestId("register-confirm-input")).toBeTruthy();
+    });
+
+    it("should expose birthday-input testID on the TextInput", () => {
+      render(<RegisterScreen />);
+      // testID is on the TextInput; onFocus opens the picker (more reliable than Pressable.onPress
+      // with iOS 26 + New Architecture where XCUITest does not reliably trigger onPress)
+      expect(screen.getByTestId("birthday-input")).toBeTruthy();
+    });
+
+    it("should expose register-submit-button testID", () => {
+      render(<RegisterScreen />);
+      expect(screen.getByTestId("register-submit-button")).toBeTruthy();
+    });
+
+    it("should expose birthday-confirm-button testID when date picker is shown", () => {
+      render(<RegisterScreen />);
+      // onFocus opens the picker; trigger it via focus event
+      fireEvent(screen.getByTestId("birthday-input"), "focus");
+      expect(screen.getByTestId("birthday-confirm-button")).toBeTruthy();
+    });
+  });
+
+  describe("DatePicker onChange branches", () => {
+    it("should close picker when onChange fires with dismissed event (else branch)", async () => {
+      render(<RegisterScreen />);
+      // Open picker — renders DateTimePicker mock which captures the onChange prop
+      fireEvent(screen.getByTestId("birthday-input"), "focus");
+      expect(mockDatePickerOnChange).not.toBeNull();
+      // Fire dismissed event — covers the else branch of if (event.type === "set" && selectedDate)
+      await act(async () => {
+        mockDatePickerOnChange!({ type: "dismissed" });
+      });
+      // toggleDatePicker is called, picker closes and birthday-input reappears
+      expect(screen.getByTestId("birthday-input")).toBeTruthy();
+    });
+
+    it("should update date when onChange fires with set event (true branch, iOS)", async () => {
+      render(<RegisterScreen />);
+      // Open picker
+      fireEvent(screen.getByTestId("birthday-input"), "focus");
+      expect(mockDatePickerOnChange).not.toBeNull();
+      const testDate = new Date(1990, 5, 15);
+      // Fire set event — covers the true branch (setDate) and the iOS path (not android)
+      await act(async () => {
+        mockDatePickerOnChange!({ type: "set" }, testDate);
+      });
+      // On iOS, picker stays open after onChange (no auto-close like Android)
+      expect(screen.getByTestId("birthday-confirm-button")).toBeTruthy();
+    });
+  });
+
+  describe("DatePicker Interactions", () => {
+    it("should set DOB and close picker when Confirm is tapped", () => {
+      render(<RegisterScreen />);
+      // Open picker via focus on birthday input
+      fireEvent(screen.getByTestId("birthday-input"), "focus");
+      expect(screen.getByTestId("birthday-confirm-button")).toBeTruthy();
+      // Press Confirm — calls confirmIOSDate → setDOB + toggleDatePicker
+      fireEvent.press(screen.getByTestId("birthday-confirm-button"));
+      // Picker should close: birthday-input reappears, confirm button gone
+      expect(screen.queryByTestId("birthday-confirm-button")).toBeNull();
+      expect(screen.getByTestId("birthday-input")).toBeTruthy();
+    });
+
+    it("should close picker when Cancel is tapped", () => {
+      render(<RegisterScreen />);
+      // Open picker
+      fireEvent(screen.getByTestId("birthday-input"), "focus");
+      // Press Cancel — calls toggleDatePicker
+      fireEvent.press(screen.getByText("Cancel"));
+      // Picker should close
+      expect(screen.queryByTestId("birthday-confirm-button")).toBeNull();
+      expect(screen.getByTestId("birthday-input")).toBeTruthy();
+    });
+  });
+
   describe("MongoDB Server Registration", () => {
     beforeEach(() => {
       (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({
         user: { uid: "test-uid", email: "john@example.com" },
       });
       (serverAuth.registerOnServer as jest.Mock).mockResolvedValue(undefined);
+    });
+
+    afterEach(() => {
+      // Always restore currentUser in case a test sets it to null
+      mockAuthInstance.currentUser = mockUser;
     });
 
     it("should register with MongoDB server after Firebase registration succeeds", async () => {
@@ -662,6 +776,32 @@ describe("RegisterScreen", () => {
 
       // Should not navigate
       expect(mockRouter.replace).not.toHaveBeenCalled();
+    });
+
+    it("should handle MongoDB failure gracefully when Firebase currentUser is null", async () => {
+      (serverAuth.registerOnServer as jest.Mock).mockRejectedValue(
+        new Error("MongoDB connection failed")
+      );
+      // Simulate race condition where currentUser is already gone after Firebase registration
+      mockAuthInstance.currentUser = null;
+
+      render(<RegisterScreen />);
+
+      fireEvent.changeText(screen.getByPlaceholderText("Enter First Name"), "John");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Last Name"), "Doe");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "john@example.com");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "ValidPass123!");
+      fireEvent.changeText(screen.getByPlaceholderText("Confirm Password"), "ValidPass123!");
+      fireEvent.changeText(screen.getByPlaceholderText("Birthday"), "Mon Jan 01 1990");
+
+      fireEvent.press(screen.getByTestId("register-submit-button"));
+
+      await waitFor(() => {
+        const errors = screen.getAllByText(
+          "Registration failed on the server. Your account was not created. Please try again."
+        );
+        expect(errors[0]).toBeTruthy();
+      });
     });
 
     it("user should be able to retry registration after MongoDB server failure", async () => {

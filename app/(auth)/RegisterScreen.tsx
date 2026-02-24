@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  Keyboard,
   Pressable,
   TextInput,
   ActivityIndicator,
@@ -46,8 +47,8 @@ interface ValidationErrors {
 // Born between 1981 and 1997 (age 28-44 in 2025)
 const MIN_BIRTH_YEAR = 1981;
 const MAX_BIRTH_YEAR = 1997;
-const MIN_BIRTH_DATE = new Date(`${MIN_BIRTH_YEAR}-1-1`);
-const MAX_BIRTH_DATE = new Date(`${MAX_BIRTH_YEAR}-1-1`);
+const MIN_BIRTH_DATE = new Date(MIN_BIRTH_YEAR, 0, 1); // Jan 1, 1981 — numeric ctor avoids timezone shifts
+const MAX_BIRTH_DATE = new Date(MAX_BIRTH_YEAR, 11, 31); // Dec 31, 1997 — end-of-year allows all of MAX_BIRTH_YEAR
 
 export default function RegisterScreen() {
   const colorScheme = useColorScheme();
@@ -61,7 +62,7 @@ export default function RegisterScreen() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date(MAX_BIRTH_YEAR, 0, 1));
   const [DOB, setDOB] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
@@ -129,6 +130,15 @@ export default function RegisterScreen() {
   const validateLastNameField = useCallback(() => {
     setLastNameError(validateRequired(lastName, "Last name"));
   }, [lastName]);
+
+  // Birthday field focus handler — opens the DateTimePicker and dismisses keyboard.
+  // Using onFocus (instead of Pressable.onPress) is required for iOS 26 + New Architecture:
+  // XCUITest reliably fires onFocus when tapping a TextInput by testID, but does not
+  // reliably trigger Pressable.onPress via accessibility gestures.
+  const handleBirthdayFocus = useCallback(() => {
+    Keyboard.dismiss();
+    setShowPicker(true); // idempotent — no dep on showPicker needed
+  }, []);
 
   // Clear general error message when user makes changes
   useEffect(() => {
@@ -293,6 +303,7 @@ export default function RegisterScreen() {
                   if (firstNameError) setFirstNameError(null);
                 }}
                 onBlur={validateFirstNameField}
+                testID="register-firstname-input"
               />
               {firstNameError && (
                 <Text
@@ -317,6 +328,7 @@ export default function RegisterScreen() {
                   if (lastNameError) setLastNameError(null);
                 }}
                 onBlur={validateLastNameField}
+                testID="register-lastname-input"
               />
               {lastNameError && (
                 <Text
@@ -344,6 +356,7 @@ export default function RegisterScreen() {
                   logger.log("User email updated. Length:", text.length);
                 }}
                 onBlur={validateEmailField} // Validate on blur
+                testID="register-email-input"
               />
               {emailError && (
                 <Text
@@ -363,6 +376,8 @@ export default function RegisterScreen() {
                 placeholder="Enter Password"
                 placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
+                textContentType="none"
+                autoComplete="off"
                 autoCapitalize="none"
                 value={password}
                 onChangeText={(text) => {
@@ -371,6 +386,7 @@ export default function RegisterScreen() {
                   // Password length logging removed per security best practices
                 }}
                 onBlur={validatePasswordField} // Validate on blur
+                testID="register-password-input"
               />
               {passwordError && (
                 <Text
@@ -392,6 +408,8 @@ export default function RegisterScreen() {
                 placeholder="Confirm Password"
                 placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
+                textContentType="none"
+                autoComplete="off"
                 autoCapitalize="none"
                 value={matchPassword}
                 onChangeText={(text) => {
@@ -400,6 +418,7 @@ export default function RegisterScreen() {
                   // Password match logging removed per security best practices
                 }}
                 onBlur={validateConfirmPasswordField} // Validate on blur
+                testID="register-confirm-input"
               />
               {confirmPasswordError && (
                 <Text
@@ -445,6 +464,7 @@ export default function RegisterScreen() {
                   <TouchableOpacity
                     style={[globalStyles.button, globalStyles.confirmButton]}
                     onPress={confirmIOSDate}
+                    testID="birthday-confirm-button"
                   >
                     <Text style={[globalStyles.buttonText, globalStyles.confirmButtonText]}>
                       Confirm
@@ -454,18 +474,18 @@ export default function RegisterScreen() {
               )}
 
               {!showPicker && (
-                <Pressable onPress={toggleDatePicker}>
-                  <TextInput
-                    style={globalStyles.input}
-                    placeholder="Birthday"
-                    placeholderTextColor={colors["plcHoldText"]}
-                    value={DOB}
-                    onChangeText={setDOB}
-                    onPressIn={toggleDatePicker}
-                    testID="birthday-input"
-                    showSoftInputOnFocus={false}
-                  />
-                </Pressable>
+                <TextInput
+                  style={globalStyles.input}
+                  placeholder="Birthday"
+                  placeholderTextColor={colors["plcHoldText"]}
+                  value={DOB}
+                  onChangeText={setDOB}
+                  showSoftInputOnFocus={false}
+                  onFocus={handleBirthdayFocus}
+                  testID="birthday-input"
+                  accessibilityLabel="Birthday"
+                  accessibilityHint="Opens date picker to select your birth date"
+                />
               )}
               {dobError && (
                 <Text

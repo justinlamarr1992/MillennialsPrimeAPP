@@ -76,6 +76,7 @@ const TabsLayout = () => {
           headerLeft: () => <TabBackButton />,
           title: "Settings",
           tabBarIcon: ({ color }) => <Ionicons size={28} name="cog" color={color} />,
+          tabBarButtonTestID: "tab-settings",
         }}
       />
       {/*
@@ -183,6 +184,7 @@ const TabsLayout = () => {
           title: "Log Out",
           headerTitle: "Log Out",
           tabBarIcon: ({ color }) => <Ionicons name="log-out" size={28} color={color} />,
+          tabBarButtonTestID: "tab-logout",
         }}
       />
       {/* screenOptions=

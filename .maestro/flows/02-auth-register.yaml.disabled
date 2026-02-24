@@ -1,0 +1,91 @@
+appId: com.justappin.millennials-prime-app
+# Android: com.justappin.MillennialsPrime_APP
+---
+# DISABLED — iOS 26.1 blocker: textContentType="none" + autoComplete="off" do not suppress
+# the "Automatic Strong Password" cover view on secureTextEntry fields. Keyboard input is
+# intercepted by the native AutoFill overlay; the React Native TextInput never receives
+# onChangeText. Clipboard paste (longPressOn + "Paste") was also blocked by the iOS paste
+# permission dialog in the Simulator. Re-enable when Maestro or React Native adds a
+# supported workaround for iOS 26 AutoFill on secureTextEntry fields.
+# See: https://github.com/mobile-dev-inc/maestro/issues (search "iOS 26 password")
+#
+# Flow: Register a new account.
+# Uses MAESTRO_REGISTER_EMAIL from .env (fixed address — not idempotent).
+# NOTE: Firebase + MongoDB user must be manually deleted between runs.
+# Requires MAESTRO_REGISTER_EMAIL and MAESTRO_REGISTER_PASSWORD env vars.
+#
+# iOS 26 workaround: "Automatic Strong Password" AutoFill cover view intercepts
+# keyboard input on secureTextEntry fields regardless of textContentType="none".
+# Solution: set Mac clipboard to MAESTRO_REGISTER_PASSWORD via pbcopy BEFORE
+# running this flow, then paste into each password field via long-press context menu.
+#   echo -n "Prime1234!" | pbcopy
+
+- launchApp:
+    clearState: true
+    clearKeychain: true
+
+# Navigate to registration screen
+- assertVisible: "Enter Email"
+- tapOn: "Create an Account"
+
+# Wait for registration form
+- assertVisible: "Enter First Name"
+
+# Fill in required fields
+- tapOn: "Enter First Name"
+- inputText: "Test"
+
+- tapOn: "Enter Last Name"
+- inputText: "User"
+
+- tapOn:
+    id: "register-email-input"
+- inputText: ${MAESTRO_REGISTER_EMAIL}
+
+# iOS 26 password workaround: long-press opens text editing context menu (Paste)
+# which bypasses the "Automatic Strong Password" AutoFill cover view.
+# Clipboard must contain ${MAESTRO_REGISTER_PASSWORD} (set via pbcopy before run).
+- longPressOn:
+    id: "register-password-input"
+- tapOn:
+    text: "Select All"
+    optional: true
+- longPressOn:
+    id: "register-password-input"
+- tapOn: "Paste"
+
+- longPressOn:
+    id: "register-confirm-input"
+- tapOn:
+    text: "Select All"
+    optional: true
+- longPressOn:
+    id: "register-confirm-input"
+- tapOn: "Paste"
+
+# Birthday field — TextInput with onFocus={handleBirthdayFocus} opens DateTimePicker.
+# onFocus fires reliably when XCUITest taps a TextInput by testID (unlike Pressable.onPress).
+# waitForAnimationToEnd ensures the picker is fully rendered before scrolling.
+- tapOn:
+    id: "birthday-input"
+- waitForAnimationToEnd
+# DateTimePicker spinner (~216px) pushes Confirm button below viewport — scroll to reveal it.
+- scrollUntilVisible:
+    element:
+      id: "birthday-confirm-button"
+    direction: DOWN
+    timeout: 5000
+- tapOn:
+    id: "birthday-confirm-button"
+
+# Submit registration
+- tapOn:
+    id: "register-submit-button"
+
+# Dismiss native alert ("You are registered")
+- tapOn: "OK"
+
+# Assert redirect to sign-in screen after successful registration
+- extendedWaitUntil:
+    visible: "Enter Email"
+    timeout: 15000
