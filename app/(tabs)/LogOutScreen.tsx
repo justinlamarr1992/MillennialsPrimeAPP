@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Text, View, useColorScheme, Pressable, ActivityIndicator } from "react-native";
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
-import { router } from "expo-router";
 import auth from "@react-native-firebase/auth";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
@@ -33,13 +32,10 @@ export default function LogOutScreen() {
       const errorMessage = handleAuthError(firebaseError);
       setErrMsg(errorMessage);
       logger.error("❌ Sign out error:", firebaseError.code, firebaseError.message);
+    } finally {
       setLoading(false);
-      return; // Exit early on error
     }
-
-    // Only navigate if sign out was successful
-    setLoading(false);
-    router.replace("/");
+    // Navigation to login form is handled by the auth listener in _layout.tsx
   };
 
   return (

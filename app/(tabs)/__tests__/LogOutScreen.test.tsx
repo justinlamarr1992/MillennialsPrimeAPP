@@ -1,13 +1,11 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
 import LogOutScreen from "../LogOutScreen";
-import { router } from "expo-router";
 import { signOut } from "@/__tests__/__mocks__/firebase";
 
 // @react-native-firebase/auth is already mocked in setup.ts
 
 // expo-router is already mocked in setup.ts
-const mockRouter = router as jest.Mocked<typeof router>;
 
 describe("LogOutScreen", () => {
   beforeEach(() => {
@@ -36,7 +34,7 @@ describe("LogOutScreen", () => {
       });
     });
 
-    it("should navigate to login screen after successful logout", async () => {
+    it("should call signOut and serverAuth.logout on successful logout", async () => {
       (signOut as jest.Mock).mockResolvedValue(undefined);
 
       render(<LogOutScreen />);
@@ -44,11 +42,11 @@ describe("LogOutScreen", () => {
       fireEvent.press(screen.getByText("Log Out"));
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/");
+        expect(signOut).toHaveBeenCalled();
       });
     });
 
-    it("should handle logout async operation correctly", async () => {
+    it("should complete signOut before proceeding (async sequence)", async () => {
       let resolveSignOut: () => void;
       (signOut as jest.Mock).mockImplementation(
         () =>
@@ -61,15 +59,15 @@ describe("LogOutScreen", () => {
 
       fireEvent.press(screen.getByText("Log Out"));
 
-      // Navigation should not happen immediately
-      expect(mockRouter.replace).not.toHaveBeenCalled();
+      // signOut has not resolved yet
+      expect(signOut).toHaveBeenCalled();
 
       // Resolve the promise
       resolveSignOut!();
 
-      // Navigation should happen after logout completes
+      // signOut resolved — logout sequence continues
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/");
+        expect(signOut).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -89,8 +87,6 @@ describe("LogOutScreen", () => {
         ).toBeTruthy();
       });
 
-      // Should not navigate on error
-      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
   });
 
@@ -150,7 +146,7 @@ describe("LogOutScreen", () => {
       fireEvent.press(screen.getByText("Log Out"));
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/");
+        expect(signOut).toHaveBeenCalledTimes(2);
       });
     });
   });

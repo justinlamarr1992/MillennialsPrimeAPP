@@ -9,6 +9,7 @@ export default function Layout() {
   const colors = COLORS[colorScheme ?? "dark"];
   return (
     <Stack
+      initialRouteName="SocialFeedScreen"
       screenOptions={{
         headerStyle: {
           backgroundColor: colors["backgroundColor"],
@@ -21,7 +22,7 @@ export default function Layout() {
       }}
     >
       <Stack.Screen
-        name="index"
+        name="SocialFeedScreen"
         options={{
           title: "Social",
           headerStyle: {

@@ -1,5 +1,5 @@
 import "react-native-reanimated";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -53,11 +53,19 @@ export function RootLayoutNav() {
   const router = useRouter();
   const segments = useSegments();
 
+  // Keep segments in a ref so the effect always reads the latest value without
+  // re-running on every intermediate segment change during navigation transitions.
+  // Re-running mid-transition can dispatch multiple router.replace calls that
+  // corrupt React Navigation state and land on the wrong screen.
+  const segmentsRef = useRef<string[]>([]);
+  segmentsRef.current = segments as string[];
+
   useEffect(() => {
     if (loading) return;
-    const target = getRedirectTarget(user, segments as string[]);
+    const target = getRedirectTarget(user, segmentsRef.current);
     if (target) router.replace(target);
-  }, [user, loading, segments, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, loading, router]);
 
   if (loading || (!!user && segments[0] === undefined)) {
     return (
