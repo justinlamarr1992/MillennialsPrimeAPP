@@ -3,7 +3,8 @@ appId: com.justappin.millennials-prime-app
 ---
 # Flow: Happy path sign in with a test account.
 # Requires MAESTRO_PRIME_EMAIL and MAESTRO_PRIME_PASSWORD environment variables.
-# Set before running: export MAESTRO_PRIME_EMAIL=... && export MAESTRO_PRIME_PASSWORD=...
+# Recommended: run via `npm run test:e2e` or `.maestro/run-tests.sh`, which source .env automatically.
+# Alternative (direct Maestro): export MAESTRO_PRIME_EMAIL=... && export MAESTRO_PRIME_PASSWORD=...
 
 - launchApp:
     clearState: true

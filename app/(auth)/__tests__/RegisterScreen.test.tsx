@@ -794,9 +794,7 @@ describe("RegisterScreen", () => {
       fireEvent.changeText(screen.getByPlaceholderText("Confirm Password"), "ValidPass123!");
       fireEvent.changeText(screen.getByPlaceholderText("Birthday"), "Mon Jan 01 1990");
 
-      const submitButtons = screen.getAllByText("Create an Account");
-      const submitButton = submitButtons[submitButtons.length - 1];
-      fireEvent.press(submitButton.parent!);
+      fireEvent.press(screen.getByTestId("register-submit-button"));
 
       await waitFor(() => {
         const errors = screen.getAllByText(
