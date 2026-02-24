@@ -26,6 +26,7 @@ import {
 } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
 import { serverAuth } from "@/services/serverAuth";
+import Toast from "react-native-toast-message";
 
 // DateTimePicker event interface for type safety
 interface DatePickerEvent {
@@ -237,10 +238,7 @@ export default function RegisterScreen() {
       }
 
       // Signed up successfully
-      // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
-      // Native alert() is blocking and provides poor user experience on mobile
-      // Consider: react-native-toast-notifications or expo-notifications
-      alert("You are registered");
+      Toast.show({ type: "success", text1: "You are registered!" });
       router.replace("/");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };

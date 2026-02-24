@@ -3,28 +3,17 @@ import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
 import PasswordRecoveryScreen from "../PasswordRecoveryScreen";
 import { router } from "expo-router";
 import { sendPasswordResetEmail } from "@/__tests__/__mocks__/firebase";
+import Toast from "react-native-toast-message";
 
-// @react-native-firebase/auth is already mocked in setup.ts
-
-/**
- * NOTE: alert() is intentionally NOT tested
- *
- * The PasswordRecoveryScreen currently uses native alert() for success messages (line 63).
- * This is a temporary implementation that will be replaced with toast notifications
- * for better UX. Tests for alert() have been removed to avoid coupling tests to
- * implementation that will be removed.
- *
- * See TODO comment in PasswordRecoveryScreen.tsx line 60-62
- */
+// @react-native-firebase/auth and react-native-toast-message are mocked in setup.ts
 
 // expo-router is already mocked in setup.ts
 const mockRouter = router as jest.Mocked<typeof router>;
+const mockToastShow = Toast.show as jest.Mock;
 
 describe("PasswordRecoveryScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Mock global.alert for tests that need it
-    global.alert = jest.fn();
   });
 
   describe("Rendering", () => {
@@ -148,7 +137,7 @@ describe("PasswordRecoveryScreen", () => {
       });
     });
 
-    it("should show success message and navigate after sending reset email", async () => {
+    it("should show success toast and navigate after sending reset email", async () => {
       (sendPasswordResetEmail as jest.Mock).mockResolvedValue(undefined);
 
       render(<PasswordRecoveryScreen />);
@@ -157,6 +146,10 @@ describe("PasswordRecoveryScreen", () => {
       fireEvent.press(screen.getByText("Send Email"));
 
       await waitFor(() => {
+        expect(mockToastShow).toHaveBeenCalledWith({
+          type: "success",
+          text1: "Password reset email sent! Check your inbox.",
+        });
         expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });

@@ -8,6 +8,7 @@ import {
   mockUser,
 } from "@/__tests__/__mocks__/firebase";
 import { serverAuth } from "@/services/serverAuth";
+import Toast from "react-native-toast-message";
 import auth from "@react-native-firebase/auth";
 
 // @react-native-firebase/auth is already mocked in setup.ts
@@ -32,25 +33,13 @@ jest.mock("@react-native-community/datetimepicker", () => ({
   },
 }));
 
-/**
- * NOTE: alert() is intentionally NOT tested
- *
- * The RegisterScreen currently uses native alert() for success messages (line 205).
- * This is a temporary implementation that will be replaced with toast notifications
- * for better UX. Tests for alert() have been removed to avoid coupling tests to
- * implementation that will be removed.
- *
- * See TODO comment in RegisterScreen.tsx line 202-204
- */
-
-// expo-router is already mocked in setup.ts
+// expo-router and react-native-toast-message are already mocked in setup.ts
 const mockRouter = router as jest.Mocked<typeof router>;
+const mockToastShow = Toast.show as jest.Mock;
 
 describe("RegisterScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Mock global.alert for tests that need it
-    global.alert = jest.fn();
     // Reset captured DateTimePicker onChange ref
     mockDatePickerOnChange = null;
   });
@@ -429,6 +418,10 @@ describe("RegisterScreen", () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
+        expect(mockToastShow).toHaveBeenCalledWith({
+          type: "success",
+          text1: "You are registered!",
+        });
         expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
