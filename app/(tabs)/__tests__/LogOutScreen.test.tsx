@@ -2,6 +2,11 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
 import LogOutScreen from "../LogOutScreen";
 import { signOut } from "@/__tests__/__mocks__/firebase";
+import { serverAuth } from "@/services/serverAuth";
+
+jest.mock("@/services/serverAuth", () => ({
+  serverAuth: { logout: jest.fn().mockResolvedValue(undefined) },
+}));
 
 // @react-native-firebase/auth is already mocked in setup.ts
 
@@ -43,6 +48,7 @@ describe("LogOutScreen", () => {
 
       await waitFor(() => {
         expect(signOut).toHaveBeenCalled();
+        expect(serverAuth.logout).toHaveBeenCalled();
       });
     });
 

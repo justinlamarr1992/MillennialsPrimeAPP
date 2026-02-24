@@ -101,7 +101,7 @@ export default function PicturePost({
         // ]}
         // onPress={() => navigation.navigate("Sign In")}
       >
-        <Link replace href="/(auth)/SignInScreen">
+        <Link replace href="/">
           <Text
             style={
               admin
