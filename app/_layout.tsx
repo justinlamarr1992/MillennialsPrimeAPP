@@ -53,10 +53,11 @@ export function RootLayoutNav() {
   const router = useRouter();
   const segments = useSegments();
 
-  // Keep segments in a ref so the effect always reads the latest value without
-  // re-running on every intermediate segment change during navigation transitions.
-  // Re-running mid-transition can dispatch multiple router.replace calls that
-  // corrupt React Navigation state and land on the wrong screen.
+  // Store segments in a ref so the effect reads the latest value without treating
+  // every intermediate segment change (during navigation transitions) as a trigger.
+  // NOTE: a hasInitialNavigationRef approach would be incorrect here — it would
+  // fire once and then permanently bail out, breaking sign-out redirects when
+  // user changes from a truthy value to null mid-session.
   const segmentsRef = useRef<string[]>([]);
   segmentsRef.current = segments as string[];
 
@@ -64,7 +65,6 @@ export function RootLayoutNav() {
     if (loading) return;
     const target = getRedirectTarget(user, segmentsRef.current);
     if (target) router.replace(target);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, router]);
 
   if (loading || (!!user && segments[0] === undefined)) {

@@ -21,7 +21,7 @@ import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
 import { serverAuth } from "@/services/serverAuth";
 import { userProfileService } from "@/services/userProfileService";
-import Toast from "react-native-toast-message";
+import { setWelcomeUser } from "@/utils/loginFlag";
 
 export default function Index() {
   const [email, setEmail] = useState("");
@@ -108,12 +108,10 @@ export default function Index() {
 
       try {
         const profile = await userProfileService.fetchProfile();
-        Toast.show({
-          type: "success",
-          text1: `Welcome back, ${profile.firstName ?? email.split("@")[0]}!`,
-        });
-      } catch {
-        Toast.show({ type: "success", text1: `Welcome back, ${email.split("@")[0]}!` });
+        setWelcomeUser(profile.firstName ?? email.split("@")[0]);
+      } catch (err: unknown) {
+        logger.error("Failed to fetch user profile after sign-in:", err);
+        setWelcomeUser(email.split("@")[0]);
       }
 
       // Navigation handled automatically by root layout auth listener
