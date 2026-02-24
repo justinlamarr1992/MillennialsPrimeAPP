@@ -15,6 +15,7 @@ jest.mock("@/services/serverAuth", () => ({
 describe("LogOutScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (serverAuth.logout as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe("Rendering", () => {
@@ -71,9 +72,10 @@ describe("LogOutScreen", () => {
       // Resolve the promise
       resolveSignOut!();
 
-      // signOut resolved — logout sequence continues
+      // signOut resolved — logout sequence continues with serverAuth.logout
       await waitFor(() => {
         expect(signOut).toHaveBeenCalledTimes(1);
+        expect(serverAuth.logout).toHaveBeenCalled();
       });
     });
 
@@ -152,6 +154,8 @@ describe("LogOutScreen", () => {
 
       await waitFor(() => {
         expect(signOut).toHaveBeenCalledTimes(2);
+        // serverAuth.logout only reached on the successful second attempt
+        expect(serverAuth.logout).toHaveBeenCalledTimes(1);
       });
     });
   });
