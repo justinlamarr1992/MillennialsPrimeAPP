@@ -225,7 +225,7 @@ export default function SignInScreen() {
                 style={[globalStyles.vertPadding, { color: colors["linkC"] }]}
                 // onPress={() => navigation.navigate("PasswordRecoveryScreen")}
               >
-                Forgot Password Link
+                Forgot Password?
               </Text>
             </Link>
 
