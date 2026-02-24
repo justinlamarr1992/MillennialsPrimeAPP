@@ -344,5 +344,20 @@ describe("IndexScreen (login form)", () => {
         expect(warnings[0]).toBeTruthy();
       });
     });
+
+    it("stores email prefix via setWelcomeUser even when MongoDB fails", async () => {
+      // setWelcomeUser must be called before the async MongoDB request so it is
+      // available when the auth state listener navigates to HomePage concurrently
+      mockLoginToServer.mockRejectedValueOnce({ response: { status: 500 } });
+
+      render(<IndexScreen />);
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "test@example.com");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "NewPass123!");
+      fireEvent.press(screen.getByText("Login").parent!);
+
+      await waitFor(() => {
+        expect(mockSetWelcomeUser).toHaveBeenCalledWith("test");
+      });
+    });
   });
 });

@@ -46,7 +46,7 @@ export default function Index() {
 
   const isFormValid = email.trim().length > 0 && password.trim().length > 0 && !emailError;
 
-  const loginToServerWithSync = useCallback(async (): Promise<boolean> => {
+  const loginToServerWithSync = useCallback(async (): Promise<void> => {
     logger.log("🔐 Authenticating with MongoDB server...");
     try {
       await serverAuth.loginToServer(email, password);
@@ -56,7 +56,7 @@ export default function Index() {
       if (status !== 401) {
         logger.error("❌ MongoDB authentication failed:", mongoError);
         setErrMsg("Warning: Could not connect to server. Some features may be limited.");
-        return false;
+        return;
       }
       logger.log("🔄 MongoDB 401 detected — attempting password sync...");
       const currentUser = auth().currentUser;
@@ -64,7 +64,7 @@ export default function Index() {
         setErrMsg(
           "Your password was recently reset. Please sign out and back in, or contact support."
         );
-        return false;
+        return;
       }
       const idToken = await currentUser.getIdToken();
 
@@ -75,7 +75,7 @@ export default function Index() {
         setErrMsg(
           "Your password was recently reset. Please sign out and back in, or contact support."
         );
-        return false;
+        return;
       }
 
       logger.log("✅ Password sync complete, retrying server login...");
@@ -85,10 +85,8 @@ export default function Index() {
       } catch (retryError: unknown) {
         logger.error("❌ MongoDB login failed after successful sync:", retryError);
         setErrMsg("Password sync completed but server connection failed. Please try again.");
-        return false;
       }
     }
-    return true;
   }, [email, password]);
 
   const handleSubmit = async () => {
@@ -105,8 +103,10 @@ export default function Index() {
       await auth().signInWithEmailAndPassword(email, password);
       logger.log("✅ Firebase sign-in successful");
 
-      const serverOk = await loginToServerWithSync();
-      if (serverOk) setWelcomeUser(email.split("@")[0]);
+      // Set welcome name before the async MongoDB call — the Firebase auth state
+      // listener fires concurrently and may navigate to HomePage before MongoDB completes
+      setWelcomeUser(email.split("@")[0]);
+      await loginToServerWithSync();
 
       // Navigation handled automatically by root layout auth listener
     } catch (error) {
