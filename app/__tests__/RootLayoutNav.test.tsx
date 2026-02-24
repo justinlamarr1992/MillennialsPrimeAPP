@@ -1,5 +1,4 @@
 import React from "react";
-import { ActivityIndicator } from "react-native";
 import { render, screen, act } from "@testing-library/react-native";
 import { RootLayoutNav } from "../_layout";
 import useAuth from "@/hooks/useAuth";
@@ -33,36 +32,27 @@ describe("RootLayoutNav", () => {
   });
 
   describe("loading state", () => {
-    it("renders ActivityIndicator while auth is loading", () => {
+    it("renders loading indicator while auth is loading", () => {
       mockUseAuth.mockReturnValue({ user: null, loading: true });
       mockUseSegments.mockReturnValue([]);
 
       render(<RootLayoutNav />);
 
-      expect(screen.UNSAFE_getByType(ActivityIndicator)).toBeTruthy();
+      expect(screen.getByTestId("loading-indicator")).toBeTruthy();
     });
   });
 
   describe("initial route — segments empty", () => {
-    it("renders ActivityIndicator when not loading but no route is active yet", () => {
-      mockUseAuth.mockReturnValue({ user: null, loading: false });
-      mockUseSegments.mockReturnValue([]);
-
-      render(<RootLayoutNav />);
-
-      expect(screen.UNSAFE_getByType(ActivityIndicator)).toBeTruthy();
-    });
-
-    it("renders ActivityIndicator for authenticated user when no route is active yet", () => {
+    it("renders loading indicator for authenticated user when no route is active yet", () => {
       mockUseAuth.mockReturnValue({ user: { uid: "123" }, loading: false });
       mockUseSegments.mockReturnValue([]);
 
       render(<RootLayoutNav />);
 
-      expect(screen.UNSAFE_getByType(ActivityIndicator)).toBeTruthy();
+      expect(screen.getByTestId("loading-indicator")).toBeTruthy();
     });
 
-    it("redirects unauthenticated user to sign-in", async () => {
+    it("does not redirect unauthenticated user (stays on index login form)", async () => {
       mockUseAuth.mockReturnValue({ user: null, loading: false });
       mockUseSegments.mockReturnValue([]);
 
@@ -70,7 +60,7 @@ describe("RootLayoutNav", () => {
 
       await act(async () => {});
 
-      expect(mockReplace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+      expect(mockReplace).not.toHaveBeenCalled();
     });
 
     it("redirects authenticated user to home", async () => {
@@ -110,7 +100,7 @@ describe("RootLayoutNav", () => {
   });
 
   describe("protected route routing", () => {
-    it("redirects unauthenticated user away from protected route to sign-in", async () => {
+    it("redirects unauthenticated user away from protected route to index", async () => {
       mockUseAuth.mockReturnValue({ user: null, loading: false });
       mockUseSegments.mockReturnValue(["(tabs)"]);
 
@@ -118,7 +108,7 @@ describe("RootLayoutNav", () => {
 
       await act(async () => {});
 
-      expect(mockReplace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+      expect(mockReplace).toHaveBeenCalledWith("/");
     });
 
     it("does not redirect authenticated user on a protected route", async () => {

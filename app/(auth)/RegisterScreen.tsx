@@ -241,7 +241,7 @@ export default function RegisterScreen() {
       // Native alert() is blocking and provides poor user experience on mobile
       // Consider: react-native-toast-notifications or expo-notifications
       alert("You are registered");
-      router.replace("/(auth)/SignInScreen");
+      router.replace("/");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);
@@ -264,7 +264,7 @@ export default function RegisterScreen() {
             style={[globalStyles.button, { backgroundColor: colors["hexC"] }]}
             // onPress={() => navigation.navigate("Sign In")}
           >
-            <Link replace href="/(auth)/SignInScreen" asChild>
+            <Link replace href="/" asChild>
               <Text style={globalStyles.buttonText}>Login</Text>
             </Link>
           </Pressable>

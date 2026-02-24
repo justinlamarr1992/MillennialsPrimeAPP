@@ -10,6 +10,7 @@ import useAuth from "@/hooks/useAuth";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { View, ActivityIndicator, LogBox } from "react-native";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import Toast from "react-native-toast-message";
 
 // Suppress RNFB namespaced API deprecation toasts — migration to v22 modular API is tracked separately
 LogBox.ignoreLogs([
@@ -35,15 +36,14 @@ SplashScreen.preventAutoHideAsync();
 function getRedirectTarget(
   user: FirebaseAuthTypes.User | null,
   segments: string[]
-): "/(tabs)/(home)/HomePage" | "/(auth)/SignInScreen" | null {
-  if (segments[0] === undefined) {
-    return user ? "/(tabs)/(home)/HomePage" : "/(auth)/SignInScreen";
-  }
-  if (user && segments[0] === "(auth)") {
+): "/(tabs)/(home)/HomePage" | "/" | null {
+  // Authenticated user on index or auth group → send to home
+  if (user && (segments[0] === undefined || segments[0] === "(auth)")) {
     return "/(tabs)/(home)/HomePage";
   }
-  if (!user && segments[0] !== "(auth)") {
-    return "/(auth)/SignInScreen";
+  // Unauthenticated user somehow on a protected route → send to index (login form)
+  if (!user && segments[0] !== undefined && segments[0] !== "(auth)") {
+    return "/";
   }
   return null;
 }
@@ -59,11 +59,10 @@ export function RootLayoutNav() {
     if (target) router.replace(target);
   }, [user, loading, segments, router]);
 
-  if (loading || segments[0] === undefined) {
-    // Show loading indicator while checking auth state or waiting for initial route redirect
+  if (loading || (!!user && segments[0] === undefined)) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator testID="loading-indicator" size="large" />
       </View>
     );
   }
@@ -103,14 +102,17 @@ export default function RootLayout() {
   }
 
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BottomSheetModalProvider>
-            <RootLayoutNav />
-          </BottomSheetModalProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </ErrorBoundary>
+    <>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <BottomSheetModalProvider>
+              <RootLayoutNav />
+            </BottomSheetModalProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
+      <Toast />
+    </>
   );
 }

@@ -376,7 +376,7 @@ describe("RegisterScreen", () => {
 
       // Navigation should happen after registration completes
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
 
@@ -408,7 +408,7 @@ describe("RegisterScreen", () => {
       });
     });
 
-    it("should navigate to SignIn screen on successful registration", async () => {
+    it("should navigate to login screen on successful registration", async () => {
       (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({
         user: { uid: "test-uid", email: "john@example.com" },
       });
@@ -429,7 +429,7 @@ describe("RegisterScreen", () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
   });
@@ -690,7 +690,7 @@ describe("RegisterScreen", () => {
       });
     });
 
-    it("should navigate to SignIn screen when both Firebase and MongoDB registration succeed", async () => {
+    it("should navigate to login screen when both Firebase and MongoDB registration succeed", async () => {
       render(<RegisterScreen />);
 
       // Fill in all fields
@@ -707,7 +707,7 @@ describe("RegisterScreen", () => {
       fireEvent.press(submitButton.parent!);
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
 

@@ -149,6 +149,12 @@ jest.mock("expo-secure-store", () => ({
   WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: "WHEN_PASSCODE_SET_THIS_DEVICE_ONLY",
 }));
 
+// Mock react-native-toast-message
+jest.mock("react-native-toast-message", () => ({
+  __esModule: true,
+  default: { show: jest.fn(), hide: jest.fn() },
+}));
+
 // Register custom matchers
 import { registerCustomMatchers } from "./matchers/customMatchers";
 registerCustomMatchers();
