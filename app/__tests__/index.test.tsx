@@ -8,18 +8,17 @@ import {
 } from "@/__tests__/__mocks__/firebase";
 import { serverAuth } from "@/services/serverAuth";
 import { userProfileService } from "@/services/userProfileService";
-import * as loginFlag from "@/utils/loginFlag";
+import Toast from "react-native-toast-message";
 
 jest.mock("@/services/serverAuth");
 jest.mock("@/services/userProfileService");
-jest.mock("@/utils/loginFlag");
 
 // expo-router and @react-native-firebase/auth are mocked in setup.ts
 
 const mockLoginToServer = serverAuth.loginToServer as jest.Mock;
 const mockSyncPassword = serverAuth.syncPassword as jest.Mock;
 const mockFetchProfile = userProfileService.fetchProfile as jest.Mock;
-const mockSetWelcomeUser = loginFlag.setWelcomeUser as jest.Mock;
+const mockToastShow = Toast.show as jest.Mock;
 
 describe("IndexScreen (login form)", () => {
   beforeEach(() => {
@@ -163,7 +162,7 @@ describe("IndexScreen (login form)", () => {
       mockLoginToServer.mockResolvedValue(undefined);
     });
 
-    it("calls setWelcomeUser with firstName from profile after successful login", async () => {
+    it("shows welcome toast with firstName from profile after successful login", async () => {
       mockFetchProfile.mockResolvedValue({ firstName: "Jordan" });
 
       render(<IndexScreen />);
@@ -172,11 +171,14 @@ describe("IndexScreen (login form)", () => {
       fireEvent.press(screen.getByText("Login").parent!);
 
       await waitFor(() => {
-        expect(mockSetWelcomeUser).toHaveBeenCalledWith("Jordan");
+        expect(mockToastShow).toHaveBeenCalledWith({
+          type: "success",
+          text1: "Welcome back, Jordan!",
+        });
       });
     });
 
-    it("falls back to email prefix when fetchProfile throws", async () => {
+    it("falls back to email prefix toast when fetchProfile throws", async () => {
       mockFetchProfile.mockRejectedValue(new Error("Network error"));
 
       render(<IndexScreen />);
@@ -185,7 +187,10 @@ describe("IndexScreen (login form)", () => {
       fireEvent.press(screen.getByText("Login").parent!);
 
       await waitFor(() => {
-        expect(mockSetWelcomeUser).toHaveBeenCalledWith("test");
+        expect(mockToastShow).toHaveBeenCalledWith({
+          type: "success",
+          text1: "Welcome back, test!",
+        });
       });
     });
   });

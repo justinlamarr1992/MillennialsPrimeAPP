@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "expo-router";
 import {
   Text,
@@ -13,8 +13,6 @@ import {
 import { globalStyles } from "@/constants/global";
 import { COLORS } from "@/constants/Colors";
 import { useBunnyCDNVideos, VideoData } from "@/hooks/useBunnyCDNVideos";
-import { consumeWelcomeUser } from "@/utils/loginFlag";
-import Toast from "react-native-toast-message";
 import ContentCarousel from "@/components/ContentCarousel";
 import ContentCard from "@/components/ContentCard";
 import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
@@ -38,11 +36,6 @@ export default function Page() {
 
   // Fetch multiple videos for HBO-style sections
   const { data: videos, isLoading, isError, error, refetch } = useBunnyCDNVideos();
-
-  useEffect(() => {
-    const name = consumeWelcomeUser();
-    if (name) Toast.show({ type: "success", text1: `Welcome back, ${name}!` });
-  }, []);
 
   // Show loading state
   if (isLoading) {

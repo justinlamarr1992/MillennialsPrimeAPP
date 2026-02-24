@@ -2,16 +2,11 @@ import React from "react";
 import { render, screen, fireEvent } from "@/__tests__/test-utils";
 import HomePage from "../HomePage";
 import { useBunnyCDNVideos } from "@/hooks/useBunnyCDNVideos";
-import { consumeWelcomeUser } from "@/utils/loginFlag";
-import Toast from "react-native-toast-message";
 
 // Mock useBunnyCDNVideos hook
 jest.mock("@/hooks/useBunnyCDNVideos");
-jest.mock("@/utils/loginFlag");
 
 const mockUseBunnyCDNVideos = useBunnyCDNVideos as jest.MockedFunction<typeof useBunnyCDNVideos>;
-const mockConsumeWelcomeUser = consumeWelcomeUser as jest.Mock;
-const mockToastShow = Toast.show as jest.Mock;
 
 describe("HomePage", () => {
   const mockVideoData = [
@@ -89,7 +84,6 @@ describe("HomePage", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockConsumeWelcomeUser.mockReturnValue(null);
   });
 
   describe("Loading State", () => {
@@ -295,40 +289,6 @@ describe("HomePage", () => {
       render(<HomePage />);
 
       expect(screen.getByText("Breaking News Video")).toBeTruthy();
-    });
-  });
-
-  describe("Welcome toast", () => {
-    it("shows welcome toast when consumeWelcomeUser returns a name", () => {
-      mockConsumeWelcomeUser.mockReturnValue("Jordan");
-      mockUseBunnyCDNVideos.mockReturnValue({
-        data: mockVideoData,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: jest.fn(),
-      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
-
-      render(<HomePage />);
-
-      expect(mockToastShow).toHaveBeenCalledWith({
-        type: "success",
-        text1: "Welcome back, Jordan!",
-      });
-    });
-
-    it("does not call Toast.show when consumeWelcomeUser returns null", () => {
-      mockUseBunnyCDNVideos.mockReturnValue({
-        data: mockVideoData,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: jest.fn(),
-      } as unknown as ReturnType<typeof useBunnyCDNVideos>);
-
-      render(<HomePage />);
-
-      expect(mockToastShow).not.toHaveBeenCalled();
     });
   });
 
