@@ -36,7 +36,7 @@ describe("LogOutScreen", () => {
       });
     });
 
-    it("should navigate to SignIn screen after successful logout", async () => {
+    it("should navigate to login screen after successful logout", async () => {
       (signOut as jest.Mock).mockResolvedValue(undefined);
 
       render(<LogOutScreen />);
@@ -44,7 +44,7 @@ describe("LogOutScreen", () => {
       fireEvent.press(screen.getByText("Log Out"));
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
 
@@ -69,7 +69,7 @@ describe("LogOutScreen", () => {
 
       // Navigation should happen after logout completes
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
 
@@ -150,7 +150,7 @@ describe("LogOutScreen", () => {
       fireEvent.press(screen.getByText("Log Out"));
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
   });

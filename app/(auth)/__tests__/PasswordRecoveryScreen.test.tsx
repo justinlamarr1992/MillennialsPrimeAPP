@@ -144,7 +144,7 @@ describe("PasswordRecoveryScreen", () => {
 
       // Navigation should happen after reset completes
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
 
@@ -157,7 +157,7 @@ describe("PasswordRecoveryScreen", () => {
       fireEvent.press(screen.getByText("Send Email"));
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(mockRouter.replace).toHaveBeenCalledWith("/");
       });
     });
   });

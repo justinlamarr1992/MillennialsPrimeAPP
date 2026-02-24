@@ -59,7 +59,7 @@ const PasswordRecoveryScreen = () => {
       // Native alert() is blocking and provides poor user experience on mobile
       // Consider: react-native-toast-notifications or expo-notifications
       alert("Password reset email sent! Check your inbox.");
-      router.replace("/(auth)/SignInScreen");
+      router.replace("/");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);

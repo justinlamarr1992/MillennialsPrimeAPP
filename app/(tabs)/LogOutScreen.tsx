@@ -39,7 +39,7 @@ export default function LogOutScreen() {
 
     // Only navigate if sign out was successful
     setLoading(false);
-    router.replace("/(auth)/SignInScreen");
+    router.replace("/");
   };
 
   return (
