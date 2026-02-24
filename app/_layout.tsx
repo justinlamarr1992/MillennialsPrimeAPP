@@ -7,6 +7,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/provider/AuthProvider";
 import useAuth from "@/hooks/useAuth";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { View, ActivityIndicator, LogBox } from "react-native";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
@@ -31,30 +32,35 @@ const queryClient = new QueryClient({
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-function RootLayoutNav() {
+function getRedirectTarget(
+  user: FirebaseAuthTypes.User | null,
+  segments: string[]
+): "/(tabs)/(home)/HomePage" | "/(auth)/SignInScreen" | null {
+  if (segments[0] === undefined) {
+    return user ? "/(tabs)/(home)/HomePage" : "/(auth)/SignInScreen";
+  }
+  if (user && segments[0] === "(auth)") {
+    return "/(tabs)/(home)/HomePage";
+  }
+  if (!user && segments[0] !== "(auth)") {
+    return "/(auth)/SignInScreen";
+  }
+  return null;
+}
+
+export function RootLayoutNav() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const segments = useSegments();
 
   useEffect(() => {
     if (loading) return;
-
-    const inAuthGroup = segments[0] === "(auth)";
-
-    if (user && inAuthGroup) {
-      // User is signed in but on auth screens, redirect to home
-      router.replace("/(tabs)/(home)/HomePage");
-    } else if (!user && !inAuthGroup && segments[0] !== undefined) {
-      // User is not signed in but trying to access protected routes, redirect to sign in
-      router.replace("/(auth)/SignInScreen");
-    } else if (segments[0] === undefined) {
-      // No route set, redirect based on auth state
-      router.replace(user ? "/(tabs)/(home)/HomePage" : "/(auth)/SignInScreen");
-    }
+    const target = getRedirectTarget(user, segments as string[]);
+    if (target) router.replace(target);
   }, [user, loading, segments, router]);
 
-  if (loading) {
-    // Show loading indicator while checking auth state
+  if (loading || segments[0] === undefined) {
+    // Show loading indicator while checking auth state or waiting for initial route redirect
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
