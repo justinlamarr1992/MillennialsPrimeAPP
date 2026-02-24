@@ -65,19 +65,33 @@ export default function SignInScreen() {
       // 401 means the MongoDB password hash is stale — likely a Firebase password reset
       // happened outside the app. Sync using the Firebase ID token to confirm identity.
       logger.log("🔄 MongoDB 401 detected — attempting password sync...");
+      const currentUser = auth().currentUser;
+      if (!currentUser) {
+        setErrMsg(
+          "Your password was recently reset. Please sign out and back in, or contact support."
+        );
+        return;
+      }
+      const idToken = await currentUser.getIdToken();
+
       try {
-        const currentUser = auth().currentUser;
-        if (!currentUser) throw new Error("No Firebase user after sign-in");
-        const idToken = await currentUser.getIdToken();
         await serverAuth.syncPassword(idToken, password);
-        logger.log("✅ Password sync complete, retrying server login...");
-        await serverAuth.loginToServer(email, password);
-        logger.log("✅ MongoDB authentication successful after sync");
       } catch (syncError: unknown) {
         logger.error("❌ Password sync failed:", syncError);
         setErrMsg(
           "Your password was recently reset. Please sign out and back in, or contact support."
         );
+        return;
+      }
+
+      // Sync succeeded — retry login with the now-updated hash
+      logger.log("✅ Password sync complete, retrying server login...");
+      try {
+        await serverAuth.loginToServer(email, password);
+        logger.log("✅ MongoDB authentication successful after sync");
+      } catch (retryError: unknown) {
+        logger.error("❌ MongoDB login failed after successful sync:", retryError);
+        setErrMsg("Password sync completed but server connection failed. Please try again.");
       }
     }
   }, [email, password]);

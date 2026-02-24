@@ -442,5 +442,26 @@ describe("SignInScreen", () => {
       });
       expect(mockSyncPassword).not.toHaveBeenCalled();
     });
+
+    it("shows retry error when sync succeeds but retry loginToServer fails", async () => {
+      mockLoginToServer
+        .mockRejectedValueOnce({ response: { status: 401 } })
+        .mockRejectedValueOnce({ response: { status: 500 } });
+      mockSyncPassword.mockResolvedValue(undefined);
+
+      render(<SignInScreen />);
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "test@example.com");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "NewPass123!");
+      fireEvent.press(screen.getByText("Login").parent!);
+
+      await waitFor(() => {
+        const warnings = screen.getAllByText(
+          /Password sync completed but server connection failed/i
+        );
+        expect(warnings[0]).toBeTruthy();
+      });
+      expect(mockSyncPassword).toHaveBeenCalledWith("firebase-id-token-abc", "NewPass123!");
+      expect(mockLoginToServer).toHaveBeenCalledTimes(2);
+    });
   });
 });
