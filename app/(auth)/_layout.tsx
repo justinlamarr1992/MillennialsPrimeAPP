@@ -8,32 +8,15 @@ const RootLayout = () => {
   return (
     <Stack
       screenOptions={{
-        // headerTitle: (props) => <LogoTitle {...props} />,
         headerStyle: {
-          backgroundColor: "#611821",
+          backgroundColor: colors["priC"],
         },
-        // headerTintColor: "pink",
         headerTintColor: colors["secT"],
       }}
     >
-      <Stack.Screen
-        name="SignInScreen"
-        options={{
-          headerTitle: "Sign In Layout",
-        }}
-      />
-      <Stack.Screen
-        name="RegisterScreen"
-        options={{
-          headerTitle: "Register Layout",
-        }}
-      />
-      <Stack.Screen
-        name="PasswordRecoveryScreen"
-        options={{
-          headerTitle: "Password Recovery Layout",
-        }}
-      />
+      <Stack.Screen name="SignInScreen" options={{ headerTitle: "Sign In" }} />
+      <Stack.Screen name="RegisterScreen" options={{ headerTitle: "Register" }} />
+      <Stack.Screen name="PasswordRecoveryScreen" options={{ headerTitle: "Password Recovery" }} />
     </Stack>
   );
 };

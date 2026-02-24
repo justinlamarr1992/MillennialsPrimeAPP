@@ -41,7 +41,7 @@ describe("SignInScreen", () => {
 
     it("should render Forgot Password link", () => {
       render(<SignInScreen />);
-      expect(screen.getByText("Forgot Password Link")).toBeTruthy();
+      expect(screen.getByText("Forgot Password?")).toBeTruthy();
     });
   });
 
@@ -369,7 +369,7 @@ describe("SignInScreen", () => {
 
     it("should have functional Forgot Password link", () => {
       render(<SignInScreen />);
-      const forgotPasswordLink = screen.getByText("Forgot Password Link");
+      const forgotPasswordLink = screen.getByText("Forgot Password?");
       expect(forgotPasswordLink).toBeTruthy();
       // Link component navigation tested via expo-router mock
     });

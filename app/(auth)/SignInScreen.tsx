@@ -221,12 +221,13 @@ export default function SignInScreen() {
             )}
             <Text style={[globalStyles.errorText, { color: colors["secC"] }]}>{errMsg}</Text>
             <Link href="/(auth)/PasswordRecoveryScreen" asChild>
-              <Text
-                style={[globalStyles.vertPadding, { color: colors["linkC"] }]}
-                // onPress={() => navigation.navigate("PasswordRecoveryScreen")}
+              <Pressable
+                style={globalStyles.vertPadding}
+                accessibilityRole="link"
+                accessibilityLabel="Forgot Password?"
               >
-                Forgot Password Link
-              </Text>
+                <Text style={{ color: colors["linkC"] }}>Forgot Password?</Text>
+              </Pressable>
             </Link>
 
             {/* <Text>Connect with Socials</Text> */}

@@ -7,8 +7,13 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/provider/AuthProvider";
 import useAuth from "@/hooks/useAuth";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, LogBox } from "react-native";
 import ErrorBoundary from "@/components/ErrorBoundary";
+
+// Suppress RNFB namespaced API deprecation toasts — migration to v22 modular API is tracked separately
+LogBox.ignoreLogs([
+  "This method is deprecated (as well as all React Native Firebase namespaced API)",
+]);
 
 // Create a QueryClient instance for data fetching and caching
 const queryClient = new QueryClient({
