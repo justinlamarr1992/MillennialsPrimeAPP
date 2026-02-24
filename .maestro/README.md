@@ -66,11 +66,11 @@ maestro test .maestro/flows/ --format junit
 
 | File                             | Journey                                                                    |
 | -------------------------------- | -------------------------------------------------------------------------- |
-| `01-auth-signin.yaml`            | Launch → enter credentials → tap Login → assert Home tab                   |
-| `02-auth-register.yaml`          | Launch → Create an Account → fill form → submit → assert Home tab          |
-| `03-auth-signout.yaml`           | Sign in → tap Log Out tab → confirm sign out → assert back at sign-in      |
-| `04-home-content.yaml`           | Sign in → assert "New Episodes" section loads within 10s                   |
-| `05-settings-personal-info.yaml` | Sign in → Settings tab → Personal Information → assert form fields visible |
+| `01-auth-signin.yaml`                     | Launch → enter credentials → tap Login → assert Home tab                   |
+| `02-auth-register.yaml.disabled` ⚠️ disabled | **iOS 26.1 blocker**: "Automatic Strong Password" native cover view intercepts all XCUITest keyboard input on `secureTextEntry` fields; `textContentType="none"` does not suppress it. Re-enable when Maestro or React Native adds a workaround. |
+| `03-auth-signout.yaml`                    | Sign in → tap Log Out tab → confirm sign out → assert back at sign-in      |
+| `04-home-content.yaml`                    | Sign in → assert "New Episodes" section loads within 10s                   |
+| `05-settings-personal-info.yaml`          | Sign in → Settings tab → Personal Information → assert form fields visible |
 
 ## Architecture Notes
 

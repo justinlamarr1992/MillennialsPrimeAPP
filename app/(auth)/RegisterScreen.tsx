@@ -47,8 +47,8 @@ interface ValidationErrors {
 // Born between 1981 and 1997 (age 28-44 in 2025)
 const MIN_BIRTH_YEAR = 1981;
 const MAX_BIRTH_YEAR = 1997;
-const MIN_BIRTH_DATE = new Date(`${MIN_BIRTH_YEAR}-1-1`);
-const MAX_BIRTH_DATE = new Date(`${MAX_BIRTH_YEAR}-1-1`);
+const MIN_BIRTH_DATE = new Date(MIN_BIRTH_YEAR, 0, 1);   // Jan 1, 1981 — numeric ctor avoids timezone shifts
+const MAX_BIRTH_DATE = new Date(MAX_BIRTH_YEAR, 11, 31); // Dec 31, 1997 — end-of-year allows all of MAX_BIRTH_YEAR
 
 export default function RegisterScreen() {
   const colorScheme = useColorScheme();
