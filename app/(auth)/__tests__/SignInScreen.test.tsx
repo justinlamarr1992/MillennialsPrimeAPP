@@ -2,12 +2,17 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
 import SignInScreen from "../SignInScreen";
 import { router } from "expo-router";
-import { signInWithEmailAndPassword } from "@/__tests__/__mocks__/firebase";
+import { signInWithEmailAndPassword, mockAuthInstance, mockUser } from "@/__tests__/__mocks__/firebase";
+import { serverAuth } from "@/services/serverAuth";
+
+jest.mock("@/services/serverAuth");
 
 // @react-native-firebase/auth is already mocked in setup.ts
 
 // expo-router is already mocked in setup.ts
 const mockRouter = router as jest.Mocked<typeof router>;
+const mockLoginToServer = serverAuth.loginToServer as jest.Mock;
+const mockSyncPassword = serverAuth.syncPassword as jest.Mock;
 
 describe("SignInScreen", () => {
   beforeEach(() => {
@@ -363,6 +368,75 @@ describe("SignInScreen", () => {
       const forgotPasswordLink = screen.getByText("Forgot Password Link");
       expect(forgotPasswordLink).toBeTruthy();
       // Link component navigation tested via expo-router mock
+    });
+  });
+
+  describe("MongoDB password sync", () => {
+    beforeEach(() => {
+      // Firebase sign-in always succeeds in this describe block
+      (signInWithEmailAndPassword as jest.Mock).mockResolvedValue({
+        user: { uid: "test-uid", email: "test@example.com" },
+      });
+      // Provide getIdToken on currentUser — cast needed as mockUser type lacks getIdToken
+      mockAuthInstance.currentUser = {
+        ...mockUser,
+        getIdToken: jest.fn().mockResolvedValue("firebase-id-token-abc"),
+      } as unknown as typeof mockUser;
+    });
+
+    afterEach(() => {
+      // Restore currentUser so other tests are not affected
+      mockAuthInstance.currentUser = mockUser;
+    });
+
+    it("auto-syncs and retries login when loginToServer returns 401", async () => {
+      // First call throws 401, retry succeeds
+      mockLoginToServer
+        .mockRejectedValueOnce({ response: { status: 401 } })
+        .mockResolvedValueOnce(undefined);
+      mockSyncPassword.mockResolvedValue(undefined);
+
+      render(<SignInScreen />);
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "test@example.com");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "NewPass123!");
+      fireEvent.press(screen.getByText("Login").parent!);
+
+      await waitFor(() => {
+        expect(mockSyncPassword).toHaveBeenCalledWith("firebase-id-token-abc", "NewPass123!");
+        expect(mockLoginToServer).toHaveBeenCalledTimes(2);
+      });
+      // No error message shown on successful sync
+      expect(screen.queryByText(/password was recently reset/i)).toBeNull();
+    });
+
+    it("shows sync error message when syncPassword fails after 401", async () => {
+      mockLoginToServer.mockRejectedValueOnce({ response: { status: 401 } });
+      mockSyncPassword.mockRejectedValue(new Error("sync failed"));
+
+      render(<SignInScreen />);
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "test@example.com");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "NewPass123!");
+      fireEvent.press(screen.getByText("Login").parent!);
+
+      await waitFor(() => {
+        const errors = screen.getAllByText(/password was recently reset/i);
+        expect(errors[0]).toBeTruthy();
+      });
+    });
+
+    it("shows generic warning for non-401 MongoDB errors (no sync attempted)", async () => {
+      mockLoginToServer.mockRejectedValueOnce({ response: { status: 500 } });
+
+      render(<SignInScreen />);
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "test@example.com");
+      fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "NewPass123!");
+      fireEvent.press(screen.getByText("Login").parent!);
+
+      await waitFor(() => {
+        const warnings = screen.getAllByText(/Could not connect to server/i);
+        expect(warnings[0]).toBeTruthy();
+      });
+      expect(mockSyncPassword).not.toHaveBeenCalled();
     });
   });
 });

@@ -308,4 +308,30 @@ describe("serverAuth", () => {
       expect(await serverAuth.hasValidCredentials()).toBe(false);
     });
   });
+
+  describe("syncPassword", () => {
+    it("sends POST /auth/sync-password with newPassword body and Authorization header", async () => {
+      (axios.post as jest.Mock).mockResolvedValueOnce({ status: 200 });
+
+      await serverAuth.syncPassword("firebase-id-token-123", "newSecurePass!");
+
+      expect(axios.post).toHaveBeenCalledWith(
+        "/auth/sync-password",
+        { newPassword: "newSecurePass!" },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer firebase-id-token-123",
+          },
+        }
+      );
+    });
+
+    it("throws when axios request fails", async () => {
+      const error = new Error("Network error");
+      (axios.post as jest.Mock).mockRejectedValueOnce(error);
+
+      await expect(serverAuth.syncPassword("bad-token", "pass")).rejects.toThrow("Network error");
+    });
+  });
 });
