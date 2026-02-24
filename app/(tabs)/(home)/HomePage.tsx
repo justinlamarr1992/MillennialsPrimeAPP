@@ -130,8 +130,7 @@ export default function Page() {
         {/* Test buttons to go to Page That is being worked on */}
         <Link
           style={[globalStyles.buttonText, { color: colors["defaultText"] }]}
-          replace
-          href="/(social)/ConnectedUsersScreen"
+          href="/(tabs)/(social)/ConnectedUsersScreen"
           asChild
         >
           <Text>Test Page Link</Text>
