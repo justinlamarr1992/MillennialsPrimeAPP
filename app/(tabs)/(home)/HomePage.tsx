@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "expo-router";
 import {
   Text,
@@ -17,6 +17,8 @@ import ContentCarousel from "@/components/ContentCarousel";
 import ContentCard from "@/components/ContentCard";
 import PrimeNewsPost from "@/shared/PostComponents/PrimeNewsPost";
 import Ad from "@/shared/Ad";
+import { consumeWelcomeUser } from "@/utils/loginFlag";
+import Toast from "react-native-toast-message";
 
 /**
  * Pure function to split videos into HBO-style sections
@@ -36,6 +38,11 @@ export default function Page() {
 
   // Fetch multiple videos for HBO-style sections
   const { data: videos, isLoading, isError, error, refetch } = useBunnyCDNVideos();
+
+  useEffect(() => {
+    const name = consumeWelcomeUser();
+    if (name) Toast.show({ type: "success", text1: `Welcome back, ${name}!` });
+  }, []);
 
   // Show loading state
   if (isLoading) {
@@ -130,8 +137,7 @@ export default function Page() {
         {/* Test buttons to go to Page That is being worked on */}
         <Link
           style={[globalStyles.buttonText, { color: colors["defaultText"] }]}
-          replace
-          href="/(social)/ConnectedUsersScreen"
+          href="/(tabs)/(social)/ConnectedUsersScreen"
           asChild
         >
           <Text>Test Page Link</Text>

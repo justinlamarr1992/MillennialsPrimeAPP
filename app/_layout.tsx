@@ -1,5 +1,5 @@
 import "react-native-reanimated";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -7,8 +7,10 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/provider/AuthProvider";
 import useAuth from "@/hooks/useAuth";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { View, ActivityIndicator, LogBox } from "react-native";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import Toast from "react-native-toast-message";
 
 // Suppress RNFB namespaced API deprecation toasts — migration to v22 modular API is tracked separately
 LogBox.ignoreLogs([
@@ -31,33 +33,44 @@ const queryClient = new QueryClient({
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-function RootLayoutNav() {
+function getRedirectTarget(
+  user: FirebaseAuthTypes.User | null,
+  segments: string[]
+): "/(tabs)/(home)/HomePage" | "/" | null {
+  // Authenticated user on index or auth group → send to home
+  if (user && (segments[0] === undefined || segments[0] === "(auth)")) {
+    return "/(tabs)/(home)/HomePage";
+  }
+  // Unauthenticated user somehow on a protected route → send to index (login form)
+  if (!user && segments[0] !== undefined && segments[0] !== "(auth)") {
+    return "/";
+  }
+  return null;
+}
+
+export function RootLayoutNav() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const segments = useSegments();
 
+  // Store segments in a ref so the effect reads the latest value without treating
+  // every intermediate segment change (during navigation transitions) as a trigger.
+  // NOTE: a hasInitialNavigationRef approach would be incorrect here — it would
+  // fire once and then permanently bail out, breaking sign-out redirects when
+  // user changes from a truthy value to null mid-session.
+  const segmentsRef = useRef<string[]>([]);
+  segmentsRef.current = segments as string[];
+
   useEffect(() => {
     if (loading) return;
+    const target = getRedirectTarget(user, segmentsRef.current);
+    if (target) router.replace(target);
+  }, [user, loading, router]);
 
-    const inAuthGroup = segments[0] === "(auth)";
-
-    if (user && inAuthGroup) {
-      // User is signed in but on auth screens, redirect to home
-      router.replace("/(tabs)/(home)/HomePage");
-    } else if (!user && !inAuthGroup && segments[0] !== undefined) {
-      // User is not signed in but trying to access protected routes, redirect to sign in
-      router.replace("/(auth)/SignInScreen");
-    } else if (segments[0] === undefined) {
-      // No route set, redirect based on auth state
-      router.replace(user ? "/(tabs)/(home)/HomePage" : "/(auth)/SignInScreen");
-    }
-  }, [user, loading, segments, router]);
-
-  if (loading) {
-    // Show loading indicator while checking auth state
+  if (loading || (!!user && segmentsRef.current[0] === undefined)) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator testID="loading-indicator" size="large" />
       </View>
     );
   }
@@ -97,14 +110,17 @@ export default function RootLayout() {
   }
 
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BottomSheetModalProvider>
-            <RootLayoutNav />
-          </BottomSheetModalProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </ErrorBoundary>
+    <>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <BottomSheetModalProvider>
+              <RootLayoutNav />
+            </BottomSheetModalProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
+      <Toast />
+    </>
   );
 }

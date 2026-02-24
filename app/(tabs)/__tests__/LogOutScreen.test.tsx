@@ -1,17 +1,21 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
 import LogOutScreen from "../LogOutScreen";
-import { router } from "expo-router";
 import { signOut } from "@/__tests__/__mocks__/firebase";
+import { serverAuth } from "@/services/serverAuth";
+
+jest.mock("@/services/serverAuth", () => ({
+  serverAuth: { logout: jest.fn().mockResolvedValue(undefined) },
+}));
 
 // @react-native-firebase/auth is already mocked in setup.ts
 
 // expo-router is already mocked in setup.ts
-const mockRouter = router as jest.Mocked<typeof router>;
 
 describe("LogOutScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (serverAuth.logout as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe("Rendering", () => {
@@ -36,7 +40,7 @@ describe("LogOutScreen", () => {
       });
     });
 
-    it("should navigate to SignIn screen after successful logout", async () => {
+    it("should call signOut and serverAuth.logout on successful logout", async () => {
       (signOut as jest.Mock).mockResolvedValue(undefined);
 
       render(<LogOutScreen />);
@@ -44,11 +48,12 @@ describe("LogOutScreen", () => {
       fireEvent.press(screen.getByText("Log Out"));
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(signOut).toHaveBeenCalled();
+        expect(serverAuth.logout).toHaveBeenCalled();
       });
     });
 
-    it("should handle logout async operation correctly", async () => {
+    it("should complete signOut before proceeding (async sequence)", async () => {
       let resolveSignOut: () => void;
       (signOut as jest.Mock).mockImplementation(
         () =>
@@ -61,15 +66,16 @@ describe("LogOutScreen", () => {
 
       fireEvent.press(screen.getByText("Log Out"));
 
-      // Navigation should not happen immediately
-      expect(mockRouter.replace).not.toHaveBeenCalled();
+      // signOut has not resolved yet
+      expect(signOut).toHaveBeenCalled();
 
       // Resolve the promise
       resolveSignOut!();
 
-      // Navigation should happen after logout completes
+      // signOut resolved — logout sequence continues with serverAuth.logout
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(signOut).toHaveBeenCalledTimes(1);
+        expect(serverAuth.logout).toHaveBeenCalled();
       });
     });
 
@@ -88,9 +94,6 @@ describe("LogOutScreen", () => {
           screen.getByText("Network error. Please check your internet connection")
         ).toBeTruthy();
       });
-
-      // Should not navigate on error
-      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
   });
 
@@ -150,7 +153,9 @@ describe("LogOutScreen", () => {
       fireEvent.press(screen.getByText("Log Out"));
 
       await waitFor(() => {
-        expect(mockRouter.replace).toHaveBeenCalledWith("/(auth)/SignInScreen");
+        expect(signOut).toHaveBeenCalledTimes(2);
+        // serverAuth.logout only reached on the successful second attempt
+        expect(serverAuth.logout).toHaveBeenCalledTimes(1);
       });
     });
   });

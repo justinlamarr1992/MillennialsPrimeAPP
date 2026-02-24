@@ -14,7 +14,6 @@ const RootLayout = () => {
         headerTintColor: colors["secT"],
       }}
     >
-      <Stack.Screen name="SignInScreen" options={{ headerTitle: "Sign In" }} />
       <Stack.Screen name="RegisterScreen" options={{ headerTitle: "Register" }} />
       <Stack.Screen name="PasswordRecoveryScreen" options={{ headerTitle: "Password Recovery" }} />
     </Stack>

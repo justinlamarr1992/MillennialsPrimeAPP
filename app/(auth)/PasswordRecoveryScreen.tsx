@@ -17,6 +17,7 @@ import auth from "@react-native-firebase/auth";
 import { validateEmail } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
+import Toast from "react-native-toast-message";
 
 const PasswordRecoveryScreen = () => {
   const [email, setEmail] = useState("");
@@ -55,11 +56,8 @@ const PasswordRecoveryScreen = () => {
 
     try {
       await auth().sendPasswordResetEmail(email);
-      // TODO [UX Priority]: Replace alert() with non-blocking toast notification for better mobile UX
-      // Native alert() is blocking and provides poor user experience on mobile
-      // Consider: react-native-toast-notifications or expo-notifications
-      alert("Password reset email sent! Check your inbox.");
-      router.replace("/(auth)/SignInScreen");
+      Toast.show({ type: "success", text1: "Password reset email sent! Check your inbox." });
+      router.replace("/");
     } catch (error) {
       const firebaseError = error as { code: string; message: string };
       const errorMessage = handleAuthError(firebaseError);

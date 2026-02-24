@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@/__tests__/test-utils";
-import SocialFeedScreen from "../index";
+import SocialFeedScreen from "../SocialFeedScreen";
 
 // Mock expo-router for navigation
 jest.mock("expo-router", () => ({

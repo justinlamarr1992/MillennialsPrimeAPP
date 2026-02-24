@@ -149,6 +149,13 @@ jest.mock("expo-secure-store", () => ({
   WHEN_PASSCODE_SET_THIS_DEVICE_ONLY: "WHEN_PASSCODE_SET_THIS_DEVICE_ONLY",
 }));
 
+// Mock react-native-toast-message — default must be a valid React component so
+// that <Toast /> in RootLayout renders without crashing; show/hide remain callable
+jest.mock("react-native-toast-message", () => ({
+  __esModule: true,
+  default: Object.assign(() => null, { show: jest.fn(), hide: jest.fn() }),
+}));
+
 // Register custom matchers
 import { registerCustomMatchers } from "./matchers/customMatchers";
 registerCustomMatchers();
