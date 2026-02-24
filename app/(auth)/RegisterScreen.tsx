@@ -137,8 +137,8 @@ export default function RegisterScreen() {
   // reliably trigger Pressable.onPress via accessibility gestures.
   const handleBirthdayFocus = useCallback(() => {
     Keyboard.dismiss();
-    if (!showPicker) setShowPicker(true);
-  }, [showPicker]);
+    setShowPicker(true); // idempotent — no dep on showPicker needed
+  }, []);
 
   // Clear general error message when user makes changes
   useEffect(() => {

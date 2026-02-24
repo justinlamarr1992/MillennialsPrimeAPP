@@ -21,6 +21,11 @@ if [ -f "$ENV_FILE" ]; then
       [A-Za-z_][A-Za-z0-9_]*=*)
         var_name="${trimmed%%=*}"
         var_value="${trimmed#*=}"
+        # Strip surrounding quotes (standard .env behaviour: KEY="value" → value)
+        var_value="${var_value%\"}"
+        var_value="${var_value#\"}"
+        var_value="${var_value%\'}"
+        var_value="${var_value#\'}"
         export "$var_name=$var_value"
         ;;
     esac
