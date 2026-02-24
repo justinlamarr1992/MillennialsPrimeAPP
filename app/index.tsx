@@ -108,7 +108,10 @@ export default function Index() {
 
       try {
         const profile = await userProfileService.fetchProfile();
-        Toast.show({ type: "success", text1: `Welcome back, ${profile.firstName ?? email.split("@")[0]}!` });
+        Toast.show({
+          type: "success",
+          text1: `Welcome back, ${profile.firstName ?? email.split("@")[0]}!`,
+        });
       } catch {
         Toast.show({ type: "success", text1: `Welcome back, ${email.split("@")[0]}!` });
       }

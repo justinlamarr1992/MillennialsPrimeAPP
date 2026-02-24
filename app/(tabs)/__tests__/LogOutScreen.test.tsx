@@ -86,7 +86,6 @@ describe("LogOutScreen", () => {
           screen.getByText("Network error. Please check your internet connection")
         ).toBeTruthy();
       });
-
     });
   });
 
