@@ -216,6 +216,30 @@ export const serverAuth = {
   },
 
   /**
+   * Sync MongoDB password hash after a Firebase-initiated password reset.
+   * Called when loginToServer returns 401 — verifies identity via Firebase ID token,
+   * then updates the MongoDB bcrypt hash to match the new password.
+   */
+  async syncPassword(idToken: string, newPassword: string): Promise<void> {
+    try {
+      await axios.post(
+        "/auth/sync-password",
+        { newPassword },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+      logger.log("✅ Password sync successful");
+    } catch (error: unknown) {
+      logger.error("❌ Password sync failed");
+      throw error;
+    }
+  },
+
+  /**
    * Check if user has valid credentials
    */
   async hasValidCredentials(): Promise<boolean> {

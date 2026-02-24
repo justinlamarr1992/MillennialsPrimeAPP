@@ -117,6 +117,9 @@ npm test -- --coverage --collectCoverageFrom="[your-file-path]"
 **Run these automated checks:**
 
 ```bash
+# 0. Auto-format (must run BEFORE lint/tsc — fixes what Prettier would flag in CI)
+npx prettier --write "**/*.{js,jsx,ts,tsx,json,md}"
+
 # 1. Linting
 npm run lint
 
@@ -135,6 +138,7 @@ grep -r "http://\|https://\|localhost" [your-changed-files] | grep -v "test\|spe
 
 **Checks:**
 
+- [ ] Prettier auto-format applied (`npx prettier --write`)
 - [ ] No linting errors
 - [ ] No type errors
 - [ ] No unresolved TODOs/FIXMEs

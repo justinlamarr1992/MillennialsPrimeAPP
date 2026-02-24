@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "expo-router";
 import {
   useColorScheme,
@@ -48,6 +48,54 @@ export default function SignInScreen() {
   // Check if form is valid for submission
   const isFormValid = email.trim().length > 0 && password.trim().length > 0 && !emailError;
 
+  // Encapsulates MongoDB login with automatic password sync on 401.
+  // Extracted from handleSubmit to flatten nesting and name the intent clearly.
+  const loginToServerWithSync = useCallback(async (): Promise<void> => {
+    logger.log("🔐 Authenticating with MongoDB server...");
+    try {
+      await serverAuth.loginToServer(email, password);
+      logger.log("✅ MongoDB authentication successful");
+    } catch (mongoError: unknown) {
+      const status = (mongoError as { response?: { status?: number } })?.response?.status;
+      if (status !== 401) {
+        logger.error("❌ MongoDB authentication failed:", mongoError);
+        setErrMsg("Warning: Could not connect to server. Some features may be limited.");
+        return;
+      }
+      // 401 means the MongoDB password hash is stale — likely a Firebase password reset
+      // happened outside the app. Sync using the Firebase ID token to confirm identity.
+      logger.log("🔄 MongoDB 401 detected — attempting password sync...");
+      const currentUser = auth().currentUser;
+      if (!currentUser) {
+        setErrMsg(
+          "Your password was recently reset. Please sign out and back in, or contact support."
+        );
+        return;
+      }
+      const idToken = await currentUser.getIdToken();
+
+      try {
+        await serverAuth.syncPassword(idToken, password);
+      } catch (syncError: unknown) {
+        logger.error("❌ Password sync failed:", syncError);
+        setErrMsg(
+          "Your password was recently reset. Please sign out and back in, or contact support."
+        );
+        return;
+      }
+
+      // Sync succeeded — retry login with the now-updated hash
+      logger.log("✅ Password sync complete, retrying server login...");
+      try {
+        await serverAuth.loginToServer(email, password);
+        logger.log("✅ MongoDB authentication successful after sync");
+      } catch (retryError: unknown) {
+        logger.error("❌ MongoDB login failed after successful sync:", retryError);
+        setErrMsg("Password sync completed but server connection failed. Please try again.");
+      }
+    }
+  }, [email, password]);
+
   const handleSubmit = async () => {
     // Validate before submission
     if (emailError || email.trim().length === 0 || password.trim().length === 0) {
@@ -64,17 +112,8 @@ export default function SignInScreen() {
       await auth().signInWithEmailAndPassword(email, password);
       logger.log("✅ Firebase sign-in successful");
 
-      // Step 2: Authenticate with MongoDB server
-      logger.log("🔐 Authenticating with MongoDB server...");
-      try {
-        await serverAuth.loginToServer(email, password);
-        logger.log("✅ MongoDB authentication successful");
-      } catch (mongoError) {
-        logger.error("❌ MongoDB authentication failed:", mongoError);
-        // Don't block the user from accessing the app if MongoDB auth fails
-        // They're still authenticated with Firebase
-        setErrMsg("Warning: Could not connect to server. Some features may be limited.");
-      }
+      // Step 2: Authenticate with MongoDB server (with automatic sync on stale hash)
+      await loginToServerWithSync();
 
       // Navigation handled automatically by root layout auth listener
     } catch (error) {
