@@ -135,6 +135,7 @@ export default function SignInScreen() {
                 value={email}
                 onChangeText={(text) => setEmail(text)}
                 autoCapitalize="none"
+                testID="signin-email-input"
               />
               {emailError && (
                 <Text
@@ -157,6 +158,7 @@ export default function SignInScreen() {
                 autoCapitalize="none"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                testID="signin-password-input"
               />
             </View>
             {loading ? (

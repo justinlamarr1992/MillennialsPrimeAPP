@@ -6,29 +6,34 @@ appId: com.justappin.millennials-prime-app
 
 - launchApp:
     clearState: true
+    clearKeychain: true
 
 # Sign in
 - assertVisible: "Enter Email"
 - tapOn:
-    hint: "Enter Email"
-- inputText: ${MAESTRO_TEST_EMAIL}
+    id: "signin-email-input"
+- inputText: ${MAESTRO_PRIME_EMAIL}
 - tapOn:
-    hint: "Enter Password"
-- inputText: ${MAESTRO_TEST_PASSWORD}
+    id: "signin-password-input"
+- inputText: ${MAESTRO_PRIME_PASSWORD}
+- tapOn: "Welcome Back"
 - tapOn: "Login"
-- assertVisible:
-    text: "Home"
-    enabled: true
+- extendedWaitUntil:
+    visible: "Home"
+    timeout: 10000
 
 # Navigate to Log Out tab
 - tapOn:
-    text: "Log Out"
+    id: "tab-logout"
 
 # Assert log out confirmation screen
 - assertVisible: "Come Back Soon, There's More to Come"
 
 # Confirm sign out
-- tapOn: "Log Out"
+- tapOn:
+    id: "logout-confirm-button"
 
 # Assert returned to sign-in screen
-- assertVisible: "Enter Email"
+- extendedWaitUntil:
+    visible: "Enter Email"
+    timeout: 10000

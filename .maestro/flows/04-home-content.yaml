@@ -6,18 +6,20 @@ appId: com.justappin.millennials-prime-app
 
 - launchApp:
     clearState: true
+    clearKeychain: true
 
 # Sign in
 - assertVisible: "Enter Email"
 - tapOn:
-    hint: "Enter Email"
-- inputText: ${MAESTRO_TEST_EMAIL}
+    id: "signin-email-input"
+- inputText: ${MAESTRO_PRIME_EMAIL}
 - tapOn:
-    hint: "Enter Password"
-- inputText: ${MAESTRO_TEST_PASSWORD}
+    id: "signin-password-input"
+- inputText: ${MAESTRO_PRIME_PASSWORD}
+- tapOn: "Welcome Back"
 - tapOn: "Login"
 
 # Wait for content to load (allows for network latency)
-- assertVisible:
-    text: "New Episodes"
+- extendedWaitUntil:
+    visible: "New Episodes"
     timeout: 10000

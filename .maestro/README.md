@@ -14,12 +14,19 @@ curl -Ls "https://get.maestro.mobile.dev" | bash
 
 ### Set test credentials
 
-Create a dedicated Firebase test account, then export credentials before running flows:
+Create two dedicated Firebase test accounts (one prime, one free), then add them to your
+local `.env` file (already gitignored):
 
-```bash
-export MAESTRO_TEST_EMAIL="your-test@example.com"
-export MAESTRO_TEST_PASSWORD="your-test-password"
 ```
+# .env — never committed
+MAESTRO_PRIME_EMAIL=your-prime-test@example.com
+MAESTRO_PRIME_PASSWORD=your-prime-test-password
+MAESTRO_FREE_EMAIL=your-free-test@example.com
+MAESTRO_FREE_PASSWORD=your-free-test-password
+```
+
+The `npm run test:e2e` scripts use `.maestro/run-tests.sh`, which sources `.env` automatically
+before invoking Maestro. No manual `export` needed.
 
 > **Never hardcode credentials in flow files.** Always use environment variables.
 
@@ -46,7 +53,7 @@ npm run test:e2e:android
 ### Single flow
 
 ```bash
-maestro test .maestro/flows/01-auth-signin.yaml
+.maestro/run-tests.sh test .maestro/flows/01-auth-signin.yaml
 ```
 
 ### With verbose output

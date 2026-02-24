@@ -2,28 +2,30 @@ appId: com.justappin.millennials-prime-app
 # Android: com.justappin.MillennialsPrime_APP
 ---
 # Flow: Happy path sign in with a test account.
-# Requires MAESTRO_TEST_EMAIL and MAESTRO_TEST_PASSWORD environment variables.
-# Set before running: export MAESTRO_TEST_EMAIL=... && export MAESTRO_TEST_PASSWORD=...
+# Requires MAESTRO_PRIME_EMAIL and MAESTRO_PRIME_PASSWORD environment variables.
+# Set before running: export MAESTRO_PRIME_EMAIL=... && export MAESTRO_PRIME_PASSWORD=...
 
 - launchApp:
     clearState: true
+    clearKeychain: true
 
 # Wait for sign-in screen to be ready
 - assertVisible: "Enter Email"
 
 # Enter credentials
 - tapOn:
-    hint: "Enter Email"
-- inputText: ${MAESTRO_TEST_EMAIL}
+    id: "signin-email-input"
+- inputText: ${MAESTRO_PRIME_EMAIL}
 
 - tapOn:
-    hint: "Enter Password"
-- inputText: ${MAESTRO_TEST_PASSWORD}
+    id: "signin-password-input"
+- inputText: ${MAESTRO_PRIME_PASSWORD}
+- tapOn: "Welcome Back"
 
 # Submit
 - tapOn: "Login"
 
 # Assert home tab is visible (content feed loaded)
-- assertVisible:
-    text: "Home"
-    enabled: true
+- extendedWaitUntil:
+    visible: "Home"
+    timeout: 10000
