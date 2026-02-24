@@ -67,7 +67,7 @@ export function RootLayoutNav() {
     if (target) router.replace(target);
   }, [user, loading, router]);
 
-  if (loading || (!!user && segments[0] === undefined)) {
+  if (loading || (!!user && segmentsRef.current[0] === undefined)) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator testID="loading-indicator" size="large" />

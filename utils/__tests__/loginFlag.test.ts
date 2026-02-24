@@ -6,6 +6,11 @@ describe("loginFlag", () => {
     consumeWelcomeUser();
   });
 
+  afterEach(() => {
+    // Guard against stale state if a test throws before consuming the flag
+    consumeWelcomeUser();
+  });
+
   it("setWelcomeUser stores the first name", () => {
     setWelcomeUser("Jordan");
     expect(consumeWelcomeUser()).toBe("Jordan");

@@ -103,8 +103,10 @@ export default function Index() {
       await auth().signInWithEmailAndPassword(email, password);
       logger.log("✅ Firebase sign-in successful");
 
-      // Set welcome name before the async MongoDB call — the Firebase auth state
-      // listener fires concurrently and may navigate to HomePage before MongoDB completes
+      // Email prefix is used intentionally — fetchProfile requires useAxiosPrivate
+      // interceptors which are only mounted inside authenticated components, not
+      // available here at login time. Set before the async MongoDB call so the
+      // flag is ready when the auth state listener navigates to HomePage.
       setWelcomeUser(email.split("@")[0]);
       await loginToServerWithSync();
 
