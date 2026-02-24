@@ -2,7 +2,11 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@/__tests__/test-utils";
 import SignInScreen from "../SignInScreen";
 import { router } from "expo-router";
-import { signInWithEmailAndPassword, mockAuthInstance, mockUser } from "@/__tests__/__mocks__/firebase";
+import {
+  signInWithEmailAndPassword,
+  mockAuthInstance,
+  mockUser,
+} from "@/__tests__/__mocks__/firebase";
 import { serverAuth } from "@/services/serverAuth";
 
 jest.mock("@/services/serverAuth");
