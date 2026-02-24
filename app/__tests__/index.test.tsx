@@ -7,24 +7,20 @@ import {
   mockUser,
 } from "@/__tests__/__mocks__/firebase";
 import { serverAuth } from "@/services/serverAuth";
-import { userProfileService } from "@/services/userProfileService";
 import { setWelcomeUser } from "@/utils/loginFlag";
 
 jest.mock("@/services/serverAuth");
-jest.mock("@/services/userProfileService");
 jest.mock("@/utils/loginFlag");
 
 // expo-router and @react-native-firebase/auth are mocked in setup.ts
 
 const mockLoginToServer = serverAuth.loginToServer as jest.Mock;
 const mockSyncPassword = serverAuth.syncPassword as jest.Mock;
-const mockFetchProfile = userProfileService.fetchProfile as jest.Mock;
 const mockSetWelcomeUser = setWelcomeUser as jest.Mock;
 
 describe("IndexScreen (login form)", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockFetchProfile.mockResolvedValue({ firstName: "Jordan" });
   });
 
   describe("Email Validation", () => {
@@ -163,22 +159,7 @@ describe("IndexScreen (login form)", () => {
       mockLoginToServer.mockResolvedValue(undefined);
     });
 
-    it("stores firstName via setWelcomeUser after successful login", async () => {
-      mockFetchProfile.mockResolvedValue({ firstName: "Jordan" });
-
-      render(<IndexScreen />);
-      fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "test@example.com");
-      fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "ValidPass123!");
-      fireEvent.press(screen.getByText("Login").parent!);
-
-      await waitFor(() => {
-        expect(mockSetWelcomeUser).toHaveBeenCalledWith("Jordan");
-      });
-    });
-
-    it("falls back to email prefix when fetchProfile throws", async () => {
-      mockFetchProfile.mockRejectedValue(new Error("Network error"));
-
+    it("stores email prefix via setWelcomeUser after successful login", async () => {
       render(<IndexScreen />);
       fireEvent.changeText(screen.getByPlaceholderText("Enter Email"), "test@example.com");
       fireEvent.changeText(screen.getByPlaceholderText("Enter Password"), "ValidPass123!");

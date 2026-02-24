@@ -20,7 +20,6 @@ import { validateEmail } from "@/utils/validation";
 import { handleAuthError } from "@/utils/errorHandler";
 import { logger } from "@/utils/logger";
 import { serverAuth } from "@/services/serverAuth";
-import { userProfileService } from "@/services/userProfileService";
 import { setWelcomeUser } from "@/utils/loginFlag";
 
 export default function Index() {
@@ -106,13 +105,7 @@ export default function Index() {
 
       await loginToServerWithSync();
 
-      try {
-        const profile = await userProfileService.fetchProfile();
-        setWelcomeUser(profile.firstName ?? email.split("@")[0]);
-      } catch (err: unknown) {
-        logger.error("Failed to fetch user profile after sign-in:", err);
-        setWelcomeUser(email.split("@")[0]);
-      }
+      setWelcomeUser(email.split("@")[0]);
 
       // Navigation handled automatically by root layout auth listener
     } catch (error) {
