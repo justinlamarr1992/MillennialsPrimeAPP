@@ -41,7 +41,6 @@ appId: com.justappin.millennials-prime-app
 - tapOn:
     id: "register-email-input"
 - inputText: ${MAESTRO_REGISTER_EMAIL}
-- tapOn: "Sign Up to Continue"
 
 # iOS 26 password workaround: long-press opens text editing context menu (Paste)
 # which bypasses the "Automatic Strong Password" AutoFill cover view.
@@ -54,7 +53,6 @@ appId: com.justappin.millennials-prime-app
 - longPressOn:
     id: "register-password-input"
 - tapOn: "Paste"
-- tapOn: "Sign Up to Continue"
 
 - longPressOn:
     id: "register-confirm-input"
@@ -64,7 +62,6 @@ appId: com.justappin.millennials-prime-app
 - longPressOn:
     id: "register-confirm-input"
 - tapOn: "Paste"
-- tapOn: "Sign Up to Continue"
 
 # Birthday field — TextInput with onFocus={handleBirthdayFocus} opens DateTimePicker.
 # onFocus fires reliably when XCUITest taps a TextInput by testID (unlike Pressable.onPress).

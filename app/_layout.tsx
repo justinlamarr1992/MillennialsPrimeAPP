@@ -7,11 +7,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/provider/AuthProvider";
 import useAuth from "@/hooks/useAuth";
-import { View, ActivityIndicator, LogBox } from "react-native";
-
-if (__DEV__) {
-  LogBox.ignoreAllLogs();
-}
+import { View, ActivityIndicator } from "react-native";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Create a QueryClient instance for data fetching and caching

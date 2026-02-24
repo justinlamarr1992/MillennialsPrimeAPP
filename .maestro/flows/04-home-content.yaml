@@ -16,7 +16,6 @@ appId: com.justappin.millennials-prime-app
 - tapOn:
     id: "signin-password-input"
 - inputText: ${MAESTRO_PRIME_PASSWORD}
-- tapOn: "Welcome Back"
 - tapOn: "Login"
 
 # Wait for content to load (allows for network latency)

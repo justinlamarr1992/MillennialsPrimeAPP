@@ -155,6 +155,8 @@ export default function SignInScreen() {
                 placeholder="Enter Password"
                 placeholderTextColor={colors["plcHoldText"]}
                 secureTextEntry={true}
+                textContentType="none"
+                autoComplete="off"
                 autoCapitalize="none"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
