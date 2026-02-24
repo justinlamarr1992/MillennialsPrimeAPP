@@ -26,7 +26,8 @@ if [ -f "$ENV_FILE" ]; then
         var_value="${var_value#\"}"
         var_value="${var_value%\'}"
         var_value="${var_value#\'}"
-        export "$var_name=$var_value"
+        printf -v "$var_name" '%s' "$var_value"
+        export "$var_name"
         ;;
     esac
   done < "$ENV_FILE"

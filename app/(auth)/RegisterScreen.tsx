@@ -303,6 +303,7 @@ export default function RegisterScreen() {
                   if (firstNameError) setFirstNameError(null);
                 }}
                 onBlur={validateFirstNameField}
+                testID="register-firstname-input"
               />
               {firstNameError && (
                 <Text
@@ -327,6 +328,7 @@ export default function RegisterScreen() {
                   if (lastNameError) setLastNameError(null);
                 }}
                 onBlur={validateLastNameField}
+                testID="register-lastname-input"
               />
               {lastNameError && (
                 <Text
