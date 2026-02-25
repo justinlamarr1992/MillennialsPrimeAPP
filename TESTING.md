@@ -50,7 +50,9 @@ project-root/
 ├── app/
 │   ├── (auth)/
 │   │   └── __tests__/
-│   │       └── SignInScreen.test.tsx
+│   │       └── RegisterScreen.test.tsx
+│   ├── __tests__/
+│   │   └── index.test.tsx
 │   └── (tabs)/
 │       └── __tests__/
 │           └── HomePage.test.tsx
@@ -75,7 +77,7 @@ project-root/
 
 - Test files should be co-located with source files in `__tests__/` directories
 - Use `.test.ts` or `.test.tsx` extension
-- Match the source file name: `SignInScreen.tsx` → `SignInScreen.test.tsx`
+- Match the source file name: `RegisterScreen.tsx` → `RegisterScreen.test.tsx`
 
 ### File Structure
 
@@ -118,7 +120,7 @@ Use the component/function name or feature being tested:
 **Good:**
 
 ```typescript
-describe('SignInScreen', () => { ... });
+describe('RegisterScreen', () => { ... });
 describe('handleAuthError', () => { ... });
 describe('email validation', () => { ... });
 ```

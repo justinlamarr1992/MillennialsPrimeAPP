@@ -140,8 +140,8 @@ sequenceDiagram
 app/
 ├── _layout.tsx                 # Root Stack Navigator + Auth Gating
 ├── index.tsx                   # Welcome/Splash Screen
+├── index.tsx                   # /  (login screen, entry point)
 ├── (auth)/_layout.tsx          # Auth Stack Navigator
-│   ├── SignInScreen.tsx        # /(auth)/SignInScreen
 │   ├── RegisterScreen.tsx      # /(auth)/RegisterScreen
 │   └── PasswordRecoveryScreen.tsx
 ├── (tabs)/_layout.tsx          # Tabs Navigator

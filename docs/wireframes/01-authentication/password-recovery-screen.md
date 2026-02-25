@@ -103,12 +103,12 @@ flowchart TD
 
 ## User Interactions
 
-| Element            | Action                          | Navigation Target      | Method         |
-| ------------------ | ------------------------------- | ---------------------- | -------------- |
-| Back Button        | onPress → router.back()         | Previous screen        | Imperative     |
-| Email Input        | onBlur → validateEmail()        | -                      | Validation     |
-| Send Email Button  | onPress → handlePasswordReset() | `/(auth)/SignInScreen` | On success     |
-| Back to Login Link | onPress                         | `/(auth)/SignInScreen` | Link (replace) |
+| Element            | Action                          | Navigation Target | Method         |
+| ------------------ | ------------------------------- | ----------------- | -------------- |
+| Back Button        | onPress → router.back()         | Previous screen   | Imperative     |
+| Email Input        | onBlur → validateEmail()        | -                 | Validation     |
+| Send Email Button  | onPress → handlePasswordReset() | `/`               | On success     |
+| Back to Login Link | onPress                         | `/`               | Link (replace) |
 
 ## State Management
 
@@ -273,9 +273,9 @@ stateDiagram-v2
 
 ### Exit Points
 
-1. **Success**: Navigate to `/(auth)/SignInScreen` with success alert
+1. **Success**: Navigate to `/` with success alert
 2. **Back Button**: Return to previous screen (usually Sign In)
-3. **Back to Login Link**: Navigate to `/(auth)/SignInScreen` (replace)
+3. **Back to Login Link**: Navigate to `/` (replace)
 
 ### User Flow After Reset
 
@@ -348,7 +348,7 @@ flowchart LR
 Alert.alert("Success", "Password reset email sent! Check your inbox.", [
   {
     text: "OK",
-    onPress: () => router.replace("/(auth)/SignInScreen"),
+    onPress: () => router.replace("/"),
   },
 ]);
 ```

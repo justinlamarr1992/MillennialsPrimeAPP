@@ -128,7 +128,7 @@ const handleSubmit = async () => {
   setLoading(true);
   try {
     const result = await createUser(email, password);
-    router.replace("/(auth)/SignInScreen");
+    router.replace("/");
   } catch (error) {
     setErrMsg(error.message);
   } finally {
@@ -140,7 +140,7 @@ const handleSubmit = async () => {
 const handleSubmit = async () => {
   setLoading(true);
   createUser(email, password)
-    .then(() => router.replace("/(auth)/SignInScreen"))
+    .then(() => router.replace("/"))
     .catch((error) => setErrMsg(error.message));
   setLoading(false); // ❌ Runs immediately, before promise resolves
 };

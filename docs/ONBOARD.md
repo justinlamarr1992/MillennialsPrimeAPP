@@ -59,7 +59,7 @@ Landing (index.tsx) → Sign In/Register → Home Feed (tabs) → Settings
 | -------- | ------------------------------ | -------------------------------------- |
 | 🔴       | app/(tabs)/(home)/HomePage.tsx | Main feed logic, Bunny CDN integration |
 | 🔴       | firebase/firebaseConfig.ts     | Auth setup, API keys                   |
-| 🔴       | app/(auth)/SignInScreen.tsx    | Login flow                             |
+| 🔴       | app/index.tsx                  | Login screen (entry point)             |
 | 🟡       | constants/global.ts            | All global styles                      |
 | 🟡       | shared/PostComponents/         | Post rendering system                  |
 | 🟡       | app/(tabs)/\_layout.tsx        | Tab navigation config                  |
@@ -240,7 +240,6 @@ As a senior engineer joining, I'd prioritize:
 /Users/username/projects/MillennialsPrimeAPP/
 ├── app/                          # Expo Router file-based routing (main app)
 │   ├── (auth)/                   # Auth group - public screens
-│   │   ├── SignInScreen.tsx
 │   │   ├── RegisterScreen.tsx
 │   │   ├── PasswordRecoveryScreen.tsx
 │   │   ├── AboutScreen.tsx
@@ -349,10 +348,10 @@ As a senior engineer joining, I'd prioritize:
 
 **Authentication Methods:**
 
-1. **Sign In** (`SignInScreen.tsx`)
+1. **Sign In** (`index.tsx`)
    - Firebase: `auth().signInWithEmailAndPassword()`
    - MongoDB: `serverAuth.loginToServer()`
-   - Success: Navigate to HomePage
+   - Success: Auth state listener navigates to HomePage
    - Failure: Show specific error messages
 
 2. **Sign Up** (`RegisterScreen.tsx`)
@@ -360,17 +359,17 @@ As a senior engineer joining, I'd prioritize:
    - Firebase: `auth().createUserWithEmailAndPassword()`
    - MongoDB: `serverAuth.registerOnServer()`
    - Cleanup: Deletes Firebase user if MongoDB fails
-   - Success: Navigate to SignInScreen
+   - Success: Toast confirmation + navigate to `/`
 
 3. **Password Recovery** (`PasswordRecoveryScreen.tsx`)
    - Firebase: `auth().sendPasswordResetEmail()`
    - Sends reset link via email
-   - Success: Navigate to SignInScreen
+   - Success: Toast confirmation
 
 4. **Sign Out** (`LogOutScreen.tsx`)
    - Firebase: `auth().signOut()`
    - MongoDB: `serverAuth.logout()` (clears tokens)
-   - Success: Navigate to SignInScreen
+   - Success: Auth state listener navigates to `/`
 
 **Key Details:**
 

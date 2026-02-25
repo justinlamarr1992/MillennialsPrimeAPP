@@ -99,9 +99,9 @@ A React Native social media platform for iOS and Android featuring user-generate
 MillennialsPrimeAPP/
 ├── app/                          # Main application (Expo Router)
 │   ├── (auth)/                   # Authentication screens
-│   │   ├── SignInScreen.tsx
 │   │   ├── RegisterScreen.tsx
 │   │   └── PasswordRecoveryScreen.tsx
+│   ├── index.tsx                 # Login screen (entry point)
 │   ├── (tabs)/                   # Main app (tab navigation)
 │   │   ├── (home)/               # Home feed
 │   │   ├── (settings)/           # User settings

@@ -88,7 +88,7 @@ flowchart TD
 
 | Element          | Action  | Navigation Target        | Method         |
 | ---------------- | ------- | ------------------------ | -------------- |
-| "Log In" Button  | onPress | `/(auth)/SignInScreen`   | Link (replace) |
+| "Log In" Button  | onPress | `/`                      | Link (replace) |
 | "Sign Up" Button | onPress | `/(auth)/RegisterScreen` | Link (replace) |
 
 ## State Management
@@ -144,7 +144,7 @@ flowchart LR
 **Log In Link:**
 
 ```tsx
-<Link href="/(auth)/SignInScreen" replace asChild>
+<Link href="/" replace asChild>
   <Pressable>
     <Text>Log In</Text>
   </Pressable>
