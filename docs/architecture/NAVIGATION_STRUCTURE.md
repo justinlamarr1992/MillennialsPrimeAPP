@@ -61,11 +61,11 @@ graph TD
     Auth -->|Not Authenticated| AuthGroup[Auth Group<br/>_layout.tsx Stack]
     Auth -->|Authenticated| TabsGroup[Tabs Group<br/>_layout.tsx Tabs]
 
-    AuthGroup --> A1[index.tsx<br/>Welcome Screen]
-    AuthGroup --> A2[SignInScreen.tsx]
-    AuthGroup --> A3[RegisterScreen.tsx]
-    AuthGroup --> A4[PasswordRecoveryScreen.tsx]
-    AuthGroup --> A5[AboutScreen.tsx]
+    AuthGroup --> A1[RegisterScreen.tsx]
+    AuthGroup --> A2[PasswordRecoveryScreen.tsx]
+    AuthGroup --> A3[AboutScreen.tsx]
+
+    RootGroup --> I1[index.tsx<br/>Login Screen]
 
     TabsGroup --> T1[Home Tab<br/>_layout.tsx Stack]
     TabsGroup --> T2[Settings Tab<br/>_layout.tsx Stack]
@@ -129,11 +129,11 @@ function RootLayoutNav() {
       // Authenticated user on auth screens → redirect to home
       router.replace("/(tabs)/(home)/HomePage");
     } else if (!user && !inAuthGroup && segments[0] !== undefined) {
-      // Unauthenticated user on protected routes → redirect to sign in
-      router.replace("/(auth)/SignInScreen");
+      // Unauthenticated user on protected routes → redirect to login
+      router.replace("/");
     } else if (segments[0] === undefined) {
       // No route set → redirect based on auth state
-      router.replace(user ? "/(tabs)/(home)/HomePage" : "/(auth)/SignInScreen");
+      router.replace(user ? "/(tabs)/(home)/HomePage" : "/");
     }
   }, [user, segments, loading]);
 
@@ -175,11 +175,11 @@ flowchart TD
 
 **Screens**:
 
-- `index.tsx` - Welcome/splash screen
-- `SignInScreen.tsx` - Email/password login
 - `RegisterScreen.tsx` - New user registration
 - `PasswordRecoveryScreen.tsx` - Password reset
 - `AboutScreen.tsx` - About page
+
+**Note**: The login screen lives at `app/index.tsx` (root route `/`), not inside `(auth)/`.
 
 **Stack Configuration**:
 
@@ -307,7 +307,7 @@ Settings Hub
 ```tsx
 import { Link } from "expo-router";
 
-<Link href="/(auth)/SignInScreen" replace asChild>
+<Link href="/" replace asChild>
   <Pressable>
     <Text>Log In</Text>
   </Pressable>
@@ -332,7 +332,7 @@ const router = useRouter();
 router.push("/(tabs)/(settings)/MyInfoScreen");
 
 // Replace current screen
-router.replace("/(auth)/SignInScreen");
+router.replace("/");
 
 // Go back
 router.back();
@@ -350,7 +350,9 @@ Tab navigation happens automatically when user taps tab bar icons. No explicit c
 ### Static Routes
 
 ```
-/(auth)/SignInScreen
+/
+/(auth)/RegisterScreen
+/(auth)/PasswordRecoveryScreen
 /(tabs)/(home)/HomePage
 /(tabs)/(settings)/BusinessScreen
 ```
@@ -410,7 +412,7 @@ Returns current route segments:
 ```typescript
 const segments = useSegments();
 // On /(tabs)/(home)/HomePage → ["(tabs)", "(home)", "HomePage"]
-// On /(auth)/SignInScreen → ["(auth)", "SignInScreen"]
+// On / → []  (root index, segments is empty)
 ```
 
 Used for:

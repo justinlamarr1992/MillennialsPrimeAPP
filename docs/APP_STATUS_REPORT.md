@@ -16,20 +16,20 @@ backend hosted on Firebase Functions.
 
 ## Feature Status
 
-| Feature                                            | Status                | Screens                                              | Services                         | Hooks                                     |
-| -------------------------------------------------- | --------------------- | ---------------------------------------------------- | -------------------------------- | ----------------------------------------- |
-| Auth — sign in / register / password recovery      | ✅ Production         | SignInScreen, RegisterScreen, PasswordRecoveryScreen | serverAuth                       | useAuth, useRefreshToken, useAxiosPrivate |
-| Home — BunnyCDN video feed (HBO-style sections)    | ✅ Production         | HomePage                                             | —                                | useBunnyCDNVideos                         |
-| Settings — Personal / Business / Artistry profiles | ✅ Production         | Settings, MyInfoScreen, BusinessScreen, ArtScreen    | userProfileService               | useUserProfile                            |
-| Profile picture upload (base64 → backend)          | ✅ Production         | MyInfoScreen, EditProfileScreen                      | userProfileService               | useProfilePictureUpload                   |
-| Video upload (Expo → BunnyCDN via TUS)             | ✅ Production         | UploadContentScreen                                  | videoUploadService               | useVideoUpload                            |
-| Social — My Profile, Edit Profile                  | ✅ Built (tab hidden) | MyProfileScreen, EditProfileScreen                   | userProfileService, postsService | useUserProfile, useUserPosts              |
-| Social — View other user profiles                  | ✅ Built (tab hidden) | [id].tsx                                             | userProfileService               | useUserProfileById                        |
-| Social — Connections (send / accept / remove)      | ✅ Built (tab hidden) | ConnectedUsersScreen                                 | connectionService                | useConnections, useConnectionStatus       |
-| Shows — Series listing and detail                  | 🔧 Scaffolded         | PrimeShow, ShowViewScreen                            | —                                | —                                         |
-| Backend: Posts endpoints                           | ⏳ Pending            | —                                                    | postsService                     | useUserPosts                              |
-| Backend: Connections endpoints                     | ⏳ Pending            | —                                                    | connectionService                | useConnections                            |
-| Backend: Video metadata save                       | ⏳ Pending            | —                                                    | videoUploadService               | —                                         |
+| Feature                                            | Status                | Screens                                               | Services                         | Hooks                                     |
+| -------------------------------------------------- | --------------------- | ----------------------------------------------------- | -------------------------------- | ----------------------------------------- |
+| Auth — sign in / register / password recovery      | ✅ Production         | index (login), RegisterScreen, PasswordRecoveryScreen | serverAuth                       | useAuth, useRefreshToken, useAxiosPrivate |
+| Home — BunnyCDN video feed (HBO-style sections)    | ✅ Production         | HomePage                                              | —                                | useBunnyCDNVideos                         |
+| Settings — Personal / Business / Artistry profiles | ✅ Production         | Settings, MyInfoScreen, BusinessScreen, ArtScreen     | userProfileService               | useUserProfile                            |
+| Profile picture upload (base64 → backend)          | ✅ Production         | MyInfoScreen, EditProfileScreen                       | userProfileService               | useProfilePictureUpload                   |
+| Video upload (Expo → BunnyCDN via TUS)             | ✅ Production         | UploadContentScreen                                   | videoUploadService               | useVideoUpload                            |
+| Social — My Profile, Edit Profile                  | ✅ Built (tab hidden) | MyProfileScreen, EditProfileScreen                    | userProfileService, postsService | useUserProfile, useUserPosts              |
+| Social — View other user profiles                  | ✅ Built (tab hidden) | [id].tsx                                              | userProfileService               | useUserProfileById                        |
+| Social — Connections (send / accept / remove)      | ✅ Built (tab hidden) | ConnectedUsersScreen                                  | connectionService                | useConnections, useConnectionStatus       |
+| Shows — Series listing and detail                  | 🔧 Scaffolded         | PrimeShow, ShowViewScreen                             | —                                | —                                         |
+| Backend: Posts endpoints                           | ⏳ Pending            | —                                                     | postsService                     | useUserPosts                              |
+| Backend: Connections endpoints                     | ⏳ Pending            | —                                                     | connectionService                | useConnections                            |
+| Backend: Video metadata save                       | ⏳ Pending            | —                                                     | videoUploadService               | —                                         |
 
 **Tab visibility:** Home and Settings are public-facing. Social, Upload, and Shows are built but
 hidden (`href: null`) pending final backend readiness and product launch decision.

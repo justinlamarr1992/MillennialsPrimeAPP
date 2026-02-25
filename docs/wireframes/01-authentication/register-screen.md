@@ -140,17 +140,17 @@ flowchart TD
 
 ## User Interactions
 
-| Element          | Action                      | Navigation Target      | Method         |
-| ---------------- | --------------------------- | ---------------------- | -------------- |
-| Back Button      | onPress → router.back()     | Previous screen        | Imperative     |
-| First Name Input | onBlur → validateField()    | -                      | Validation     |
-| Last Name Input  | onBlur → validateField()    | -                      | Validation     |
-| Email Input      | onBlur → validateField()    | -                      | Validation     |
-| Password Input   | onBlur → validateField()    | -                      | Validation     |
-| Confirm Password | onBlur → validateField()    | -                      | Validation     |
-| DOB Picker       | onChange → setDateOfBirth() | -                      | State update   |
-| Sign Up Button   | onPress → handleRegister()  | `/(auth)/SignInScreen` | On success     |
-| Login Link       | onPress                     | `/(auth)/SignInScreen` | Link (replace) |
+| Element          | Action                      | Navigation Target | Method         |
+| ---------------- | --------------------------- | ----------------- | -------------- |
+| Back Button      | onPress → router.back()     | Previous screen   | Imperative     |
+| First Name Input | onBlur → validateField()    | -                 | Validation     |
+| Last Name Input  | onBlur → validateField()    | -                 | Validation     |
+| Email Input      | onBlur → validateField()    | -                 | Validation     |
+| Password Input   | onBlur → validateField()    | -                 | Validation     |
+| Confirm Password | onBlur → validateField()    | -                 | Validation     |
+| DOB Picker       | onChange → setDateOfBirth() | -                 | State update   |
+| Sign Up Button   | onPress → handleRegister()  | `/`               | On success     |
+| Login Link       | onPress                     | `/`               | Link (replace) |
 
 ## State Management
 
@@ -374,9 +374,9 @@ stateDiagram-v2
 
 ### Exit Points
 
-1. **Success**: Navigate to `/(auth)/SignInScreen` with alert
+1. **Success**: Navigate to `/` with alert
 2. **Back Button**: Return to previous screen
-3. **Login Link**: Navigate to `/(auth)/SignInScreen` (replace)
+3. **Login Link**: Navigate to `/` (replace)
 
 ### Post-Registration
 

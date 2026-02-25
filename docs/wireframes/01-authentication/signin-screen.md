@@ -1,9 +1,9 @@
-# Sign In Screen
+# Login Screen (formerly Sign In Screen)
 
-**Path:** `app/(auth)/SignInScreen.tsx`
-**Route:** `/(auth)/SignInScreen`
+**Path:** `app/index.tsx`
+**Route:** `/`
 **Status:** Active
-**Parent Layout:** Auth Stack Navigator
+**Parent Layout:** Root Stack Navigator
 
 ## Overview
 
@@ -320,7 +320,7 @@ stateDiagram-v2
 
 ### File Reference
 
-[app/(auth)/SignInScreen.tsx](<../../../app/(auth)/SignInScreen.tsx>)
+[app/index.tsx](../../../app/index.tsx)
 
 ### Key Dependencies
 

@@ -50,7 +50,7 @@ A major architectural addition implements dual authentication:
 
 **Implementation Files:**
 
-- [SignInScreen.tsx](<app/(auth)/SignInScreen.tsx>) - User login functionality
+- [index.tsx](app/index.tsx) - User login functionality (formerly `SignInScreen.tsx`, consolidated to root route in v1.3.0)
 - [RegisterScreen.tsx](<app/(auth)/RegisterScreen.tsx>) - New user registration
 - [PasswordRecoveryScreen.tsx](<app/(auth)/PasswordRecoveryScreen.tsx>) - Password reset flow
 
@@ -164,7 +164,7 @@ getProfilePicture(); // POST /users/getpic
 
 **Evidence:**
 
-- [SignInScreen.tsx:188](<app/(auth)/SignInScreen.tsx#L188>) - `{/* <Text>Connect with Socials</Text> */}`
+- [index.tsx](app/index.tsx) - `{/* <Text>Connect with Socials</Text> */}` (login screen, formerly SignInScreen.tsx)
 - [RegisterScreen.tsx:458](<app/(auth)/RegisterScreen.tsx#L458>) - `{/* <Text>Connect with Socials</Text> */}`
 
 **Missing Components:**
@@ -389,7 +389,7 @@ The email/password authentication is robust and production-ready. Social authent
 
 **Authentication Implementation Files:**
 
-- [SignInScreen.tsx](<app/(auth)/SignInScreen.tsx>)
+- [index.tsx](app/index.tsx) - Login screen (root route `/`, replaces SignInScreen.tsx as of v1.3.0)
 - [RegisterScreen.tsx](<app/(auth)/RegisterScreen.tsx>)
 - [PasswordRecoveryScreen.tsx](<app/(auth)/PasswordRecoveryScreen.tsx>)
 - [AuthContext.tsx](context/AuthContext.tsx)
@@ -412,7 +412,7 @@ The email/password authentication is robust and production-ready. Social authent
 
 **Test Files:**
 
-- [SignInScreen.test.tsx](<app/(auth)/__tests__/SignInScreen.test.tsx>)
+- [index.test.tsx](app/__tests__/index.test.tsx) - Login screen tests (replaces SignInScreen.test.tsx as of v1.3.0)
 - [RegisterScreen.test.tsx](<app/(auth)/__tests__/RegisterScreen.test.tsx>)
 - [PasswordRecoveryScreen.test.tsx](<app/(auth)/__tests__/PasswordRecoveryScreen.test.tsx>)
 - [useAuth.test.tsx](hooks/__tests__/useAuth.test.tsx)

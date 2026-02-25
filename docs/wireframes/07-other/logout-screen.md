@@ -130,8 +130,8 @@ const handleLogout = async () => {
     // Step 2: Clear MongoDB tokens
     await serverAuth.logout();
 
-    // Step 3: Navigate to sign in
-    router.replace("/(auth)/SignInScreen");
+    // Step 3: Navigate to login (auth state listener handles redirect)
+    router.replace("/");
   } catch (error) {
     console.error("Logout error:", error);
     Alert.alert("Error", "Failed to log out. Please try again.");
